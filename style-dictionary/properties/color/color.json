@@ -1,0 +1,127 @@
+{
+    "primary100": {
+        "value": "#fce9e9"
+    },
+    "primary200": {
+        "value": "#f5bdbd"
+    },
+    "primary300": {
+        "value": "#ee9090"
+    },
+    "primary400": {
+        "value": "#e76464"
+    },
+    "primary500": {
+        "value": "#e13838"
+    },
+    "primary600": {
+        "value": "#c71e1e"
+    },
+    "primary700": {
+        "value": "#9b1818"
+    },
+    "primary800": {
+        "value": "#6f1111"
+    },
+    "primary900": {
+        "value": "#420a0a"
+    },
+    "secondary100": {
+        "value": "#ffe5e5"
+    },
+    "secondary200": {
+        "value": "#ffb3b3"
+    },
+    "secondary300": {
+        "value": "#ff8080"
+    },
+    "secondary400": {
+        "value": "#ff4d4d"
+    },
+    "secondary500": {
+        "value": "#ff1a1a"
+    },
+    "secondary600": {
+        "value": "#e60000"
+    },
+    "secondary700": {
+        "value": "#b30000"
+    },
+    "secondary800": {
+        "value": "#800000"
+    },
+    "secondary900": {
+        "value": "#4d0000"
+    },
+    "neutral100": {
+        "value": "#f0f4f7"
+    },
+    "neutral200": {
+        "value": "#e1e8ef"
+    },
+    "neutral300": {
+        "value": "#c0c8d1"
+    },
+    "neutral400": {
+        "value": "#939aa4"
+    },
+    "neutral500": {
+        "value": "#59606a"
+    },
+    "neutral600": {
+        "value": "#474d55"
+    },
+    "neutral700": {
+        "value": "#353a40"
+    },
+    "neutral800": {
+        "value": "#24262a"
+    },
+    "neutral900": {
+        "value": "#1b1d20"
+    },
+    "negative": {
+        "dark": {
+            "value": "#b71b36"
+        },
+        "normal": {
+            "value": "#ec4646"
+        },
+        "light": {
+            "value": "#fdc8b5"
+        }
+    },
+    "positive": {
+        "dark": {
+            "value": "#1d7832"
+        },
+        "normal": {
+            "value": "#60cf5d"
+        },
+        "light": {
+            "value": "#d2fac3"
+        }
+    },
+    "warning": {
+        "dark": {
+            "value": "#e6b01f"
+        },
+        "normal": {
+            "value": "#ffd646"
+        },
+        "light": {
+            "value": "#fff3b4"
+        }
+    },
+    "info": {
+        "dark": {
+            "value": "#b7dffc"
+        },
+        "normal": {
+            "value": "#3aa1ec"
+        },
+        "light": {
+            "value": "#b7dffc"
+        }
+    }
+}
