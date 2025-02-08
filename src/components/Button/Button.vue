@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useSlots, computed } from 'vue';
-import { Icon } from '@/globalTypes/types';
+import type { Icon } from '@/globalTypes/types';
+import { computed, useSlots } from 'vue';
 export interface IButton {
    size?: 'small' | 'medium' | 'large';
    shadow?: boolean;
@@ -64,4 +64,4 @@ const handleClick = () => {
 };
 </script>
 
-<style lang="scss" scoped src="./button.style.scss"/>
+<style lang="scss" scoped src="./Button.style.scss"/>

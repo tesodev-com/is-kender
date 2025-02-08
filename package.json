@@ -1,11 +1,20 @@
 {
   "name": "component-library",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/main.js",
+  "types": "dist/types/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/main.d.ts",
+      "import": "./dist/main.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "build:lib": "vue-tsc -p tsconfig.lib.json && vite build",
     "preview": "vite preview --port 3001",
     "test": "vitest",
     "watch": "storybook dev -p 6006",
@@ -13,6 +22,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.13"
   },
   "dependencies": {
     "vue": "^3.5.13"
@@ -38,15 +50,17 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.3.0",
     "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
     "babel-loader": "^8.3.0",
     "eslint": "^9.19.0",
     "eslint-plugin-vue": "^9.32.0",
+    "glob": "^11.0.1",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
     "jsdom": "^20.0.2",
     "postcss-html": "^1.8.0",
     "prettier": "^3.4.2",
-    "sass": "^1.83.4",
+    "sass": "^1.84.0",
     "storybook": "^8.5.3",
     "style-dictionary": "^4.3.2",
     "stylelint": "^16.14.1",
@@ -57,7 +71,9 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.22.0",
     "vite": "^6.0.11",
-    "vitest": "^3.0.4",
+    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-lib-inject-css": "^2.2.1",
+    "vitest": "^3.0.5",
     "vue-loader": "^17.4.2",
     "vue-tsc": "^2.2.0"
   }

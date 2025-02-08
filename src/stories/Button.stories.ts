@@ -1,60 +1,57 @@
-import Button from "../components/Button/Button.vue";
+import type { Meta, StoryObj } from '@storybook/vue3';
+import Button from '../components/Button/Button.vue';
 
-export default {
-  title: "Components/Button",
+const meta: Meta<typeof Button> = {
   component: Button,
+  title: 'Components/Button',
   argTypes: {
     default: {
       control: {
-        type: "text",
+        type: 'text',
       },
     },
     size: {
-      options: ["small", "medium", "large"],
-      control: "select",
+      options: ['small', 'medium', 'large'],
+      control: 'select',
     },
-    type: {
-      options: ["primary", "secondary", "ghost"],
-      control: "select",
+    variant: {
+      options: ['primary', 'secondary', 'ghost'],
+      control: 'select',
     },
   },
 };
 
-const Template = (args) => ({
-  // Components used in your story `template` are defined in the `components` object
-  components: { Button },
-  // The story's `args` need to be mapped into the template through the `setup()` method
-  setup() {
-    return { args };
-  },
-  // And then the `args` are bound to your component with `v-bind="args"`
-  template: `<Button v-bind="args"></Button>`,
-});
+export default meta;
 
-export const Primary = Template.bind({});
+type Story = StoryObj<typeof Button>;
 
-Primary.args = {
-  text: "Button",
-  type: "primary",
-  size: "small",
+const commonArgs: Partial<Story['args']> = {
+  text: 'Button',
+  size: 'small',
   shadow: false,
   rounded: false,
   isLoading: false,
   isDisabled: false,
 };
 
-export const Secondary = Template.bind({});
-
-Secondary.args = {
-  ...Primary.args,
-  default: "Button",
-  type: "secondary",
+export const Primary: Story = {
+  args: {
+    variant: 'primary',
+  }
 };
 
-export const Ghost = Template.bind({});
+export const Secondary: Story = {
+  args: {
+    ...commonArgs,
+    default: 'Button',
+    variant: 'secondary',
+  }
+};
 
-Ghost.args = {
-  ...Primary.args,
-  default: "Button",
-  type: "ghost",
+export const Ghost: Story = {
+  args: {
+    ...commonArgs,
+    default: 'Button',
+    variant: 'ghost',
+  }
 };

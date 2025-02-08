@@ -1,10 +1,8 @@
-//Animation
 @keyframes spin {
     100% {
         transform: rotate(360deg);
     }
 }
-// Size Variables
 $largeSize: (
     "": (
         padding: 16px,
@@ -63,7 +61,6 @@ $smallSize: (
         height: 16px,
     ),
 );
-//Variants
 $primaryTheme: (
     "": (
         background: $primary500,
@@ -89,7 +86,6 @@ $primaryTheme: (
         border: none,
     ),
 );
-
 $secondaryTheme: (
     "": (
         background: transparent,
@@ -116,7 +112,6 @@ $secondaryTheme: (
         border: 1.5px solid $neutral400,
     ),
 );
-
 $ghostTheme: (
     "": (
         background: transparent,
@@ -144,20 +139,16 @@ $ghostTheme: (
         border: none,
     ),
 );
-
-// Button Styles
 $sizes: (
     "large": $largeSize,
     "medium": $mediumSize,
     "small": $smallSize,
 );
-
 $types: (
     "primary": $primaryTheme,
     "secondary": $secondaryTheme,
     "ghost": $ghostTheme,
 );
-
 .button {
     display: flex;
     align-items: center;
@@ -189,9 +180,9 @@ $types: (
         animation: 1s linear 0s infinite normal none running spin;
     }
 
-    @each $sizeName, $type in $sizes {
+    @each $sizeName, $size in $sizes {
         &.#{$sizeName} {
-            @each $selector, $variables in $type {
+            @each $selector, $variables in $size {
                 &#{$selector} {
                     @each $variable, $value in $variables {
                         #{$variable}: $value;
