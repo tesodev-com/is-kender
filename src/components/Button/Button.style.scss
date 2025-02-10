@@ -3,6 +3,7 @@
         transform: rotate(360deg);
     }
 }
+
 $largeSize: (
     "": (
         padding: 16px,
@@ -18,7 +19,7 @@ $largeSize: (
         -webkit-border-radius: 32px,
     ),
     ".shadowed": (
-        box-shadow: 0px 20px 56px -16px rgba(47, 91, 207, 0.8),
+        box-shadow: 0px 20px 56px -16px rgb(47 91 207 / 80%),
     ),
 );
 $mediumSize: (
@@ -36,7 +37,7 @@ $mediumSize: (
         -webkit-border-radius: 28px,
     ),
     ".shadowed": (
-        box-shadow: 0px 12px 48px -12px rgba(47, 91, 207, 0.8),
+        box-shadow: 0px 12px 48px -12px rgb(47 91 207 / 80%),
     ),
 );
 $smallSize: (
@@ -54,7 +55,7 @@ $smallSize: (
         -webkit-border-radius: 20px,
     ),
     ".shadowed": (
-        box-shadow: 0px 8px 40px -8px rgba(47, 91, 207, 0.8),
+        box-shadow: 0px 8px 40px -8px rgb(47 91 207 / 80%),
     ),
     "> svg": (
         width: 16px,
@@ -120,7 +121,7 @@ $ghostTheme: (
     ),
     ":hover": (
         background: transparent,
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+        box-shadow: 0 1px 1px rgb(0 0 0 / 20%),
         color: $primary700,
     ),
     ":not(:active):focus": (
@@ -149,6 +150,7 @@ $types: (
     "secondary": $secondaryTheme,
     "ghost": $ghostTheme,
 );
+
 .button {
     display: flex;
     align-items: center;
@@ -158,20 +160,14 @@ $types: (
     border: 1.5px solid transparent;
     cursor: pointer;
     justify-content: center;
+
     > svg {
         width: 20px;
         height: 20px;
     }
-    &:disabled {
-        .spinner {
-            border-color: $neutral300 white white;
-        }
-    }
-    &:focus {
-        outline: none;
-    }
+
     .spinner {
-        margin: 0 0;
+        margin: 0;
         border-radius: 100%;
         border-width: 3px;
         border-style: solid;
@@ -179,6 +175,19 @@ $types: (
         border-color: $primary500 $neutral300 $neutral300;
         animation: 1s linear 0s infinite normal none running spin;
     }
+
+    &:disabled {
+        cursor: not-allowed;
+
+        .spinner {
+            border-color: $neutral300 white white;
+        }
+    }
+
+    &:focus {
+        outline: none;
+    }
+
 
     @each $sizeName, $size in $sizes {
         &.#{$sizeName} {
@@ -191,6 +200,7 @@ $types: (
             }
         }
     }
+
     @each $typeName, $typeVariables in $types {
         &.#{$typeName} {
             @each $type, $value in $typeVariables {
@@ -202,10 +212,8 @@ $types: (
             }
         }
     }
+
     &.fluid {
         width: 100%;
-    }
-    &:disabled {
-        cursor: not-allowed;
     }
 }
