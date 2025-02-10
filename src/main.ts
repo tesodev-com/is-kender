@@ -1,10 +1,12 @@
 import type { App } from 'vue';
-import { Button } from './components';
+import { Badge, Button } from './components';
 
 export default {
   install(app: App) {
     app.component('LibButton', Button);
+    app.component('LibBadge', Badge);
   }
 };
 
-export { Button };
+export { Badge, Button };
+
