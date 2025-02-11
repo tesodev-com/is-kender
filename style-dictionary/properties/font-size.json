@@ -1,0 +1,53 @@
+{
+  "text": {
+    "xs": {
+      "value": "0.75rem"
+    },
+    "sm": {
+      "value": "0.875rem"
+    },
+    "md": {
+      "value": "1rem"
+    },
+    "lg": {
+      "value": "1.125rem"
+    },
+    "xl": {
+      "value": "1.25rem"
+    }
+  },
+  "display": {
+    "xs": {
+      "value": "1.5rem"
+    },
+    "sm": {
+      "value": "1.875rem"
+    },
+    "md": {
+      "value": "2.25rem"
+    },
+    "lg": {
+      "value": "3rem"
+    },
+    "xl": {
+      "value": "3.75rem"
+    },
+    "2xl": {
+      "value": "4.5rem"
+    }
+  },
+  "weight": {
+    "regular": {
+      "value": "400"
+    },
+    "medium": {
+      "value": "500"
+    },
+    "semibold": {
+      "value": "600"
+    },
+    "bold": {
+      "value": "700"
+    }
+  }
+}
