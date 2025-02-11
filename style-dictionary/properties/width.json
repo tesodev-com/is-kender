@@ -1,0 +1,37 @@
+{
+  "width": {
+    "xxs": {
+      "value": "20rem"
+    },
+    "xs": {
+      "value": "24rem"
+    },
+    "sm": {
+      "value": "30rem"
+    },
+    "md": {
+      "value": "35rem"
+    },
+    "lg": {
+      "value": "40rem"
+    },
+    "xl": {
+      "value": "48rem"
+    },
+    "2xl": {
+      "value": "64rem"
+    },
+    "3xl": {
+      "value": "80rem"
+    },
+    "4xl": {
+      "value": "90rem"
+    },
+    "5xl": {
+      "value": "100rem"
+    },
+    "6xl": {
+      "value": "120rem"
+    }
+  }
+}
