@@ -1,0 +1,15 @@
+.container {
+  box-sizing: border-box;
+
+  // Modifier for fluid container
+  &--fluid {
+    max-width: 100% !important;
+  }
+
+  // Optional semantic tag modifiers for custom styling
+  &--main,
+  &--section,
+  &--article {
+    display: block;
+  }
+}
