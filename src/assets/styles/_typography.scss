@@ -4,54 +4,57 @@
     @return $font-size * $letter-spacing-normal;
   }
 
-@mixin typography($font-size, $line-height, $letter-spacing, $weight: normal, $color: #000000) {
+  @mixin typography($font-size, $line-height, $letter-spacing, $weight: normal, $color) {
     font-size: $font-size;
     line-height: $line-height;
     letter-spacing: dynamic-letter-spacing($font-size);
     font-weight: $weight;
-    color: $color;
+
+    @if $color {
+      color: $color;
+    }
 }
 
-@mixin display-2xl($weight: normal, $color: #000000) {
+@mixin display-2xl($weight: normal, $color: null) {
     @include typography($font-size-display-2xl, $line-height-display-2xl, $letter-spacing-normal, $weight, $color);
 }
 
-@mixin display-xl($weight: normal, $color: #000000) {
+@mixin display-xl($weight: normal, $color: null) {
     @include typography($font-size-display-xl, $line-height-display-xl, $letter-spacing-normal, $weight, $color);
 }
 
-@mixin display-lg($weight: normal, $color: #000000) {
+@mixin display-lg($weight: normal, $color: null) {
     @include typography($font-size-display-lg, $line-height-display-lg, $letter-spacing-normal, $weight, $color);
 }
 
-@mixin display-md($weight: normal, $color: #000000) {
+@mixin display-md($weight: normal, $color: null) {
     @include typography($font-size-display-md, $line-height-display-md, $letter-spacing-normal, $weight, $color);
 }
 
-@mixin display-sm($weight: normal, $color: #000000) {
+@mixin display-sm($weight: normal, $color: null) {
     @include typography($font-size-display-sm, $line-height-display-sm, 0, $weight, $color);
 }
 
-@mixin display-xs($weight: normal, $color: #000000) {
+@mixin display-xs($weight: normal, $color: null) {
     @include typography($font-size-display-xs, $line-height-display-xs, 0, $weight, $color);
 }
 
-@mixin text-xl($weight: normal, $color: #000000) {
+@mixin text-xl($weight: normal, $color: null) {
     @include typography($font-size-text-xl, $line-height-text-xl, 0, $weight, $color);
 }
 
-@mixin text-lg($weight: normal, $color: #000000) {
+@mixin text-lg($weight: normal, $color: null) {
     @include typography($font-size-text-lg, $line-height-text-lg, 0, $weight, $color);
 }
 
-@mixin text-md($weight: normal, $color: #000000) {
+@mixin text-md($weight: normal, $color: null) {
     @include typography($font-size-text-md, $line-height-text-md, 0, $weight, $color);
 }
 
-@mixin text-sm($weight: normal, $color: #000000) {
+@mixin text-sm($weight: normal, $color: null) {
     @include typography($font-size-text-sm, $line-height-text-sm, 0, $weight, $color);
 }
 
-@mixin text-xs($weight: normal, $color: #000000) {
+@mixin text-xs($weight: normal, $color: null) {
     @include typography($font-size-text-xs, $line-height-text-xs, 0, $weight, $color);
 }
