@@ -8,21 +8,26 @@ const meta: Meta<typeof Heading> = {
     size: {
       control: 'select',
       options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      description: 'Defines the HTML heading level (e.g., h1, h2, etc.).',
     },
     fontSize: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      description: 'Sets the font size of the heading.',
     },
     fontWeight: {
       control: 'select',
       options: ['normal', 'medium', 'semibold', 'bold'],
+      description: 'Defines the font weight of the heading.',
     },
     fontColor: {
       control: 'select',
       options: ['black', 'white', 'gray', 'brand', 'success', 'info', 'warning', 'danger'],
+      description: 'Sets the text color of the heading.',
     },
     customClass: {
       control: 'text',
+      description: 'Additional custom CSS class to apply to the heading for further customization.',
     },
   },
 };
