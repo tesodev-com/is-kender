@@ -1,0 +1,35 @@
+.breadcrumb {
+    background: var(--breadcrumb-background, $gray-100);
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .breadcrumb-list {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--breadcrumb-list-gap, $spacing-md);
+        color: var(--breadcrumb-item-color, $gray-700);
+
+        .breadcrumb-seperator {
+            color: inherit;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: var(--breadcrumb-item-gap, $spacing-md);
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                color: var(--breadcrumb-item-hover-color, $gray-900);
+            }
+
+            &:last-of-type {
+                color: var(--breadcrumb-item-active-color, $gray-900);
+                font-weight: var(--breadcrumb-item-active-font-weight, 600);
+            }
+        }
+    }
+}
