@@ -13,6 +13,7 @@ export interface IHeading {
    fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
    fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold';
    fontColor?: 'black' | 'white' | 'gray' | 'brand' | 'success' | 'info' | 'warning' | 'danger';
+   customClass?: string;
 }
 
 const props = withDefaults(defineProps<IHeading>(), {
@@ -26,6 +27,9 @@ const headingClasses = computed(() => {
   return [
     'heading',
     `heading-${props.fontSize}-${props.fontWeight}-${props.fontColor}`,
+    {
+      [`${props.customClass}`]: props.customClass,
+    }
   ];
 });
 

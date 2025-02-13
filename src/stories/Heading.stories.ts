@@ -21,6 +21,9 @@ const meta: Meta<typeof Heading> = {
       control: 'select',
       options: ['black', 'white', 'gray', 'brand', 'success', 'info', 'warning', 'danger'],
     },
+    customClass: {
+      control: 'text',
+    },
   },
 };
 
