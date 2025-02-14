@@ -38,9 +38,9 @@ type Story = StoryObj<typeof Text>;
 
 export const Default: Story = {
   args: {
-    size: 'h1',
-    fontSize: 'lg',
-    fontWeight: 'bold',
+    size: 'p',
+    fontSize: 'sm',
+    fontWeight: 'normal',
     fontColor: 'black',
   },
   render: (args) => ({
@@ -54,9 +54,9 @@ export const Default: Story = {
 
 export const CustomText: Story = {
   args: {
-    size: 'h2',
+    size: 'h1',
     fontSize: 'xl',
-    fontWeight: 'medium',
+    fontWeight: 'bold',
     fontColor: 'brand',
   },
   render: (args) => ({

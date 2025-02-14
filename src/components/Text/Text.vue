@@ -18,15 +18,15 @@ export interface IText {
 
 const props = withDefaults(defineProps<IText>(), {
   size: 'p',
-  fontSize: 'md',
+  fontSize: 'sm',
   fontWeight: 'normal',
   fontColor: 'black'
 });
 
 const textClasses = computed(() => {
   return [
-    'heading',
-    `heading-${props.fontSize}-${props.fontWeight}-${props.fontColor}`,
+    'text',
+    `${['p', 'span'].includes(props.size) ? 'text' : 'heading'}-${props.fontSize}-${props.fontWeight}-${props.fontColor}`,
     {
       [`${props.customClass}`]: props.customClass,
     }
