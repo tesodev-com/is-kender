@@ -52,7 +52,7 @@ export const Default: Story = {
   }),
 };
 
-export const CustomHeading: Story = {
+export const CustomText: Story = {
   args: {
     size: 'h2',
     fontSize: 'xl',

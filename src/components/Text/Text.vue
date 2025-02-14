@@ -1,5 +1,5 @@
 <template>
-  <component :is="size" :class="headingClasses">
+  <component :is="size" :class="textClasses">
     <slot/>
   </component>
 </template>
@@ -8,7 +8,7 @@
 
 import { computed } from 'vue';
 
-export interface IHeading {
+export interface IText {
    size?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
    fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
    fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold';
@@ -16,14 +16,14 @@ export interface IHeading {
    customClass?: string;
 }
 
-const props = withDefaults(defineProps<IHeading>(), {
-  size: 'h1',
-  fontSize: 'lg',
-  fontWeight: 'bold',
+const props = withDefaults(defineProps<IText>(), {
+  size: 'p',
+  fontSize: 'md',
+  fontWeight: 'normal',
   fontColor: 'black'
 });
 
-const headingClasses = computed(() => {
+const textClasses = computed(() => {
   return [
     'heading',
     `heading-${props.fontSize}-${props.fontWeight}-${props.fontColor}`,
@@ -35,4 +35,4 @@ const headingClasses = computed(() => {
 
 </script>
 
-<style lang="scss" scoped src="Text.style.scss"></style>
+<style lang="scss" scoped src="./Text.style.scss"></style>
