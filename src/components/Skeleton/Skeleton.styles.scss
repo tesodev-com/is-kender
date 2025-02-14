@@ -1,5 +1,5 @@
 .skeleton {
-    background-color: $blue-gray-100;
+    background-color: var(--skeleton-background, $blue-gray-100);
 
     &.skeleton-circle {
         border-radius: 50%;
@@ -21,7 +21,7 @@
             left: 0;
             top: 0;
             z-index: 1;
-            background: linear-gradient(90deg, transparent, #ffffff90 50%, transparent);
+            background: var(--skeleton-wave-background, linear-gradient(90deg, transparent, #ffffff90 50%, transparent));
             animation: wave 1.5s infinite ease-in-out;
         }
     }
