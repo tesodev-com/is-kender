@@ -1,13 +1,13 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
-import Heading, { type IHeading } from './Heading.vue';
+import Text, { type IHeading } from './Text.vue';
 
-describe('Heading.vue', () => {
+describe('Text.vue', () => {
   function createWrapper(props: Partial<IHeading> = {}) {
-    return shallowMount(Heading, {
+    return shallowMount(Text, {
       props,
       slots: {
-        default: 'Test Heading',
+        default: 'Test Text',
       },
     });
   }
@@ -32,6 +32,6 @@ describe('Heading.vue', () => {
 
   it('renders slot content correctly', () => {
     const wrapper = createWrapper();
-    expect(wrapper.text()).toBe('Test Heading');
+    expect(wrapper.text()).toBe('Test Text');
   });
 });

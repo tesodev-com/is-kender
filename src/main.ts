@@ -1,11 +1,11 @@
 import type { App } from 'vue';
-import { Heading } from './components';
+import { Text } from './components';
 
 export default {
   install(app: App) {
-    app.component('LibHeading', Heading);
+    app.component('LibText', Text);
   }
 };
 
-export { Heading };
+export { Text };
 

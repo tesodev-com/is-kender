@@ -9,7 +9,7 @@
 import { computed } from 'vue';
 
 export interface IHeading {
-   size?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+   size?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
    fontSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
    fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold';
    fontColor?: 'black' | 'white' | 'gray' | 'brand' | 'success' | 'info' | 'warning' | 'danger';
@@ -35,4 +35,4 @@ const headingClasses = computed(() => {
 
 </script>
 
-<style lang="scss" scoped src="./Heading.style.scss"></style>
+<style lang="scss" scoped src="Text.style.scss"></style>

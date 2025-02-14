@@ -1,40 +1,40 @@
-import { Heading } from '@/components';
+import { Text } from '@/components';
 import { type Meta, type StoryObj } from '@storybook/vue3';
 
-const meta: Meta<typeof Heading> = {
-  title: 'Components/Heading',
-  component: Heading,
+const meta: Meta<typeof Text> = {
+  title: 'Components/Text',
+  component: Text,
   argTypes: {
     size: {
       control: 'select',
-      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      description: 'Defines the HTML heading level (e.g., h1, h2, etc.).',
+      options: ['p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      description: 'Defines the HTML text level (e.g., h1, h2, p, span etc.).',
     },
     fontSize: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-      description: 'Sets the font size of the heading.',
+      description: 'Sets the font size of the text.',
     },
     fontWeight: {
       control: 'select',
       options: ['normal', 'medium', 'semibold', 'bold'],
-      description: 'Defines the font weight of the heading.',
+      description: 'Defines the font weight of the text.',
     },
     fontColor: {
       control: 'select',
       options: ['black', 'white', 'gray', 'brand', 'success', 'info', 'warning', 'danger'],
-      description: 'Sets the text color of the heading.',
+      description: 'Sets the text color of the text.',
     },
     customClass: {
       control: 'text',
-      description: 'Additional custom CSS class to apply to the heading for further customization.',
+      description: 'Additional custom CSS class to apply to the text for further customization.',
     },
   },
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Heading>;
+type Story = StoryObj<typeof Text>;
 
 export const Default: Story = {
   args: {
@@ -44,11 +44,11 @@ export const Default: Story = {
     fontColor: 'black',
   },
   render: (args) => ({
-    components: { Heading },
+    components: { Text },
     setup() {
       return { args };
     },
-    template: '<Heading v-bind="args">This is a Default Heading</Heading>',
+    template: '<Text v-bind="args">This is a Default Text</Text>',
   }),
 };
 
@@ -60,10 +60,10 @@ export const CustomHeading: Story = {
     fontColor: 'brand',
   },
   render: (args) => ({
-    components: { Heading },
+    components: { Text },
     setup() {
       return { args };
     },
-    template: '<Heading v-bind="args">This is a Custom Heading</Heading>',
+    template: '<Text v-bind="args">This is a Custom Text</Text>',
   }),
 };

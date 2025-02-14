@@ -29,17 +29,17 @@ $font-colors: (
       @each $color, $color-variable in $font-colors {
         &.heading-#{$font-size}-#{$weight}-#{"#{$color}"} {
           @if $mixin == display-xs {
-            @include display-xs($weight, $color-variable);
+            @include display-xs($weight-value, $color-variable);
           } @else if $mixin == display-sm {
-            @include display-sm($weight, $color-variable);
+            @include display-sm($weight-value, $color-variable);
           } @else if $mixin == display-md {
-            @include display-md($weight, $color-variable);
+            @include display-md($weight-value, $color-variable);
           } @else if $mixin == display-lg {
-            @include display-lg($weight, $color-variable);
+            @include display-lg($weight-value, $color-variable);
           } @else if $mixin == display-xl {
-            @include display-xl($weight, $color-variable);
+            @include display-xl($weight-value, $color-variable);
           } @else if $mixin == display-2xl {
-            @include display-2xl($weight, $color-variable);
+            @include display-2xl($weight-value, $color-variable);
           }
         }
       }
