@@ -1,21 +1,11 @@
 @use "sass:list";
 
 $sizes: (
-    sm: (
-        padding: 8px 14px
-    ),
-    md: (
-        padding: 10px 16px
-    ),
-    lg: (
-        padding: 10px 18px
-    ),
-    xl: (
-        padding: 12px 20px
-    ),
-    2xl: (
-        padding: 16px 28px
-    ),
+    sm: (padding: 8px 14px),
+    md: (padding: 10px 16px),
+    lg: (padding: 10px 18px),
+    xl: (padding: 12px 20px),
+    2xl: (padding: 16px 28px),
 );
 $solidColors: (
     primary: (
@@ -196,6 +186,10 @@ $variants: (
         cursor: not-allowed;
     }
 
+    &-fluid {
+        width: 100%;
+    }
+
     @each $size, $value in $sizes {
         &-#{$size} {
             @each $property, $propertyValue in $value {
@@ -232,9 +226,5 @@ $variants: (
                 }
             }    
         }
-    }
-
-    &-fluid {
-        width: 100%;
     }
 }
