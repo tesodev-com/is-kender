@@ -1,22 +1,49 @@
-import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import path from 'path';
+import { globSync } from 'glob';
+import path, { extname, relative, resolve } from 'path';
+import { OutputOptions } from 'rollup';
+import { fileURLToPath } from 'url';
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
+
+const commonOutputConfig = {
+  assetFileNames: 'assets/[name][extname]',
+  exports: 'named',
+} as OutputOptions;
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    dts({
+      tsconfigPath: resolve(__dirname, './tsconfig.lib.json'),
+      entryRoot: resolve(__dirname, './src'),
+      outDir: resolve(__dirname, './dist/types'),
+    }),
+    libInjectCss(),
+  ],
   build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/main.ts'),
+    },
     rollupOptions: {
-      treeshake: true,
-      output: {
-        strict: false,
-        dir: 'dist',
-      },
+      input: Object.fromEntries(globSync('src/**/*.{js,ts,vue}', { ignore: ['src/stories/*', 'src/utils/*', 'src/**/*.spec.ts', 'src/globalTypes/*'] }).map((file) => [
+        relative('src', file.slice(0, file.length - extname(file).length)),
+        fileURLToPath(new URL(file, import.meta.url))
+      ])),
+      external: ['vue'],
+      output: [
+        {
+          format: 'es',
+          entryFileNames: '[name].js',
+          ...commonOutputConfig,
+        }
+      ]
     },
   },
   css: {
     preprocessorOptions: {
       scss: {
-        api: 'modern-compiler',
         additionalData: '@use "@/assets/styles/globals.scss" as *;',
       },
     },

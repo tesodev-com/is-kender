@@ -1,0 +1,3 @@
+@function get-ring($color) {
+    @return 0 0 0 4px $color;
+}

@@ -1,0 +1,32 @@
+{
+    "rounded": {
+        "none": {
+        "type": "color",
+        "value": "0"
+        },
+        "xs": {
+        "type": "color",
+        "value": "0.25rem"
+        },
+        "sm": {
+        "type": "color",
+        "value": "0.5rem"
+        },
+        "md": {
+        "type": "color",
+        "value": "0.75rem"
+        },
+        "lg": {
+        "type": "color",
+        "value": "0.1rem"
+        },
+        "xl": {
+        "type": "color",
+        "value": "2.5rem"
+        },
+        "full": {
+        "type": "color",
+        "value": "100%"
+        }
+    }
+}

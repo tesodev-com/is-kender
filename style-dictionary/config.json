@@ -1,5 +1,5 @@
 {
-   "source": ["./style-dictionary/properties/color/**/*.json"],
+   "source": ["./style-dictionary/properties/**/*.json"],
    "platforms": {
       "scss": {
          "transformGroup": "scss",
