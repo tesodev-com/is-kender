@@ -1,0 +1,38 @@
+$positions: (
+    top-right: (
+        top: 1rem,
+        right: 1rem,
+    ),
+    top-left: (
+        top: 1rem,
+        left: 1rem,
+    ),
+    bottom-right: (
+        bottom: 1rem,
+        right: 1rem,
+    ),
+    bottom-left: (
+        bottom: 1rem,
+        left: 1rem,
+    ),
+);
+
+.toast-group {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    &.toast-group-reverse {
+        flex-direction: column-reverse;
+    }
+
+    @each $position, $positionProperties in $positions {
+        &.toast-group-#{$position} {
+            @each $property, $value in $positionProperties {
+                #{$property}: $value;
+            }
+        }
+    }
+}
