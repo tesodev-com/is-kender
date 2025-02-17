@@ -35,14 +35,16 @@ $variants: (
     border: var(--alert-border-width, 1px);
     border-style: var(--alert-border-style, solid);
     border-radius: var(--alert-border-radius, $rounded-sm);
-    padding: var(--alert-padding, 0.5rem 1rem);
+    padding: var(--alert-padding, $spacing-lg $spacing-lg);
 
     .alert {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        align-items: flex-start;
+        gap: $spacing-md;
 
         .alert-content {
+            flex:1 ;
+            
             .alert-title {
                 @include text-sm(600);
             }
@@ -59,12 +61,12 @@ $variants: (
             align-self: flex-start;
             flex-shrink: 0;
             cursor: pointer;
-            width: 1.75rem;
-            height: 1.75rem;
+            width: 1.25rem;
+            height: 1.25rem;
         }
     }
 
-    &.alert-fluid, &:has(.alert-close) {
+    &.alert-fluid {
         width: 100%;
     }
 

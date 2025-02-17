@@ -2,6 +2,9 @@
   <transition name="fade" appear @after-leave="$emit('close')">
     <div v-if="visible" :class="alertClasses">
       <div class="alert">
+        <div v-if="$slots.icon" class="alet-icon">
+          <component :is="$slots.icon"></component>
+        </div>
         <div class="alert-content">
           <div class="alert-title">
             <slot name="title">
@@ -40,6 +43,7 @@ interface AlertProps {
     text?: string;
 }
 interface AlertSlots {
+    icon: any;
     title: any;
     text: any;
 }
