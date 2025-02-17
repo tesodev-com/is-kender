@@ -18,7 +18,6 @@
 import { EventBus } from '@/utils';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import ToastMessage, { type ToastMessageProps } from './ToastMessage.vue';
-import { ToastEvents } from './ToastServices';
 export type MessageProps = Partial<ToastMessageProps>;
 interface ToastProps {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -36,14 +35,12 @@ const toastClasses = computed(() => {
   return ['toast-group', `toast-group-${props.position}`, { 'toast-group-reverse': props.listReverse }];
 });
 onMounted(() => {
-  EventBus.on(ToastEvents.ADD, add);
-  EventBus.on(ToastEvents.REMOVE, remove);
-  EventBus.on(ToastEvents.REMOVE_ALL, removeAll);
+  EventBus.on('toast:add', add);
+  EventBus.on('toast:remove', remove);
 });
 onBeforeUnmount(() => {
-  EventBus.off(ToastEvents.ADD, add);
-  EventBus.off(ToastEvents.REMOVE, remove);
-  EventBus.off(ToastEvents.REMOVE_ALL, removeAll);
+  EventBus.off('toast:add', add);
+  EventBus.off('toast:remove', remove);
 });
 function add(message: MessageProps) {
   messages.value.push({ ...message, id: messageId.value++ });
@@ -53,10 +50,6 @@ function remove(id: number) {
   if (index !== -1) {
     messages.value.splice(index, 1);
   }
-}
-function removeAll() {
-  messages.value = [];
-  messageId.value = 0;
 }
 </script>
 

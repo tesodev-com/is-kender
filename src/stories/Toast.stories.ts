@@ -12,7 +12,7 @@ const meta: Meta<typeof Toast> = {
     },
     animation: {
       control: 'select',
-      options: ['slide-left', 'slide-right', 'slide-top', 'slide-up'],
+      options: ['slide-left', 'slide-right', 'slide-up', 'slide-down'],
     }
   }
 };

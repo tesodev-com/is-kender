@@ -1,8 +1,12 @@
-import ToastServices from '@/components/Toast/ToastServices';
+import type { MessageProps } from '@/components';
+import { EventBus } from '@/utils';
 
 export function useToast() {
-  return {
-    add: ToastServices.add,
-    removeAll: ToastServices.removeAll
+  const toastServices = {
+    add(message: MessageProps) {
+      EventBus.emit('toast:add', message);
+    },
   };
+
+  return toastServices;
 }
