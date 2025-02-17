@@ -2,9 +2,9 @@
 
 @function dynamic-letter-spacing($font-size) {
     @return $font-size * $letter-spacing-normal;
-  }
+}
 
-  @mixin typography($font-size, $line-height, $letter-spacing, $weight: normal, $color) {
+@mixin typography($font-size, $line-height, $letter-spacing, $weight: normal, $color) {
     font-size: $font-size;
     line-height: $line-height;
     letter-spacing: dynamic-letter-spacing($font-size);
