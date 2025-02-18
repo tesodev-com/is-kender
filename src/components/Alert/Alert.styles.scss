@@ -8,7 +8,7 @@ $sizes: (
     2xl: (padding: 16px 28px),
 );
 $solidColors: (
-    primary: (background: $brand-100, border-color: $brand-400, color: $brand-700),
+    primary: (background: $primary-100, border-color: $primary-400, color: $primary-700),
     secondary: (background: $gray-100, border-color: $gray-400, color: $gray-700),
     success: (background: $success-100, border-color: $success-400, color: $success-700),
     info: (background: $blue-light-100, border-color: $blue-light-400, color: $blue-light-700),
@@ -17,7 +17,7 @@ $solidColors: (
     dark: (background: $gray-900, border-color: $gray-900, color: $white),
 );
 $outlineColors: (
-    primary: (background: $white, border-color: $brand-600, color: $brand-600),
+    primary: (background: $white, border-color: $primary-600, color: $primary-600),
     secondary: (background: $white, border-color: $gray-600, color: $gray-600),
     success: (background: $white, border-color: $success-600, color: $success-600),
     info: (background: $white, border-color: $blue-light-600, color: $blue-light-600),
