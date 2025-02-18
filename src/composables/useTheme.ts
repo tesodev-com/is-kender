@@ -1,39 +1,27 @@
 import { onMounted, ref } from 'vue';
 
 export type Theme = 'light' | 'dark' | 'system';
-const currentTheme = ref<Theme>('light');
+const currentTheme = ref<Theme>('system');
 
 export function useTheme() {
-  onMounted(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      currentTheme.value = savedTheme as 'light' | 'dark';
-    } else {
-      currentTheme.value = 'system';
+  const applyTheme = (theme: Theme) => {
+    let appliedTheme = theme;
+    if (theme === 'system') {
+      appliedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
+    document.documentElement.setAttribute('data-theme', appliedTheme);
+    localStorage.setItem('theme', theme);
+  };
+
+  onMounted(() => {
+    const savedTheme = (localStorage.getItem('theme') as Theme) || 'system';
+    currentTheme.value = savedTheme;
     applyTheme(currentTheme.value);
   });
 
-  const applyTheme = (theme: Theme) => {
-    if (theme === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      currentTheme.value = prefersDark ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', currentTheme.value);
-    } else {
-      currentTheme.value = theme;
-      document.documentElement.setAttribute('data-theme', currentTheme.value);
-    }
-    localStorage.setItem('theme', currentTheme.value);
-  };
-
-  const toggleTheme = (useSystemTheme = false) => {
-    if (currentTheme.value === 'light') {
-      currentTheme.value = 'dark';
-    } else if (currentTheme.value === 'dark' && useSystemTheme) {
-      currentTheme.value = 'system';
-    } else {
-      currentTheme.value = 'light';
-    }
+  const toggleTheme = () => {
+    const themeOrder: Theme[] = ['light', 'dark', 'system'];
+    currentTheme.value = themeOrder[(themeOrder.indexOf(currentTheme.value) + 1) % themeOrder.length];
     applyTheme(currentTheme.value);
   };
 
