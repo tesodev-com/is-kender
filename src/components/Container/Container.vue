@@ -2,12 +2,7 @@
   <component
     :is="tag"
     class="container"
-    :class="[
-      {
-        'container--fluid': fluid,
-        [`container--${tag}`]: tag,
-      }
-    ]"
+    :class="[containerClass]"
     :style="containerStyle"
   >
     <slot></slot>
@@ -51,9 +46,12 @@ const props = withDefaults(defineProps<ContainerProps>(), {
 
 const containerStyle = computed(() => ({
   maxWidth: props.fluid ? 'none' : props.maxWidth,
-  padding: `0 ${props.padding}`,
-  margin: '0 auto',
-  width: '100%',
+  padding: `0px ${props.padding}`,
+}));
+
+const containerClass = computed(() => ({
+  'container--fluid': props.fluid,
+  [`container--${props.tag}`]: props.tag,
 }));
 </script>
 
