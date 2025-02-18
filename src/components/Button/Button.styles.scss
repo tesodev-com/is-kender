@@ -9,18 +9,18 @@ $sizes: (
 );
 $solidColors: (
     primary: (
-        "": (background: $brand-600, color: $white),
-        hover: (background: $brand-700),
-        active: (background: $brand-800),
-        focus-visible: (box-shadow: get-ring($brand-100)),
-        disabled: (background: $brand-200),
+        "": (background: $primary-600, color: $white),
+        hover: (background: $primary-700),
+        active: (background: $primary-800),
+        focus-visible: (box-shadow: get-ring($primary-100)),
+        disabled: (background: $primary-200),
     ),
     secondary: (
-        "": (background: $brand-50, color: $brand-700),
-        hover: (background: $brand-100),
-        active: (background: $brand-200),
-        focus-visible: (box-shadow: get-ring($brand-100)),
-        disabled: (background: $brand-25, color: $brand-300),
+        "": (background: $primary-50, color: $primary-700),
+        hover: (background: $primary-100),
+        active: (background: $primary-200),
+        focus-visible: (box-shadow: get-ring($primary-100)),
+        disabled: (background: $primary-25, color: $primary-300),
     ),
     success: (
         "": (background: $success-600, color: $white),
@@ -60,11 +60,11 @@ $solidColors: (
 );
 $outlineColors: (
     primary: (
-        "": (background: $white, color: $brand-600, border: 1px solid $brand-300),
-        hover: (background: $brand-100),
-        active: (background: $brand-200),
-        focus-visible: (box-shadow: get-ring($brand-100)),
-        disabled: (background: $brand-200),
+        "": (background: $white, color: $primary-600, border: 1px solid $primary-300),
+        hover: (background: $primary-100),
+        active: (background: $primary-200),
+        focus-visible: (box-shadow: get-ring($primary-100)),
+        disabled: (background: $primary-200),
     ),
     secondary: (
         "": (background: $white, color: $gray-700, border: 1px solid $gray-300),
@@ -111,10 +111,10 @@ $outlineColors: (
 );
 $ghostColors: (
     primary: (
-        "": (color: $brand-700),
-        hover: (background: $brand-50),
-        active: (background: $brand-100),
-        focus-visible: (box-shadow: get-ring($brand-100)),
+        "": (color: $primary-700),
+        hover: (background: $primary-50),
+        active: (background: $primary-100),
+        focus-visible: (box-shadow: get-ring($primary-100)),
         disabled: (color: $gray-300),
     ),
     secondary: (
