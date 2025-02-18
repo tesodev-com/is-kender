@@ -3,8 +3,8 @@
     <ol class="breadcrumb-list">
       <template v-for="(breadCrumb, index) in items" :key="index">
         <template v-if="index !== 0">
-          <slot name="seperator">
-            <span class="breadcrumb-seperator">{{ seperator }}</span>
+          <slot name="separator">
+            <span class="breadcrumb-separator">{{ separator }}</span>
           </slot>
         </template>
         <BreadcrumbItem v-bind="breadCrumb" :slots="$slots" />
@@ -17,10 +17,10 @@
 import BreadcrumbItem, { type BreadcrumbItemProps } from './BreadcrumbItem.vue';
 interface BreadcrumbProps {
     items: Omit<BreadcrumbItemProps, 'slots'>[];
-    seperator?: string;
+    separator?: string;
 }
 withDefaults(defineProps<BreadcrumbProps>(), {
-  seperator: '/'
+  separator: '/'
 });
 </script>
 
