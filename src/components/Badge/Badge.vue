@@ -10,7 +10,7 @@
 import { computed } from 'vue';
 
 export interface IBadge {
-   color?: 'gray' | 'brand' |'error' | 'warning' |'success' |'blue-gray' | 'blue-light' |'blue' |'indigo' |'purple' |'pink' |'orange'
+   color?: 'gray' | 'primary' |'error' | 'warning' |'success' |'blue-gray' | 'blue-light' |'blue' |'indigo' |'purple' |'pink' |'orange'
    size?: 'sm' | 'md' | 'lg'
    variant?: 'solid' |'outline' |'modern'
    pill?: boolean

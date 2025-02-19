@@ -5,7 +5,7 @@ $sizes: (
 );
 $solidColors: (
   gray: (background-color: $gray-50, color: $gray-700, border: 1px solid $gray-200),
-  brand: (background-color: $brand-50, color: $brand-700, border: 1px solid $brand-200),
+  primary: (background-color: $primary-50, color: $primary-700, border: 1px solid $primary-200),
   error: (background-color: $error-50, color: $error-700, border: 1px solid $error-200),
   warning: (background-color: $warning-50, color: $warning-700, border: 1px solid $warning-200),
   success: (background-color: $success-50, color: $success-700, border: 1px solid $success-200),
@@ -19,7 +19,7 @@ $solidColors: (
 );
 $outlineColors: (
   gray: (background-color: transparent, color: $gray-700, border: 1px solid $gray-600),
-  brand: (background-color: transparent, color: $brand-700, border: 1px solid $brand-600),
+  primary: (background-color: transparent, color: $primary-700, border: 1px solid $primary-600),
   error: (background-color: transparent, color: $error-700, border: 1px solid $error-600),
   warning: (background-color: transparent, color: $warning-700, border: 1px solid $warning-600),
   success: (background-color: transparent, color: $success-700, border: 1px solid $success-600),
@@ -33,7 +33,7 @@ $outlineColors: (
 );
 $dotColors: (
   gray: $gray-500,
-  brand: $brand-500,
+  primary: $primary-500,
   error: $error-500,
   warning: $warning-500,
   success: $success-500,

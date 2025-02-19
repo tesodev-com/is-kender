@@ -7,7 +7,7 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     color: {
       control: 'select',
-      options: ['gray', 'brand', 'error', 'warning', 'success', 'blue-gray', 'blue-light', 'blue', 'indigo', 'purple', 'pink', 'orange'],
+      options: ['gray', 'primary', 'error', 'warning', 'success', 'blue-gray', 'blue-light', 'blue', 'indigo', 'purple', 'pink', 'orange'],
       description: 'Sets the color of the badge.',
     },
     size: {
