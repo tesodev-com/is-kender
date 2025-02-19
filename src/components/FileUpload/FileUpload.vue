@@ -35,7 +35,7 @@
     <div class="file-upload-content">
       <ul v-if="errorList?.length" class="file-upload-error-list">
         <li v-for="(error, index) in errorList" :key="index" class="file-upload-error-list-item">
-          <p>{{ error.file?.name }}: {{ error.message }}</p>
+          <p>{{ error.file?.name ? error.file?.name + ':' : '' }} {{ error.message }}</p>
         </li>
       </ul>
       <div
@@ -99,6 +99,7 @@ interface FileUploadProps {
     maxSize?: number;
     sizeErrorMessage?: string;
     acceptErrorMessage?: string;
+    uploadErrorMessage?: string;
     uploader?: (file: File[]) => Promise<boolean>;
 }
 interface FileUploadSlots {
@@ -113,7 +114,8 @@ interface FileUploadEvents {
 }
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',
-  acceptErrorMessage: 'File type is not allowed, only $value is allowed'
+  acceptErrorMessage: 'File type is not allowed, only $value is allowed',
+  uploadErrorMessage: 'File upload failed',
 });
 const emit = defineEmits<FileUploadEvents>();
 defineSlots<FileUploadSlots>();
@@ -121,7 +123,7 @@ const rawFileList = computed(() => fileList.value.map((file) => file.raw));
 const errorMessageObj = {
   FILE_SIZE_EXCEED_WITH_SIZE: props.sizeErrorMessage,
   FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT: props.acceptErrorMessage,
-  FILE_UPLOAD_FAILED: 'File upload failed',
+  FILE_UPLOAD_FAILED: props.uploadErrorMessage,
 };
 const fileUploadInput = ref<HTMLInputElement | null>(null);
 const fileList = ref<CustomFile[]>([]);
