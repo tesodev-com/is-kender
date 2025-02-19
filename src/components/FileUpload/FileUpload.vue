@@ -79,9 +79,7 @@
 </template>
 
 <script setup lang="ts">
-// imports
 import { computed, ref } from 'vue';
-// interfaces & types
 interface CustomFile {
     name: string;
     size: number;
@@ -101,7 +99,7 @@ interface FileUploadProps {
     maxSize?: number;
     sizeErrorMessage?: string;
     acceptErrorMessage?: string;
-    uploader?: (file: CustomFile[]) => Promise<boolean>;
+    uploader?: (file: File[]) => Promise<boolean>;
 }
 interface FileUploadSlots {
     file: {
@@ -110,30 +108,25 @@ interface FileUploadSlots {
     };
     empty: string;
 }
-// composable
-
-// props
-defineModel<CustomFile[]>();
+interface FileUploadEvents {
+    (e: 'upload', file: File[]): void;
+}
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',
   acceptErrorMessage: 'File type is not allowed, only $value is allowed'
 });
+const emit = defineEmits<FileUploadEvents>();
 defineSlots<FileUploadSlots>();
-// constants
+const rawFileList = computed(() => fileList.value.map((file) => file.raw));
 const errorMessageObj = {
   FILE_SIZE_EXCEED_WITH_SIZE: props.sizeErrorMessage,
   FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT: props.acceptErrorMessage,
   FILE_UPLOAD_FAILED: 'File upload failed',
 };
-// defineEmits
-
-// states (refs and reactives)
 const fileUploadInput = ref<HTMLInputElement | null>(null);
 const fileList = ref<CustomFile[]>([]);
 const errorList = ref<FileErrorMessage[]>([]);
 const isDragging = ref(false);
-
-// computed
 const fileInputProps = computed(() => {
   return {
     disabled: props.disabled,
@@ -141,11 +134,6 @@ const fileInputProps = computed(() => {
     accept: props.accept,
   };
 });
-// watchers
-
-// lifecycles
-
-// methods
 function handleChooseFile() {
   fileUploadInput.value?.click();
 }
@@ -180,6 +168,7 @@ function handleFileChange<T = Event | DragEvent>(event: T) {
     } else {
       fileList.value = validatedFileList;
     }
+    emit('upload', rawFileList.value);
   }
 }
 function handleCancel() {
@@ -195,7 +184,7 @@ function handleDeleteFile(index: number) {
 async function handleUploadFile() {
   if (props.uploader) {
     try {
-      const result = await props.uploader(fileList.value);
+      const result = await props.uploader(rawFileList.value);
       if (result) {
         fileList.value = [];
         errorList.value = [];
