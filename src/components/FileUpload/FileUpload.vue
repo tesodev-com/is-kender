@@ -32,19 +32,28 @@
         Cancel
       </button>
     </div>
-    <div class="file-upload-content" @dragover="handleDragOver" @drop="handleDropFile">
+    <div class="file-upload-content">
       <ul v-if="errorList?.length" class="file-upload-error-list">
         <li v-for="(error, index) in errorList" :key="index" class="file-upload-error-list-item">
           <p>{{ error.file?.name }}: {{ error.message }}</p>
         </li>
       </ul>
-      <div class="file-upload-file-list">
+      <div
+        class="file-upload-file-list"
+        :class="[{ 'drag': isDragging }]"
+        @dragover="handleDrag"
+        @dragleave="handleDrag"
+        @drop="handleDropFile">
         <slot v-if="!fileList?.length" name="empty">
           <span class="file-upload-empty">
             Drag and drop to here to upload
           </span>
         </slot>
-        <div v-for="(file, index) in fileList" :key="index" class="file-upload-file-list-item">
+        <div
+          v-for="(file, index) in fileList"
+          :key="index"
+          class="file-upload-file-list-item"
+        >
           <slot name="file" :file="file" :index="index">
             <img v-if="file.isImage && file.preview" :src="file.preview" class="preview">
             <span class="name">{{ file.name }}</span>
@@ -72,7 +81,6 @@
 <script setup lang="ts">
 // imports
 import { computed, ref } from 'vue';
-
 // interfaces & types
 interface CustomFile {
     name: string;
@@ -120,6 +128,7 @@ const errorMessageObj = {
 const fileUploadInput = ref<HTMLInputElement | null>(null);
 const fileList = ref<CustomFile[]>([]);
 const errorList = ref<FileErrorMessage[]>([]);
+const isDragging = ref(false);
 
 // computed
 const fileInputProps = computed(() => {
@@ -139,6 +148,7 @@ function handleChooseFile() {
 }
 function handleDropFile(event: DragEvent) {
   event?.preventDefault();
+  isDragging.value = false;
   handleFileChange(event);
 }
 function handleFileChange<T = Event | DragEvent>(event: T) {
@@ -147,8 +157,7 @@ function handleFileChange<T = Event | DragEvent>(event: T) {
   if (event instanceof DragEvent) {
     files = event.dataTransfer?.files || null;
   } else if (event instanceof Event) {
-    const target = event.target as HTMLInputElement;
-    files = target.files || null;
+    files = (event.target as HTMLInputElement).files || null;
   }
 
   if (files) {
@@ -161,7 +170,13 @@ function handleFileChange<T = Event | DragEvent>(event: T) {
       raw: file,
     })) as CustomFile[];
 
-    fileList.value = validateFileList(tmpFileList);
+    const validatedFileList = validateFileList(tmpFileList);
+
+    if (props.multiple) {
+      fileList.value = [...fileList.value, ...validatedFileList];
+    } else {
+      fileList.value = validatedFileList;
+    }
   }
 }
 function handleCancel() {
@@ -211,9 +226,9 @@ function validateFileAccept(file: CustomFile) {
   }
   return isValid;
 }
-function handleDragOver(event: DragEvent) {
+function handleDrag(event: DragEvent) {
   event?.preventDefault();
-  console.log(event);
+  isDragging.value = event.type === 'dragover';
 }
 function createError({ file, message }: { file?: CustomFile; message: string }) {
   errorList.value.push({

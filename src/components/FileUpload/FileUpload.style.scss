@@ -99,21 +99,28 @@ $actionButtonStates: (
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 1px dashed $gray-300;
-                border-radius: $rounded-xs;
 
                 @include text-md(500);
+            }
+
+            &:has(.file-upload-empty), &.drag {
+                background: $gray-100;
+                transition: background 0.2s ease-in-out;
             }
 
             &:not(:has(.file-upload-empty)) {
                 display: flex;
                 align-items: stretch;
+                gap: 0.5rem;
+                flex-wrap: wrap;
                 height: auto;
 
                 .file-upload-file-list-item {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                    justify-content: flex-end;
+                    width: calc(25% - 0.5rem);
                     gap: 0.5rem;
                     border: 1px solid $gray-300;
                     border-radius: $rounded-xs;
@@ -126,6 +133,11 @@ $actionButtonStates: (
                     }
 
                     .name {
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: center;
+
                         @include text-sm(500);
                     }
 
