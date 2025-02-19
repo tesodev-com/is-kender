@@ -114,12 +114,15 @@ interface FileUploadSlots {
 
 // props
 defineModel<CustomFile[]>();
-const props = withDefaults(defineProps<FileUploadProps>(), {});
+const props = withDefaults(defineProps<FileUploadProps>(), {
+  sizeErrorMessage: 'File size exceeds the limit of $value bytes',
+  acceptErrorMessage: 'File type is not allowed, only $value is allowed'
+});
 defineSlots<FileUploadSlots>();
 // constants
 const errorMessageObj = {
-  FILE_SIZE_EXCEED_WITH_SIZE: ((size: number) => props.sizeErrorMessage || `File size exceeds the limit of ${size} bytes`),
-  FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT: ((accept: string) => props.acceptErrorMessage || `File type is not allowed, only ${accept} is allowed`),
+  FILE_SIZE_EXCEED_WITH_SIZE: props.sizeErrorMessage,
+  FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT: props.acceptErrorMessage,
   FILE_UPLOAD_FAILED: 'File upload failed',
 };
 // defineEmits
@@ -213,7 +216,7 @@ function validateFileSize(file: CustomFile) {
   if (!props.maxSize) return true;
   const isValid = file.size < props.maxSize;
   if (!isValid) {
-    createError({ file, message: errorMessageObj.FILE_SIZE_EXCEED_WITH_SIZE(props.maxSize) });
+    createError({ file, message: errorMessageObj.FILE_SIZE_EXCEED_WITH_SIZE, value: props.maxSize.toString() });
   }
   return isValid;
 }
@@ -222,7 +225,7 @@ function validateFileAccept(file: CustomFile) {
   const acceptedTypes = props.accept.split(',').map((type) => type.trim());
   const isValid = acceptedTypes.some((type) => file.type.includes(type));
   if (!isValid) {
-    createError({ file, message: errorMessageObj.FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT(props.accept) });
+    createError({ file, message: errorMessageObj.FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT, value: props.accept });
   }
   return isValid;
 }
@@ -230,10 +233,10 @@ function handleDrag(event: DragEvent) {
   event?.preventDefault();
   isDragging.value = event.type === 'dragover';
 }
-function createError({ file, message }: { file?: CustomFile; message: string }) {
+function createError({ file, message, value = '' }: { file?: CustomFile; message: string, value?: string }) {
   errorList.value.push({
     file,
-    message,
+    message: message.replace('$value', value),
   });
 }
 function formatFileSize(size: number): string {
