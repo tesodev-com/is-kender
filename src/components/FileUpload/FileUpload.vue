@@ -44,11 +44,11 @@
         @dragover="handleDrag"
         @dragleave="handleDrag"
         @drop="handleDropFile">
-        <slot v-if="!fileList?.length" name="empty">
-          <span class="file-upload-empty">
+        <div v-if="!fileList?.length" class="file-upload-empty">
+          <slot name="empty">
             Drag and drop to here to upload
-          </span>
-        </slot>
+          </slot>
+        </div>
         <div
           v-for="(file, index) in fileList"
           :key="index"
