@@ -22,7 +22,7 @@ const meta: Meta<typeof Text> = {
     },
     fontColor: {
       control: 'select',
-      options: ['black', 'white', 'gray', 'brand', 'success', 'info', 'warning', 'danger'],
+      options: ['black', 'white', 'gray', 'primary', 'success', 'info', 'warning', 'danger'],
       description: 'Sets the text color of the text.',
     },
     customClass: {
@@ -57,7 +57,7 @@ export const CustomText: Story = {
     size: 'h1',
     fontSize: 'xl',
     fontWeight: 'bold',
-    fontColor: 'brand',
+    fontColor: 'primary',
   },
   render: (args) => ({
     components: { Text },
