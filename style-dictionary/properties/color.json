@@ -79,7 +79,7 @@
       "blendMode": "normal"
     }
   },
-  "brand": {
+  "primary": {
     "25": {
       "description": "",
       "type": "color",
