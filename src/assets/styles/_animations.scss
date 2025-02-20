@@ -1,18 +1,19 @@
 .fade {
-    &-enter-active,
-    &-leave-active {
-        transition: opacity 0.5s ease-in-out;
-    }
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.5s ease-in-out;
+  }
 
-    &-enter-from,
-    &-leave-to {
-        opacity: 0;
-    }
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
 
-    &-enter-to,
-    &-leave-from {
-        opacity: 1;
-    }
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
 }
 
 .slide-left {
@@ -21,7 +22,7 @@
     &-leave-active {
         transition: all 0.3s ease-in-out;
     }
-   
+
     &-leave-active {
         position: absolute;
     }
@@ -39,7 +40,7 @@
     &-leave-active {
         transition: all 0.3s ease-in-out;
     }
-   
+
     &-leave-active {
         position: absolute;
     }
@@ -57,7 +58,7 @@
     &-leave-active {
         transition: all 0.3s ease-in-out;
     }
-   
+
     &-leave-active {
         position: absolute;
     }
@@ -75,7 +76,7 @@
     &-leave-active {
         transition: all 0.3s ease-in-out;
     }
-   
+
     &-leave-active {
         position: absolute;
     }

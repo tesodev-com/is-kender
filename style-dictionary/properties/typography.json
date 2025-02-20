@@ -9,6 +9,7 @@
       "xs": { "value": "1.5rem" }
     },
     "text": {
+      "2xl": { "value": "1.375rem" },
       "xl": { "value": "1.25rem" },
       "lg": { "value": "1.125rem" },
       "md": { "value": "1rem" },
@@ -26,6 +27,7 @@
       "xs": { "value": "2rem" }
     },
     "text": {
+      "2xl": { "value": "2rem" },
       "xl": { "value": "1.875rem" },
       "lg": { "value": "1.75rem" },
       "md": { "value": "1.5rem" },
