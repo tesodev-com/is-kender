@@ -7,34 +7,23 @@
 </template>
 
 <script setup lang="ts">
-// imports
-import { ref, useTemplateRef, watch } from 'vue';
-import type { SvgProps } from './Svg';
-
-// interfaces & types
-
-// constants
-
-// composable
-
-// props
+import { onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
+export interface SvgProps {
+  src?: string;
+  name?: string;
+  size?: string;
+  style?: string;
+}
+onServerPrefetch(async () => {
+  await loadSvg();
+});
 const props = withDefaults(defineProps<SvgProps>(), {
   size: '1.5rem',
 });
-// defineEmits
-
-// states (refs and reactives)
 const spanRef = useTemplateRef('icon');
 const svgEl = ref<string | null>(null);
-
-// computed
-
-// watchers
-watch([() => props.src, () => props.name], loadSvg, { immediate: true });
+watch([() => props.src, () => props.name], loadSvg);
 watch([() => props.size], updateSvg);
-// lifecycles
-
-// methods
 async function loadSvg() {
   try {
     if (props.src) {
@@ -55,22 +44,14 @@ function updateSvg() {
   }
 }
 function parseSvg(svgData: string) {
-  return svgData?.replace(/<svg\b([^>]*)>/g, (_, attributes) => {
-    let updatedAttributes = attributes;
+  svgData = svgData.replace(/\bwidth\s*=\s*["'][^"']*["']/g, '');
+  svgData = svgData.replace(/\bheight\s*=\s*["'][^"']*["']/g, '');
+  svgData = svgData.replace(/\bfill\s*=\s*["'][^"']*["']/g, '');
 
-    updatedAttributes = /width\s*=\s*["'][^"']*["']/.test(updatedAttributes)
-      ? updatedAttributes.replace(/width\s*=\s*["'][^"']*["']/, `width="${props.size}"`)
-      : `${updatedAttributes} width="${props.size}"`;
-
-    updatedAttributes = /height\s*=\s*["'][^"']*["']/.test(updatedAttributes)
-      ? updatedAttributes.replace(/height\s*=\s*["'][^"']*["']/, `height="${props.size}"`)
-      : `${updatedAttributes} height="${props.size}"`;
-
-    updatedAttributes = /fill\s*=\s*["'][^"']*["']/.test(updatedAttributes)
-      ? updatedAttributes.replace(/fill\s*=\s*["'][^"']*["']/, `fill="currentColor"`)
-      : `${updatedAttributes} fill="currentColor"`;
-
-    return `<svg${updatedAttributes}>`;
+  svgData = svgData.replace(/<svg\b([^>]*)>/, (_, attributes) => {
+    return `<svg ${attributes} width="${props.size}" height="${props.size}" fill="currentColor">`;
   });
+
+  return svgData;
 }
 </script>
