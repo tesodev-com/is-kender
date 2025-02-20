@@ -3,7 +3,6 @@ import { useEventBus } from '.';
 import eventBus from '@/utils/eventBus';
 
 describe('useEventBus composable', () => {
-
   it('should return the same eventBus instance', () => {
     const bus = useEventBus();
     expect(bus).toBe(eventBus);
@@ -44,5 +43,4 @@ describe('useEventBus composable', () => {
 
     expect(mockCallback).not.toHaveBeenCalled();
   });
-
 });
