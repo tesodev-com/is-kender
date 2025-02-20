@@ -7,13 +7,14 @@
         class="file-upload-input"
         v-bind="fileInputProps"
         @change="handleFileChange"
-      >
+      />
       <button
         class="file-upload-button file-upload-button-dark"
         type="button"
         :disabled="disabled"
-        @click="handleChooseFile">
-        Choose
+        @click="handleChooseFile"
+      >
+        {{ computedTexts.choose }}
       </button>
       <button
         v-if="uploader"
@@ -22,31 +23,43 @@
         :disabled="!fileList?.length || !!errorList.length"
         @click="handleUploadFile"
       >
-        Upload
+        {{ computedTexts.upload }}
       </button>
       <button
         class="file-upload-button file-upload-button-secondary"
         type="button"
         :disabled="!fileList?.length"
-        @click="handleCancel">
-        Cancel
+        @click="handleCancel"
+      >
+        {{ computedTexts.cancel }}
       </button>
     </div>
     <div class="file-upload-content">
-      <ul v-if="errorList?.length" class="file-upload-error-list">
-        <li v-for="(error, index) in errorList" :key="index" class="file-upload-error-list-item">
+      <ul
+        v-if="errorList?.length"
+        class="file-upload-error-list"
+      >
+        <li
+          v-for="(error, index) in errorList"
+          :key="index"
+          class="file-upload-error-list-item"
+        >
           <p>{{ error.file?.name ? error.file?.name + ':' : '' }} {{ error.message }}</p>
         </li>
       </ul>
       <div
         class="file-upload-file-list"
-        :class="[{ 'drag': isDragging }]"
+        :class="[{ drag: isDragging }]"
         @dragover="handleDrag"
         @dragleave="handleDrag"
-        @drop="handleDropFile">
-        <div v-if="!fileList?.length" class="file-upload-empty">
+        @drop="handleDropFile"
+      >
+        <div
+          v-if="!fileList?.length"
+          class="file-upload-empty"
+        >
           <slot name="empty">
-            Drag and drop to here to upload
+            {{ computedTexts.empty }}
           </slot>
         </div>
         <div
@@ -54,22 +67,38 @@
           :key="index"
           class="file-upload-file-list-item"
         >
-          <slot name="file" :file="file" :index="index">
-            <img v-if="file.isImage && file.preview" :src="file.preview" class="preview">
+          <slot
+            name="file"
+            :file="file"
+            :index="index"
+          >
+            <img
+              v-if="file.isImage && file.preview"
+              :src="file.preview"
+              alt="preview"
+              class="preview"
+            />
             <span class="name">{{ file.name }}</span>
             <span class="size">{{ formatFileSize(file.size) }}</span>
-            <span class="delete" @click="handleDeleteFile(index)">
+            <span
+              class="delete"
+              @click="handleDeleteFile(index)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
-                viewBox="0 0 24 24"><path
+                viewBox="0 0 24 24"
+              >
+                <path
                   fill="none"
                   stroke="currentColor"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M18 6L6 18M6 6l12 12"/></svg>
+                  d="M18 6L6 18M6 6l12 12"
+                />
+              </svg>
             </span>
           </slot>
         </div>
@@ -81,36 +110,42 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 interface CustomFile {
-    name: string;
-    size: number;
-    type: string;
-    isImage: boolean;
-    preview: string | null;
-    raw: File;
+  name: string;
+  size: number;
+  type: string;
+  isImage: boolean;
+  preview: string | null;
+  raw: File;
 }
 interface FileErrorMessage {
-    file?: CustomFile;
-    message: string;
+  file?: CustomFile;
+  message: string;
 }
 interface FileUploadProps {
-    disabled?: boolean;
-    multiple?: boolean;
-    accept?: string;
-    maxSize?: number;
-    sizeErrorMessage?: string;
-    acceptErrorMessage?: string;
-    uploadErrorMessage?: string;
-    uploader?: (file: File[]) => Promise<boolean>;
+  disabled?: boolean;
+  multiple?: boolean;
+  accept?: string;
+  maxSize?: number;
+  texts?: {
+    empty?: string;
+    choose?: string;
+    upload?: string;
+    cancel?: string;
+  };
+  sizeErrorMessage?: string;
+  acceptErrorMessage?: string;
+  uploadErrorMessage?: string;
+  uploader?: (file: File[]) => Promise<boolean>;
 }
 interface FileUploadSlots {
-    file: {
-        file: CustomFile;
-        index: number;
-    };
-    empty: string;
+  file: {
+    file: CustomFile;
+    index: number;
+  };
+  empty: string;
 }
 interface FileUploadEvents {
-    (e: 'upload', file: File[]): void;
+  (e: 'upload', file: File[]): void;
 }
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',
@@ -119,7 +154,7 @@ const props = withDefaults(defineProps<FileUploadProps>(), {
 });
 const emit = defineEmits<FileUploadEvents>();
 defineSlots<FileUploadSlots>();
-const rawFileList = computed(() => fileList.value.map((file) => file.raw));
+const rawFileList = computed(() => fileList.value.map(file => file.raw));
 const errorMessageObj = {
   FILE_SIZE_EXCEED_WITH_SIZE: props.sizeErrorMessage,
   FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT: props.acceptErrorMessage,
@@ -134,6 +169,15 @@ const fileInputProps = computed(() => {
     disabled: props.disabled,
     multiple: props.multiple,
     accept: props.accept,
+  };
+});
+const computedTexts = computed(() => {
+  return {
+    empty: 'Drag and drop to here to upload',
+    cancel: 'Cancel',
+    choose: 'Chose',
+    upload: 'Upload',
+    ...props.texts,
   };
 });
 function handleChooseFile() {
@@ -154,7 +198,7 @@ function handleFileChange<T = Event | DragEvent>(event: T) {
   }
 
   if (files) {
-    const tmpFileList = Array.from(files).map((file) => ({
+    const tmpFileList = Array.from(files).map(file => ({
       name: file.name,
       size: file.size,
       type: file.type,
@@ -198,10 +242,12 @@ async function handleUploadFile() {
 }
 function validateFileList(fileList: CustomFile[]) {
   errorList.value = [];
-  return fileList.map((file) => {
-    const isValid = [validateFileSize(file), validateFileAccept(file)].every(value => value);
-    if (isValid) return file;
-  }).filter(Boolean) as CustomFile[];
+  return fileList
+    .map(file => {
+      const isValid = [validateFileSize(file), validateFileAccept(file)].every(value => value);
+      if (isValid) return file;
+    })
+    .filter(Boolean) as CustomFile[];
 }
 function validateFileSize(file: CustomFile) {
   if (!props.maxSize) return true;
@@ -213,8 +259,8 @@ function validateFileSize(file: CustomFile) {
 }
 function validateFileAccept(file: CustomFile) {
   if (!props.accept) return true;
-  const acceptedTypes = props.accept.split(',').map((type) => type.trim());
-  const isValid = acceptedTypes.some((type) => file.type.includes(type));
+  const acceptedTypes = props.accept.split(',').map(type => type.trim());
+  const isValid = acceptedTypes.some(type => file.type.includes(type));
   if (!isValid) {
     createError({ file, message: errorMessageObj.FILE_TYPE_NOT_ALLOWED_WITH_ACCEPT, value: props.accept });
   }
@@ -224,7 +270,7 @@ function handleDrag(event: DragEvent) {
   event?.preventDefault();
   isDragging.value = event.type === 'dragover';
 }
-function createError({ file, message, value = '' }: { file?: CustomFile; message: string, value?: string }) {
+function createError({ file, message, value = '' }: { file?: CustomFile; message: string; value?: string }) {
   errorList.value.push({
     file,
     message: message.replace('$value', value),
@@ -238,7 +284,6 @@ function formatFileSize(size: number): string {
     size /= 1024;
     unitIndex++;
   }
-
   return `${size.toFixed(2)} ${units[unitIndex]}`;
 }
 </script>

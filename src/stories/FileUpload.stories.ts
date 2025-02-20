@@ -13,7 +13,7 @@ const meta: Meta<typeof FileUpload> = {
     },
     uploader: {
       description: 'The function that will be called when the user uploads a file and gets the File[] as a parameter',
-    }
+    },
   },
 };
 
