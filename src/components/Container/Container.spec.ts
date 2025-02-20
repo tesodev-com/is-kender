@@ -1,11 +1,11 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils';
+import { shallowMount, type VueWrapper } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Container from './Container.vue';
 
 describe('Container.vue', () => {
   let wrapper: VueWrapper<any>;
   type Tag = InstanceType<typeof Container>['tag'];
-  const tags:Tag[] = ['div', 'section', 'main', 'article'];
+  const tags: Tag[] = ['div', 'section', 'main', 'article'];
   function createWrapper(props = {}) {
     return shallowMount(Container, {
       props: {
@@ -27,7 +27,7 @@ describe('Container.vue', () => {
     expect(wrapper.classes()).toContain('container');
   });
 
-  tags.forEach((tag:Tag) => {
+  tags.forEach((tag: Tag) => {
     it(`should apply correct classes for tag=${tag}`, () => {
       const wrapper = createWrapper({ tag });
       expect(wrapper.exists()).toBe(true);
@@ -61,5 +61,4 @@ describe('Container.vue', () => {
     expect(wrapper.classes()).toContain('container');
     expect(wrapper.attributes('style')).toBe('max-width: 75rem; padding: 0px 10px;');
   });
-
 });

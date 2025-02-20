@@ -1,8 +1,9 @@
 import { useEventBus } from '@/composables/useEventBus';
 import eventBus from '@/utils/eventBus';
 import type { App } from 'vue';
-import { Skeleton, Toggle, Alert, Button, FileUpload, Toast } from './components';
+import { Skeleton, Toggle, Alert, Button, FileUpload, Toast, Container, Row, Col } from './components';
 import { useToast } from '@/composables';
+
 export default {
   install(app: App) {
     app.config.globalProperties.$eventBus = eventBus;
@@ -13,7 +14,10 @@ export default {
     app.component('LibButton', Button);
     app.component('LibFileUpload', FileUpload);
     app.component('LibToast', Toast);
+    app.component('LibContainer', Container);
+    app.component('LibRow', Row);
+    app.component('LibCol', Col);
   },
 };
 
-export { useEventBus, eventBus, Skeleton, Toggle, Alert, Button, FileUpload, Toast, useToast };
+export { Container, Row, Col, eventBus, Skeleton, Toggle, Alert, Button, FileUpload, Toast, useEventBus, useToast };
