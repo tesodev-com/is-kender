@@ -13,8 +13,8 @@ const meta: Meta<typeof Toast> = {
     animation: {
       control: 'select',
       options: ['slide-left', 'slide-right', 'slide-up', 'slide-down'],
-    }
-  }
+    },
+  },
 };
 
 export default meta;
@@ -24,9 +24,9 @@ type Story = StoryObj<typeof Toast>;
 export const Default: Story = {
   args: {
     position: 'top-right',
-    animation: 'slide-right'
+    animation: 'slide-right',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Toast },
     setup() {
       const { add } = useToast();
@@ -52,6 +52,6 @@ export const Default: Story = {
         <button @click="sendToastMessage('danger')">Danger</button>
         <button @click="sendToastMessage('dark')">Dark</button>
       </div>
-    `
-  })
+    `,
+  }),
 };

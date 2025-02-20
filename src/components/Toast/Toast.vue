@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<ToastProps>(), {
   animation: 'slide-right',
   listReverse: false,
 });
-const messages = ref<(MessageProps & {id: number})[]>([]);
+const messages = ref<(MessageProps & { id: number })[]>([]);
 const messageId = ref<number>(0);
 const toastClasses = computed(() => {
   return ['toast-group', `toast-group-${props.position}`, { 'toast-group-reverse': props.listReverse }];
@@ -46,7 +46,7 @@ function add(message: MessageProps) {
   messages.value.push({ ...message, id: messageId.value++ });
 }
 function remove(id: number) {
-  const index = messages.value.findIndex((message) => message.id === id);
+  const index = messages.value.findIndex(message => message.id === id);
   if (index !== -1) {
     messages.value.splice(index, 1);
   }

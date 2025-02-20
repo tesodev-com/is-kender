@@ -1,81 +1,149 @@
 @use "sass:list";
 
 $sizes: (
-    sm: (padding: 8px 14px),
-    md: (padding: 10px 16px),
-    lg: (padding: 10px 18px),
-    xl: (padding: 12px 20px),
-    2xl: (padding: 16px 28px),
+  sm: (
+    padding: 8px 14px,
+  ),
+  md: (
+    padding: 10px 16px,
+  ),
+  lg: (
+    padding: 10px 18px,
+  ),
+  xl: (
+    padding: 12px 20px,
+  ),
+  2xl: (
+    padding: 16px 28px,
+  ),
 );
 $solidColors: (
-    primary: (background: $primary-100, border-color: $primary-400, color: $primary-700),
-    secondary: (background: $gray-100, border-color: $gray-400, color: $gray-700),
-    success: (background: $success-100, border-color: $success-400, color: $success-700),
-    info: (background: $blue-light-100, border-color: $blue-light-400, color: $blue-light-700),
-    warning: (background: $warning-100, border-color: $warning-400, color: $warning-700),
-    danger: (background: $error-100, border-color: $error-400, color: $error-700),
-    dark: (background: $gray-900, border-color: $gray-900, color: $white),
+  primary: (
+    background: $primary-100,
+    border-color: $primary-400,
+    color: $primary-700,
+  ),
+  secondary: (
+    background: $gray-100,
+    border-color: $gray-400,
+    color: $gray-700,
+  ),
+  success: (
+    background: $success-100,
+    border-color: $success-400,
+    color: $success-700,
+  ),
+  info: (
+    background: $blue-light-100,
+    border-color: $blue-light-400,
+    color: $blue-light-700,
+  ),
+  warning: (
+    background: $warning-100,
+    border-color: $warning-400,
+    color: $warning-700,
+  ),
+  danger: (
+    background: $error-100,
+    border-color: $error-400,
+    color: $error-700,
+  ),
+  dark: (
+    background: $gray-900,
+    border-color: $gray-900,
+    color: $white,
+  ),
 );
 $outlineColors: (
-    primary: (background: $white, border-color: $primary-600, color: $primary-600),
-    secondary: (background: $white, border-color: $gray-600, color: $gray-600),
-    success: (background: $white, border-color: $success-600, color: $success-600),
-    info: (background: $white, border-color: $blue-light-600, color: $blue-light-600),
-    warning: (background: $white, border-color: $warning-600, color: $warning-600),
-    danger: (background: $white, border-color: $error-600, color: $error-600),
-    dark: (background: $white, border-color: $gray-900, color: $gray-900),
+  primary: (
+    background: $white,
+    border-color: $primary-600,
+    color: $primary-600,
+  ),
+  secondary: (
+    background: $white,
+    border-color: $gray-600,
+    color: $gray-600,
+  ),
+  success: (
+    background: $white,
+    border-color: $success-600,
+    color: $success-600,
+  ),
+  info: (
+    background: $white,
+    border-color: $blue-light-600,
+    color: $blue-light-600,
+  ),
+  warning: (
+    background: $white,
+    border-color: $warning-600,
+    color: $warning-600,
+  ),
+  danger: (
+    background: $white,
+    border-color: $error-600,
+    color: $error-600,
+  ),
+  dark: (
+    background: $white,
+    border-color: $gray-900,
+    color: $gray-900,
+  ),
 );
 $variants: (
-    solid: $solidColors,
-    outline: $outlineColors,
+  solid: $solidColors,
+  outline: $outlineColors,
 );
 
 .toast-wrapper {
-    width: max-content;
-    border: var(--toast-border-width, 1px);
-    border-style: var(--toast-border-style, solid);
-    border-radius: var(--toast-border-radius, $rounded-sm);
-    padding: var(--toast-padding, $spacing-lg $spacing-lg);
+  width: max-content;
+  border: var(--toast-border-width, 1px);
+  border-style: var(--toast-border-style, solid);
+  border-radius: var(--toast-border-radius, $rounded-sm);
+  padding: var(--toast-padding, $spacing-lg $spacing-lg);
 
-    .toast {
-        display: flex;
-        align-items: flex-start;
-        gap: $spacing-md;
+  .toast {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
 
-        .toast-content {
-            flex:1 ;
-            
-            .toast-title {
-                @include text-sm(600);
-            }
+    .toast-content {
+      flex: 1;
 
-            .toast-text {
-                @include text-sm(400);
-            }
-        }
+      .toast-title {
+        @include text-sm(600);
+      }
 
-        .toast-close {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            align-self: flex-start;
-            flex-shrink: 0;
-            cursor: pointer;
-            width: 1.25rem;
-            height: 1.25rem;
-        }
+      .toast-text {
+        @include text-sm(400);
+      }
     }
 
-    @each $variant, $variantColors in $variants {
-        &.toast-#{$variant} {
-            @each $color, $colorValue in $variantColors {
-                &.toast-#{$color} {
-                    @each $property, $propertyValue in $colorValue {
-                        #{$property}: var(--toast-#{$variant}-#{$color}-#{$property}, $propertyValue);
-                    }
-                }
-            }
-        }
+    .toast-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      flex-shrink: 0;
+      cursor: pointer;
+      width: 1.25rem;
+      height: 1.25rem;
     }
+  }
 
+  @each $variant, $variantColors in $variants {
+    &.toast-#{$variant} {
+      @each $color, $colorValue in $variantColors {
+        &.toast-#{$color} {
+          @each $property, $propertyValue in $colorValue {
+            #{$property}: var(
+              --toast-#{$variant}-#{$color}-#{$property},
+              $propertyValue
+            );
+          }
+        }
+      }
+    }
+  }
 }

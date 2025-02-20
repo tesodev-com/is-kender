@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterAll } from 'vitest';
-import { useIsMobile } from '.';
+import { useIsMobile } from './index.ts';
 
 describe('useIsMobile', () => {
   afterAll(() => {
