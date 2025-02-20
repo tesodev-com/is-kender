@@ -737,6 +737,11 @@
   dependencies:
     buffer "^6.0.3"
 
+"@material-design-icons/svg@^0.14.15":
+  version "0.14.15"
+  resolved "https://registry.yarnpkg.com/@material-design-icons/svg/-/svg-0.14.15.tgz#6cccfb1342d01ba75de0e14e702ffbb5dbdb4ddc"
+  integrity sha512-6nbjwGwyJnphwQUscJAYqw1Tk6+W8KvsgOAeyVgzIFXVsHfgX5XyplTUcZ29wbcTUysMMyCUi1LYpmFKA/e61g==
+
 "@mdx-js/react@^3.0.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-3.1.0.tgz#c4522e335b3897b9a845db1dbdd2f966ae8fb0ed"
