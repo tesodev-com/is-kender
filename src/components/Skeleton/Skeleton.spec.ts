@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
-import Skeleteon from './Skeleton.vue';
+import Skeleton from './Skeleton.vue';
 
 describe('Skeleton', () => {
   function createWrapper(props = {}) {
-    return shallowMount(Skeleteon, { props });
+    return shallowMount(Skeleton, { props });
   }
   it('should render correctly with default props', () => {
     const wrapper = createWrapper();

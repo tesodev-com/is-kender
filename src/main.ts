@@ -8,8 +8,7 @@ export default {
     app.config.globalProperties.$eventBus = eventBus;
     app.component('LibToggle', Toggle);
     app.component('LibSkeleton', Skeleton);
-  }
+  },
 };
 
 export { eventBus, Skeleton, Toggle, useEventBus };
-

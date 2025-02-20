@@ -7,20 +7,20 @@ const meta: Meta<typeof Skeleton> = {
   argTypes: {
     shape: {
       control: 'select',
-      options: ['rectangle', 'circle']
+      options: ['rectangle', 'circle'],
     },
     animation: {
       control: 'select',
-      options: ['wave', 'pulse', 'none']
-    }
-  }
+      options: ['wave', 'pulse', 'none'],
+    },
+  },
 };
 export default meta;
 
 type Story = StoryObj<typeof Skeleton>;
 
 const commonArgs: Partial<Story['args']> = {
-  animation: 'wave'
+  animation: 'wave',
 };
 
 export const Default: Story = {};
@@ -30,14 +30,14 @@ export const Rectangle: Story = {
     ...commonArgs,
     width: '10rem',
     height: '4rem',
-    shape: 'rectangle'
-  }
+    shape: 'rectangle',
+  },
 };
 export const Circle: Story = {
   args: {
     ...commonArgs,
     width: '4rem',
     height: '4rem',
-    shape: 'circle'
-  }
+    shape: 'circle',
+  },
 };

@@ -14,8 +14,7 @@ export function useTheme() {
   };
 
   onMounted(() => {
-    const savedTheme = (localStorage.getItem('theme') as Theme) || 'system';
-    currentTheme.value = savedTheme;
+    currentTheme.value = (localStorage.getItem('theme') as Theme) || 'system';
     applyTheme(currentTheme.value);
   });
 

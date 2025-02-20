@@ -8,13 +8,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-  type SkeletonProps = {
-    width?: string;
-    height?: string;
-    borderRadius?: string;
-    shape?: 'circle' | 'rectangle'
-    animation?: 'pulse' | 'wave' | 'none';
-  };
+interface SkeletonProps {
+  width?: string;
+  height?: string;
+  borderRadius?: string;
+  shape?: 'circle' | 'rectangle';
+  animation?: 'pulse' | 'wave' | 'none';
+}
+
 const props = withDefaults(defineProps<SkeletonProps>(), {
   width: '100%',
   height: '1rem',
