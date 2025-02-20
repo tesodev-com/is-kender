@@ -10,8 +10,8 @@ const meta: Meta<typeof Breadcrumb> = {
       { text: 'Home', to: '/' },
       { text: 'Library', to: '/library' },
       { text: 'Data', to: '/library/data' },
-    ]
-  }
+    ],
+  },
 };
 
 export default meta;
@@ -34,7 +34,7 @@ export const SlotItem: Story = {
     template: `<Breadcrumb :items="items">
       <template #item="{item}">{{item.text}}</template>
     </Breadcrumb>`,
-  })
+  }),
 };
 
 export const SlotItemIcon: Story = {
@@ -51,5 +51,5 @@ export const SlotItemIcon: Story = {
     template: `<Breadcrumb :items="items">
       <template #at>@</template>
     </Breadcrumb>`,
-  })
+  }),
 };
