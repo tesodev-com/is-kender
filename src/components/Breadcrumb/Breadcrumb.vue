@@ -12,6 +12,7 @@
         </template>
         <BreadcrumbItem
           v-bind="breadCrumb"
+          :useRouter="useRouter"
           :slots="$slots"
         />
       </template>
@@ -23,10 +24,12 @@
 import BreadcrumbItem from './BreadcrumbItem.vue';
 import type { BreadcrumbItemProps } from './BreadcrumbItem.vue';
 interface BreadcrumbProps {
-  items: Omit<BreadcrumbItemProps, 'slots'>[];
+  items: Omit<BreadcrumbItemProps, 'slots' | 'useRouter'>[];
+  useRouter?: boolean;
   separator?: string;
 }
 withDefaults(defineProps<BreadcrumbProps>(), {
+  useRouter: false,
   separator: '/',
 });
 </script>
