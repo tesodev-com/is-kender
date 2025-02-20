@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-
-import { Col, Container, Row } from '@/components';
+import { Col as ColComponent, Container, Row } from '@/components';
 
 const meta: Meta<typeof Container> = {
   component: Container,
-  subcomponents: { Row, Col },
+  subcomponents: { Row, ColComponent },
   title: 'Layout&Structures/ContainerExample',
   argTypes: {
     fluid: {
@@ -18,38 +17,37 @@ const meta: Meta<typeof Container> = {
 export default meta;
 
 type Story = StoryObj<typeof Container>;
-
 export const Default: Story = {
-  render: (args) => ({
-    components: { Container, Row, Col },
+  render: args => ({
+    components: { Container, Row, ColComponent },
     setup() {
       return { args };
     },
     template: `
     <Container :fluid="false">
       <Row>
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="12">
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="12">
           <p>12</p>
-        </Col>
+        </ColComponent>
       </Row>
       <Row >
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="6">
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="6">
           <p>6</p>
-        </Col>
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="6">
+        </ColComponent>
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="6">
           <p>6</p>
-        </Col>
+        </ColComponent>
       </Row>
       <Row >
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="4">
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="4">
           <p>4</p>
-        </Col>
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="4">
+        </ColComponent>
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="4">
           <p>4</p>
-        </Col>
-        <Col style="outline:1px solid purple;backgroundColor:rgba(128,0,128,0.5)" cols="4">
+        </ColComponent>
+        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" cols="4">
           <p>4</p>
-        </Col>  
+        </ColComponent>  
       </Row>
     </Container>
     `,

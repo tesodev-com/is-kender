@@ -1,5 +1,8 @@
 <template>
-  <div class="row" :class="[computedClass]">
+  <div
+    class="row"
+    :class="[computedClass]"
+  >
     <slot></slot>
   </div>
 </template>
@@ -8,7 +11,7 @@
 import { computed } from 'vue';
 
 interface RowProps {
-    /**
+  /**
    * Vertical alignment of flex items
    * @default 'top'
    */
@@ -27,7 +30,7 @@ interface RowProps {
    * Spacing between columns
    * @default 0
    */
-  gutter?: 0 | 1 | 2 | 3 | 4| 5 | 6
+  gutter?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const props = withDefaults(defineProps<RowProps>(), {
@@ -43,7 +46,6 @@ const computedClass = computed(() => {
     [`row--direction-${props.direction}`]: props.direction,
   };
 });
-
 </script>
 
 <style lang="scss" scoped src="./Row.style.scss"></style>

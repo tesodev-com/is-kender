@@ -1,0 +1,23 @@
+import { Meta } from "@storybook/blocks";
+import * as ToastStories from "./Toast.stories";
+
+<Meta of={ToastStories} />
+
+## Message Props
+
+```typescript
+interface ToastMessageProps {
+  variant?: "solid" | "outline";
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "info"
+    | "warning"
+    | "danger"
+    | "dark";
+  title?: string;
+  message?: string;
+  life?: number;
+}
+```

@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<ContainerProps>(), {
   maxWidth: '75rem',
   padding: '1rem',
   fluid: false,
-  tag: 'div'
+  tag: 'div',
 });
 
 const containerStyle = computed(() => ({
