@@ -1,5 +1,5 @@
-import eventBus from '@/utils/eventBus';
+import { EventBus } from '@/utils/index.ts';
 
 export function useEventBus() {
-  return eventBus;
+  return EventBus;
 }

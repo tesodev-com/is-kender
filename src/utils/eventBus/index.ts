@@ -1,5 +1,5 @@
 class EventBus {
-  private readonly listeners: Record<string, ((...args: any[]) => void)[]>;
+  public readonly listeners: Record<string, ((...args: any[]) => void)[]>;
 
   constructor() {
     this.listeners = {};

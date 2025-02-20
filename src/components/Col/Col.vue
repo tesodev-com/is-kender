@@ -24,7 +24,7 @@ interface Props {
    */
   sm?: ColSize;
   /**
-   * Numver of columns to span from medium breakpoint and up (≥768px)
+   * Number of columns to span from medium breakpoint and up (≥768px)
    * @default ''
    */
   md?: ColSize;
