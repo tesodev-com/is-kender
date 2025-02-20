@@ -1,26 +1,21 @@
-import { ref, onMounted, onBeforeUnmount, } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import type { Ref } from 'vue';
 
 interface IIntersectionObserverOptions {
-   triggerOnce: boolean
-   threshold: number | number[]
-   root?: Element
-   rootMargin?: string
+  triggerOnce: boolean;
+  threshold: number | number[];
+  root?: Element;
+  rootMargin?: string;
 }
 
 interface IUseIntersectionObserverProperties {
-   elementRef?: Ref<Element | null>
-   element?: Element | null
-   options?: IIntersectionObserverOptions
-   callback?: (entries: IntersectionObserverEntry[]) => void
+  elementRef?: Ref<Element | null>;
+  element?: Element | null;
+  options?: IIntersectionObserverOptions;
+  callback?: (entries: IntersectionObserverEntry[]) => void;
 }
 
-export function useIntersectionObserver({
-  elementRef,
-  element,
-  options = { triggerOnce: false, threshold: 0 },
-  callback,
-}: IUseIntersectionObserverProperties) {
+export function useIntersectionObserver({ elementRef, element, options = { triggerOnce: false, threshold: 0 }, callback }: IUseIntersectionObserverProperties) {
   const isIntersecting = ref(false);
 
   let observer: IntersectionObserver | undefined;

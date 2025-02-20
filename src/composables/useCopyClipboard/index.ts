@@ -6,7 +6,7 @@ export function useCopyClipboard() {
   const copyToClipboard = async (text: string): Promise<void> => {
     try {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(()=>{
+        navigator.clipboard.writeText(text).then(() => {
           copiedText.value = text;
         });
       } else {

@@ -3,7 +3,6 @@ import eventBus from '@/utils/eventBus';
 import type { App } from 'vue';
 import { Skeleton, Toggle, Alert } from './components';
 
-
 export default {
   install(app: App) {
     app.config.globalProperties.$eventBus = eventBus;

@@ -2,15 +2,24 @@
   <div :class="progressBarContainerClasses">
     <div class="progress-bar-background">
       <template v-if="showTooltip || hoverTooltip">
-        <div class="progress-bar" :style="calculateProgressBarWidth">
+        <div
+          class="progress-bar"
+          :style="calculateProgressBarWidth"
+        >
           <span class="progress-bar-tooltip">{{ calculateProgressBarWidth.width }}</span>
         </div>
       </template>
       <template v-else>
-        <div class="progress-bar" :style="calculateProgressBarWidth" />
+        <div
+          class="progress-bar"
+          :style="calculateProgressBarWidth"
+        />
       </template>
     </div>
-    <p v-if="showPercentage" class="progress-bar-percentage">
+    <p
+      v-if="showPercentage"
+      class="progress-bar-percentage"
+    >
       {{ calculateProgressBarWidth.width }}
     </p>
   </div>
@@ -20,13 +29,13 @@
 import { computed } from 'vue';
 
 export interface IProgressBar {
-   showPercentage?: boolean;
-   percentageLocation?: 'right' |'bottom';
-   showTooltip?: boolean;
-   hoverTooltip?: boolean;
-   tooltipLocation?: 'top' | 'bottom';
-   maxValue?: number;
-   value: number;
+  showPercentage?: boolean;
+  percentageLocation?: 'right' | 'bottom';
+  showTooltip?: boolean;
+  hoverTooltip?: boolean;
+  tooltipLocation?: 'top' | 'bottom';
+  maxValue?: number;
+  value: number;
 }
 
 const props = withDefaults(defineProps<IProgressBar>(), {
@@ -36,7 +45,7 @@ const props = withDefaults(defineProps<IProgressBar>(), {
   hoverTooltip: false,
   tooltipLocation: 'top',
   maxValue: 100,
-  value: 0
+  value: 0,
 });
 
 const progressBarContainerClasses = computed(() => {
@@ -54,7 +63,6 @@ const calculateProgressBarWidth = computed(() => {
     width: width + '%',
   };
 });
-
 </script>
 
 <style lang="scss" scoped src="./ProgressBar.style.scss"></style>

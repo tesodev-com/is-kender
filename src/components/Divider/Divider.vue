@@ -1,16 +1,18 @@
 <template>
-  <component :is="is" :class="dividerClasses" />
+  <component
+    :is="is"
+    :class="dividerClasses"
+  />
 </template>
 
 <script setup lang="ts">
-
 import { computed } from 'vue';
 
 export interface IDivider {
-   is?: string;
-   layout?: 'horizontal' | 'vertical';
-   roundedFull?: boolean;
-   customClass?: string;
+  is?: string;
+  layout?: 'horizontal' | 'vertical';
+  roundedFull?: boolean;
+  customClass?: string;
 }
 
 const props = withDefaults(defineProps<IDivider>(), {
@@ -28,7 +30,6 @@ const dividerClasses = computed(() => {
     [`${props.customClass}`]: props.customClass,
   };
 });
-
 </script>
 
 <style lang="scss" scoped src="./Divider.style.scss"></style>

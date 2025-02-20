@@ -7,11 +7,11 @@ const meta: Meta<typeof Alert> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['solid', 'outline']
+      options: ['solid', 'outline'],
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'dark']
+      options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'dark'],
     },
   },
 };
@@ -27,7 +27,7 @@ export const Default: Story = {
     title: 'Default Alert',
     text: 'This is a default alert',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Alert },
     setup() {
       return { args };
@@ -35,7 +35,7 @@ export const Default: Story = {
     template: `
     <Alert v-bind="args"></Alert>
     `,
-  })
+  }),
 };
 
 export const Slots: Story = {
@@ -45,7 +45,7 @@ export const Slots: Story = {
     title: 'Default Alert',
     text: 'This is a default alert',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Alert },
     setup() {
       return { args };
@@ -60,5 +60,5 @@ export const Slots: Story = {
       </template>
     </Alert>
     `,
-  })
+  }),
 };

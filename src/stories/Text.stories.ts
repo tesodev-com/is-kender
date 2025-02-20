@@ -43,7 +43,7 @@ export const Default: Story = {
     fontWeight: 'normal',
     fontColor: 'black',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Text },
     setup() {
       return { args };
@@ -59,7 +59,7 @@ export const CustomText: Story = {
     fontWeight: 'bold',
     fontColor: 'primary',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Text },
     setup() {
       return { args };

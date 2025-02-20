@@ -2,25 +2,25 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import type { Ref } from 'vue';
 
 interface IResizeObserverOptions {
-   box?: 'content-box' | 'border-box' | 'device-pixel-content-box';
+  box?: 'content-box' | 'border-box' | 'device-pixel-content-box';
 }
 
 interface IUseResizeObserverProperties {
-   elementRef?: Ref<Element | null>;
-   element?: Element | null;
-   options?: IResizeObserverOptions;
-   callback?: (entries: ResizeObserverEntry[]) => void;
+  elementRef?: Ref<Element | null>;
+  element?: Element | null;
+  options?: IResizeObserverOptions;
+  callback?: (entries: ResizeObserverEntry[]) => void;
 }
 
 interface IObserverRect {
-   x: number;
-   y: number;
-   width: number;
-   height: number;
-   top: number;
-   left: number;
-   bottom: number;
-   right: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
 }
 
 const defaultState: IObserverRect = {
@@ -34,12 +34,7 @@ const defaultState: IObserverRect = {
   right: 0,
 };
 
-export function useResizeObserver({
-  elementRef,
-  element,
-  options = { box: 'content-box' },
-  callback,
-}: IUseResizeObserverProperties) {
+export function useResizeObserver({ elementRef, element, options = { box: 'content-box' }, callback }: IUseResizeObserverProperties) {
   const rect = ref<IObserverRect>({ ...defaultState });
 
   let observer: ResizeObserver | undefined;

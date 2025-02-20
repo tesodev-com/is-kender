@@ -4,13 +4,13 @@ $font-sizes: (
   md: display-md,
   lg: display-lg,
   xl: display-xl,
-  2xl: display-2xl
+  2xl: display-2xl,
 );
 $font-weights: (
   normal: 400,
   medium: 500,
   semibold: 600,
-  bold: 700
+  bold: 700,
 );
 $font-colors: (
   black: $black,
@@ -20,7 +20,7 @@ $font-colors: (
   success: $success-600,
   info: $blue-light-600,
   warning: $warning-600,
-  danger: $error-600
+  danger: $error-600,
 );
 
 .text {

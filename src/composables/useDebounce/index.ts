@@ -2,7 +2,7 @@ import { ref, onUnmounted } from 'vue';
 
 const DEFAULT_DELAY = 300;
 
-export function useDebounce<T extends(...args: any[]) => void>(fn: T, delay: number = DEFAULT_DELAY) {
+export function useDebounce<T extends (...args: any[]) => void>(fn: T, delay: number = DEFAULT_DELAY) {
   const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
   function debouncedFn(...args: Parameters<T>) {
@@ -25,4 +25,3 @@ export function useDebounce<T extends(...args: any[]) => void>(fn: T, delay: num
 
   return { debouncedFn, cancel };
 }
-

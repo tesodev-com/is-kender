@@ -1,35 +1,137 @@
 $sizes: (
-  sm: (padding: 2px 8px),
-  md: (padding: 2px 10px),
-  lg: (padding: 4px 12px),
+  sm: (
+    padding: 2px 8px,
+  ),
+  md: (
+    padding: 2px 10px,
+  ),
+  lg: (
+    padding: 4px 12px,
+  ),
 );
 $solidColors: (
-  gray: (background-color: $gray-50, color: $gray-700, border: 1px solid $gray-200),
-  primary: (background-color: $primary-50, color: $primary-700, border: 1px solid $primary-200),
-  error: (background-color: $error-50, color: $error-700, border: 1px solid $error-200),
-  warning: (background-color: $warning-50, color: $warning-700, border: 1px solid $warning-200),
-  success: (background-color: $success-50, color: $success-700, border: 1px solid $success-200),
-  blue-gray: (background-color: $blue-gray-50, color: $blue-gray-700, border: 1px solid $blue-gray-200),
-  blue-light: (background-color: $blue-light-50, color: $blue-light-700, border: 1px solid $blue-light-200),
-  blue: (background-color: $blue-50, color: $blue-700, border: 1px solid $blue-200),
-  indigo: (background-color: $indigo-50, color: $indigo-700, border: 1px solid $indigo-200),
-  purple: (background-color: $purple-50, color: $purple-700, border: 1px solid $purple-200),
-  pink: (background-color: $pink-50, color: $pink-700, border: 1px solid $pink-200),
-  orange: (background-color: $orange-50, color: $orange-700, border: 1px solid $orange-200),
+  gray: (
+    background-color: $gray-50,
+    color: $gray-700,
+    border: 1px solid $gray-200,
+  ),
+  primary: (
+    background-color: $primary-50,
+    color: $primary-700,
+    border: 1px solid $primary-200,
+  ),
+  error: (
+    background-color: $error-50,
+    color: $error-700,
+    border: 1px solid $error-200,
+  ),
+  warning: (
+    background-color: $warning-50,
+    color: $warning-700,
+    border: 1px solid $warning-200,
+  ),
+  success: (
+    background-color: $success-50,
+    color: $success-700,
+    border: 1px solid $success-200,
+  ),
+  blue-gray: (
+    background-color: $blue-gray-50,
+    color: $blue-gray-700,
+    border: 1px solid $blue-gray-200,
+  ),
+  blue-light: (
+    background-color: $blue-light-50,
+    color: $blue-light-700,
+    border: 1px solid $blue-light-200,
+  ),
+  blue: (
+    background-color: $blue-50,
+    color: $blue-700,
+    border: 1px solid $blue-200,
+  ),
+  indigo: (
+    background-color: $indigo-50,
+    color: $indigo-700,
+    border: 1px solid $indigo-200,
+  ),
+  purple: (
+    background-color: $purple-50,
+    color: $purple-700,
+    border: 1px solid $purple-200,
+  ),
+  pink: (
+    background-color: $pink-50,
+    color: $pink-700,
+    border: 1px solid $pink-200,
+  ),
+  orange: (
+    background-color: $orange-50,
+    color: $orange-700,
+    border: 1px solid $orange-200,
+  ),
 );
 $outlineColors: (
-  gray: (background-color: transparent, color: $gray-700, border: 1px solid $gray-600),
-  primary: (background-color: transparent, color: $primary-700, border: 1px solid $primary-600),
-  error: (background-color: transparent, color: $error-700, border: 1px solid $error-600),
-  warning: (background-color: transparent, color: $warning-700, border: 1px solid $warning-600),
-  success: (background-color: transparent, color: $success-700, border: 1px solid $success-600),
-  blue-gray: (background-color: transparent, color: $blue-gray-700, border: 1px solid $blue-gray-600),
-  blue-light: (background-color: transparent, color: $blue-light-700, border: 1px solid $blue-light-600),
-  blue: (background-color: transparent, color: $blue-700, border: 1px solid $blue-600),
-  indigo: (background-color: transparent, color: $indigo-700, border: 1px solid $indigo-600),
-  purple: (background-color: transparent, color: $purple-700, border: 1px solid $purple-600),
-  pink: (background-color: transparent, color: $pink-700, border: 1px solid $pink-600),
-  orange: (background-color: transparent, color: $orange-700, border: 1px solid $orange-600),
+  gray: (
+    background-color: transparent,
+    color: $gray-700,
+    border: 1px solid $gray-600,
+  ),
+  primary: (
+    background-color: transparent,
+    color: $primary-700,
+    border: 1px solid $primary-600,
+  ),
+  error: (
+    background-color: transparent,
+    color: $error-700,
+    border: 1px solid $error-600,
+  ),
+  warning: (
+    background-color: transparent,
+    color: $warning-700,
+    border: 1px solid $warning-600,
+  ),
+  success: (
+    background-color: transparent,
+    color: $success-700,
+    border: 1px solid $success-600,
+  ),
+  blue-gray: (
+    background-color: transparent,
+    color: $blue-gray-700,
+    border: 1px solid $blue-gray-600,
+  ),
+  blue-light: (
+    background-color: transparent,
+    color: $blue-light-700,
+    border: 1px solid $blue-light-600,
+  ),
+  blue: (
+    background-color: transparent,
+    color: $blue-700,
+    border: 1px solid $blue-600,
+  ),
+  indigo: (
+    background-color: transparent,
+    color: $indigo-700,
+    border: 1px solid $indigo-600,
+  ),
+  purple: (
+    background-color: transparent,
+    color: $purple-700,
+    border: 1px solid $purple-600,
+  ),
+  pink: (
+    background-color: transparent,
+    color: $pink-700,
+    border: 1px solid $pink-600,
+  ),
+  orange: (
+    background-color: transparent,
+    color: $orange-700,
+    border: 1px solid $orange-600,
+  ),
 );
 $dotColors: (
   gray: $gray-500,
@@ -126,4 +228,4 @@ $variants: (
       padding: 2px;
     }
   }
-};
+}

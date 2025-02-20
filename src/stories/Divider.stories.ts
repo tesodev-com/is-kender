@@ -40,7 +40,7 @@ export const HorizontalDivider: Story = {
   args: {
     ...commonArgs,
     layout: 'horizontal',
-  }
+  },
 };
 
 export const HorizontalRoundedDivider: Story = {
@@ -48,7 +48,7 @@ export const HorizontalRoundedDivider: Story = {
     ...commonArgs,
     layout: 'horizontal',
     roundedFull: true,
-  }
+  },
 };
 
 export const VerticalDivider: Story = {
@@ -56,7 +56,7 @@ export const VerticalDivider: Story = {
     ...commonArgs,
     layout: 'vertical',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Divider },
     setup() {
       return { args };
@@ -75,7 +75,7 @@ export const VerticalRoundedDivider: Story = {
     layout: 'vertical',
     roundedFull: true,
   },
-  render: (args) => ({
+  render: args => ({
     components: { Divider },
     setup() {
       return { args };
@@ -87,4 +87,3 @@ export const VerticalRoundedDivider: Story = {
     `,
   }),
 };
-

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
+import { ProgressBar } from '@/components';
 
 const meta: Meta<typeof ProgressBar> = {
   title: 'Components/ProgressBar',

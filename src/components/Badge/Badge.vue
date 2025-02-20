@@ -1,21 +1,23 @@
 <template>
   <div :class="badgeClasses">
-    <span v-if="dot" :class="dottedClasses" />
-    <slot/>
+    <span
+      v-if="dot"
+      :class="dottedClasses"
+    />
+    <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-
 import { computed } from 'vue';
 
 export interface IBadge {
-   color?: 'gray' | 'primary' |'error' | 'warning' |'success' |'blue-gray' | 'blue-light' |'blue' |'indigo' |'purple' |'pink' |'orange'
-   size?: 'sm' | 'md' | 'lg'
-   variant?: 'solid' |'outline' |'modern'
-   pill?: boolean
-   dot?: boolean
-   onlyIcon?: boolean
+  color?: 'gray' | 'primary' | 'error' | 'warning' | 'success' | 'blue-gray' | 'blue-light' | 'blue' | 'indigo' | 'purple' | 'pink' | 'orange';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'outline' | 'modern';
+  pill?: boolean;
+  dot?: boolean;
+  onlyIcon?: boolean;
 }
 
 const props = withDefaults(defineProps<IBadge>(), {
@@ -36,16 +38,13 @@ const badgeClasses = computed(() => {
     {
       'badge-pill': props.pill,
       'badge-only-icon': props.onlyIcon,
-    }
+    },
   ];
 });
 
 const dottedClasses = computed(() => {
-  return [
-    `badge-dot-${props.color}`
-  ];
+  return [`badge-dot-${props.color}`];
 });
-
 </script>
 
 <style lang="scss" scoped src="./Badge.style.scss"></style>

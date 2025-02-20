@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Badge from '@/components/Badge/Badge.vue';
+import { Badge } from '@/components';
 
 const meta: Meta<typeof Badge> = {
   component: Badge,
@@ -52,7 +52,7 @@ export const Default: Story = {
   args: {
     ...commonArgs,
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
@@ -70,7 +70,7 @@ export const Dotted: Story = {
     ...commonArgs,
     dot: true,
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
@@ -88,7 +88,7 @@ export const PillFalse: Story = {
     ...commonArgs,
     pill: false,
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
@@ -104,9 +104,9 @@ export const PillFalse: Story = {
 export const Outline: Story = {
   args: {
     ...commonArgs,
-    variant: 'outline'
+    variant: 'outline',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
@@ -124,7 +124,7 @@ export const Modern: Story = {
     ...commonArgs,
     variant: 'modern',
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
@@ -142,7 +142,7 @@ export const OnlyIcon: Story = {
     ...commonArgs,
     onlyIcon: true,
   },
-  render: (args) => ({
+  render: args => ({
     components: { Badge },
     setup() {
       return { args };
