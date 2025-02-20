@@ -47,11 +47,11 @@
         }
 
         &:focus-visible {
-            box-shadow: get-ring(var(--toggle-focus-ring, $brand-100));
+            box-shadow: get-ring(var(--toggle-focus-ring, $primary-100));
         }
 
         &.toggle-checked {
-            background-color: var(--toggle-checked-background, $brand-600);
+            background-color: var(--toggle-checked-background, $primary-600);
 
             &::after {
                 transform: translateX(0.75rem);
