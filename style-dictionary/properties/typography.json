@@ -1,0 +1,39 @@
+{
+  "fontSize": {
+    "display": {
+      "2xl": { "value": "4.5rem" },
+      "xl": { "value": "3.75rem" },
+      "lg": { "value": "3rem" },
+      "md": { "value": "2.25rem" },
+      "sm": { "value": "1.875rem" },
+      "xs": { "value": "1.5rem" }
+    },
+    "text": {
+      "xl": { "value": "1.25rem" },
+      "lg": { "value": "1.125rem" },
+      "md": { "value": "1rem" },
+      "sm": { "value": "0.875rem" },
+      "xs": { "value": "0.75rem" }
+    }
+  },
+  "lineHeight": {
+    "display": {
+      "2xl": { "value": "5.625rem" },
+      "xl": { "value": "4.5rem" },
+      "lg": { "value": "3.75rem" },
+      "md": { "value": "2.75rem" },
+      "sm": { "value": "2.375rem" },
+      "xs": { "value": "2rem" }
+    },
+    "text": {
+      "xl": { "value": "1.875rem" },
+      "lg": { "value": "1.75rem" },
+      "md": { "value": "1.5rem" },
+      "sm": { "value": "1.25rem" },
+      "xs": { "value": "1.125rem" }
+    }
+  },
+  "letterSpacing": {
+    "normal": { "value": "-0.02" }
+  }
+}

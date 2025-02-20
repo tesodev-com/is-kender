@@ -1,8 +1,14 @@
 import type { App } from 'vue';
+import { Toggle } from './components';
 import { useCopyClipboard } from '@/composables/useCopyClipboard';
 
 export default {
-  install(app: App) {}
+  install(app: App) {
+    app.component('LibToggle', Toggle);
+  }
 };
 
-export { useCopyClipboard };
+export {
+  Toggle,
+  useCopyClipboard
+};
