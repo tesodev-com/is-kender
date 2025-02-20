@@ -1,3 +1,4 @@
+export { default as Breadcrumb } from './Breadcrumb/Breadcrumb.vue';
 export * from './Toast/Toast.vue';
 export { default as Toast } from './Toast/Toast.vue';
 
