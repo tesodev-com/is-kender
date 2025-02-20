@@ -1,0 +1,61 @@
+
+$alignments:(
+  top:flex-start,
+  center:center,
+  bottom:flex-end,
+);
+$justify-content:(
+  start:flex-start,
+  center:center,
+  end:flex-end,
+  around:space-around,
+  between:space-between,
+);
+$row-direction:(
+  row:row,
+  column:column,
+  row-reverse:row-reverse,
+  column-reverse:column-reverse,
+);
+$gutter-sizes:( 
+  0:0, 
+  1:0.25rem,
+  2:0.5rem,
+  3:0.75rem,
+  4:1rem,
+  5:1.25rem,
+  6:1.5rem,
+);
+
+@each $key, $value in $alignments {
+  .row--align-#{$key} {
+    align-items: $value; 
+  }
+}
+
+@each $key, $value in $justify-content {
+  .row--justify-#{$key} {
+    justify-content: $value;
+  }
+}
+
+@each $key, $value in $row-direction {
+  .row--direction-#{$key} {
+    flex-direction: $value;
+  }
+}
+
+@each $key, $size in $gutter-sizes {
+  .row--gutter-#{$key} {
+   gap: $size
+  }
+}
+
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+}
