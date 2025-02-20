@@ -1,16 +1,33 @@
 <template>
   <div class="toggle-wrapper">
-    <div class="toggle" :class="{'toggle-checked': modelValue, 'toggle-disabled': disabled}" tabindex="0">
+    <div
+      class="toggle"
+      :class="{ 'toggle-checked': modelValue, 'toggle-disabled': disabled }"
+      tabindex="0"
+    >
       <input
         :id="generateId"
         v-model="modelValue"
         type="checkbox"
         class="toggle-input"
-        :disabled="disabled" />
+        :disabled="disabled"
+      />
     </div>
-    <div v-if="label" class="toggle-label">
-      <label v-if="label" class="toggle-label-text" :for="generateId">{{ label }}</label>
-      <p v-if="description" class="toggle-label-description">
+    <div
+      v-if="label"
+      class="toggle-label"
+    >
+      <label
+        v-if="label"
+        class="toggle-label-text"
+        :for="generateId"
+      >
+        {{ label }}
+      </label>
+      <p
+        v-if="description"
+        class="toggle-label-description"
+      >
         {{ description }}
       </p>
     </div>
@@ -19,11 +36,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-  interface ToggleProps {
-    disabled?: boolean;
-    label?: string;
-    description?: string;
-  }
+interface ToggleProps {
+  disabled?: boolean;
+  label?: string;
+  description?: string;
+}
 const modelValue = defineModel<boolean>({ required: true });
 defineProps<ToggleProps>();
 const generateId = computed(() => {
