@@ -15,20 +15,8 @@ export default mergeConfig(
         web: ['/.[jt]sx?$/'],
       },
       coverage: {
-        exclude: [
-          'src/stories/*',
-          '/src/types/*',
-          'dist/*',
-          '*.config.cjs',
-          '*.config.ts',
-          '.storybook/*',
-          'src/*.d.ts',
-          'src/App.vue',
-          'src/index.ts',
-          'src/main.ts',
-          '.eslintrc.cjs',
-        ],
+        exclude: ['src/stories/*', '/src/types/*', 'dist/*', '*.config.cjs', '*.config.ts', '.storybook/*', 'src/*.d.ts', 'src/App.vue', 'src/index.ts', 'src/main.ts', '.eslintrc.cjs'],
       },
     },
-  }),
+  })
 );

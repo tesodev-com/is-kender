@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue';
 import { globSync } from 'glob';
 import path, { extname, relative, resolve } from 'path';
-import { OutputOptions } from 'rollup';
+import { type OutputOptions } from 'rollup';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -27,18 +27,20 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/main.ts'),
     },
     rollupOptions: {
-      input: Object.fromEntries(globSync('src/**/*.{js,ts,vue}', { ignore: ['src/stories/*', 'src/utils/*', 'src/**/*.spec.ts', 'src/globalTypes/*'] }).map((file) => [
-        relative('src', file.slice(0, file.length - extname(file).length)),
-        fileURLToPath(new URL(file, import.meta.url))
-      ])),
+      input: Object.fromEntries(
+        globSync('src/**/*.{js,ts,vue}', { ignore: ['src/stories/*', 'src/utils/*', 'src/**/*.spec.ts', 'src/globalTypes/*'] }).map(file => [
+          relative('src', file.slice(0, file.length - extname(file).length)),
+          fileURLToPath(new URL(file, import.meta.url)),
+        ])
+      ),
       external: ['vue'],
       output: [
         {
           format: 'es',
           entryFileNames: '[name].js',
           ...commonOutputConfig,
-        }
-      ]
+        },
+      ],
     },
   },
   css: {
