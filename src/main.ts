@@ -1,8 +1,14 @@
 import type { App } from 'vue';
+import { Toggle } from './components';
 import { useIsMobile } from '@/composable/useIsMobile';
 
 export default {
-  install(app: App) {}
+  install(app: App) {
+    app.component('LibToggle', Toggle);
+  }
 };
 
-export { useIsMobile };
+export {
+  Toggle,
+  useIsMobile
+};
