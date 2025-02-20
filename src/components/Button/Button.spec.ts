@@ -1,4 +1,4 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils';
+import { shallowMount, type VueWrapper } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Button from './Button.vue';
 
@@ -30,9 +30,9 @@ describe('Button.vue', () => {
     expect(wrapper.text()).toBe('Click me');
   });
 
-  sizes.forEach((size) => {
-    colors.forEach((color) => {
-      variants.forEach((variant) => {
+  sizes.forEach(size => {
+    colors.forEach(color => {
+      variants.forEach(variant => {
         it(`should apply correct classes for size=${size}, color=${color}, variant=${variant}`, () => {
           const wrapper = createWrapper({ size, color, variant });
 

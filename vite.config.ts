@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue';
 import { globSync } from 'glob';
 import path, { extname, relative, resolve } from 'path';
-import { type OutputOptions } from 'rollup';
+import type { OutputOptions } from 'rollup';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';

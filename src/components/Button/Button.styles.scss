@@ -1,230 +1,478 @@
 @use "sass:list";
 
 $sizes: (
-    sm: (padding: 8px 14px),
-    md: (padding: 10px 16px),
-    lg: (padding: 10px 18px),
-    xl: (padding: 12px 20px),
-    2xl: (padding: 16px 28px),
+  sm: (
+    padding: 8px 14px,
+  ),
+  md: (
+    padding: 10px 16px,
+  ),
+  lg: (
+    padding: 10px 18px,
+  ),
+  xl: (
+    padding: 12px 20px,
+  ),
+  2xl: (
+    padding: 16px 28px,
+  ),
 );
 $solidColors: (
-    primary: (
-        "": (background: $primary-600, color: $white),
-        hover: (background: $primary-700),
-        active: (background: $primary-800),
-        focus-visible: (box-shadow: get-ring($primary-100)),
-        disabled: (background: $primary-200),
+  primary: (
+    "": (
+      background: $primary-600,
+      color: $white,
     ),
-    secondary: (
-        "": (background: $primary-50, color: $primary-700),
-        hover: (background: $primary-100),
-        active: (background: $primary-200),
-        focus-visible: (box-shadow: get-ring($primary-100)),
-        disabled: (background: $primary-25, color: $primary-300),
+    hover: (
+      background: $primary-700,
     ),
-    success: (
-        "": (background: $success-600, color: $white),
-        hover: (background: $success-700),
-        active: (background: $success-800),
-        focus-visible: (box-shadow: get-ring($success-100)),
-        disabled: (background: $success-200),
+    active: (
+      background: $primary-800,
     ),
-    info: (
-        "": (background: $blue-light-600,color: $white),
-        hover: (background: $blue-light-700),
-        active: (background: $blue-light-800),
-        focus-visible: (box-shadow: get-ring($blue-light-100)),
-        disabled: (background: $blue-light-200),
+    focus-visible: (
+      box-shadow: get-ring($primary-100),
     ),
-    warning: (
-        "": (background: $warning-600, color: $white),
-        hover: (background: $warning-700),
-        active: (background: $warning-800),
-        focus-visible: (box-shadow: get-ring($warning-100)),
-        disabled: (background: $warning-200),
+    disabled: (
+      background: $primary-200,
     ),
-    danger: (
-        "": (background: $error-600, color: $white),
-        hover: (background: $error-700),
-        active: (background: $error-800),
-        focus-visible: (box-shadow: get-ring($error-100)),
-        disabled: (background: $error-200),
+  ),
+  secondary: (
+    "": (
+      background: $primary-50,
+      color: $primary-700,
     ),
-    dark: (
-        "": (background: $gray-900, color: $white),
-        hover: (background: $gray-800),
-        active: (background: $gray-700),
-        focus-visible: (box-shadow: get-ring($gray-100)),
-        disabled: (background: $gray-200),
+    hover: (
+      background: $primary-100,
     ),
+    active: (
+      background: $primary-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($primary-100),
+    ),
+    disabled: (
+      background: $primary-25,
+      color: $primary-300,
+    ),
+  ),
+  success: (
+    "": (
+      background: $success-600,
+      color: $white,
+    ),
+    hover: (
+      background: $success-700,
+    ),
+    active: (
+      background: $success-800,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($success-100),
+    ),
+    disabled: (
+      background: $success-200,
+    ),
+  ),
+  info: (
+    "": (
+      background: $blue-light-600,
+      color: $white,
+    ),
+    hover: (
+      background: $blue-light-700,
+    ),
+    active: (
+      background: $blue-light-800,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($blue-light-100),
+    ),
+    disabled: (
+      background: $blue-light-200,
+    ),
+  ),
+  warning: (
+    "": (
+      background: $warning-600,
+      color: $white,
+    ),
+    hover: (
+      background: $warning-700,
+    ),
+    active: (
+      background: $warning-800,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($warning-100),
+    ),
+    disabled: (
+      background: $warning-200,
+    ),
+  ),
+  danger: (
+    "": (
+      background: $error-600,
+      color: $white,
+    ),
+    hover: (
+      background: $error-700,
+    ),
+    active: (
+      background: $error-800,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($error-100),
+    ),
+    disabled: (
+      background: $error-200,
+    ),
+  ),
+  dark: (
+    "": (
+      background: $gray-900,
+      color: $white,
+    ),
+    hover: (
+      background: $gray-800,
+    ),
+    active: (
+      background: $gray-700,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($gray-100),
+    ),
+    disabled: (
+      background: $gray-200,
+    ),
+  ),
 );
 $outlineColors: (
-    primary: (
-        "": (background: $white, color: $primary-600, border: 1px solid $primary-300),
-        hover: (background: $primary-100),
-        active: (background: $primary-200),
-        focus-visible: (box-shadow: get-ring($primary-100)),
-        disabled: (background: $primary-200),
+  primary: (
+    "": (
+      background: $white,
+      color: $primary-600,
+      border: 1px solid $primary-300,
     ),
-    secondary: (
-        "": (background: $white, color: $gray-700, border: 1px solid $gray-300),
-        hover: (background: $gray-50),
-        active: (background: $gray-100),
-        focus-visible: (box-shadow: get-ring($gray-100)),
-        disabled: (color: $gray-300),
+    hover: (
+      background: $primary-100,
     ),
-    success: (
-        "": (background: $white, color: $success-600, border: 1px solid $success-300),
-        hover: (background: $success-100),
-        active: (background: $success-200),
-        focus-visible: (box-shadow: get-ring($success-100)),
-        disabled: (background: $success-200),
+    active: (
+      background: $primary-200,
     ),
-    info: (
-        "": (background: $white, color: $blue-light-600, border: 1px solid $blue-light-300),
-        hover: (background: $blue-light-100),
-        active: (background: $blue-light-200),
-        focus-visible: (box-shadow: get-ring($blue-light-100)),
-        disabled: (background: $blue-light-200),
+    focus-visible: (
+      box-shadow: get-ring($primary-100),
     ),
-    warning: (
-        "": (background: $white, color: $warning-600, border: 1px solid $warning-300),
-        hover: (background: $warning-100),
-        active: (background: $warning-200),
-        focus-visible: (box-shadow: get-ring($warning-100)),
-        disabled: (background: $warning-200),
+    disabled: (
+      background: $primary-200,
     ),
-    danger: (
-        "": (background: $white, color: $error-600, border: 1px solid $error-300),
-        hover: (background: $error-100),
-        active: (background: $error-200),
-        focus-visible: (box-shadow: get-ring($error-100)),
-        disabled: (background: $error-200),
+  ),
+  secondary: (
+    "": (
+      background: $white,
+      color: $gray-700,
+      border: 1px solid $gray-300,
     ),
-    dark: (
-        "": (background: $white, color: $gray-600, border: 1px solid $gray-300),
-        hover: (background: $gray-100),
-        active: (background: $gray-200),
-        focus-visible: (box-shadow: get-ring($gray-100)),
-        disabled: (background: $gray-200),
+    hover: (
+      background: $gray-50,
     ),
+    active: (
+      background: $gray-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($gray-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  success: (
+    "": (
+      background: $white,
+      color: $success-600,
+      border: 1px solid $success-300,
+    ),
+    hover: (
+      background: $success-100,
+    ),
+    active: (
+      background: $success-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($success-100),
+    ),
+    disabled: (
+      background: $success-200,
+    ),
+  ),
+  info: (
+    "": (
+      background: $white,
+      color: $blue-light-600,
+      border: 1px solid $blue-light-300,
+    ),
+    hover: (
+      background: $blue-light-100,
+    ),
+    active: (
+      background: $blue-light-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($blue-light-100),
+    ),
+    disabled: (
+      background: $blue-light-200,
+    ),
+  ),
+  warning: (
+    "": (
+      background: $white,
+      color: $warning-600,
+      border: 1px solid $warning-300,
+    ),
+    hover: (
+      background: $warning-100,
+    ),
+    active: (
+      background: $warning-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($warning-100),
+    ),
+    disabled: (
+      background: $warning-200,
+    ),
+  ),
+  danger: (
+    "": (
+      background: $white,
+      color: $error-600,
+      border: 1px solid $error-300,
+    ),
+    hover: (
+      background: $error-100,
+    ),
+    active: (
+      background: $error-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($error-100),
+    ),
+    disabled: (
+      background: $error-200,
+    ),
+  ),
+  dark: (
+    "": (
+      background: $white,
+      color: $gray-600,
+      border: 1px solid $gray-300,
+    ),
+    hover: (
+      background: $gray-100,
+    ),
+    active: (
+      background: $gray-200,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($gray-100),
+    ),
+    disabled: (
+      background: $gray-200,
+    ),
+  ),
 );
 $ghostColors: (
-    primary: (
-        "": (color: $primary-700),
-        hover: (background: $primary-50),
-        active: (background: $primary-100),
-        focus-visible: (box-shadow: get-ring($primary-100)),
-        disabled: (color: $gray-300),
+  primary: (
+    "": (
+      color: $primary-700,
     ),
-    secondary: (
-        "": (color: $gray-700),
-        hover: (background: $gray-50),
-        active: (background: $gray-100),
-        focus-visible: (box-shadow: get-ring($gray-100)),
-        disabled: (color: $gray-300),
+    hover: (
+      background: $primary-50,
     ),
-    success: (
-        "": (color: $success-700),
-        hover: (background: $success-50),
-        active: (background: $success-100),
-        focus-visible: (box-shadow: get-ring($success-100)),
-        disabled: (color: $gray-300),
+    active: (
+      background: $primary-100,
     ),
-    info: (
-        "": (color: $blue-light-700),
-        hover: (background: $blue-light-50),
-        active: (background: $blue-light-100),
-        focus-visible: (box-shadow: get-ring($blue-light-100)),
-        disabled: (color: $gray-300),
+    focus-visible: (
+      box-shadow: get-ring($primary-100),
     ),
-    warning: (
-        "": (color: $warning-700),
-        hover: (background: $warning-50),
-        active: (background: $warning-100),
-        focus-visible: (box-shadow: get-ring($warning-100)),
-        disabled: (color: $gray-300),
+    disabled: (
+      color: $gray-300,
     ),
-    danger: (
-        "": (color: $error-700),
-        hover: (background: $error-50),
-        active: (background: $error-100),
-        focus-visible: (box-shadow: get-ring($error-100)),
-        disabled: (color: $gray-300),
+  ),
+  secondary: (
+    "": (
+      color: $gray-700,
     ),
-    dark: (
-        "": (color: $gray-700),
-        hover: (background: $gray-50),
-        active: (background: $gray-100),
-        focus-visible: (box-shadow: get-ring($gray-100)),
-        disabled: (color: $gray-300),
+    hover: (
+      background: $gray-50,
     ),
+    active: (
+      background: $gray-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($gray-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  success: (
+    "": (
+      color: $success-700,
+    ),
+    hover: (
+      background: $success-50,
+    ),
+    active: (
+      background: $success-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($success-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  info: (
+    "": (
+      color: $blue-light-700,
+    ),
+    hover: (
+      background: $blue-light-50,
+    ),
+    active: (
+      background: $blue-light-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($blue-light-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  warning: (
+    "": (
+      color: $warning-700,
+    ),
+    hover: (
+      background: $warning-50,
+    ),
+    active: (
+      background: $warning-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($warning-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  danger: (
+    "": (
+      color: $error-700,
+    ),
+    hover: (
+      background: $error-50,
+    ),
+    active: (
+      background: $error-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($error-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
+  dark: (
+    "": (
+      color: $gray-700,
+    ),
+    hover: (
+      background: $gray-50,
+    ),
+    active: (
+      background: $gray-100,
+    ),
+    focus-visible: (
+      box-shadow: get-ring($gray-100),
+    ),
+    disabled: (
+      color: $gray-300,
+    ),
+  ),
 );
 $variants: (
-    solid: $solidColors,
-    outline: $outlineColors,
-    ghost: $ghostColors,
+  solid: $solidColors,
+  outline: $outlineColors,
+  ghost: $ghostColors,
 );
 
 .button {
-    all: unset;
-    border: none;
-    outline: none;
-    text-decoration: none;
-    background: none;
-    user-select: none;
-    overflow: hidden;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: var(--button-border-radius, $rounded-sm);
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: all 0.2s;
+  all: unset;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  background: none;
+  user-select: none;
+  overflow: hidden;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--button-border-radius, $rounded-sm);
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s;
 
-    &:disabled {
-        cursor: not-allowed;
-    }
+  &:disabled {
+    cursor: not-allowed;
+  }
 
-    &-fluid {
-        width: 100%;
-    }
+  &-fluid {
+    width: 100%;
+  }
 
-    @each $size, $value in $sizes {
-        &-#{$size} {
-            @each $property, $propertyValue in $value {
-                #{$property}: var(--button-#{$size}-#{$property}, $propertyValue);
+  @each $size, $value in $sizes {
+    &-#{$size} {
+      @each $property, $propertyValue in $value {
+        #{$property}: var(--button-#{$size}-#{$property}, $propertyValue);
 
-                @if list.index((2xl), $size) {
-                    @include text-lg(600);
-                } @else if list.index((lg, xl), $size) {
-                    @include text-md(600);
-                } @else {
-                    @include text-sm(600);
-                }
-            }   
+        @if list.index((2xl), $size) {
+          @include text-lg(600);
+        } @else if list.index((lg, xl), $size) {
+          @include text-md(600);
+        } @else {
+          @include text-sm(600);
         }
+      }
     }
+  }
 
-    @each $variant, $variantColors in $variants {
-        &-#{$variant} {
-            @each $color, $value in $variantColors {
-                &.button-#{$color} {
-                    @each $state, $stateValue in $value {
-                        @if $state == "" {
-                            @each $property, $propertyValue in $stateValue {
-                                #{$property}: var(--button-#{$color}-#{$property}, $propertyValue);
-                            }
-                        } @else {
-                            &:#{$state} {
-                                @each $property, $propertyValue in $stateValue {
-                                    #{$property}: var(--button-#{$color}-#{$state}-#{$property}, $propertyValue);
-                                }
-                            }
-                        }
-                    }
+  @each $variant, $variantColors in $variants {
+    &-#{$variant} {
+      @each $color, $value in $variantColors {
+        &.button-#{$color} {
+          @each $state, $stateValue in $value {
+            @if $state == "" {
+              @each $property, $propertyValue in $stateValue {
+                #{$property}: var(
+                  --button-#{$color}-#{$property},
+                  $propertyValue
+                );
+              }
+            } @else {
+              &:#{$state} {
+                @each $property, $propertyValue in $stateValue {
+                  #{$property}: var(
+                    --button-#{$color}-#{$state}-#{$property},
+                    $propertyValue
+                  );
                 }
-            }    
+              }
+            }
+          }
         }
+      }
     }
+  }
 }

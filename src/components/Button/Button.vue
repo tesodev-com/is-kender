@@ -2,7 +2,8 @@
   <component
     :is="el"
     :class="buttonClasses"
-    v-bind="$attrs">
+    v-bind="$attrs"
+  >
     <slot>{{ text }}</slot>
   </component>
 </template>
@@ -10,12 +11,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 interface ButtonProps {
-    el?: 'button' | 'a' | any;
-    size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-    color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
-    variant?: 'solid' | 'outline' | 'ghost';
-    text?: string;
-    fluid?: boolean;
+  el?: 'button' | 'a' | any;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
+  variant?: 'solid' | 'outline' | 'ghost';
+  text?: string;
+  fluid?: boolean;
 }
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',
@@ -24,13 +25,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   variant: 'solid',
 });
 const buttonClasses = computed(() => {
-  return [
-    'button',
-    `button-${props.variant}`,
-    `button-${props.color}`,
-    `button-${props.size}`,
-    { 'button-fluid': props.fluid }
-  ];
+  return ['button', `button-${props.variant}`, `button-${props.color}`, `button-${props.size}`, { 'button-fluid': props.fluid }];
 });
 </script>
 

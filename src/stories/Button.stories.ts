@@ -1,5 +1,5 @@
 import { Button } from '@/components';
-import { type Meta, type StoryObj } from '@storybook/vue3';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -7,24 +7,24 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     el: {
       control: 'text',
-      options: ['button', 'a']
+      options: ['button', 'a'],
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', '2xl']
+      options: ['sm', 'md', 'lg', 'xl', '2xl'],
     },
     variant: {
       control: 'select',
-      options: ['solid', 'outline', 'ghost']
+      options: ['solid', 'outline', 'ghost'],
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'dark']
+      options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'dark'],
     },
     fluid: {
-      control: 'boolean'
-    }
-  }
+      control: 'boolean',
+    },
+  },
 };
 
 export default meta;
@@ -37,6 +37,6 @@ export const Default: Story = {
     size: 'md',
     variant: 'solid',
     color: 'primary',
-    el: 'button'
-  }
+    el: 'button',
+  },
 };
