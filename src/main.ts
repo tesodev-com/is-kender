@@ -1,10 +1,14 @@
 import type { App } from 'vue';
-import { ProgressBar } from '@/components';
+import { Toggle, ProgressBar } from './components';
 
 export default {
   install(app: App) {
+    app.component('LibToggle', Toggle);
     app.component('LibProgressBar', ProgressBar);
   }
 };
 
-export { ProgressBar };
+export {
+  Toggle,
+  ProgressBar
+};
