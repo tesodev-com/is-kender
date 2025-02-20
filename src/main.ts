@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import { Toggle } from './components';
-import { useIsMobile } from '@/composable/useIsMobile';
 
 export default {
   install(app: App) {
@@ -10,5 +9,4 @@ export default {
 
 export {
   Toggle,
-  useIsMobile
 };
