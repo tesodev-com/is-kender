@@ -1,11 +1,14 @@
 import type { App } from 'vue';
-import { Text } from './components';
+import { Toggle, Text } from './components';
 
 export default {
   install(app: App) {
+    app.component('LibToggle', Toggle);
     app.component('LibText', Text);
   }
 };
 
-export { Text };
-
+export {
+  Toggle,
+  Text
+};
