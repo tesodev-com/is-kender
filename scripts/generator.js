@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { mapPlaceholders, scssFile, storyFile, testFile, vueFile } from './templates.js';
+import { dtsFile, mapPlaceholders, scssFile, storyFile, testFile, vueFile } from './templates.js';
 
 const files = [
   {
@@ -16,6 +16,11 @@ const files = [
     type: 'components',
     ext: '.spec.ts',
     template: testFile,
+  },
+  {
+    type: 'components',
+    ext: '.d.ts',
+    template: placeholders => mapPlaceholders(dtsFile, placeholders),
   },
   {
     type: 'stories',
