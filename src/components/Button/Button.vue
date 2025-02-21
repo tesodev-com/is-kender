@@ -10,14 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-interface ButtonProps {
-  el?: 'button' | 'a' | any;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
-  variant?: 'solid' | 'outline' | 'ghost';
-  text?: string;
-  fluid?: boolean;
-}
+import type { ButtonProps } from './Button';
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',
   size: 'md',

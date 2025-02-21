@@ -1,46 +1,46 @@
 import vue from '@vitejs/plugin-vue';
-import { globSync } from 'glob';
+import { glob } from 'glob';
 import path, { extname, relative, resolve } from 'path';
-import type { OutputOptions } from 'rollup';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
-const commonOutputConfig = {
-  assetFileNames: 'assets/[name][extname]',
-  exports: 'named',
-} as OutputOptions;
-
 export default defineConfig({
   plugins: [
     vue(),
     dts({
-      tsconfigPath: resolve(__dirname, './tsconfig.lib.json'),
-      entryRoot: resolve(__dirname, './src'),
-      outDir: resolve(__dirname, './dist/types'),
+      tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
+      entryRoot: resolve(__dirname, 'src'),
+      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts'],
+      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
+      cleanVueFileName: true,
+      copyDtsFiles: true,
     }),
     libInjectCss(),
   ],
   build: {
+    copyPublicDir: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/main.ts'),
+      entry: resolve(__dirname, 'src/main.ts'),
+      formats: ['es'],
     },
     rollupOptions: {
       input: Object.fromEntries(
-        globSync('src/**/*.{js,ts,vue}', { ignore: ['src/stories/*', 'src/utils/*', 'src/**/*.spec.ts', 'src/globalTypes/*'] }).map(file => [
-          relative('src', file.slice(0, file.length - extname(file).length)),
-          fileURLToPath(new URL(file, import.meta.url)),
-        ])
+        glob
+          .sync('src/**/*.{ts,js,vue}', {
+            ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts'],
+          })
+          .map(file => [relative('src', file.slice(0, file.length - extname(file).length)), fileURLToPath(new URL(file, import.meta.url))])
       ),
       external: ['vue'],
-      output: [
-        {
-          format: 'es',
-          entryFileNames: '[name].js',
-          ...commonOutputConfig,
+      output: {
+        assetFileNames: 'assets/[name][extname]',
+        entryFileNames: '[name].js',
+        globals: {
+          vue: 'Vue',
         },
-      ],
+      },
     },
   },
   css: {
