@@ -15,3 +15,75 @@
     opacity: 1;
   }
 }
+
+.slide-left {
+  &-move,
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+}
+
+.slide-right {
+  &-move,
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+}
+
+.slide-up {
+  &-move,
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+}
+
+.slide-down {
+  &-move,
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+}

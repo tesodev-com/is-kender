@@ -81,6 +81,16 @@
   );
 }
 
+@mixin text-2xl($weight: normal, $color: null) {
+  @include typography(
+    $font-size-text-2xl,
+    $line-height-text-2xl,
+    0,
+    $weight,
+    $color
+  );
+}
+
 @mixin text-xl($weight: normal, $color: null) {
   @include typography(
     $font-size-text-xl,

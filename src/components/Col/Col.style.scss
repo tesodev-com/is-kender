@@ -1,0 +1,62 @@
+@use "sass:math";
+
+.col {
+  position: relative;
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+// Base col classes
+@for $i from 1 through 12 {
+  .col--cols-#{$i} {
+    flex: 0 0 math.percentage(math.div($i, 12));
+    max-width: math.percentage(math.div($i, 12));
+  }
+}
+
+// Responsive breakpoints
+@media (width >= 576px) {
+  @for $i from 1 through 12 {
+    .col--sm-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+@media (width >= 768px) {
+  @for $i from 1 through 12 {
+    .col--md-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+@media (width >= 992px) {
+  @for $i from 1 through 12 {
+    .col--lg-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+@media (width >= 1200px) {
+  @for $i from 1 through 12 {
+    .col--xl-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}
+
+@media (width >= 1400px) {
+  @for $i from 1 through 12 {
+    .col--xxl-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
+    }
+  }
+}

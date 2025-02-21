@@ -12,6 +12,8 @@ export default {
     },
   ],
   rules: {
+    'declaration-property-value-no-unknown': null,
+    'scss/declaration-property-value-no-unknown': true,
     'color-hex-length': 'short',
     'scss/dollar-variable-pattern': '^([a-z][a-zA-Z0-9-]+)$',
     'scss/at-rule-no-unknown': true,
