@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { SetupContext } from 'vue';
+import { computed } from 'vue';
 export interface BreadcrumbItemProps {
   text: string;
   to: string;
