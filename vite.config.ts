@@ -31,12 +31,7 @@ export default defineConfig({
           .sync('src/**/*.{ts,js,vue}', {
             ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts'],
           })
-          .map(file => [
-            // Remove file extension and prefix with src, src/components/button.vue -> src/components/button
-            relative('src', file.slice(0, file.length - extname(file).length)),
-            // Convert to absolute path and remove file protocol prefix file://, src/components/button.vue -> /path/to/project/src/components/button.vue
-            fileURLToPath(new URL(file, import.meta.url)),
-          ])
+          .map(file => [relative('src', file.slice(0, file.length - extname(file).length)), fileURLToPath(new URL(file, import.meta.url))])
       ),
       external: ['vue'],
       output: {
