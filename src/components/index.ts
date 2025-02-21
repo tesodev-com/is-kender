@@ -12,5 +12,7 @@ export { default as FileUpload } from './FileUpload/FileUpload.vue';
 export { default as ProgressBar } from './ProgressBar/ProgressBar.vue';
 export { default as Row } from './Row/Row.vue';
 export { default as Skeleton } from './Skeleton/Skeleton.vue';
+export { default as Svg } from './Svg/Svg.vue';
 export { default as Text } from './Text/Text.vue';
 export { default as Toggle } from './Toggle/Toggle.vue';
+

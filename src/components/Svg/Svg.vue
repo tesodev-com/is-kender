@@ -1,0 +1,57 @@
+<template>
+  <span
+    ref="icon"
+    class="icon"
+    v-html="svgEl"
+  ></span>
+</template>
+
+<script setup lang="ts">
+import { onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
+export interface SvgProps {
+  src?: string;
+  name?: string;
+  size?: string;
+  style?: string;
+}
+onServerPrefetch(async () => {
+  await loadSvg();
+});
+const props = withDefaults(defineProps<SvgProps>(), {
+  size: '1.5rem',
+});
+const spanRef = useTemplateRef('icon');
+const svgEl = ref<string | null>(null);
+watch([() => props.src, () => props.name], loadSvg);
+watch([() => props.size], updateSvg);
+async function loadSvg() {
+  try {
+    if (props.src) {
+      svgEl.value = parseSvg(props.src);
+    } else if (props.name) {
+      const module = await import(`../../assets/icons/${props.name}.svg?raw`).then(m => m.default);
+      svgEl.value = parseSvg(module);
+    }
+  } catch {
+    svgEl.value = null;
+  }
+}
+function updateSvg() {
+  if (spanRef.value) {
+    const svg = spanRef.value?.querySelector('svg')?.outerHTML;
+    if (!svg) return;
+    svgEl.value = parseSvg(svg);
+  }
+}
+function parseSvg(svgData: string) {
+  svgData = svgData.replace(/\bwidth\s*=\s*["'][^"']*["']/g, '');
+  svgData = svgData.replace(/\bheight\s*=\s*["'][^"']*["']/g, '');
+  svgData = svgData.replace(/\bfill\s*=\s*["'][^"']*["']/g, '');
+
+  svgData = svgData.replace(/<svg\b([^>]*)>/, (_, attributes) => {
+    return `<svg ${attributes} width="${props.size}" height="${props.size}" fill="currentColor">`;
+  });
+
+  return svgData;
+}
+</script>

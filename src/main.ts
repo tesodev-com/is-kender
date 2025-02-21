@@ -1,8 +1,7 @@
-import { useEventBus } from '@/composables/useEventBus';
+import { useEventBus, useToast } from '@/composables';
 import eventBus from '@/utils/eventBus';
 import type { App } from 'vue';
-import { Breadcrumb, Skeleton, Toggle, Alert, Button, FileUpload, Toast, Container, Row, Col } from './components';
-import { useToast } from '@/composables';
+import { Alert, Breadcrumb, Button, Col, Container, FileUpload, Row, Skeleton, Svg, Toast, Toggle } from './components';
 
 export default {
   install(app: App) {
@@ -18,7 +17,8 @@ export default {
     app.component('LibRow', Row);
     app.component('LibCol', Col);
     app.component('LibBreadcrumb', Breadcrumb);
+    app.component('LibSvg', Svg);
   },
 };
 
-export { Breadcrumb, Container, Row, Col, eventBus, Skeleton, Toggle, Alert, Button, FileUpload, Toast, useEventBus, useToast };
+export { Alert, Breadcrumb, Button, Col, Container, eventBus, FileUpload, Row, Skeleton, Svg, Toast, Toggle, useEventBus, useToast };
