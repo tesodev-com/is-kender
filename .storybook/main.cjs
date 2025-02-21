@@ -5,6 +5,7 @@ module.exports = {
     name: '@storybook/vue3-vite',
     options: {},
   },
+  staticDirs: ['../public'],
   features: {
     storyStoreV7: true,
   },
