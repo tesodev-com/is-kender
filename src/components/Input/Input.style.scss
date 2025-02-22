@@ -1,0 +1,40 @@
+$sizeList: ('sm', 'md','lg', 'xl','2xl'
+);
+$input-states:(
+  '':( border:1px solid $gray-300, radius:
+  ),
+)
+
+
+  @each $size in $sizeList{
+    .input-container{
+      .input-wrapper{
+        .input{
+          @include text-#{$size};
+        }
+      }
+    }
+  }
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.input-wrapper{
+  border: 1px solid $gray-300;
+
+  &:focus-within{
+    border: 1px solid $primary-500;    
+  }
+}
+
+.input{
+  border: none;
+
+
+  &:focus{
+    outline: none;
+  }
+}
