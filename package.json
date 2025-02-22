@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "build:lib": "vue-tsc -p tsconfig.lib.json && vite build",
+    "build:lib": "node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build",
     "preview": "vite preview --port 3001",
     "lint:js": "eslint --fix",
     "lint:style": "stylelint \"**/*.{css,scss,html,vue}\" --ignore-path .gitignore --fix",
@@ -37,7 +37,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json",
-    "prepare": "husky"
+    "prepare": "husky",
+    "create-component": "node scripts/generator.js"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
