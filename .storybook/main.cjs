@@ -1,17 +1,13 @@
 module.exports = {
   stories: ['../src/stories/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@chromatic-com/storybook'
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', '@chromatic-com/storybook'],
   framework: {
     name: '@storybook/vue3-vite',
-    options: {}
+    options: {},
   },
+  staticDirs: ['../public'],
   features: {
     storyStoreV7: true,
   },
-  docs: {}
+  docs: {},
 };
