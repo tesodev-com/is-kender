@@ -1,3 +1,5 @@
+import '../src/assets/styles/initial.scss';
+
 export const parameters = {
   controls: {
     matchers: {
