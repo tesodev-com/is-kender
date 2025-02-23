@@ -4,7 +4,7 @@ import { getFolders, readPackageJson } from './utils.js';
 const packageJson = readPackageJson();
 const excludeFolders = [];
 
-function setPackgeExport() {
+function setPackageExport() {
   const folders = getFolders('src/components');
   const exports = packageJson.exports || {};
   folders.forEach(folder => {
@@ -24,5 +24,5 @@ function setComponentIndex() {
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
-setPackgeExport();
+setPackageExport();
 setComponentIndex();

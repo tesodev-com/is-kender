@@ -15,4 +15,3 @@ export { default as Skeleton } from './Skeleton/Skeleton.vue';
 export { default as Svg } from './Svg/Svg.vue';
 export { default as Text } from './Text/Text.vue';
 export { default as Toggle } from './Toggle/Toggle.vue';
-

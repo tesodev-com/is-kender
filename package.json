@@ -18,8 +18,68 @@
       "import": "./dist/main.js"
     },
     "./button": {
-      "types": "./dist/components/Button/Button.d.ts",
-      "import": "./dist/components/Button/Button.js"
+      "types": "./dist/components/Button.d.ts",
+      "import": "./dist/components/Button.js"
+    },
+    "./accordion": {
+      "types": "./dist/components/Accordion.d.ts",
+      "import": "./dist/components/Accordion.js"
+    },
+    "./alert": {
+      "types": "./dist/components/Alert.d.ts",
+      "import": "./dist/components/Alert.js"
+    },
+    "./badge": {
+      "types": "./dist/components/Badge.d.ts",
+      "import": "./dist/components/Badge.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/components/Breadcrumb.d.ts",
+      "import": "./dist/components/Breadcrumb.js"
+    },
+    "./col": {
+      "types": "./dist/components/Col.d.ts",
+      "import": "./dist/components/Col.js"
+    },
+    "./container": {
+      "types": "./dist/components/Container.d.ts",
+      "import": "./dist/components/Container.js"
+    },
+    "./divider": {
+      "types": "./dist/components/Divider.d.ts",
+      "import": "./dist/components/Divider.js"
+    },
+    "./fileupload": {
+      "types": "./dist/components/FileUpload.d.ts",
+      "import": "./dist/components/FileUpload.js"
+    },
+    "./progressbar": {
+      "types": "./dist/components/ProgressBar.d.ts",
+      "import": "./dist/components/ProgressBar.js"
+    },
+    "./row": {
+      "types": "./dist/components/Row.d.ts",
+      "import": "./dist/components/Row.js"
+    },
+    "./skeleton": {
+      "types": "./dist/components/Skeleton.d.ts",
+      "import": "./dist/components/Skeleton.js"
+    },
+    "./svg": {
+      "types": "./dist/components/Svg.d.ts",
+      "import": "./dist/components/Svg.js"
+    },
+    "./text": {
+      "types": "./dist/components/Text.d.ts",
+      "import": "./dist/components/Text.js"
+    },
+    "./toast": {
+      "types": "./dist/components/Toast.d.ts",
+      "import": "./dist/components/Toast.js"
+    },
+    "./toggle": {
+      "types": "./dist/components/Toggle.d.ts",
+      "import": "./dist/components/Toggle.js"
     }
   },
   "scripts": {
@@ -49,7 +109,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@chromatic-com/storybook": "^3.2.4",
-    "@eslint/js": "^9.20.0",
+    "@eslint/js": "^9.21.0",
     "@material-design-icons/svg": "^0.14.15",
     "@storybook/addon-actions": "^8.5.8",
     "@storybook/addon-essentials": "^8.5.8",
@@ -72,15 +132,15 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "babel-loader": "^9.2.1",
-    "eslint": "^9.20.1",
+    "eslint": "^9.21.0",
     "eslint-plugin-vue": "^9.32.0",
     "glob": "^11.0.1",
-    "globals": "^15.14.0",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
-    "prettier": "^3.5.1",
+    "prettier": "^3.5.2",
     "sass": "^1.85.0",
     "storybook": "^8.5.8",
     "style-dictionary": "^4.3.3",
@@ -89,10 +149,10 @@
     "stylelint-config-standard": "^37.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-prettier": "^5.0.3",
-    "stylelint-scss": "^6.11.0",
-    "tsx": "^4.19.2",
+    "stylelint-scss": "^6.11.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.22.0",
+    "typescript-eslint": "^8.24.1",
     "vite": "^6.1.1",
     "vite-plugin-dts": "^4.5.0",
     "vite-plugin-lib-inject-css": "^2.2.1",

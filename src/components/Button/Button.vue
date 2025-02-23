@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ButtonProps } from './Button';
+import type { ButtonProps } from './Button.d.ts';
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',
   size: 'md',
