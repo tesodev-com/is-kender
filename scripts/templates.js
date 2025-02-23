@@ -41,6 +41,17 @@ declare module 'vue' {
 
 export default $template;
 `;
+export const packageJson = `{
+    "main": "./$template.vue",
+    "module": "./$template.vue",
+    "types": "./$template.d.ts",
+    "exports": {
+        ".": {
+            "types": "./$template.d.ts",
+            "import": "./$template.vue"
+        }
+    }
+}`;
 export const scssFile = '/* SCSS */';
 export const testFile = '/* TEST */';
 export const storyFile = '/* STORY */';
