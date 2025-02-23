@@ -13,10 +13,10 @@
     "paths": {
       "@/*": ["src/*"],
       "library/*": [
-        "./src/components/*",
-        "./src/composables/*",
-        "./src/globalTypes/*",
-        "./src/utils/*",
+        "src/components/*",
+        "src/composables/*",
+        "src/globalTypes/*",
+        "src/utils/*",
       ]
     }
   },
