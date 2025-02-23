@@ -11,7 +11,13 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "library/*": [
+        "./src/components/*",
+        "./src/composables/*",
+        "./src/globalTypes/*",
+        "./src/utils/*",
+      ]
     }
   },
   "include": [

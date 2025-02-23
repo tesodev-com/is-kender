@@ -1,0 +1,11 @@
+{
+    "main": "./Button.vue",
+    "module": "./Button.vue",
+    "types": "./Button.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Button.d.ts",
+            "import": "./Button.vue"
+        }
+    }
+}
