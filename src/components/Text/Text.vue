@@ -21,7 +21,9 @@ const props = withDefaults(defineProps<TextProps>(), {
 const textClasses = computed(() => {
   return [
     'text',
-    `${['p', 'span'].includes(props.size) ? 'text' : 'heading'}-${props.fontSize}-${props.fontWeight}-${props.fontColor}`,
+    `${['p', 'span'].includes(props.size) ? 'text' : 'heading'}-${props.fontSize}`,
+    `font-${props.fontWeight}`,
+    `color-${props.fontColor}`,
     {
       [`${props.customClass}`]: props.customClass,
     },
