@@ -1,4 +1,4 @@
-import { Input } from '@/components';
+import Input from '@/components/Input';
 import { type Meta, type StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Input> = {
@@ -15,6 +15,7 @@ const meta: Meta<typeof Input> = {
     type: { control: 'select', options: ['text', 'password', 'email', 'number', 'url', 'tel', 'search'] },
     modelValue: { control: 'text' },
     size: { control: 'select', options: ['sm', 'lg'] },
+    errorList: { control: 'array' },
   },
 };
 

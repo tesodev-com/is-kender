@@ -2,7 +2,6 @@
   <div
     id="input-container"
     class="input-container"
-    :class="inputContainerClasses"
   >
     <label
       v-if="label"
@@ -86,9 +85,6 @@ const inputWrapperClasses = computed(() => ({
   'input-wrapper--error': props.errorList?.length,
   'input-wrapper--disabled': props.disabled,
   [`input-wrapper--${props.size}`]: true,
-}));
-const inputContainerClasses = computed(() => ({
-  'input-container--fluid': props.fluid,
 }));
 
 const defaultLeftIcon = computed(() => {
