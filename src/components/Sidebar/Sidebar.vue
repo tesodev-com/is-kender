@@ -123,10 +123,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, type VNode } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { EventBus } from '@/utils';
 import SidebarItem from './SidebarItem.vue';
-import type { SidebarProps, SidebarEmits, SidebarLink } from 'library/Sidebar';
+import type { SidebarProps, SidebarEmits, SidebarLink, SidebarSlots } from 'library/Sidebar';
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   title: 'Sidebar',
@@ -139,11 +139,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
 
 const emit = defineEmits<SidebarEmits>();
 
-defineSlots<{
-  title?: () => VNode[];
-  bottom?: () => VNode[];
-  [key: string]: ((props: SidebarLink) => VNode[]) | undefined;
-}>();
+defineSlots<SidebarSlots>();
 
 const isSidebarOpen = ref(false);
 

@@ -1,4 +1,4 @@
-import { type DefineComponent } from 'vue';
+import { type DefineComponent, type VNode } from 'vue';
 
 export interface SidebarLink {
   text?: string;
@@ -16,6 +16,12 @@ export interface SidebarEmits {
 
 export interface SidebarItemEmits {
   (e: 'toggle', link: SidebarLink, index: number): void;
+}
+
+export interface SidebarSlots {
+  title?: () => VNode[];
+  bottom?: () => VNode[];
+  [key: string]: ((props: SidebarLink) => VNode[]) | undefined;
 }
 
 export interface SidebarProps {
