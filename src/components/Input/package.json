@@ -1,0 +1,11 @@
+{
+    "main": "./Input.vue",
+    "module": "./Input.vue",
+    "types": "./Input.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Input.d.ts",
+            "import": "./Input.vue"
+        }
+    }
+}
