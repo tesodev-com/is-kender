@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ButtonProps } from 'library/Button';
 import { computed } from 'vue';
-import type { ButtonProps } from './Button';
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',
   size: 'md',

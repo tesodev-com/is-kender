@@ -11,11 +11,18 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "library/*": [
+        "src/components/*",
+        "src/composables/*",
+        "src/globalTypes/*",
+        "src/utils/*",
+      ]
     }
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
   ]

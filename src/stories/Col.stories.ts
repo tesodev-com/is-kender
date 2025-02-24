@@ -1,9 +1,9 @@
-import { Col as ColComponent } from '@/components';
+import Col from '@/components/Col';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-const meta: Meta<typeof ColComponent> = {
+const meta: Meta<typeof Col> = {
   title: 'Layout&Structures/Col',
-  component: ColComponent,
+  component: Col,
   args: {
     cols: 12,
   },
@@ -36,18 +36,18 @@ const meta: Meta<typeof ColComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ColComponent>;
+type Story = StoryObj<typeof Col>;
 export const Default: Story = {
   render: args => {
     return {
-      components: { ColComponent },
+      components: { Col },
       setup() {
         return { args };
       },
       template: `
-      <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" v-bind="args">
+      <Col style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)" v-bind="args">
         <p>col-{{args.cols}}</p>
-      </ColComponent>
+      </Col>
       `,
     };
   },

@@ -22,7 +22,10 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
+      entry: {
+        main: resolve(__dirname, 'src/main.ts'),
+        initial: resolve(__dirname, 'src/assets/styles/initial.scss'),
+      },
       formats: ['es'],
     },
     rollupOptions: {
@@ -51,9 +54,13 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+      { find: 'library', replacement: path.resolve(__dirname, 'src/components') },
+      { find: 'library', replacement: path.resolve(__dirname, 'src/composables') },
+      { find: 'library', replacement: path.resolve(__dirname, 'src/globalTypes') },
+      { find: 'library', replacement: path.resolve(__dirname, 'src/utils') },
+    ],
   },
   server: {
     port: 3001,

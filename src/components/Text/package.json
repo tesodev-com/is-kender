@@ -1,0 +1,11 @@
+{
+    "main": "./Text.vue",
+    "module": "./Text.vue",
+    "types": "./Text.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Text.d.ts",
+            "import": "./Text.vue"
+        }
+    }
+}

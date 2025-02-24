@@ -1,0 +1,11 @@
+{
+    "main": "./Row.vue",
+    "module": "./Row.vue",
+    "types": "./Row.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Row.d.ts",
+            "import": "./Row.vue"
+        }
+    }
+}

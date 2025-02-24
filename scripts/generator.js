@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { dtsFile, mapPlaceholders, scssFile, storyFile, testFile, vueFile } from './templates.js';
+import { dtsFile, mapPlaceholders, packageJson, scssFile, storyFile, testFile, vueFile } from './templates.js';
 
 const files = [
   {
@@ -9,7 +9,7 @@ const files = [
   },
   {
     type: 'components',
-    ext: '.styles.scss',
+    ext: '.style.scss',
     template: scssFile,
   },
   {
@@ -47,6 +47,7 @@ function createComponentFiles() {
         fs.writeFileSync(`./src/stories/${componentNameCapitalized}${file.ext}`, typeof file.template === 'function' ? file.template(placeholders) : file.template);
       }
     });
+    fs.writeFileSync(`${path}/package.json`, mapPlaceholders(packageJson, placeholders));
   } catch (error) {
     if (error.code === 'EEXIST') {
       console.error('Component already exists');

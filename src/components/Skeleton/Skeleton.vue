@@ -7,14 +7,8 @@
 </template>
 
 <script setup lang="ts">
+import type { SkeletonProps } from 'library/Skeleton';
 import { computed } from 'vue';
-interface SkeletonProps {
-  width?: string;
-  height?: string;
-  borderRadius?: string;
-  shape?: 'circle' | 'rectangle';
-  animation?: 'pulse' | 'wave' | 'none';
-}
 
 const props = withDefaults(defineProps<SkeletonProps>(), {
   width: '100%',

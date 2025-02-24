@@ -6,16 +6,10 @@
 </template>
 
 <script setup lang="ts">
+import type { DividerProps } from 'library/Divider';
 import { computed } from 'vue';
 
-export interface IDivider {
-  is?: string;
-  layout?: 'horizontal' | 'vertical';
-  roundedFull?: boolean;
-  customClass?: string;
-}
-
-const props = withDefaults(defineProps<IDivider>(), {
+const props = withDefaults(defineProps<DividerProps>(), {
   is: 'div',
   roundedFull: true,
   layout: 'horizontal',

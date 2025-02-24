@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
+import Text, { type TextProps } from 'library/Text';
 import { describe, expect, it } from 'vitest';
-import Text, { type IText } from './Text.vue';
 
 describe('Text.vue', () => {
-  function createWrapper(props: Partial<IText> = {}) {
+  function createWrapper(props: Partial<TextProps> = {}) {
     return shallowMount(Text, {
       props,
       slots: {

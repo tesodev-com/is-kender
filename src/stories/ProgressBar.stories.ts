@@ -1,8 +1,8 @@
+import ProgressBar from '@/components/ProgressBar';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { ProgressBar } from '@/components';
 
 const meta: Meta<typeof ProgressBar> = {
-  title: 'Components/ProgressBar',
+  title: 'DataDisplay/ProgressBar',
   component: ProgressBar,
   tags: ['autodocs'],
   argTypes: {

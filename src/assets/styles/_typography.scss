@@ -14,7 +14,10 @@
   font-size: $font-size;
   line-height: $line-height;
   letter-spacing: dynamic-letter-spacing($font-size);
-  font-weight: $weight;
+
+  @if $weight {
+    font-weight: $weight;
+  }
 
   @if $color {
     color: $color;

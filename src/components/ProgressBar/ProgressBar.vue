@@ -26,19 +26,10 @@
 </template>
 
 <script setup lang="ts">
+import type { ProgressBarProps } from 'library/ProgressBar';
 import { computed } from 'vue';
 
-export interface IProgressBar {
-  showPercentage?: boolean;
-  percentageLocation?: 'right' | 'bottom';
-  showTooltip?: boolean;
-  hoverTooltip?: boolean;
-  tooltipLocation?: 'top' | 'bottom';
-  maxValue?: number;
-  value: number;
-}
-
-const props = withDefaults(defineProps<IProgressBar>(), {
+const props = withDefaults(defineProps<ProgressBarProps>(), {
   showPercentage: false,
   percentageLocation: 'right',
   showTooltip: false,

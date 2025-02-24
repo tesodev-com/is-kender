@@ -37,14 +37,9 @@
 </template>
 
 <script setup lang="ts">
+import type { ToastMessageProps } from 'library/Toast';
 import { computed, onMounted } from 'vue';
-export interface ToastMessageProps {
-  variant?: 'solid' | 'outline';
-  color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
-  title?: string;
-  message?: string;
-  life?: number;
-}
+
 interface ToastMessageEmits {
   (e: 'close'): void;
 }

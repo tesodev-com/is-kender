@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
+import ProgressBar, { type ProgressBarProps } from 'library/ProgressBar';
 import { describe, expect, it } from 'vitest';
-import ProgressBar, { type IProgressBar } from './ProgressBar.vue';
 
 describe('ProgressBar.vue', () => {
-  function createWrapper(props: Partial<IProgressBar> = {}) {
+  function createWrapper(props: Partial<ProgressBarProps> = {}) {
     return shallowMount(ProgressBar, {
       props: {
         value: 0,

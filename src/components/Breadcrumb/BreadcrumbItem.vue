@@ -18,15 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import type { SetupContext } from 'vue';
+import type { BreadcrumbItemProps } from 'library/Breadcrumb';
 import { computed } from 'vue';
-export interface BreadcrumbItemProps {
-  text: string;
-  to: string;
-  icon?: string;
-  slots?: SetupContext['slots'];
-  useRouter?: boolean;
-}
+
 const props = defineProps<BreadcrumbItemProps>();
 const slotProps = computed(() => {
   return {

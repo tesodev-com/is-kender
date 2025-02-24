@@ -4,7 +4,7 @@ import { getFolders, readPackageJson } from './utils.js';
 const packageJson = readPackageJson();
 const excludeFolders = [];
 
-function setPackgeExport() {
+function setPackageExport() {
   const folders = getFolders('src/components');
   const exports = packageJson.exports || {};
   folders.forEach(folder => {
@@ -20,9 +20,9 @@ function setPackgeExport() {
 
 function setComponentIndex() {
   const folders = getFolders('src/components');
-  const indexContent = folders.map(folder => `export { default as ${folder} } from './${folder}/${folder}.vue';`).join('\n');
+  const indexContent = folders.map(folder => `export { default as ${folder} } from 'library/${folder}';`).join('\n');
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
-setPackgeExport();
+setPackageExport();
 setComponentIndex();

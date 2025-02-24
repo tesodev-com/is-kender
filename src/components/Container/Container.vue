@@ -10,32 +10,8 @@
 </template>
 
 <script setup lang="ts">
-// 📌 1. Imports
+import type { ContainerProps } from 'library/Container';
 import { computed } from 'vue';
-
-// 📌 2. Types & Interfaces
-interface ContainerProps {
-  /**
-   * Maximum width of the container
-   * @default '75rem'
-   */
-  maxWidth?: string;
-  /**
-   * Padding on the left and right sides
-   * @default '1rem'
-   */
-  padding?: string;
-  /**
-   * If true, container will be full width without max-width
-   * @default false
-   */
-  fluid?: boolean;
-  /**
-   * Optional tag for semantic HTML or styling purposes
-   * @default undefined
-   */
-  tag?: 'main' | 'section' | 'article' | 'div';
-}
 
 const props = withDefaults(defineProps<ContainerProps>(), {
   maxWidth: '75rem',
