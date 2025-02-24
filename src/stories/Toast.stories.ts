@@ -1,9 +1,9 @@
-import { Toast } from '@/components';
+import Toast from '@/components/Toast';
 import { useToast } from '@/composables';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Toast> = {
-  title: 'Messages/Toast',
+  title: 'Messaging/Toast',
   component: Toast,
   argTypes: {
     position: {

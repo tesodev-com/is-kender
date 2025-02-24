@@ -9,7 +9,7 @@ const files = [
   },
   {
     type: 'components',
-    ext: '.styles.scss',
+    ext: '.style.scss',
     template: scssFile,
   },
   {

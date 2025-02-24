@@ -9,18 +9,10 @@
 </template>
 
 <script setup lang="ts">
+import type { BadgeProps } from 'library/Badge';
 import { computed } from 'vue';
 
-export interface IBadge {
-  color?: 'gray' | 'primary' | 'error' | 'warning' | 'success' | 'blue-gray' | 'blue-light' | 'blue' | 'indigo' | 'purple' | 'pink' | 'orange';
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'solid' | 'outline' | 'modern';
-  pill?: boolean;
-  dot?: boolean;
-  onlyIcon?: boolean;
-}
-
-const props = withDefaults(defineProps<IBadge>(), {
+const props = withDefaults(defineProps<BadgeProps>(), {
   color: 'gray',
   size: 'sm',
   variant: 'solid',

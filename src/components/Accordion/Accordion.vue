@@ -136,35 +136,16 @@
 </template>
 
 <script setup lang="ts">
+import { type AccordionEmits, type AccordionProps } from 'library/Accordion';
 import { computed, ref } from 'vue';
 
-export interface IAccordionItem {
-  title: string;
-  content?: string;
-  slotKey?: string;
-  isOpen?: boolean;
-  disabled?: boolean;
-}
-
-export interface IAccordion {
-  items: IAccordionItem[];
-  allowMultiple?: boolean;
-  accordionIconPosition?: 'left' | 'right';
-  separator?: boolean;
-}
-
-export interface IAccordionEmits {
-  (event: 'openedAccordion', item: IAccordionItem, index: number): void;
-  (event: 'closedAccordion', item: IAccordionItem, index: number): void;
-}
-
-const props = withDefaults(defineProps<IAccordion>(), {
+const props = withDefaults(defineProps<AccordionProps>(), {
   allowMultiple: false,
   accordionIconPosition: 'right',
   separator: false,
 });
 
-const emit = defineEmits<IAccordionEmits>();
+const emit = defineEmits<AccordionEmits>();
 
 const accordionItems = ref(
   props.items?.map(item => ({

@@ -1,0 +1,11 @@
+{
+    "main": "./Container.vue",
+    "module": "./Container.vue",
+    "types": "./Container.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Container.d.ts",
+            "import": "./Container.vue"
+        }
+    }
+}

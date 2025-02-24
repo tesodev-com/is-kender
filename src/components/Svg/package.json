@@ -1,0 +1,11 @@
+{
+    "main": "./Svg.vue",
+    "module": "./Svg.vue",
+    "types": "./Svg.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Svg.d.ts",
+            "import": "./Svg.vue"
+        }
+    }
+}

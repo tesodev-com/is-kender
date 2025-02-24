@@ -1,4 +1,4 @@
-import { Container } from '@/components';
+import Container from '@/components/Container';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Container> = {

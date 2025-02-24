@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
+import Divider, { type DividerProps } from 'library/Divider';
 import { describe, expect, it } from 'vitest';
-import Divider, { type IDivider } from './Divider.vue';
 
 describe('Divider.vue', () => {
-  function createWrapper(props: Partial<IDivider> = {}) {
+  function createWrapper(props: Partial<DividerProps> = {}) {
     return shallowMount(Divider, {
       props: {
         is: 'div',

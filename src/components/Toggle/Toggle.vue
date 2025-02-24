@@ -35,12 +35,9 @@
 </template>
 
 <script setup lang="ts">
+import type { ToggleProps } from 'library/Toggle';
 import { computed } from 'vue';
-interface ToggleProps {
-  disabled?: boolean;
-  label?: string;
-  description?: string;
-}
+
 const modelValue = defineModel<boolean>({ required: true });
 defineProps<ToggleProps>();
 const generateId = computed(() => {

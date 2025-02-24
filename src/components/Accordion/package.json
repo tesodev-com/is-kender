@@ -1,0 +1,11 @@
+{
+    "main": "./Accordion.vue",
+    "module": "./Accordion.vue",
+    "types": "./Accordion.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Accordion.d.ts",
+            "import": "./Accordion.vue"
+        }
+    }
+}

@@ -7,16 +7,18 @@
 </template>
 
 <script setup lang="ts">
-import { onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
-export interface SvgProps {
-  src?: string;
-  name?: string;
-  size?: string;
-  style?: string;
+import type { SvgProps } from 'library/Svg';
+import { onMounted, onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
+
+if (import.meta.env.SSR) {
+  onServerPrefetch(async () => {
+    await loadSvg();
+  });
+} else {
+  onMounted(async () => {
+    await loadSvg();
+  });
 }
-onServerPrefetch(async () => {
-  await loadSvg();
-});
 const props = withDefaults(defineProps<SvgProps>(), {
   size: '1.5rem',
 });
@@ -55,3 +57,11 @@ function parseSvg(svgData: string) {
   return svgData;
 }
 </script>
+
+<style lang="scss" scoped>
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
