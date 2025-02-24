@@ -22,7 +22,10 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
+      entry: {
+        main: resolve(__dirname, 'src/main.ts'),
+        initial: resolve(__dirname, 'src/assets/styles/initial.scss'),
+      },
       formats: ['es'],
     },
     rollupOptions: {

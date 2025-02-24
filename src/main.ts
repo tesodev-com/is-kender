@@ -2,6 +2,7 @@ import { useToast } from '@/composables';
 import eventBus from '@/utils/eventBus';
 import type { App } from 'vue';
 import * as components from './components';
+import './assets/styles/initial.scss';
 
 export default {
   install(app: App) {
