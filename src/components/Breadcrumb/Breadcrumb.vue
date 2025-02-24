@@ -21,17 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import type { BreadcrumbItemProps } from './BreadcrumbItem.vue';
+import { type BreadcrumbProps } from 'library/Breadcrumb';
 import BreadcrumbItem from './BreadcrumbItem.vue';
-interface BreadcrumbProps {
-  items: Omit<BreadcrumbItemProps, 'slots' | 'useRouter'>[];
-  useRouter?: boolean;
-  separator?: string;
-}
+
 withDefaults(defineProps<BreadcrumbProps>(), {
   useRouter: true,
   separator: '/',
 });
 </script>
 
-<style lang="scss" scoped src="./Breadcrumb.styles.scss"></style>
+<style lang="scss" scoped src="./Breadcrumb.style.scss"></style>

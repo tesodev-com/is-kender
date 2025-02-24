@@ -1,0 +1,11 @@
+{
+    "main": "./Breadcrumb.vue",
+    "module": "./Breadcrumb.vue",
+    "types": "./Breadcrumb.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Breadcrumb.d.ts",
+            "import": "./Breadcrumb.vue"
+        }
+    }
+}

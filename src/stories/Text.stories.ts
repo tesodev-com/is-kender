@@ -1,8 +1,8 @@
-import { Text } from '@/components';
+import Text from '@/components/Text';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Text> = {
-  title: 'Components/Text',
+  title: 'Typography/Text',
   component: Text,
   argTypes: {
     size: {

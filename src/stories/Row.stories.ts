@@ -1,4 +1,5 @@
-import { Row, Col as ColComponent } from '@/components';
+import Col from '@/components/Col';
+import Row from '@/components/Row';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Row> = {
@@ -45,15 +46,15 @@ export const Default: Story = {
 export const WithCol: Story = {
   render: args => {
     return {
-      components: { Row, ColComponent },
+      components: { Row, Col },
       setup() {
         return { args };
       },
       template: `
       <Row v-bind="args" style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">
-        <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-1st</ColComponent>
-         <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-2nd</ColComponent>
-          <ColComponent style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-3rd</ColComponent>
+        <Col style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-1st</Col>
+         <Col style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-2nd</Col>
+          <Col style="outline:1px solid purple;background-color:rgba(128,0,128,0.5)">Col-3rd</Col>
       </Row>
       `,
     };

@@ -1,9 +1,9 @@
+import Badge from '@/components/Badge';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { Badge } from '@/components';
 
 const meta: Meta<typeof Badge> = {
   component: Badge,
-  title: 'Components/Badge',
+  title: 'DataDisplay/Badge',
   argTypes: {
     color: {
       control: 'select',

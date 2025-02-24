@@ -108,45 +108,9 @@
 </template>
 
 <script setup lang="ts">
+import type { CustomFile, FileErrorMessage, FileUploadEvents, FileUploadProps, FileUploadSlots } from 'library/FileUpload';
 import { computed, ref } from 'vue';
-interface CustomFile {
-  name: string;
-  size: number;
-  type: string;
-  isImage: boolean;
-  preview: string | null;
-  raw: File;
-}
-interface FileErrorMessage {
-  file?: CustomFile;
-  message: string;
-}
-interface FileUploadProps {
-  disabled?: boolean;
-  multiple?: boolean;
-  accept?: string;
-  maxSize?: number;
-  texts?: {
-    empty?: string;
-    choose?: string;
-    upload?: string;
-    cancel?: string;
-  };
-  sizeErrorMessage?: string;
-  acceptErrorMessage?: string;
-  uploadErrorMessage?: string;
-  uploader?: (file: File[]) => Promise<boolean>;
-}
-interface FileUploadSlots {
-  file: {
-    file: CustomFile;
-    index: number;
-  };
-  empty: string;
-}
-interface FileUploadEvents {
-  (e: 'upload', file: File[]): void;
-}
+
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',
   acceptErrorMessage: 'File type is not allowed, only $value is allowed',

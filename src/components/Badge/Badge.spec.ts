@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
+import Badge, { type BadgeProps } from 'library/Badge';
 import { describe, expect, it } from 'vitest';
-import Badge, { type IBadge } from './Badge.vue';
 
 describe('Badge.vue', () => {
-  function createWrapper(props: Partial<IBadge> = {}) {
+  function createWrapper(props: Partial<BadgeProps> = {}) {
     return shallowMount(Badge, {
       props,
       slots: {

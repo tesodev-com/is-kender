@@ -1,9 +1,9 @@
+import Accordion, { type AccordionItemProps } from '@/components/Accordion';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Accordion, { type IAccordionItem } from '@/components/Accordion/Accordion.vue';
 
 const meta: Meta<typeof Accordion> = {
   component: Accordion,
-  title: 'Components/Accordion',
+  title: 'DataDisplay/Accordion',
   argTypes: {
     items: {
       control: 'object',
@@ -208,10 +208,10 @@ export const EmitsEvent: Story = {
   render: args => ({
     components: { Accordion },
     setup() {
-      const handleOpenedAccordion = (item: IAccordionItem, index: number) => {
+      const handleOpenedAccordion = (item: AccordionItemProps, index: number) => {
         console.log('Event: openedAccordion', { item, index });
       };
-      const handleClosedAccordion = (item: IAccordionItem, index: number) => {
+      const handleClosedAccordion = (item: AccordionItemProps, index: number) => {
         console.log('Event: closedAccordion', { item, index });
       };
       return { args, handleOpenedAccordion, handleClosedAccordion };

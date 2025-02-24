@@ -1,4 +1,4 @@
-import { Alert } from '@/components';
+import Alert from '@/components/Alert';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Alert> = {

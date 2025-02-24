@@ -1,0 +1,11 @@
+{
+    "main": "./FileUpload.vue",
+    "module": "./FileUpload.vue",
+    "types": "./FileUpload.d.ts",
+    "exports": {
+        ".": {
+            "types": "./FileUpload.d.ts",
+            "import": "./FileUpload.vue"
+        }
+    }
+}

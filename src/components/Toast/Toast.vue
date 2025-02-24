@@ -16,14 +16,10 @@
 
 <script setup lang="ts">
 import { EventBus } from '@/utils';
+import type { ToastMessageProps, ToastProps } from 'library/Toast';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import ToastMessage, { type ToastMessageProps } from './ToastMessage.vue';
+import ToastMessage from './ToastMessage.vue';
 export type MessageProps = Partial<ToastMessageProps>;
-interface ToastProps {
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-  animation?: 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down';
-  listReverse?: boolean;
-}
 const props = withDefaults(defineProps<ToastProps>(), {
   position: 'top-right',
   animation: 'slide-right',

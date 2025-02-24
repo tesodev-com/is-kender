@@ -51,24 +51,9 @@
 </template>
 
 <script setup lang="ts">
+import type { AlertEmits, AlertProps, AlertSlots } from 'library/Alert';
 import { computed, onMounted, ref } from 'vue';
-interface AlertProps {
-  color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
-  variant?: 'solid' | 'outline';
-  fluid?: boolean;
-  closable?: boolean;
-  life?: number;
-  title?: string;
-  text?: string;
-}
-interface AlertSlots {
-  icon: any;
-  title: any;
-  text: any;
-}
-interface AlertEmits {
-  (e: 'close'): void;
-}
+
 const props = withDefaults(defineProps<AlertProps>(), {
   color: 'primary',
 });

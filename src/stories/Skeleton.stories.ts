@@ -1,9 +1,9 @@
-import { Skeleton } from '@/components';
+import Skeleton from '@/components/Skeleton';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof Skeleton> = {
   component: Skeleton,
-  title: 'Components/Skeleton',
+  title: 'Messaging/Skeleton',
   argTypes: {
     shape: {
       control: 'select',
