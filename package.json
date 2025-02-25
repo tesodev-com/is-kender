@@ -80,6 +80,14 @@
     "./toggle": {
       "types": "./dist/components/Toggle.d.ts",
       "import": "./dist/components/Toggle.js"
+    },
+    "./sidebar": {
+      "types": "./dist/components/Sidebar.d.ts",
+      "import": "./dist/components/Sidebar.js"
+    },
+    "./link": {
+      "types": "./dist/components/Link.d.ts",
+      "import": "./dist/components/Link.js"
     }
   },
   "scripts": {

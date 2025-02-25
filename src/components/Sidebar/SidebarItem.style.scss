@@ -18,12 +18,12 @@
   cursor: pointer;
   text-decoration: none;
 
-  @include text-md(600, $gray-700);
-
   &-content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    @include text-md(600, $gray-700);
   }
 
   &-icon {
