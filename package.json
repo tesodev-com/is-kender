@@ -88,6 +88,10 @@
     "./link": {
       "types": "./dist/components/Link.d.ts",
       "import": "./dist/components/Link.js"
+    },
+    "./input": {
+      "types": "./dist/components/Input.d.ts",
+      "import": "./dist/components/Input.js"
     }
   },
   "scripts": {
