@@ -107,7 +107,7 @@ export default [
           trailingComma: 'es5',
           bracketSpacing: true,
           arrowParens: 'avoid',
-          endOfLine: 'LF',
+          endOfLine: 'lf',
           tabWidth: 2,
           useTabs: false,
           htmlWhitespaceSensitivity: 'ignore',
