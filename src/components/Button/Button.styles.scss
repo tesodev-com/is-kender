@@ -1,4 +1,4 @@
-@use "sass:list";
+@use "sass:map" as mixinMap;
 
 $sizes: (
   sm: (
@@ -15,6 +15,28 @@ $sizes: (
   ),
   2xl: (
     padding: 16px 28px,
+  ),
+);
+$sizesOnlyIcon: (
+  sm: (
+    width: 2.25rem,
+    height: 2.25rem,
+  ),
+  md: (
+    width: 2.5rem,
+    height: 2.5rem,
+  ),
+  lg: (
+    width: 2.75rem,
+    height: 2.75rem,
+  ),
+  xl: (
+    width: 3rem,
+    height: 3rem,
+  ),
+  2xl: (
+    width: 3.5rem,
+    height: 3.5rem,
   ),
 );
 $solidColors: (
@@ -151,7 +173,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $primary-600,
-      border: 1px solid $primary-300,
+      border-color: $primary-300,
     ),
     hover: (
       background: $primary-100,
@@ -170,7 +192,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $gray-700,
-      border: 1px solid $gray-300,
+      border-color: $gray-300,
     ),
     hover: (
       background: $gray-50,
@@ -189,7 +211,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $success-600,
-      border: 1px solid $success-300,
+      border-color: $success-300,
     ),
     hover: (
       background: $success-100,
@@ -208,7 +230,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $blue-light-600,
-      border: 1px solid $blue-light-300,
+      border-color: $blue-light-300,
     ),
     hover: (
       background: $blue-light-100,
@@ -227,7 +249,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $warning-600,
-      border: 1px solid $warning-300,
+      border-color: $warning-300,
     ),
     hover: (
       background: $warning-100,
@@ -246,7 +268,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $error-600,
-      border: 1px solid $error-300,
+      border-color: $error-300,
     ),
     hover: (
       background: $error-100,
@@ -265,7 +287,7 @@ $outlineColors: (
     "": (
       background: $white,
       color: $gray-600,
-      border: 1px solid $gray-300,
+      border-color: $gray-300,
     ),
     hover: (
       background: $gray-100,
@@ -408,9 +430,41 @@ $variants: (
   ghost: $ghostColors,
 );
 
+@mixin button-size($size, $sizeMap) {
+  @each $property, $value in mixinMap.get($sizeMap, $size) {
+    #{$property}: $value;
+  }
+
+  @if $size == "2xl" {
+    @include text-lg(600);
+  } @else if $size == "lg" or $size == "xl" {
+    @include text-md(600);
+  } @else {
+    @include text-sm(600);
+  }
+}
+
+@mixin button-variant($variant, $color) {
+  $variantMap: mixinMap.get($variants, $variant);
+  $colorMap: mixinMap.get($variantMap, $color);
+
+  @each $state, $stateValue in $colorMap {
+    @if $state == "" {
+      @each $property, $value in $stateValue {
+        #{$property}: $value;
+      }
+    } @else {
+      &:#{$state} {
+        @each $property, $value in $stateValue {
+          #{$property}: $value;
+        }
+      }
+    }
+  }
+}
+
 .button {
   all: unset;
-  border: none;
   outline: none;
   text-decoration: none;
   background: none;
@@ -419,6 +473,8 @@ $variants: (
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  gap: $spacing-md;
+  border: 1px solid transparent;
   border-radius: var(--button-border-radius, $rounded-sm);
   cursor: pointer;
   box-sizing: border-box;
@@ -432,18 +488,26 @@ $variants: (
     width: 100%;
   }
 
-  @each $size, $value in $sizes {
-    &-#{$size} {
-      @each $property, $propertyValue in $value {
-        #{$property}: var(--button-#{$size}-#{$property}, $propertyValue);
+  &-half-rounded {
+    border-radius: 2rem;
+  }
 
-        @if list.index((2xl), $size) {
-          @include text-lg(600);
-        } @else if list.index((lg, xl), $size) {
-          @include text-md(600);
-        } @else {
-          @include text-sm(600);
-        }
+  &-full-rounded {
+    border-radius: $rounded-full;
+  }
+
+  &.button-icon-only {
+    @each $size, $value in $sizesOnlyIcon {
+      &.button-#{$size} {
+        @include button-size($size, $sizesOnlyIcon);
+      }
+    }
+  }
+
+  &:not(.button-icon-only) {
+    @each $size, $value in $sizes {
+      &.button-#{$size} {
+        @include button-size($size, $sizes);
       }
     }
   }
@@ -452,25 +516,7 @@ $variants: (
     &-#{$variant} {
       @each $color, $value in $variantColors {
         &.button-#{$color} {
-          @each $state, $stateValue in $value {
-            @if $state == "" {
-              @each $property, $propertyValue in $stateValue {
-                #{$property}: var(
-                  --button-#{$color}-#{$property},
-                  $propertyValue
-                );
-              }
-            } @else {
-              &:#{$state} {
-                @each $property, $propertyValue in $stateValue {
-                  #{$property}: var(
-                    --button-#{$color}-#{$state}-#{$property},
-                    $propertyValue
-                  );
-                }
-              }
-            }
-          }
+          @include button-variant($variant, $color);
         }
       }
     }

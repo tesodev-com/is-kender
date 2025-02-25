@@ -24,6 +24,16 @@ const meta: Meta<typeof Button> = {
     fluid: {
       control: 'boolean',
     },
+    rounded: {
+      control: 'select',
+      options: ['half', 'full', 'none'],
+    },
+    loading: {
+      control: 'boolean',
+    },
+    iconOnly: {
+      control: 'boolean',
+    },
   },
 };
 
