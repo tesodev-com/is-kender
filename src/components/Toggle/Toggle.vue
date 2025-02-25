@@ -45,4 +45,4 @@ const generateId = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped src="./Toggle.styles.scss"></style>
+<style lang="scss" scoped src="./Toggle.style.scss"></style>

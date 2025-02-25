@@ -7,6 +7,9 @@ export interface ButtonProps {
   variant?: 'solid' | 'outline' | 'ghost';
   text?: string;
   fluid?: boolean;
+  rounded?: 'half' | 'full';
+  loading?: boolean;
+  iconOnly?: boolean;
 }
 
 declare const Button: DefineComponent<ButtonProps>;
