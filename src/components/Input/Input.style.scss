@@ -1,0 +1,147 @@
+@use "sass:map";
+
+$sizes: (
+  sm: (
+    padding: $spacing-sm $spacing-md,
+  ),
+  lg: (
+    padding: $spacing-md $spacing-lg,
+  ),
+);
+$input-states: (
+  "focus": (
+    border-color: $primary-500,
+  ),
+  "error": (
+    border-color: $error-500,
+  ),
+  "disabled": (
+    border-color: $gray-300,
+    background-color: $gray-100,
+    color: $gray-400,
+    pointer-events: none,
+    cursor: not-allowed,
+  ),
+);
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: $spacing-sm;
+
+  .input-label {
+    @include text-sm(400);
+
+    &--required {
+      color: $primary-500;
+    }
+  }
+
+  .error-list {
+    display: flex;
+    flex-direction: column;
+    height: 3rem;
+    gap: 0.5rem;
+    color: $error-500;
+
+    @include text-sm(400);
+
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &__item {
+      &::before {
+        content: "-";
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  .hint {
+    color: $gray-500;
+    font-size: 0.875rem;
+  }
+
+  .input-wrapper {
+    border: 1px solid;
+    border-color: $gray-300;
+    border-radius: 0.5rem;
+    display: flex;
+
+    &:not(.input-wrapper--fluid) {
+      max-width: 300px;
+    }
+
+    &--fluid {
+      width: 100%;
+    }
+
+    &:focus-within {
+      outline: 2px solid;
+      outline-color: $primary-500;
+      border-color: $gray-300;
+    }
+
+    &__left-icon {
+      display: flex;
+      align-items: center;
+      padding-right: $spacing-md;
+      color: $gray-500;
+    }
+
+    @each $state, $properties in $input-states {
+      &--#{$state} {
+        @each $property, $value in $properties {
+          #{$property}: $value;
+
+          @if $state == "disabled" {
+            .input {
+              #{$property}: $value;
+            }
+          } @else if $state == "error" {
+            border-color: $error-500;
+
+            &:focus-within {
+              outline: 1px solid;
+              outline-color: map.get($map: $properties, $key: border-color);
+              border-color: map.get($map: $properties, $key: border-color);
+            }
+          }
+        }
+      }
+    }
+
+    .input {
+      outline: none;
+      border: none;
+      width: 100%;
+      color: $gray-900;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    @each $size, $properties in $sizes {
+      &--#{$size} {
+        @each $property, $value in $properties {
+          #{$property}: $value;
+
+          .input {
+            @if $size == lg {
+              @include text-md(400);
+            } @else {
+              @include text-sm(400);
+            }
+          }
+        }
+      }
+    }
+  }
+}
