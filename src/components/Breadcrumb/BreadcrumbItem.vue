@@ -7,7 +7,7 @@
         :useRouter="useRouter"
         fontSize="md"
         fontColor="gray"
-        :fontWeight="last ? 'bold' : 'normal'"
+        :fontWeight="last ? 'semibold' : 'normal'"
         class="breadcrumb-item-link"
       >
         {{ text }}
