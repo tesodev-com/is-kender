@@ -20,7 +20,13 @@ function setPackageExport() {
 
 function setComponentIndex() {
   const folders = getFolders('src/components');
-  const indexContent = folders.map(folder => `export { default as ${folder} } from './${folder}/${folder}.vue';`).join('\n');
+  const indexContent = folders
+    .map(folder => {
+      if (excludeFolders.includes(folder)) return;
+      return `export { default as ${folder} } from './${folder}/${folder}.vue';`;
+    })
+    .filter(Boolean)
+    .join('\n');
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
