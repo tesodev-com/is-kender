@@ -1,0 +1,11 @@
+{
+  "main": "./Link.vue",
+  "module": "./Link.vue",
+  "types": "./Link.d.ts",
+  "exports": {
+    ".": {
+      "types": "./Link.d.ts",
+      "import": "./Link.vue"
+    }
+  }
+}
