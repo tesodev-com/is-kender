@@ -49,4 +49,4 @@ function remove(id: number) {
 }
 </script>
 
-<style lang="scss" scoped src="./Toast.styles.scss"></style>
+<style lang="scss" scoped src="./Toast.style.scss"></style>
