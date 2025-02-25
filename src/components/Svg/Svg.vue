@@ -20,7 +20,7 @@ if (import.meta.env.SSR) {
   });
 }
 const props = withDefaults(defineProps<SvgProps>(), {
-  size: '1.5rem',
+  size: '1em',
 });
 const spanRef = useTemplateRef('icon');
 const svgEl = ref<string | null>(null);
@@ -63,5 +63,7 @@ function parseSvg(svgData: string) {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: max-content;
+  height: max-content;
 }
 </style>
