@@ -75,4 +75,4 @@ function onClose() {
 }
 </script>
 
-<style lang="scss" scoped src="./Alert.styles.scss"></style>
+<style lang="scss" scoped src="./Alert.style.scss"></style>

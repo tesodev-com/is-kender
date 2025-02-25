@@ -35,4 +35,4 @@ const buttonClasses = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped src="./Button.styles.scss"></style>
+<style lang="scss" scoped src="./Button.style.scss"></style>
