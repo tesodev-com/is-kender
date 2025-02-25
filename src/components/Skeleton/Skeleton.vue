@@ -30,4 +30,4 @@ const styles = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped src="./Skeleton.styles.scss"></style>
+<style lang="scss" scoped src="./Skeleton.style.scss"></style>

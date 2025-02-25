@@ -63,4 +63,4 @@ function onClose() {
 }
 </script>
 
-<style lang="scss" scoped src="./ToastMessage.styles.scss"></style>
+<style lang="scss" scoped src="./ToastMessage.style.scss"></style>

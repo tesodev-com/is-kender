@@ -14,6 +14,7 @@
           v-bind="breadCrumb"
           :useRouter="useRouter"
           :slots="$slots"
+          :last="index + 1 === items.length"
         />
       </template>
     </ol>

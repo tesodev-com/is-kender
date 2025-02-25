@@ -59,29 +59,30 @@
         v-show="link.isOpen"
         class="sidebar-nav-list"
       >
-        <component
-          :is="useRouter ? 'router-link' : 'a'"
+        <Link
           v-for="child in link.children"
           :key="child.href"
-          :to="!child.disabled ? child.href : undefined"
-          :href="!useRouter && !child.disabled ? child.href : undefined"
+          :to="link.href"
+          :disabled="link.disabled"
           class="sidebar-nav-link"
           :class="[{ 'sidebar-nav-link-disabled': link.disabled || child.disabled, 'sidebar-nav-link-padding': link.iconSrc && !child.iconSrc }]"
         >
-          <slot
+          <div
             v-if="child.slotKey"
-            :name="child.slotKey"
-            v-bind="child"
+            class="sidebar-nav-link-content"
           >
-            <div class="sidebar-nav-link-content">
+            <slot
+              :name="child.slotKey"
+              v-bind="child"
+            >
               <Svg
                 v-if="child.iconSrc"
                 :src="child.iconSrc"
                 size="20"
               />
               {{ child.text }}
-            </div>
-          </slot>
+            </slot>
+          </div>
           <div
             v-else
             class="sidebar-nav-link-content"
@@ -93,32 +94,34 @@
             />
             {{ child.text }}
           </div>
-        </component>
+        </Link>
       </div>
     </transition>
   </div>
-  <component
-    :is="useRouter ? 'router-link' : 'a'"
+  <Link
     v-else
-    :to="!link.disabled ? link.href : undefined"
-    :href="!useRouter && !link.disabled ? link.href : undefined"
+    :useRouter="useRouter"
+    :to="link.href"
+    :disabled="link.disabled"
     class="sidebar-nav-link"
     :class="[{ 'sidebar-nav-link-disabled': link.disabled }]"
   >
-    <slot
+    <div
       v-if="link.slotKey"
-      :name="link.slotKey"
-      v-bind="link"
+      class="sidebar-nav-link-content"
     >
-      <div class="sidebar-nav-link-content">
+      <slot
+        :name="link.slotKey"
+        v-bind="link"
+      >
         <Svg
           v-if="link.iconSrc"
           :src="link.iconSrc"
           size="20"
         />
         {{ link.text }}
-      </div>
-    </slot>
+      </slot>
+    </div>
     <div
       v-else
       class="sidebar-nav-link-content"
@@ -130,11 +133,12 @@
       />
       {{ link.text }}
     </div>
-  </component>
+  </Link>
 </template>
 
 <script setup lang="ts">
 import Svg from 'library/Svg';
+import Link from 'library/Link';
 import type { SidebarLink, SidebarItemEmits } from 'library/Sidebar';
 
 defineProps<{

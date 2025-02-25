@@ -1,7 +1,7 @@
+import { homeIcon } from '@/assets/icons';
+import { useSidebar } from '@/composables/useSidebar';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import Sidebar, { type SidebarProps } from 'library/Sidebar';
-import { useSidebar } from '@/composables/useSidebar.ts';
-import { homeIcon } from '@/assets/icons';
 
 const meta: Meta<typeof Sidebar> = {
   component: Sidebar,
