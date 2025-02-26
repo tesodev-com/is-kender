@@ -7,6 +7,8 @@ export { default as Col } from './Col/Col.vue';
 export { default as Container } from './Container/Container.vue';
 export { default as Divider } from './Divider/Divider.vue';
 export { default as FileUpload } from './FileUpload/FileUpload.vue';
+export { default as Input } from './Input/Input.vue';
+export { default as Link } from './Link/Link.vue';
 export { default as ProgressBar } from './ProgressBar/ProgressBar.vue';
 export { default as Row } from './Row/Row.vue';
 export { default as Sidebar } from './Sidebar/Sidebar.vue';
@@ -15,3 +17,4 @@ export { default as Svg } from './Svg/Svg.vue';
 export { default as Text } from './Text/Text.vue';
 export { default as Toast } from './Toast/Toast.vue';
 export { default as Toggle } from './Toggle/Toggle.vue';
+

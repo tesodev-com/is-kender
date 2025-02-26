@@ -2,12 +2,16 @@
   <li class="breadcrumb-item">
     <template v-if="!slots?.item">
       <component :is="slots && icon && slots[icon]" />
-      <component
-        :is="useRouter ? 'router-link' : 'a'"
+      <Link
         :to="to || '#'"
+        :useRouter="useRouter"
+        fontSize="md"
+        fontColor="gray"
+        :fontWeight="last ? 'semibold' : 'normal'"
+        class="breadcrumb-item-link"
       >
         {{ text }}
-      </component>
+      </Link>
     </template>
     <component
       :is="slots.item"
@@ -18,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import Link from 'library/Link';
 import type { BreadcrumbItemProps } from 'library/Breadcrumb';
 import { computed } from 'vue';
 

@@ -6,6 +6,7 @@ export interface BreadcrumbItemProps {
   icon?: string;
   slots?: SetupContext['slots'];
   useRouter?: boolean;
+  last?: boolean;
 }
 
 export interface BreadcrumbProps {

@@ -1,8 +1,8 @@
-import globals from 'globals';
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
-import vue from 'eslint-plugin-vue';
 import prettier from '@vue/eslint-config-prettier';
+import vue from 'eslint-plugin-vue';
+import globals from 'globals';
+import ts from 'typescript-eslint';
 
 export default [
   {
@@ -107,7 +107,7 @@ export default [
           trailingComma: 'es5',
           bracketSpacing: true,
           arrowParens: 'avoid',
-          endOfLine: 'auto',
+          endOfLine: 'lf',
           tabWidth: 2,
           useTabs: false,
           htmlWhitespaceSensitivity: 'ignore',

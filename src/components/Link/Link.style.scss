@@ -1,0 +1,137 @@
+$font-sizes: (
+  xs: text-xs,
+  sm: text-sm,
+  md: text-md,
+  lg: text-lg,
+  xl: text-xl,
+  2xl: text-2xl,
+);
+$font-weights: (
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+);
+$font-colors: (
+  black: (
+    "": (
+      color: $black,
+    ),
+    hover: (
+      color: $gray-700,
+    ),
+  ),
+  white: (
+    "": (
+      color: $white,
+    ),
+    hover: (
+      color: $gray-300,
+    ),
+  ),
+  gray: (
+    "": (
+      color: $gray-700,
+    ),
+    hover: (
+      color: $gray-900,
+    ),
+  ),
+  primary: (
+    "": (
+      color: $primary-700,
+    ),
+    hover: (
+      color: $primary-900,
+    ),
+  ),
+  success: (
+    "": (
+      color: $success-700,
+    ),
+    hover: (
+      color: $success-900,
+    ),
+  ),
+  info: (
+    "": (
+      color: $blue-light-700,
+    ),
+    hover: (
+      color: $blue-light-900,
+    ),
+  ),
+  warning: (
+    "": (
+      color: $warning-700,
+    ),
+    hover: (
+      color: $warning-900,
+    ),
+  ),
+  danger: (
+    "": (
+      color: $error-700,
+    ),
+    hover: (
+      color: $error-900,
+    ),
+  ),
+);
+
+.link {
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  &-underline {
+    text-decoration: underline;
+  }
+
+  &-disabled {
+    user-select: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  @each $font-size, $mixin in $font-sizes {
+    &.link-#{$font-size} {
+      @if $mixin == text-xs {
+        @include text-xs;
+      } @else if $mixin == text-sm {
+        @include text-sm;
+      } @else if $mixin == text-md {
+        @include text-md;
+      } @else if $mixin == text-lg {
+        @include text-lg;
+      } @else if $mixin == text-xl {
+        @include text-xl;
+      } @else if $mixin == text-2xl {
+        @include text-2xl;
+      }
+    }
+  }
+
+  @each $color, $states in $font-colors {
+    &.color-#{"#{$color}"} {
+      @each $state, $stateValue in $states {
+        @if $state == "" {
+          @each $property, $propertyValue in $stateValue {
+            #{$property}: $propertyValue;
+          }
+        } @else {
+          &:#{$state} {
+            @each $property, $propertyValue in $stateValue {
+              #{$property}: $propertyValue;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @each $weight, $weight-value in $font-weights {
+    &.link-#{$weight} {
+      font-weight: $weight-value;
+    }
+  }
+}
