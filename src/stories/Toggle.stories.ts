@@ -1,5 +1,5 @@
-import Toggle from '@/components/Toggle';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Toggle from 'library/Toggle';
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,

@@ -1,5 +1,5 @@
-import Input from '@/components/Input';
 import { shallowMount, type VueWrapper } from '@vue/test-utils';
+import Input from 'library/Input';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Input.vue', () => {
