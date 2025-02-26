@@ -19,7 +19,7 @@ declare const Breadcrumb: DefineComponent<BreadcrumbProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Breadcrumb: typeof Breadcrumb;
+    LibBreadcrumb: typeof Breadcrumb;
   }
 }
 

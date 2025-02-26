@@ -24,7 +24,7 @@ declare const Accordion: DefineComponent<AccordionProps, AccordionEmits>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Accordion: typeof Accordion;
+    LibAccordion: typeof Accordion;
   }
 }
 

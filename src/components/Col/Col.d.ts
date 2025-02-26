@@ -39,7 +39,7 @@ declare const Col: DefineComponent<ColProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Col: typeof Col;
+    LibCol: typeof Col;
   }
 }
 

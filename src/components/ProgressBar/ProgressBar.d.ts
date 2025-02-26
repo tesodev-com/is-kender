@@ -14,7 +14,7 @@ declare const ProgressBar: DefineComponent<ProgressBarProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ProgressBar: typeof ProgressBar;
+    LibProgressBar: typeof ProgressBar;
   }
 }
 

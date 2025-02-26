@@ -12,7 +12,7 @@ declare const Skeleton: DefineComponent<SkeletonProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Skeleton: typeof Skeleton;
+    LibSkeleton: typeof Skeleton;
   }
 }
 
