@@ -96,7 +96,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build",
+    "build": "node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "preview": "vite preview --port 3001",
     "lint:js": "eslint --fix",

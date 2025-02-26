@@ -9,15 +9,15 @@ export interface AccordionItemProps {
 }
 
 export interface AccordionProps {
-  items: IAccordionItem[];
+  items: AccordionItemProps[];
   allowMultiple?: boolean;
   accordionIconPosition?: 'left' | 'right';
   separator?: boolean;
 }
 
 export interface AccordionEmits {
-  (event: 'openedAccordion', item: IAccordionItem, index: number): void;
-  (event: 'closedAccordion', item: IAccordionItem, index: number): void;
+  (event: 'openedAccordion', item: AccordionItemProps, index: number): void;
+  (event: 'closedAccordion', item: AccordionItemProps, index: number): void;
 }
 
 declare const Accordion: DefineComponent<AccordionProps, AccordionEmits>;
