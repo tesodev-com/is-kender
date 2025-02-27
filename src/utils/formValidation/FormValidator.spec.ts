@@ -9,8 +9,7 @@ describe('FormValidator', () => {
       password: 'field123',
     };
     const validator = new FormValidator();
-    validator.addRule('username', [Validators.required()]);
-    validator.addRule('password', [Validators.required(), Validators.minLength(8)]);
+    validator.addRule('username', [Validators.required()]).addRule('password', [Validators.required(), Validators.minLength(8)]);
     expect(validator.validateForm(formValues)).toEqual({});
   });
   it('should returned error', () => {
@@ -19,8 +18,7 @@ describe('FormValidator', () => {
       password: 'field',
     };
     const validator = new FormValidator();
-    validator.addRule('username', [Validators.required()]);
-    validator.addRule('password', [Validators.required(), Validators.minLength(8)]);
+    validator.addRule('username', [Validators.required()]).addRule('password', [Validators.required(), Validators.minLength(8)]);
     expect(validator.validateForm(formValues)).toEqual({
       password: ['En az 8 karakter olmalıdır.'],
     });
@@ -31,8 +29,9 @@ describe('FormValidator', () => {
       password: 'field',
     };
     const validator = new FormValidator();
-    validator.addRule('username', [Validators.required()]);
-    validator.addRule('password', [Validators.required(), Validators.custom((value: string) => value.includes('FIELD'), 'The field must include "FIELD"')]);
+    validator
+      .addRule('username', [Validators.required()])
+      .addRule('password', [Validators.required(), Validators.custom((value: string) => value.includes('FIELD'), 'The field must include "FIELD"')]);
     expect(validator.validateForm(formValues)).toEqual({
       password: ['The field must include "FIELD"'],
     });
