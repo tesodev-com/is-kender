@@ -31,7 +31,7 @@ class FormValidator {
   validateForm(formValues: Record<string, any>): Record<string, string[]> {
     const result: Record<string, string[]> = {};
 
-    for (const [fieldName] of this.rules.entries()) {
+    for (const fieldName of this.rules.keys()) {
       const value = formValues[fieldName];
       const errorMessages = this.validateField(fieldName, value);
       if (errorMessages.length) {
