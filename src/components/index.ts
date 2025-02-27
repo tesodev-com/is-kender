@@ -10,6 +10,7 @@ export { default as FileUpload } from 'library/FileUpload';
 export { default as Input } from 'library/Input';
 export { default as Link } from 'library/Link';
 export { default as ProgressBar } from 'library/ProgressBar';
+export { default as RadioButton } from 'library/RadioButton';
 export { default as Row } from 'library/Row';
 export { default as Sidebar } from 'library/Sidebar';
 export { default as Skeleton } from 'library/Skeleton';
