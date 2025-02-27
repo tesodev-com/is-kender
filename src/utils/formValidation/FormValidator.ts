@@ -3,12 +3,16 @@ import type { ValidationRule } from './types';
 class FormValidator {
   private rules: Map<string, ValidationRule<any>[]> = new Map();
 
-  addRule<T>(fieldName: string, rule: ValidationRule<T>) {
+  addRule<T>(fieldName: string, rule: ValidationRule<T> | ValidationRule<T>[]) {
     if (!this.rules.has(fieldName)) {
       this.rules.set(fieldName, []);
     }
 
-    this.rules.get(fieldName)?.push(rule);
+    if (Array.isArray(rule)) {
+      this.rules.set(fieldName, rule);
+    } else {
+      this.rules.get(fieldName)?.push(rule);
+    }
     return this;
   }
 
