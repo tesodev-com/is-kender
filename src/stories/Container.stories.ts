@@ -1,5 +1,5 @@
-import Container from '@/components/Container';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Container from 'library/Container';
 
 const meta: Meta<typeof Container> = {
   title: 'Layout&Structures/Container',

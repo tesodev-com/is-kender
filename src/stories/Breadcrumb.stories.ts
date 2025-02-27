@@ -1,5 +1,5 @@
-import Breadcrumb, { type BreadcrumbItemProps } from '@/components/Breadcrumb';
 import { type Meta, type StoryObj } from '@storybook/vue3';
+import Breadcrumb, { type BreadcrumbItemProps } from 'library/Breadcrumb';
 
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Navigation/Breadcrumb',

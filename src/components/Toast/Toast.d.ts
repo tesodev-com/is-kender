@@ -18,7 +18,7 @@ declare const Toast: DefineComponent<ToastProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Toast: typeof Toast;
+    LibToast: typeof Toast;
   }
 }
 

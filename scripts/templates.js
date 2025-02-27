@@ -35,7 +35,7 @@ declare const $template: DefineComponent<$templateProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    $template: typeof $template;
+    Lib$template: typeof $template;
   }
 }
 

@@ -1,6 +1,6 @@
-import Toast from '@/components/Toast';
 import { useToast } from '@/composables';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Toast from 'library/Toast';
 
 const meta: Meta<typeof Toast> = {
   title: 'Messaging/Toast',

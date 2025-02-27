@@ -13,7 +13,7 @@ declare const Badge: DefineComponent<BadgeProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Badge: typeof Badge;
+    LibBadge: typeof Badge;
   }
 }
 

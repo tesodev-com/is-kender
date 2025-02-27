@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@vue/tsconfig/tsconfig.dom.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
@@ -15,15 +15,14 @@
       "library/*": [
         "src/components/*",
         "src/composables/*",
-        "src/globalTypes/*",
-        "src/utils/*",
+        "src/directives/*",
+        "src/utils/*"
       ]
     }
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
   ]
 }

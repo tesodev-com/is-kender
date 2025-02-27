@@ -1,5 +1,5 @@
-import Accordion, { type AccordionItemProps } from '@/components/Accordion';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Accordion, { type AccordionItemProps } from 'library/Accordion';
 
 const meta: Meta<typeof Accordion> = {
   component: Accordion,

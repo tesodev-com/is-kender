@@ -38,7 +38,7 @@ declare const Sidebar: DefineComponent<SidebarProps, SidebarEmits>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Sidebar: typeof Sidebar;
+    LibSidebar: typeof Sidebar;
   }
 }
 

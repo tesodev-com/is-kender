@@ -13,7 +13,7 @@ declare const Divider: DefineComponent<DividerProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Divider: typeof Divider;
+    LibDivider: typeof Divider;
   }
 }
 

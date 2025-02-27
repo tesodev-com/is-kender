@@ -43,7 +43,7 @@ declare const FileUpload: DefineComponent<FileUploadProps, FileUploadSlots, File
 
 declare module 'vue' {
   export interface GlobalComponents {
-    FileUpload: typeof FileUpload;
+    LibFileUpload: typeof FileUpload;
   }
 }
 

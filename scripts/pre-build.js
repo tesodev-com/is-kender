@@ -23,7 +23,7 @@ function setComponentIndex() {
   const indexContent = folders
     .map(folder => {
       if (excludeFolders.includes(folder)) return;
-      return `export { default as ${folder} } from './${folder}/${folder}.vue';`;
+      return `export { default as ${folder} } from 'library/${folder}';`;
     })
     .filter(Boolean)
     .join('\n');

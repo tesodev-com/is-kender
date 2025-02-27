@@ -16,7 +16,7 @@ declare const Button: DefineComponent<ButtonProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Button: typeof Button;
+    LibButton: typeof Button;
   }
 }
 

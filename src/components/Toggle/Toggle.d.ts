@@ -10,7 +10,7 @@ declare const Toggle: DefineComponent<ToggleProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Toggle: typeof Toggle;
+    LibToggle: typeof Toggle;
   }
 }
 
