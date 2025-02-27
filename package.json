@@ -92,6 +92,10 @@
     "./input": {
       "types": "./dist/components/Input.d.ts",
       "import": "./dist/components/Input.js"
+    },
+    "./form-validator": {
+      "types": "./dist/utils/formValidation/index.d.ts",
+      "import": "./dist/utils/formValidation/index.js"
     }
   },
   "scripts": {
