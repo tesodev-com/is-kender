@@ -6,6 +6,7 @@ export { default as Button } from './Button/Button.vue';
 export { default as Col } from './Col/Col.vue';
 export { default as Container } from './Container/Container.vue';
 export { default as Divider } from './Divider/Divider.vue';
+export { default as Drawer } from './Drawer/Drawer.vue';
 export { default as FileUpload } from './FileUpload/FileUpload.vue';
 export { default as Input } from './Input/Input.vue';
 export { default as Link } from './Link/Link.vue';
