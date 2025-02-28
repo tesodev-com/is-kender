@@ -8,6 +8,7 @@ const options: SwipeOptions = {
 const state: SwipeState = {
   startX: 0,
   endX: 0,
+  deltaX: 0,
   elapsedTime: 1000,
   startTime: 0,
   isSwiping: false,
@@ -19,6 +20,7 @@ function onStart(event: MouseEvent | TouchEvent) {
   const e = event instanceof TouchEvent ? event.touches[0] : event;
   state.startX = e.clientX;
   state.startTime = new Date().getTime();
+  state.swipeState = 'start';
 }
 
 function onMove(event: MouseEvent | TouchEvent) {
@@ -26,6 +28,7 @@ function onMove(event: MouseEvent | TouchEvent) {
   const e = event instanceof TouchEvent ? event.touches[0] : event;
   state.endX = e.clientX;
   state.elapsedTime = new Date().getTime() - state.startTime;
+  state.swipeState = 'move';
   triggerSwipe();
 }
 
@@ -34,22 +37,23 @@ function onEnd(event: MouseEvent | TouchEvent) {
   const e = event instanceof TouchEvent ? event.touches[0] : event;
   state.endX = e.clientX;
   state.elapsedTime = new Date().getTime() - state.startTime;
+  state.swipeState = 'end';
   triggerSwipe();
 }
 
 function triggerSwipe() {
-  const distance = state.endX - state.startX;
-  setState({ distance });
+  const deltaX = state.endX - state.startX;
+  setState({ deltaX });
   if (options.delay && state.elapsedTime < options.delay) return;
-  if (Math.abs(distance) >= options.threshold) {
-    if (distance > 0 && options.onSwipeRight) {
+  if (Math.abs(deltaX) >= options.threshold) {
+    if (deltaX > 0 && options.onSwipeRight) {
       setState({ direction: 'right' });
       options.onSwipeRight(state);
-    } else if (distance < 0 && options.onSwipeLeft) {
+    } else if (deltaX < 0 && options.onSwipeLeft) {
       setState({ direction: 'left' });
       options.onSwipeLeft(state);
     } else if (options.onSwipe) {
-      setState({ direction: distance > 0 ? 'right' : 'left' });
+      setState({ direction: deltaX > 0 ? 'right' : 'left' });
       options.onSwipe(state);
     }
   }
@@ -75,6 +79,8 @@ const onSwipe = {
     el.addEventListener('mousemove', onMove);
     el.addEventListener('touchend', onEnd);
     el.addEventListener('mouseup', onEnd);
+    el.addEventListener('touchcancel', onEnd);
+    el.addEventListener('mouseleave', onEnd);
   },
 };
 

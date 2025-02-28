@@ -2,10 +2,11 @@ export interface SwipeState {
   isSwiping?: boolean;
   startX: number;
   endX: number;
+  deltaX: number;
   elapsedTime: number;
   startTime: number;
-  distance?: number;
   direction?: 'left' | 'right';
+  swipeState?: 'start' | 'move' | 'end';
 }
 
 export interface SwipeOptions {
