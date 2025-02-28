@@ -92,6 +92,10 @@
     "./input": {
       "types": "./dist/components/Input.d.ts",
       "import": "./dist/components/Input.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select.d.ts",
+      "import": "./dist/components/Select.js"
     }
   },
   "scripts": {
