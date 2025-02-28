@@ -21,6 +21,10 @@
       "types": "./dist/utils/formValidation/index.d.ts",
       "import": "./dist/utils/formValidation/index.js"
     },
+    "./v-swipe": {
+      "types": "./dist/directives/vSwipe/types.d.ts",
+      "import": "./dist/directives/vSwipe/index.js"
+    },
     "./accordion": {
       "types": "./dist/components/Accordion/Accordion.d.ts",
       "import": "./dist/components/Accordion/Accordion.js"
