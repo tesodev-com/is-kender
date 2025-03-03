@@ -32,7 +32,7 @@
 import { tickIcon } from '@/assets/icons';
 import Svg from 'library/Svg';
 import { computed } from 'vue';
-import type { CheckboxProps } from './Checkbox';
+import type { CheckboxProps } from 'library/Checkbox';
 // imports
 
 // interfaces & types
