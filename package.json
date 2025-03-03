@@ -92,6 +92,10 @@
     "./input": {
       "types": "./dist/components/Input.d.ts",
       "import": "./dist/components/Input.js"
+    },
+    "./checkbox": {
+      "types": "./dist/components/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox.js"
     }
   },
   "scripts": {

@@ -1,0 +1,87 @@
+<template>
+  <div
+    class="checkbox"
+    :class="checkboxClasses.checkbox"
+  >
+    <input
+      type="checkbox"
+      :name="name"
+      :value="value"
+      :checked="checked"
+      :disabled="disabled"
+      class="checkbox__input"
+      @change="handleChange"
+    />
+    <div class="checkbox__box">
+      <Svg
+        v-if="checked"
+        class="checkbox__icon"
+        :src="tickIcon"
+      ></Svg>
+    </div>
+    <label
+      :for="name"
+      class="checkbox__label"
+    >
+      {{ label }}
+    </label>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { tickIcon } from '@/assets/icons';
+import Svg from 'library/Svg';
+import { computed } from 'vue';
+import type { CheckboxProps } from './Checkbox';
+// imports
+
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
+const props = withDefaults(defineProps<CheckboxProps>(), {
+  disabled: false,
+  size: 'md',
+});
+// defineEmits
+const emit = defineEmits<{
+  'update:modelValue': [value: string[] | number[]];
+}>();
+// states (refs and reactives)
+
+// computed
+const checked = computed(() => props.modelValue.includes(props.value));
+const checkboxClasses = computed(() => {
+  return {
+    checkbox: {
+      'checkbox--sm': props.size === 'sm',
+      'checkbox--md': props.size === 'md',
+      'checkbox--lg': props.size === 'lg',
+      'checkbox--checked': checked.value,
+      'checkbox--disabled': props.disabled,
+    },
+  };
+});
+
+// watchers
+
+// lifecycles
+
+// methods
+function handleChange() {
+  if (props.disabled) return;
+  if (checked.value) {
+    emit(
+      'update:modelValue',
+      props.modelValue.filter(v => v !== props.value)
+    );
+  } else {
+    emit('update:modelValue', [...props.modelValue, props.value]);
+  }
+}
+</script>
+
+<style lang="scss" scoped src="./Checkbox.style.scss"></style>

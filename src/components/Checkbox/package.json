@@ -1,0 +1,11 @@
+{
+    "main": "./Checkbox.vue",
+    "module": "./Checkbox.vue",
+    "types": "./Checkbox.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Checkbox.d.ts",
+            "import": "./Checkbox.vue"
+        }
+    }
+}

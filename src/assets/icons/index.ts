@@ -5,3 +5,4 @@ export { default as telIcon } from '@material-design-icons/svg/outlined/call.svg
 export { default as closeIcon } from '@material-design-icons/svg/round/close.svg?raw';
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
+export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
