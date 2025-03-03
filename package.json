@@ -96,6 +96,10 @@
     "./radiobutton": {
       "types": "./dist/components/RadioButton.d.ts",
       "import": "./dist/components/RadioButton.js"
+    },
+    "./form-validator": {
+      "types": "./dist/utils/formValidation/index.d.ts",
+      "import": "./dist/utils/formValidation/index.js"
     }
   },
   "scripts": {
