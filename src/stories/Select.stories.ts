@@ -10,35 +10,48 @@ const meta: Meta<typeof Select> = {
   argTypes: {
     options: {
       control: 'object',
-      description: 'Array of options for the select dropdown',
+      description: 'Array of selectable options, each containing `value` and `label` properties.',
     },
     label: {
       control: 'text',
-      description: 'Label for the select component',
+      description: 'Text label displayed above the select dropdown.',
     },
     placeholder: {
       control: 'text',
-      description: 'Placeholder text when no option is selected',
-    },
-    hint: {
-      control: 'text',
-      description: 'Hint text for extra information',
-    },
-    required: {
-      control: 'boolean',
-      description: 'Indicates if the field is required (shows an asterisk)',
-    },
-    isMultiple: {
-      control: 'boolean',
-      description: 'Enables multi-select mode',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables the select component',
+      description: 'Placeholder text displayed when no option is selected.',
     },
     leftIcon: {
       control: 'text',
-      description: 'Icon source for the left side of the trigger',
+      description: 'Optional icon displayed on the left side of the select field.',
+    },
+    required: {
+      control: 'boolean',
+      description: 'Marks the select field as required for form validation.',
+    },
+    hint: {
+      control: 'text',
+      description: 'A small hint text displayed below the select field.',
+    },
+    isMultiple: {
+      control: 'boolean',
+      description: 'Allows selection of multiple options when set to `true`.',
+    },
+    optionsPosition: {
+      control: 'radio',
+      options: ['top', 'bottom', 'left', 'right'],
+      description: 'Determines where the dropdown options appear relative to the select field.',
+    },
+    optionsOffset: {
+      control: 'number',
+      description: 'Adjusts the spacing (in pixels) between the select field and the dropdown options.',
+    },
+    isSearch: {
+      control: 'boolean',
+      description: 'Enables a search input inside the dropdown for filtering options.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables the select field when set to `true`, preventing interaction.',
     },
   },
 };
@@ -71,16 +84,18 @@ export const Default: Story = {
     ...commonArgs,
     label: 'Select Dropdown',
     required: true,
+    isSearch: true,
   },
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
-      return { args, selected, arrowDownIcon };
+      const selected = ref<string | null>(null);
+      const search = ref<string>('');
+      return { args, selected, search, arrowDownIcon };
     },
     template: `
          <div style="height:500px">
-           <Select v-model="selected" v-bind="args">
+           <Select v-model="selected" v-model:search="search" v-bind="args">
              <template #long-opt="{ label }">
                🎉 {{ label }} slot key
              </template>
@@ -101,7 +116,7 @@ export const DefaultMultiple: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string[] | number[]>([]);
+      const selected = ref<string[]>([]);
       return { args, selected, arrowDownIcon };
     },
     template: `
@@ -125,7 +140,7 @@ export const WithLabel: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
+      const selected = ref<string | null>(null);
       return { args, selected, arrowDownIcon };
     },
     template: `
@@ -150,7 +165,7 @@ export const Required: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
+      const selected = ref<string | null>(null);
       return { args, selected, arrowDownIcon };
     },
     template: `
@@ -176,7 +191,7 @@ export const NoOptions: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
+      const selected = ref<string | null>(null);
       return { args, selected, arrowDownIcon };
     },
     template: `
@@ -200,7 +215,7 @@ export const NarrowContainer: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
+      const selected = ref<string | null>(null);
       return { args, selected, arrowDownIcon };
     },
     template: `
@@ -224,7 +239,7 @@ export const BottomEdge: Story = {
   render: args => ({
     components: { Select, Svg },
     setup() {
-      const selected = ref<string | number | null>(null);
+      const selected = ref<string | null>(null);
       return { args, selected, arrowDownIcon };
     },
     template: `

@@ -9,7 +9,7 @@
     gap: 0.125rem;
     padding-bottom: 0.375rem;
 
-    p {
+    label {
       cursor: pointer;
 
       @include text-sm(500, $gray-700);
@@ -44,14 +44,25 @@
 
     &-value {
       display: block;
-      text-overflow: ellipsis;
-      overflow: hidden;
       white-space: nowrap;
+      max-height: 100%;
+      max-width: 100%;
+      overflow: scroll hidden;
+      flex: 1;
+      overscroll-behavior-x: contain;
       color: $gray-500;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
 
       @include text-md(400, $gray-500);
 
-      flex: 1;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        display: none;
+      }
 
       &-selected {
         @include text-md(500, $gray-900);
@@ -74,106 +85,123 @@
     }
   }
 
-  .select-dropdown {
-    position: absolute;
-    list-style: none;
-    border: 1px solid $gray-200;
+  .select-hint {
+    padding-top: 0.5rem;
+
+    @include text-sm(400, $gray-600);
+  }
+}
+
+.select-fade {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
+}
+
+.select-dropdown {
+  position: absolute;
+  list-style: none;
+  border: 1px solid $gray-200;
+  border-radius: $rounded-sm;
+  box-shadow: $shadow-lg;
+  background-color: $white;
+  max-height: 16rem;
+  overflow-y: auto;
+  padding: 0.25rem 0.375rem;
+  z-index: 9999;
+  outline: none;
+
+  &:focus {
+    border: 1px solid $primary-500;
+    outline: 1px solid $primary-500;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0 0.375rem;
     border-radius: $rounded-sm;
-    box-shadow: $shadow-lg;
-    background-color: $white;
-    max-height: 16rem;
-    overflow-y: auto;
-    padding: 0.25rem 0.375rem;
-    z-index: 9999;
-    outline: none;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-bottom: 0.125rem;
+    }
+
+    &-label {
+      flex: 1;
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0.5rem;
+
+      @include text-md(400, $gray-500);
+    }
+
+    &-icon {
+      color: $primary-500;
+
+      &-disabled {
+        color: $gray-400;
+      }
+    }
+
+    &-selected {
+      background-color: $gray-50;
+    }
+
+    &:hover {
+      background-color: $gray-50;
+    }
+
+    &-disabled {
+      opacity: 0.5;
+      user-select: none;
+      cursor: not-allowed;
+
+      &:hover {
+        .select-dropdown-item-label {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  &-search {
+    border: 1px solid $gray-300;
+    outline: 0;
+    width: 100%;
+    height: 2.5rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: $rounded-sm;
+    margin-bottom: 0.125rem;
 
     &:focus {
       border: 1px solid $primary-500;
       outline: 1px solid $primary-500;
     }
 
-    &-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      width: 100%;
-      padding: 0 0.375rem;
-      border-radius: $rounded-sm;
-      cursor: pointer;
-
-      &:not(:last-child) {
-        margin-bottom: 0.125rem;
-      }
-
-      &-label {
-        flex: 1;
-        display: block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding: 0.5rem;
-
-        @include text-md(400, $gray-500);
-      }
-
-      &-icon {
-        color: $primary-500;
-
-        &-disabled {
-          color: $gray-400;
-        }
-      }
-
-      &-selected {
-        background-color: $gray-50;
-      }
-
-      &:hover {
-        background-color: $gray-50;
-      }
-
-      &-disabled {
-        opacity: 0.5;
-        user-select: none;
-        cursor: not-allowed;
-
-        &:hover {
-          .select-dropdown-item-label {
-            background-color: transparent;
-          }
-        }
-      }
-    }
-
-    &-no-content {
-      padding: 0.5rem 1rem;
-
-      p {
-        @include text-md(400, $gray-500);
-      }
-    }
+    @include text-md(400, $gray-500);
   }
 
-  .select-hint {
-    padding-top: 0.5rem;
+  &-no-content {
+    padding: 0.5rem 1rem;
 
-    @include text-sm(400, $gray-600);
-  }
-
-  .select-fade {
-    &-enter-active,
-    &-leave-active {
-      transition: opacity 0.2s ease-in-out;
-    }
-
-    &-enter-from,
-    &-leave-to {
-      opacity: 0;
-    }
-
-    &-enter-to,
-    &-leave-from {
-      opacity: 1;
+    p {
+      @include text-md(400, $gray-500);
     }
   }
 }

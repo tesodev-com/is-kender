@@ -9,120 +9,100 @@ export interface PositionStyle {
   width: string;
 }
 
-export function calculateDropdownPosition(containerRect: DOMRect, triggerRect: DOMRect, dropdownRect: DOMRect, options: PositionOptions = {}): PositionStyle {
-  const { preferredPosition = 'bottom', offset = 4 } = options;
+function getViewportDimensions(): { width: number; height: number } {
+  return {
+    width: window?.innerWidth || 0,
+    height: window?.innerHeight || 0,
+  };
+}
 
-  if (typeof window === 'undefined') return { top: '0px', left: '0px', width: '0px' };
+function getScrollOffsets(): { scrollX: number; scrollY: number } {
+  return {
+    scrollX: window?.scrollX || 0,
+    scrollY: document.documentElement?.scrollTop || window?.scrollY || 0,
+  };
+}
 
-  // Get viewport dimensions
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-
-  // Use container width for dropdown, but trigger for position
-  const dropdownWidth = containerRect.width;
-  const dropdownHeight = dropdownRect.height;
-
-  // Trigger coordinates (viewport-relative)
-  const triggerTop = triggerRect.top;
-  const triggerLeft = triggerRect.left;
-  const triggerBottom = triggerRect.bottom;
-  const triggerRight = triggerRect.right;
-
-  // Absolute coordinates with scroll for space checks
+function checkAvailableSpace(triggerRect: DOMRect, elementRect: DOMRect, viewport: { width: number; height: number }, offset: number): Record<string, boolean> {
   const absoluteTop = triggerRect.top + window.scrollY;
   const absoluteBottom = triggerRect.bottom + window.scrollY;
-
-  let top: number, left: number;
-
-  // Helper to check available space (absolute)
-  const hasSpaceBelow = absoluteBottom + dropdownHeight + offset <= viewportHeight + window.scrollY;
-  const hasSpaceAbove = absoluteTop - dropdownHeight - offset >= window.scrollY;
-  const hasSpaceRight = triggerRight + dropdownWidth + offset <= viewportWidth + window.scrollX;
-  const hasSpaceLeft = triggerLeft - dropdownWidth - offset >= window.scrollX;
-
-  console.log('Viewport:', { width: viewportWidth, height: viewportHeight });
-  console.log('Trigger (viewport):', { top: triggerTop, bottom: triggerBottom, left: triggerLeft, right: triggerRight });
-  console.log('Trigger (absolute):', { top: absoluteTop, bottom: absoluteBottom });
-  console.log('Dropdown:', { width: dropdownWidth, height: dropdownHeight });
-  console.log('Space:', { below: hasSpaceBelow, above: hasSpaceAbove, right: hasSpaceRight, left: hasSpaceLeft });
-
-  // Determine position with flip logic (viewport-relative, based on trigger)
-  switch (preferredPosition) {
-    case 'bottom':
-      if (hasSpaceBelow) {
-        top = triggerBottom + offset; // Position below trigger
-        left = triggerLeft;
-      } else if (hasSpaceAbove) {
-        top = triggerTop - dropdownHeight - offset;
-        left = triggerLeft;
-      } else {
-        top = viewportHeight - dropdownHeight; // Fallback
-        left = triggerLeft;
-      }
-      break;
-
-    case 'top':
-      if (hasSpaceAbove) {
-        top = triggerTop - dropdownHeight - offset;
-        left = triggerLeft;
-      } else if (hasSpaceBelow) {
-        top = triggerBottom + offset;
-        left = triggerLeft;
-      } else {
-        top = 0; // Fallback to top of viewport
-        left = triggerLeft;
-      }
-      break;
-
-    case 'right':
-      if (hasSpaceRight) {
-        top = triggerTop;
-        left = triggerRight + offset;
-      } else if (hasSpaceLeft) {
-        top = triggerTop;
-        left = triggerLeft - dropdownWidth - offset;
-      } else {
-        top = triggerTop;
-        left = viewportWidth - dropdownWidth;
-      }
-      break;
-
-    case 'left':
-      if (hasSpaceLeft) {
-        top = triggerTop;
-        left = triggerLeft - dropdownWidth - offset;
-      } else if (hasSpaceRight) {
-        top = triggerTop;
-        left = triggerRight + offset;
-      } else {
-        top = triggerTop;
-        left = 0;
-      }
-      break;
-
-    default:
-      if (hasSpaceBelow) {
-        top = triggerBottom + offset;
-        left = triggerLeft;
-      } else if (hasSpaceAbove) {
-        top = triggerTop - dropdownHeight - offset;
-        left = triggerLeft;
-      } else {
-        top = viewportHeight - dropdownHeight;
-        left = triggerLeft;
-      }
-  }
-
-  // Adjust to be relative to the container (not trigger, since container is position: relative)
-  const relativeTop = top - containerRect.top;
-  const relativeLeft = left - containerRect.left;
-
-  console.log('Final (absolute):', { top: `${top}px`, left: `${left}px`, width: `${dropdownWidth}px` });
-  console.log('Final (relative):', { top: `${relativeTop}px`, left: `${relativeLeft}px`, width: `${dropdownWidth}px` });
+  const absoluteRight = triggerRect.right + window.scrollX;
+  const absoluteLeft = triggerRect.left + window.scrollX;
 
   return {
-    top: `${relativeTop}px`,
-    left: `${relativeLeft}px`,
-    width: `${dropdownWidth}px`,
+    hasSpaceBelow: absoluteBottom + elementRect.height + offset <= viewport.height + window.scrollY,
+    hasSpaceAbove: absoluteTop - elementRect.height - offset >= window.scrollY,
+    hasSpaceRight: absoluteRight + elementRect.width + offset <= viewport.width + window.scrollX,
+    hasSpaceLeft: absoluteLeft - elementRect.width - offset >= window.scrollX,
+  };
+}
+
+function calculateBottomPosition(triggerRect: DOMRect, elementRect: DOMRect, scrollTop: number, offset: number, hasSpaceBelow: boolean): { top: number; left: number } {
+  return {
+    top: hasSpaceBelow ? scrollTop + triggerRect.top + triggerRect.height + offset : scrollTop + triggerRect.top - offset - elementRect.height,
+    left: triggerRect.left,
+  };
+}
+
+function calculateTopPosition(triggerRect: DOMRect, elementRect: DOMRect, scrollTop: number, offset: number, hasSpaceAbove: boolean): { top: number; left: number } {
+  return {
+    top: hasSpaceAbove ? scrollTop + triggerRect.top - offset - elementRect.height : scrollTop + triggerRect.top + triggerRect.height + offset,
+    left: triggerRect.left,
+  };
+}
+
+function calculateRightPosition(triggerRect: DOMRect, elementRect: DOMRect, scrollTop: number, scrollX: number, offset: number, hasSpaceRight: boolean): { top: number; left: number } {
+  return {
+    top: scrollTop + triggerRect.top,
+    left: hasSpaceRight ? triggerRect.right + offset + scrollX : triggerRect.left - offset - elementRect.width + scrollX,
+  };
+}
+
+function calculateLeftPosition(triggerRect: DOMRect, elementRect: DOMRect, scrollTop: number, scrollX: number, offset: number, hasSpaceLeft: boolean): { top: number; left: number } {
+  return {
+    top: scrollTop + triggerRect.top,
+    left: hasSpaceLeft ? triggerRect.left - offset - elementRect.width + scrollX : triggerRect.right + offset + scrollX,
+  };
+}
+
+export function calculateElementPosition(containerElement: HTMLElement, triggerElement: HTMLElement, element: HTMLElement, options: PositionOptions = {}): PositionStyle {
+  const { preferredPosition = 'bottom', offset = 4 } = options;
+
+  if (typeof window === 'undefined') {
+    return { top: '0px', left: '0px', width: '0px' };
+  }
+
+  const containerRect = containerElement.getBoundingClientRect();
+  const triggerRect = triggerElement.getBoundingClientRect();
+  const elementRect = element.getBoundingClientRect();
+
+  const viewport = getViewportDimensions();
+  const { scrollX, scrollY: scrollTop } = getScrollOffsets();
+  const spaceChecks = checkAvailableSpace(triggerRect, elementRect, viewport, offset);
+  const elementWidth = containerRect.width;
+
+  let position: { top: number; left: number };
+
+  switch (preferredPosition) {
+    case 'bottom':
+      position = calculateBottomPosition(triggerRect, elementRect, scrollTop, offset, spaceChecks.hasSpaceBelow);
+      break;
+    case 'top':
+      position = calculateTopPosition(triggerRect, elementRect, scrollTop, offset, spaceChecks.hasSpaceAbove);
+      break;
+    case 'right':
+      position = calculateRightPosition(triggerRect, elementRect, scrollTop, scrollX, offset, spaceChecks.hasSpaceRight);
+      break;
+    case 'left':
+      position = calculateLeftPosition(triggerRect, elementRect, scrollTop, scrollX, offset, spaceChecks.hasSpaceLeft);
+      break;
+    default:
+      position = calculateBottomPosition(triggerRect, elementRect, scrollTop, offset, spaceChecks.hasSpaceBelow);
+  }
+
+  return {
+    top: `${position.top}px`,
+    left: `${position.left}px`,
+    width: `${elementWidth}px`,
   };
 }

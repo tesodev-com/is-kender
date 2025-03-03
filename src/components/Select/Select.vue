@@ -7,9 +7,12 @@
       v-if="label"
       class="select-label-container"
     >
-      <p @click="handleLabelClick">
+      <label
+        :for="selectId"
+        @click="handleLabelClick"
+      >
         {{ label }}
-      </p>
+      </label>
       <span
         v-if="required"
         class="select-label-required"
@@ -18,13 +21,14 @@
       </span>
     </div>
     <div
+      :id="selectId"
       ref="selectTrigger"
       class="select-trigger"
       :class="[{ 'select-trigger-open': isOpen, 'select-trigger-disabled': disabled }]"
       tabindex="0"
       @click="toggleDropdown"
     >
-      <BaseSvg
+      <Svg
         v-if="leftIcon"
         :src="leftIcon"
         size="20"
@@ -43,52 +47,61 @@
         :class="[{ 'select-trigger-arrow-open': isOpen }]"
       />
     </div>
-    <transition name="select-fade">
-      <ul
-        v-if="isOpen"
-        ref="dropdown"
-        class="select-dropdown"
-        :style="dropdownPosition"
-      >
-        <template v-if="!options.length">
-          <li class="select-dropdown-no-content">
-            <p>No options available</p>
-          </li>
-        </template>
-        <template v-else>
-          <li
-            v-for="option in options"
-            :key="option.value"
-            class="select-dropdown-item"
-            :class="[{ 'select-dropdown-item-selected': isSelected(option.value), 'select-dropdown-item-disabled': option.disabled }]"
-            @click="selectOption(option)"
-          >
-            <div
-              v-if="option.slotKey"
-              class="select-dropdown-item-label"
-            >
-              <slot
-                :name="option.slotKey"
-                v-bind="option"
-              />
-            </div>
-            <p
-              v-else
-              class="select-dropdown-item-label"
-            >
-              {{ option.label }}
-            </p>
-            <Svg
-              v-if="isSelected(option.value)"
-              :src="checkIcon"
-              size="20"
-              class="select-dropdown-item-icon"
-              :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
+    <Teleport to="body">
+      <transition name="select-fade">
+        <ul
+          v-if="isOpen"
+          ref="dropdown"
+          class="select-dropdown"
+          :style="dropdownPosition"
+        >
+          <template v-if="isSearch && options.length > 0">
+            <input
+              v-model="searchModel"
+              placeholder="Search..."
+              class="select-dropdown-search"
             />
-          </li>
-        </template>
-      </ul>
-    </transition>
+          </template>
+          <template v-if="!searchFilterList.length">
+            <li class="select-dropdown-no-content">
+              <p>No options available</p>
+            </li>
+          </template>
+          <template v-else>
+            <li
+              v-for="option in searchFilterList"
+              :key="option.value"
+              class="select-dropdown-item"
+              :class="[{ 'select-dropdown-item-selected': isSelected(option.value), 'select-dropdown-item-disabled': option.disabled }]"
+              @click="selectOption(option)"
+            >
+              <div
+                v-if="option.slotKey"
+                class="select-dropdown-item-label"
+              >
+                <slot
+                  :name="option.slotKey"
+                  v-bind="option"
+                />
+              </div>
+              <p
+                v-else
+                class="select-dropdown-item-label"
+              >
+                {{ option.label }}
+              </p>
+              <Svg
+                v-if="isSelected(option.value)"
+                :src="checkIcon"
+                size="20"
+                class="select-dropdown-item-icon"
+                :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
+              />
+            </li>
+          </template>
+        </ul>
+      </transition>
+    </Teleport>
     <div
       v-if="hint || $slots.hint"
       class="select-hint"
@@ -105,20 +118,23 @@
 
 <script setup lang="ts">
 import Svg from 'library/Svg';
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId } from 'vue';
 import { arrowDownIcon, checkIcon } from '@/assets/icons';
 import type { SelectOption, SelectProps } from 'library/Select';
-import BaseSvg from 'library/Svg';
-import { calculateDropdownPosition, type PositionStyle } from '@/utils/calculatePosition';
+import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
 
 const props = withDefaults(defineProps<SelectProps>(), {
   isMultiple: false,
   optionsPosition: 'bottom',
   optionsOffset: 4,
+  isSearch: false,
 });
 
-const model = defineModel<string | number | null>();
-const modelMultiple = defineModel<(string | number)[]>('multiple', { default: () => [] });
+const selectId = useId();
+
+const model = defineModel<string | null>();
+const modelMultiple = defineModel<string[]>('multiple', { default: () => [] });
+const searchModel = defineModel<string>('search', { default: '' });
 const isOpen = ref<boolean>(false);
 const selectContainer = ref<HTMLElement | null>(null);
 const selectTrigger = ref<HTMLElement | null>(null);
@@ -139,6 +155,13 @@ const hasSelectedValue = computed(() => (props.isMultiple ? modelMultiple.value.
 
 const computePlaceholder = computed(() => {
   return selectedValue.value || props.placeholder || '';
+});
+
+const searchFilterList = computed(() => {
+  if (props.isSearch && searchModel.value) {
+    return props.options.filter(option => option.label.toLowerCase().includes(searchModel.value.toLowerCase()));
+  }
+  return props.options;
 });
 
 onMounted(() => {
@@ -168,7 +191,7 @@ function selectOption(option: SelectOption) {
   }
 }
 
-function isSelected(value: string | number) {
+function isSelected(value: string) {
   return props.isMultiple ? modelMultiple.value.includes(value) : model.value === value;
 }
 
@@ -177,13 +200,7 @@ async function updateDropdownPosition() {
 
   if (!selectContainer.value || !selectTrigger.value || !dropdown.value || !isOpen.value) return;
 
-  const containerRect = selectContainer.value.getBoundingClientRect();
-  const triggerRect = selectTrigger.value.getBoundingClientRect();
-  const dropdownRect = dropdown.value.getBoundingClientRect();
-
-  console.log({ containerRect, triggerRect, dropdownRect });
-
-  dropdownPosition.value = calculateDropdownPosition(containerRect, triggerRect, dropdownRect, {
+  dropdownPosition.value = calculateElementPosition(selectContainer.value, selectTrigger.value, dropdown.value, {
     preferredPosition: props.optionsPosition,
     offset: props.optionsOffset,
   });
@@ -195,6 +212,7 @@ function toggleDropdown() {
   if (props.disabled) return;
 
   isOpen.value = !isOpen.value;
+  searchModel.value = '';
   if (isOpen.value) {
     updateDropdownPosition();
     scrollToSelectedItem();

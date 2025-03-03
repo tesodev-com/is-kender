@@ -2,7 +2,7 @@ import { type DefineComponent } from 'vue';
 
 export interface SelectOption {
   label: string;
-  value: string | number;
+  value: string;
   slotKey?: string;
   disabled?: boolean;
 }
@@ -17,6 +17,7 @@ export interface SelectProps {
   isMultiple?: boolean;
   optionsPosition?: 'top' | 'bottom' | 'left' | 'right';
   optionsOffset?: number;
+  isSearch?: boolean;
   disabled?: boolean;
 }
 
