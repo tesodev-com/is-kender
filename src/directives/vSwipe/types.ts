@@ -1,23 +1,34 @@
 export interface SwipeState {
-  isSwiping?: boolean;
+  // Operation status
+  isSwiping: boolean;
+  swipeState?: 'start' | 'move' | 'end';
+
+  // Coordinates
   startX: number;
   startY: number;
   endX: number;
   endY: number;
+
+  // Calculated values
   deltaX: number;
   deltaY: number;
-  elapsedTime: number;
+  direction: 'left' | 'right' | 'top' | 'bottom' | 'none';
+
+  // Time and velocity
   startTime: number;
-  direction?: 'top' | 'left' | 'bottom' | 'right';
-  swipeState?: 'start' | 'move' | 'end';
+  elapsedTime: number;
   swipeSpeed: number;
 }
 
 export interface SwipeOptions {
-  threshold?: number;
-  delay?: number;
-  onSwipeStart?: (event: SwipeState) => any;
-  onSwipeMove?: (event: SwipeState) => any;
-  onSwipeEnd?: (event: SwipeState) => any;
-  onSwipe?: (event: SwipeState) => any;
+  // General settings
+  preventDefaultOnStart?: boolean;
+  preventDefaultOnMove?: boolean;
+  preventDefaultOnEnd?: boolean;
+
+  // Callbacks
+  onSwipe?: (state: SwipeState) => void;
+  onSwipeStart?: (state: SwipeState) => void;
+  onSwipeMove?: (state: SwipeState) => void;
+  onSwipeEnd?: (state: SwipeState) => void;
 }
