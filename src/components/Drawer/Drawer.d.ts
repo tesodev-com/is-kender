@@ -1,5 +1,12 @@
 import type { DefineComponent } from 'vue';
-import type { DrawerProps } from './Drawer.vue';
+
+export interface DrawerProps {
+  position?: 'left' | 'right' | 'top' | 'bottom';
+  size?: '25%' | '50%' | '100%';
+  title?: string;
+  hasHeader?: boolean;
+  hasCloseButton?: boolean;
+}
 
 declare const Drawer: DefineComponent<DrawerProps>;
 

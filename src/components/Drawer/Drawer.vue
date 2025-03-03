@@ -1,14 +1,10 @@
 <template>
-  <transition name="drawer">
-    <div
-      v-if="isOpen"
-      class="overlay"
-      @click="closeDrawer"
-    >
+  <Teleport to="body">
+    <transition :name="computeTransition">
       <div
+        v-if="isOpen"
         :class="drawerClasses"
         :style="drawerStyle"
-        @click.stop
       >
         <div
           v-if="hasHeader"
@@ -19,42 +15,54 @@
             v-if="hasCloseButton"
             @click="closeDrawer"
           >
-            X
+            <Svg
+              :src="closeIcon"
+              size="20"
+            />
           </button>
         </div>
         <div class="drawer-content">
           <slot />
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+    <transition name="fade">
+      <div
+        v-if="isOpen"
+        class="overlay"
+        @click.stop="closeDrawer"
+      />
+    </transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-export interface DrawerProps {
-  position?: 'left' | 'right' | 'top' | 'bottom';
-  size?: '25%' | '50%' | '100%';
-  title?: string;
-  isOpen?: boolean;
-  hasHeader?: boolean;
-  hasCloseButton?: boolean;
-}
+import Svg from 'library/Svg';
+import { closeIcon } from '@/assets/icons';
+import type { DrawerProps } from 'library/Drawer';
+
+const isOpen = defineModel<boolean>('isOpen');
 
 const props = withDefaults(defineProps<DrawerProps>(), {
   position: 'left',
   size: '50%',
   title: '',
-  isOpen: false,
   hasHeader: true,
   hasCloseButton: true,
 });
 
 const emit = defineEmits(['update:isOpen']);
 
-const closeDrawer = () => {
-  emit('update:isOpen', false);
-};
+const computeTransition = computed(() => {
+  const transition = {
+    left: 'slide-left',
+    right: 'slide-right',
+    top: 'slide-up',
+    bottom: 'slide-down',
+  };
+  return transition[props.position];
+});
 
 const drawerClasses = computed(() => ['drawer', `drawer-${props.position}`]);
 
@@ -63,6 +71,10 @@ const drawerStyle = computed(() => {
     '--drawer-size': props.size,
   };
 });
+
+function closeDrawer() {
+  emit('update:isOpen', false);
+}
 </script>
 
 <style lang="scss" scoped src="./Drawer.style.scss" />
