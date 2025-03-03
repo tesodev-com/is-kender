@@ -1,0 +1,11 @@
+{
+    "main": "./Swiper.vue",
+    "module": "./Swiper.vue",
+    "types": "./Swiper.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Swiper.d.ts",
+            "import": "./Swiper.vue"
+        }
+    }
+}

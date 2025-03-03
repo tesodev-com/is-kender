@@ -100,6 +100,10 @@
     "./toggle": {
       "types": "./dist/components/Toggle/Toggle.d.ts",
       "import": "./dist/components/Toggle/Toggle.js"
+    },
+    "./swiper": {
+      "types": "./dist/components/Swiper/Swiper.d.ts",
+      "import": "./dist/components/Swiper/Swiper.js"
     }
   },
   "scripts": {
