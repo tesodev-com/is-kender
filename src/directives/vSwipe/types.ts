@@ -10,7 +10,7 @@ export interface SwipeState {
   startTime: number;
   direction?: 'top' | 'left' | 'bottom' | 'right';
   swipeState?: 'start' | 'move' | 'end';
-  swipeSpeed?: number;
+  swipeSpeed: number;
 }
 
 export interface SwipeOptions {
