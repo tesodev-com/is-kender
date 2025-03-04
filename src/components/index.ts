@@ -14,6 +14,7 @@ export { default as ProgressBar } from 'library/ProgressBar';
 export { default as Row } from 'library/Row';
 export { default as Sidebar } from 'library/Sidebar';
 export { default as Skeleton } from 'library/Skeleton';
+export { default as Spinner } from 'library/Spinner';
 export { default as Svg } from 'library/Svg';
 export { default as Text } from 'library/Text';
 export { default as Toast } from 'library/Toast';

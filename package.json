@@ -17,77 +17,81 @@
       "types": "./dist/main.d.ts",
       "import": "./dist/main.js"
     },
+    "./form-validator": {
+      "types": "./dist/utils/formValidation/index.d.ts",
+      "import": "./dist/utils/formValidation/index.js"
+    },
     "./button": {
-      "types": "./dist/components/Button.d.ts",
-      "import": "./dist/components/Button.js"
+      "types": "./dist/components/Button/Button.d.ts",
+      "import": "./dist/components/Button/Button.js"
     },
     "./accordion": {
-      "types": "./dist/components/Accordion.d.ts",
-      "import": "./dist/components/Accordion.js"
+      "types": "./dist/components/Accordion/Accordion.d.ts",
+      "import": "./dist/components/Accordion/Accordion.js"
     },
     "./alert": {
-      "types": "./dist/components/Alert.d.ts",
-      "import": "./dist/components/Alert.js"
+      "types": "./dist/components/Alert/Alert.d.ts",
+      "import": "./dist/components/Alert/Alert.js"
     },
     "./badge": {
-      "types": "./dist/components/Badge.d.ts",
-      "import": "./dist/components/Badge.js"
+      "types": "./dist/components/Badge/Badge.d.ts",
+      "import": "./dist/components/Badge/Badge.js"
     },
     "./breadcrumb": {
-      "types": "./dist/components/Breadcrumb.d.ts",
-      "import": "./dist/components/Breadcrumb.js"
+      "types": "./dist/components/Breadcrumb/Breadcrumb.d.ts",
+      "import": "./dist/components/Breadcrumb/Breadcrumb.js"
     },
     "./col": {
-      "types": "./dist/components/Col.d.ts",
-      "import": "./dist/components/Col.js"
+      "types": "./dist/components/Col/Col.d.ts",
+      "import": "./dist/components/Col/Col.js"
     },
     "./container": {
-      "types": "./dist/components/Container.d.ts",
-      "import": "./dist/components/Container.js"
+      "types": "./dist/components/Container/Container.d.ts",
+      "import": "./dist/components/Container/Container.js"
     },
     "./divider": {
-      "types": "./dist/components/Divider.d.ts",
-      "import": "./dist/components/Divider.js"
+      "types": "./dist/components/Divider/Divider.d.ts",
+      "import": "./dist/components/Divider/Divider.js"
     },
     "./fileupload": {
-      "types": "./dist/components/FileUpload.d.ts",
-      "import": "./dist/components/FileUpload.js"
+      "types": "./dist/components/FileUpload/FileUpload.d.ts",
+      "import": "./dist/components/FileUpload/FileUpload.js"
     },
     "./progressbar": {
-      "types": "./dist/components/ProgressBar.d.ts",
-      "import": "./dist/components/ProgressBar.js"
+      "types": "./dist/components/ProgressBar/ProgressBar.d.ts",
+      "import": "./dist/components/ProgressBar/ProgressBar.js"
     },
     "./row": {
-      "types": "./dist/components/Row.d.ts",
-      "import": "./dist/components/Row.js"
+      "types": "./dist/components/Row/Row.d.ts",
+      "import": "./dist/components/Row/Row.js"
     },
     "./skeleton": {
-      "types": "./dist/components/Skeleton.d.ts",
-      "import": "./dist/components/Skeleton.js"
+      "types": "./dist/components/Skeleton/Skeleton.d.ts",
+      "import": "./dist/components/Skeleton/Skeleton.js"
     },
     "./svg": {
-      "types": "./dist/components/Svg.d.ts",
-      "import": "./dist/components/Svg.js"
+      "types": "./dist/components/Svg/Svg.d.ts",
+      "import": "./dist/components/Svg/Svg.js"
     },
     "./text": {
-      "types": "./dist/components/Text.d.ts",
-      "import": "./dist/components/Text.js"
+      "types": "./dist/components/Text/Text.d.ts",
+      "import": "./dist/components/Text/Text.js"
     },
     "./toast": {
-      "types": "./dist/components/Toast.d.ts",
-      "import": "./dist/components/Toast.js"
+      "types": "./dist/components/Toast/Toast.d.ts",
+      "import": "./dist/components/Toast/Toast.js"
     },
     "./toggle": {
-      "types": "./dist/components/Toggle.d.ts",
-      "import": "./dist/components/Toggle.js"
+      "types": "./dist/components/Toggle/Toggle.d.ts",
+      "import": "./dist/components/Toggle/Toggle.js"
     },
     "./sidebar": {
-      "types": "./dist/components/Sidebar.d.ts",
-      "import": "./dist/components/Sidebar.js"
+      "types": "./dist/components/Sidebar/Sidebar.d.ts",
+      "import": "./dist/components/Sidebar/Sidebar.js"
     },
     "./link": {
-      "types": "./dist/components/Link.d.ts",
-      "import": "./dist/components/Link.js"
+      "types": "./dist/components/Link/Link.d.ts",
+      "import": "./dist/components/Link/Link.js"
     },
     "./input": {
       "types": "./dist/components/Input.d.ts",
@@ -96,6 +100,10 @@
     "./checkbox": {
       "types": "./dist/components/Checkbox.d.ts",
       "import": "./dist/components/Checkbox.js"
+    },
+    "./spinner": {
+      "types": "./dist/components/Spinner/Spinner.d.ts",
+      "import": "./dist/components/Spinner/Spinner.js"
     }
   },
   "scripts": {

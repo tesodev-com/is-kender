@@ -2,6 +2,7 @@
   <span
     ref="icon"
     class="icon"
+    :style="style"
     v-html="svgEl"
   ></span>
 </template>
