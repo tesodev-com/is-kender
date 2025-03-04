@@ -94,12 +94,12 @@
       "import": "./dist/components/Link/Link.js"
     },
     "./input": {
-      "types": "./dist/components/Input.d.ts",
-      "import": "./dist/components/Input.js"
+      "types": "./dist/components/Input/Input.d.ts",
+      "import": "./dist/components/Input/Input.js"
     },
     "./checkbox": {
-      "types": "./dist/components/Checkbox.d.ts",
-      "import": "./dist/components/Checkbox.js"
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
     },
     "./spinner": {
       "types": "./dist/components/Spinner/Spinner.d.ts",

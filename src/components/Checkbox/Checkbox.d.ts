@@ -3,7 +3,6 @@ import { type DefineComponent } from 'vue';
 export interface CheckboxProps {
   name?: string;
   value: string;
-  modelValue: string[];
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
   label?: string;

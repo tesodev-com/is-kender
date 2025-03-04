@@ -7,7 +7,6 @@
       type="checkbox"
       :name="name"
       :value="value"
-      :checked="checked"
       :disabled="disabled"
       class="checkbox__input"
       @change="handleChange"
@@ -30,15 +29,15 @@
 
 <script setup lang="ts">
 import { tickIcon } from '@/assets/icons';
+import type { CheckboxProps } from 'library/Checkbox';
 import Svg from 'library/Svg';
 import { computed } from 'vue';
-import type { CheckboxProps } from 'library/Checkbox';
 // imports
 
 // interfaces & types
 
 // constants
-
+const modelValue = defineModel<string[]>({ required: true });
 // composable
 
 // props
@@ -47,13 +46,11 @@ const props = withDefaults(defineProps<CheckboxProps>(), {
   size: 'md',
 });
 // defineEmits
-const emit = defineEmits<{
-  'update:modelValue': [value: string[] | number[]];
-}>();
+
 // states (refs and reactives)
 
 // computed
-const checked = computed(() => props.modelValue.includes(props.value));
+const checked = computed(() => modelValue.value.includes(props.value));
 const checkboxClasses = computed(() => {
   return {
     checkbox: {
@@ -74,12 +71,9 @@ const checkboxClasses = computed(() => {
 function handleChange() {
   if (props.disabled) return;
   if (checked.value) {
-    emit(
-      'update:modelValue',
-      props.modelValue.filter(v => v !== props.value)
-    );
+    modelValue.value = modelValue?.value.filter(v => v !== props.value);
   } else {
-    emit('update:modelValue', [...props.modelValue, props.value]);
+    modelValue.value = [...modelValue.value, props.value];
   }
 }
 </script>
