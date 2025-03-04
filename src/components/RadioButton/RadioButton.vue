@@ -14,25 +14,24 @@
     </label>
     <input
       :id="id"
+      :value="props.value"
       type="radio"
       :name="name"
-      :value="value"
-      :checked="checked"
       class="radio-button__input"
       :class="radioButtonClasses.radioButtonHiddenInput"
-      @change="handleChange"
+      @input="handleChange"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-// import { type RadioButtonProps } from 'library/RadioButton';
-import { computed } from 'vue';
 import type { RadioButtonProps } from 'library/RadioButton';
+import { computed } from 'vue';
 // interfaces & types
 
 // constants
+const modelValue = defineModel<string>();
 // composable
 
 // props
@@ -42,14 +41,13 @@ const props = withDefaults(defineProps<RadioButtonProps>(), {
   disabled: false,
 });
 // defineEmits
-const emit = defineEmits<{
-  'update:modelValue': [value: string | number];
-}>();
+
 // data
+
 // states (refs and reactives)
 
 // computed
-const checked = computed(() => props.modelValue === props.value);
+const checked = computed(() => modelValue.value === props.value);
 const radioButtonClasses = computed(() => {
   return {
     radioButton: {
@@ -72,7 +70,7 @@ const radioButtonClasses = computed(() => {
 // methods
 function handleChange() {
   if (props.disabled) return;
-  emit('update:modelValue', props.value);
+  modelValue.value = props.value;
 }
 </script>
 

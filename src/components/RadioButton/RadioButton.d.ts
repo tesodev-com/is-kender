@@ -4,8 +4,7 @@ export interface RadioButtonProps {
   id?: string;
   name?: string;
   label?: string;
-  value: string | number;
-  modelValue: string | number;
+  value: string;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
