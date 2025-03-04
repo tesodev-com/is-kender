@@ -65,11 +65,9 @@
         >
           <template v-if="isSearch && options.length > 0">
             <input
-              ref="searchInput"
               v-model="searchModel"
               placeholder="Search..."
               class="select-dropdown-search"
-              tabindex="0"
               @keydown="handleSearchKeydown"
             />
           </template>
@@ -159,7 +157,6 @@ const searchModel = defineModel<string>('search', { default: '' });
 const selectContainer = useTemplateRef('selectContainer');
 const selectTrigger = useTemplateRef('selectTrigger');
 const dropdown = useTemplateRef('dropdown');
-const searchInput = useTemplateRef('searchInput');
 const isOpen = ref<boolean>(false);
 const dropdownPosition = ref<PositionStyle>({ top: '0px', left: '0px', width: '0px' });
 const focusedIndex = ref<number>(-1);
@@ -253,11 +250,7 @@ function toggleDropdown() {
     if (focusedIndex.value === -1) focusedIndex.value = 0;
 
     nextTick(() => {
-      if (props.isSearch && searchInput.value) {
-        searchInput.value.focus();
-      } else {
-        selectTrigger.value?.focus();
-      }
+      selectTrigger.value?.focus();
     });
   } else {
     focusedIndex.value = -1;
@@ -340,11 +333,7 @@ function handleKeydown(event: KeyboardEvent) {
     case 'Tab':
       if (isOpen.value) {
         event.preventDefault();
-        if (props.isSearch && searchInput.value) {
-          searchInput.value.focus();
-        } else {
-          selectTrigger.value?.focus();
-        }
+        selectTrigger.value?.focus();
       }
       break;
   }
