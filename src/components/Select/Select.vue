@@ -221,16 +221,16 @@ function isSelected(value: string) {
 }
 
 async function updateDropdownPosition() {
-  await nextTick();
+  nextTick(() => {
+    if (!selectContainer.value || !selectTrigger.value || !dropdown.value || !isOpen.value) return;
 
-  if (!selectContainer.value || !selectTrigger.value || !dropdown.value || !isOpen.value) return;
+    dropdownPosition.value = calculateElementPosition(selectContainer.value, selectTrigger.value, dropdown.value, {
+      preferredPosition: props.optionsPosition,
+      offset: props.optionsOffset,
+    });
 
-  dropdownPosition.value = calculateElementPosition(selectContainer.value, selectTrigger.value, dropdown.value, {
-    preferredPosition: props.optionsPosition,
-    offset: props.optionsOffset,
+    scrollToSelectedItem();
   });
-
-  scrollToSelectedItem();
 }
 
 function toggleDropdown() {
@@ -359,8 +359,6 @@ function handleSearchKeydown(event: KeyboardEvent) {
       break;
     case 'Escape':
       event.preventDefault();
-      isOpen.value = false;
-      focusedIndex.value = -1;
       selectTrigger.value?.focus();
       break;
     case 'Tab':
