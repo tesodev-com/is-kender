@@ -50,7 +50,7 @@ describe('RadioButton.vue', () => {
     const modelValue = ref('2');
     const wrapper = createWrapper({ modelValue: modelValue.value, value: '1', name: 'test', label: 'Radio Button' });
     const input = wrapper.find('.radio-button__input');
-    await input.trigger('change');
+    await input.trigger('input');
     expect(wrapper.emitted()).toHaveProperty('update:modelValue');
     expect(wrapper.emitted()['update:modelValue'][0]).toEqual(['1']);
   });
