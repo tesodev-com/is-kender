@@ -25,7 +25,7 @@
 // imports
 import { vSwipe, type SwipeState } from '@/directives/vSwipe';
 import type { SwiperEmits, SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
-import { computed, onMounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
 // interfaces & types
 
 // constants
@@ -56,6 +56,7 @@ const swiperState = ref<SwiperState>({
 
   // Indexes
   activeIndex: 0,
+  realIndex: 0,
 
   // State flags
   isBeginning: false,
@@ -89,7 +90,7 @@ onMounted(() => {
   slideTo(props.initialSlide, 0);
   window.addEventListener('resize', onResize);
 });
-onMounted(() => {
+onUnmounted(() => {
   window.removeEventListener('resize', onResize);
 });
 // methods
