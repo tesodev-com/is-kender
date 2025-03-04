@@ -38,7 +38,7 @@ function createComponentFiles() {
     }
     const componentNameCapitalized = componentName.charAt(0).toUpperCase() + componentName.slice(1);
     const path = `./src/components/${componentNameCapitalized}`;
-    const placeholders = { $template: componentNameCapitalized, $scssFile: `${componentNameCapitalized}.styles.scss` };
+    const placeholders = { $template: componentNameCapitalized, $scssFile: `${componentNameCapitalized}.style.scss` };
     fs.mkdirSync(path);
     files.forEach(file => {
       if (file.type === 'components') {

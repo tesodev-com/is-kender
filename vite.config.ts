@@ -12,7 +12,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       entryRoot: resolve(__dirname, 'src'),
-      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts'],
+      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts', 'src/utils/**/*.ts'],
       exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
       cleanVueFileName: true,
       copyDtsFiles: true,
