@@ -122,11 +122,6 @@
   z-index: 9999;
   outline: none;
 
-  &:focus {
-    border: 1px solid $primary-500;
-    outline: 1px solid $primary-500;
-  }
-
   &-item {
     display: flex;
     align-items: center;
@@ -160,6 +155,15 @@
     }
 
     &-selected {
+      background-color: $gray-50;
+    }
+
+    &-focused {
+      background-color: $gray-50;
+    }
+
+    &:focus {
+      outline: none;
       background-color: $gray-50;
     }
 
