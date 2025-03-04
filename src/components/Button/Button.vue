@@ -4,19 +4,14 @@
     :class="buttonClasses"
     v-bind="$attrs"
   >
-    <Svg
-      v-if="loading"
-      :src="loadingIcon"
-      class="animate-spin"
-    ></Svg>
+    <Spinner />
     <slot>{{ text }}</slot>
   </component>
 </template>
 
 <script setup lang="ts">
-import { loadingIcon } from '@/assets/icons';
 import type { ButtonProps } from 'library/Button';
-import Svg from 'library/Svg';
+import Spinner from 'library/Spinner';
 import { computed } from 'vue';
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',
