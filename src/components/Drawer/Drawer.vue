@@ -18,7 +18,7 @@
             <Svg
               :src="closeIcon"
               size="20"
-            />
+            ></Svg>
           </button>
         </div>
         <div class="drawer-content">
@@ -37,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
 import type { DrawerProps } from 'library/Drawer';
+import Svg from 'library/Svg';
+import { computed, watch } from 'vue';
 
 const isOpen = defineModel<boolean>('isOpen');
 
@@ -71,7 +71,13 @@ const drawerStyle = computed(() => {
     '--drawer-size': props.size,
   };
 });
-
+watch(isOpen, newValue => {
+  if (newValue) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+});
 function closeDrawer() {
   emit('update:isOpen', false);
 }

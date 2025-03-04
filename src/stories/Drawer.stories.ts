@@ -52,7 +52,7 @@ export const Primary: Story = {
     position: 'left',
     size: '50%',
     title: 'My Drawer',
-    isOpen: true,
+    isOpen: false,
   },
 };
 
@@ -116,7 +116,6 @@ export const SmallDrawer: Story = {
                   Email:
                   <input v-model="email" type="email" placeholder="Enter your email" />
                   </label>
-                  <br/>
                   <button type="submit">Submit</button>
                 </form>
               </template>

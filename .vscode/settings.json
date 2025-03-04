@@ -21,7 +21,7 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[vue]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[css]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
