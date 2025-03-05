@@ -3,7 +3,6 @@
     <transition
       :name="computeTransition"
       appear
-      @click.stop="closeDrawer"
     >
       <div
         v-if="isOpen"
@@ -30,10 +29,14 @@
         </div>
       </div>
     </transition>
-    <transition name="fade">
+    <transition
+      name="fade"
+      appear
+    >
       <div
         v-if="isOpen"
         class="overlay"
+        :class="closingAnimationOverlay"
         @click.stop="closeDrawer"
       />
     </transition>
@@ -81,22 +84,31 @@ const closingAnimation = computed(() => {
     return '';
   }
 });
+const closingAnimationOverlay = computed(() => {
+  if (closing.value) {
+    return 'fade-leave-active  fade-leave-to';
+  }
+  return '';
+});
 watch(
   () => props.isOpen,
   newValue => {
     if (newValue) {
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
     }
-  }
+  },
+  { immediate: true }
 );
 
 function closeDrawer() {
+  const drawers = document.querySelectorAll('.drawer');
+  if (drawers.length <= 1) {
+    document.body.style.overflow = 'auto';
+  }
   closing.value = true;
   setTimeout(() => {
     emit('toggle');
-  }, 200);
+  }, 500);
 }
 </script>
 

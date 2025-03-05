@@ -57,19 +57,29 @@ export const RightDrawer: Story = {
     components: { Drawer },
     setup() {
       const isOpen = ref(false);
+      const anotherIsOpen = ref(false);
 
       const toggleDrawer = () => {
         isOpen.value = !isOpen.value;
       };
 
-      return { args, isOpen, toggleDrawer };
+      const anotherToggle = () => {
+        anotherIsOpen.value = !anotherIsOpen.value;
+      };
+
+      return { args, isOpen, anotherIsOpen, toggleDrawer, anotherToggle };
     },
     template: `
       <div>
         <button @click="toggleDrawer">
           {{ isOpen ? 'Close' : 'Open' }} Drawer
         </button>
-        <Drawer v-bind="args" v-if="isOpen" :isOpen @toggle="toggleDrawer" />
+        <Drawer v-bind="args" v-if="isOpen" :isOpen="isOpen" @toggle="toggleDrawer" >
+          <template #default>
+            <button @click="anotherToggle">Open another drawer</button>
+          </template>
+        </Drawer>
+        <Drawer v-bind="args" v-if="anotherIsOpen" :isOpen="anotherIsOpen" @toggle="anotherToggle" />
       </div>
     `,
   }),
