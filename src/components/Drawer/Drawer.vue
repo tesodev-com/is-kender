@@ -1,9 +1,13 @@
 <template>
   <Teleport to="body">
-    <transition :name="computeTransition">
+    <transition
+      :name="computeTransition"
+      appear
+      @click.stop="closeDrawer"
+    >
       <div
         v-if="isOpen"
-        :class="drawerClasses"
+        :class="[drawerClasses, closingAnimation]"
         :style="drawerStyle"
       >
         <div
@@ -40,26 +44,25 @@
 import { closeIcon } from '@/assets/icons';
 import type { DrawerProps } from 'library/Drawer';
 import Svg from 'library/Svg';
-import { computed, watch } from 'vue';
-
-const isOpen = defineModel<boolean>('isOpen');
-
+import { computed, ref, watch } from 'vue';
+const closing = ref(false);
 const props = withDefaults(defineProps<DrawerProps>(), {
   position: 'left',
   size: '50%',
   title: '',
   hasHeader: true,
   hasCloseButton: true,
+  isOpen: false,
 });
 
-const emit = defineEmits(['update:isOpen']);
+const emit = defineEmits(['toggle']);
 
 const computeTransition = computed(() => {
   const transition = {
     left: 'slide-left',
     right: 'slide-right',
-    top: 'slide-up',
-    bottom: 'slide-down',
+    up: 'slide-up',
+    down: 'slide-down',
   };
   return transition[props.position];
 });
@@ -71,15 +74,29 @@ const drawerStyle = computed(() => {
     '--drawer-size': props.size,
   };
 });
-watch(isOpen, newValue => {
-  if (newValue) {
-    document.body.style.overflow = 'hidden';
+const closingAnimation = computed(() => {
+  if (closing.value) {
+    return `${computeTransition.value}-leave-active  ${computeTransition.value}-leave-to `;
   } else {
-    document.body.style.overflow = 'auto';
+    return '';
   }
 });
+watch(
+  () => props.isOpen,
+  newValue => {
+    if (newValue) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }
+);
+
 function closeDrawer() {
-  emit('update:isOpen', false);
+  closing.value = true;
+  setTimeout(() => {
+    emit('toggle');
+  }, 200);
 }
 </script>
 

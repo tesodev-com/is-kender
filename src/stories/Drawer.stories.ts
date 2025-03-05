@@ -9,7 +9,7 @@ const meta: Meta<typeof Drawer> = {
   argTypes: {
     position: {
       control: 'select',
-      options: ['left', 'right', 'top', 'bottom'],
+      options: ['left', 'right', 'up', 'down'],
     },
     size: {
       control: 'select',
@@ -17,9 +17,6 @@ const meta: Meta<typeof Drawer> = {
     },
     title: {
       control: 'text',
-    },
-    isOpen: {
-      control: 'boolean',
     },
   },
 };
@@ -31,7 +28,7 @@ export const Primary: Story = {
   render: args => ({
     components: { Drawer },
     setup() {
-      const isOpen = ref(args.isOpen);
+      const isOpen = ref(false);
 
       const toggleDrawer = () => {
         isOpen.value = !isOpen.value;
@@ -44,7 +41,7 @@ export const Primary: Story = {
         <button @click="toggleDrawer">
           {{ isOpen ? 'Close' : 'Open' }} Drawer
         </button>
-        <Drawer v-bind="args" v-model:isOpen="isOpen" />
+        <Drawer v-bind="args" v-if="isOpen" :isOpen @toggle="toggleDrawer" />
       </div>
     `,
   }),
@@ -52,7 +49,6 @@ export const Primary: Story = {
     position: 'left',
     size: '50%',
     title: 'My Drawer',
-    isOpen: false,
   },
 };
 
@@ -60,7 +56,7 @@ export const RightDrawer: Story = {
   render: args => ({
     components: { Drawer },
     setup() {
-      const isOpen = ref(args.isOpen);
+      const isOpen = ref(false);
 
       const toggleDrawer = () => {
         isOpen.value = !isOpen.value;
@@ -73,7 +69,7 @@ export const RightDrawer: Story = {
         <button @click="toggleDrawer">
           {{ isOpen ? 'Close' : 'Open' }} Drawer
         </button>
-        <Drawer v-bind="args" v-model:isOpen="isOpen" />
+        <Drawer v-bind="args" v-if="isOpen" :isOpen @toggle="toggleDrawer" />
       </div>
     `,
   }),
@@ -81,7 +77,6 @@ export const RightDrawer: Story = {
     position: 'right',
     size: '50%',
     title: 'Right Drawer',
-    isOpen: false,
   },
 };
 
@@ -89,7 +84,7 @@ export const SmallDrawer: Story = {
   render: args => ({
     components: { Drawer },
     setup() {
-      const isOpen = ref(args.isOpen);
+      const isOpen = ref(false);
       const name = ref('');
       const email = ref('');
 
@@ -104,7 +99,7 @@ export const SmallDrawer: Story = {
             <button @click="toggleDrawer">
               {{ isOpen ? 'Close' : 'Open' }} Drawer
             </button>
-            <Drawer v-bind="args" v-model:isOpen="isOpen">
+            <Drawer v-bind="args" v-if="isOpen" :isOpen="isOpen" @toggle="toggleDrawer" >
               <template #default>
                 <form @submit.prevent>
                   <label>
@@ -127,7 +122,6 @@ export const SmallDrawer: Story = {
     position: 'left',
     size: '25%',
     title: 'drawer',
-    isOpen: false,
     hasHeader: false,
     hasCloseButton: false,
   },

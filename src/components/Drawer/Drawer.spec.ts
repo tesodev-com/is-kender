@@ -8,6 +8,7 @@ describe('Drawer.vue', () => {
   function createWrapper(props = {}) {
     return shallowMount(Drawer, {
       props: {
+        isOpen: false,
         ...props,
       },
     });
