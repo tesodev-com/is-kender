@@ -106,8 +106,8 @@
       "import": "./dist/components/Spinner/Spinner.js"
     },
     "./select": {
-      "types": "./dist/components/Select.d.ts",
-      "import": "./dist/components/Select.js"
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
     }
   },
   "scripts": {
