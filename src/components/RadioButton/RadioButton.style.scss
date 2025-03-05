@@ -1,0 +1,124 @@
+@use "sass:map";
+
+$sizes: (
+  sm: (
+    circle: 1.25rem,
+    inner-circle: 0.5rem,
+  ),
+  md: (
+    circle: 1.5rem,
+    inner-circle: 0.6rem,
+  ),
+  lg: (
+    circle: 2rem,
+    inner-circle: 0.8rem,
+  ),
+);
+
+.radio-button {
+  position: relative;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+
+  &__circle {
+    border: 1px solid $gray-300;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  &__inner-circle {
+    border-radius: 50%;
+  }
+
+  &__input {
+    cursor: pointer;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 1;
+    outline: 0 none;
+    border: 1px solid transparent;
+    border-radius: 50%;
+  }
+
+  &__label {
+    display: inline;
+  }
+
+  &--disabled:not(.radio-button--checked) {
+    .radio-button__circle {
+      background-color: $gray-50;
+    }
+
+    .radio-button__input {
+      cursor: not-allowed;
+    }
+
+    .radio-button__label {
+      color: $gray-300;
+    }
+  }
+
+  &--checked:not(.radio-button--disabled) {
+    .radio-button__circle {
+      background-color: $primary-500;
+      border-color: $primary-500;
+    }
+
+    .radio-button__inner-circle {
+      background-color: $white;
+    }
+  }
+
+  &--checked.radio-button--disabled {
+    .radio-button__circle {
+      background-color: $gray-50;
+    }
+
+    .radio-button__inner-circle {
+      background-color: $gray-300;
+    }
+
+    .radio-button__input {
+      cursor: not-allowed;
+    }
+
+    .radio-button__label {
+      color: $gray-300;
+    }
+  }
+
+  @each $size, $values in $sizes {
+    &--#{$size} {
+      @if $size == sm {
+        @include text-sm(400);
+      } @else if $size == md {
+        @include text-md;
+      } @else if $size == lg {
+        @include text-lg;
+      }
+
+      .radio-button__circle {
+        width: calc(map.get($values, circle));
+        height: calc(map.get($values, circle));
+
+        .radio-button__inner-circle {
+          width: calc(map.get($values, inner-circle));
+          height: calc(map.get($values, inner-circle));
+        }
+      }
+    }
+  }
+}
