@@ -2,11 +2,11 @@
   <Teleport to="body">
     <transition
       :name="computeTransition"
-      appear
+      @after-leave="emit('toggle', false)"
     >
       <div
         v-if="isOpen"
-        :class="[drawerClasses, closingAnimation]"
+        :class="[drawerClasses]"
         :style="drawerStyle"
       >
         <div
@@ -29,14 +29,10 @@
         </div>
       </div>
     </transition>
-    <transition
-      name="fade"
-      appear
-    >
+    <transition name="fade">
       <div
         v-if="isOpen"
         class="overlay"
-        :class="closingAnimationOverlay"
         @click.stop="closeDrawer"
       />
     </transition>
@@ -47,15 +43,14 @@
 import { closeIcon } from '@/assets/icons';
 import type { DrawerProps } from 'library/Drawer';
 import Svg from 'library/Svg';
-import { computed, ref, watch } from 'vue';
-const closing = ref(false);
+import { computed, onMounted, ref, watch } from 'vue';
+const isOpen = ref(false);
 const props = withDefaults(defineProps<DrawerProps>(), {
   position: 'left',
   size: '50%',
   title: '',
   hasHeader: true,
   hasCloseButton: true,
-  isOpen: false,
 });
 
 const emit = defineEmits(['toggle']);
@@ -77,38 +72,26 @@ const drawerStyle = computed(() => {
     '--drawer-size': props.size,
   };
 });
-const closingAnimation = computed(() => {
-  if (closing.value) {
-    return `${computeTransition.value}-leave-active  ${computeTransition.value}-leave-to `;
-  } else {
-    return '';
-  }
-});
-const closingAnimationOverlay = computed(() => {
-  if (closing.value) {
-    return 'fade-leave-active  fade-leave-to';
-  }
-  return '';
+onMounted(() => {
+  isOpen.value = true;
 });
 watch(
-  () => props.isOpen,
+  () => isOpen.value,
   newValue => {
     if (newValue) {
       document.body.style.overflow = 'hidden';
+    } else {
+      const drawers = document.querySelectorAll('.drawer');
+      if (drawers.length <= 1) {
+        document.body.style.overflow = 'auto';
+      }
     }
   },
   { immediate: true }
 );
 
 function closeDrawer() {
-  const drawers = document.querySelectorAll('.drawer');
-  if (drawers.length <= 1) {
-    document.body.style.overflow = 'auto';
-  }
-  closing.value = true;
-  setTimeout(() => {
-    emit('toggle');
-  }, 500);
+  isOpen.value = false;
 }
 </script>
 

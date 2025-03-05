@@ -41,7 +41,7 @@ export const Primary: Story = {
         <button @click="toggleDrawer">
           {{ isOpen ? 'Close' : 'Open' }} Drawer
         </button>
-        <Drawer v-bind="args" v-if="isOpen" :isOpen @toggle="toggleDrawer" />
+        <Drawer v-bind="args" v-if="isOpen" @toggle="()=>{toggleDrawer(); console.log('state sifirlama')}" />
       </div>
     `,
   }),
@@ -74,12 +74,12 @@ export const RightDrawer: Story = {
         <button @click="toggleDrawer">
           {{ isOpen ? 'Close' : 'Open' }} Drawer
         </button>
-        <Drawer v-bind="args" v-if="isOpen" :isOpen="isOpen" @toggle="toggleDrawer" >
+        <Drawer v-bind="args" v-if="isOpen" @toggle="toggleDrawer" >
           <template #default>
             <button @click="anotherToggle">Open another drawer</button>
           </template>
         </Drawer>
-        <Drawer v-bind="args" v-if="anotherIsOpen" :isOpen="anotherIsOpen" @toggle="anotherToggle" />
+        <Drawer v-bind="args" v-if="anotherIsOpen"  @toggle="anotherToggle" />
       </div>
     `,
   }),
@@ -109,7 +109,7 @@ export const SmallDrawer: Story = {
             <button @click="toggleDrawer">
               {{ isOpen ? 'Close' : 'Open' }} Drawer
             </button>
-            <Drawer v-bind="args" v-if="isOpen" :isOpen="isOpen" @toggle="toggleDrawer" >
+            <Drawer v-bind="args" v-if="isOpen"  @toggle="toggleDrawer" >
               <template #default>
                 <form @submit.prevent>
                   <label>

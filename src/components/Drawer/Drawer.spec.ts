@@ -7,10 +7,7 @@ describe('Drawer.vue', () => {
 
   function createWrapper(props = {}) {
     return shallowMount(Drawer, {
-      props: {
-        isOpen: false,
-        ...props,
-      },
+      props,
     });
   }
 
@@ -23,7 +20,7 @@ describe('Drawer.vue', () => {
   });
 
   it('does not render when closed', () => {
-    wrapper = createWrapper({ isOpen: false });
+    wrapper = createWrapper();
     expect(wrapper.find('.drawer').exists()).toBe(false);
   });
 

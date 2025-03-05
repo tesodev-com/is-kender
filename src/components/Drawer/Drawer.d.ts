@@ -6,7 +6,6 @@ export interface DrawerProps {
   title?: string;
   hasHeader?: boolean;
   hasCloseButton?: boolean;
-  isOpen: boolean;
 }
 
 declare const Drawer: DefineComponent<DrawerProps>;
