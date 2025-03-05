@@ -7,4 +7,5 @@ export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?r
 export { default as addCircleOutlineIcon } from '@material-design-icons/svg/round/add_circle_outline.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
+export { default as arrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';

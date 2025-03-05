@@ -104,6 +104,10 @@
     "./spinner": {
       "types": "./dist/components/Spinner/Spinner.d.ts",
       "import": "./dist/components/Spinner/Spinner.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select.d.ts",
+      "import": "./dist/components/Select.js"
     }
   },
   "scripts": {
