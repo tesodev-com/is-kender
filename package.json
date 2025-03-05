@@ -97,6 +97,10 @@
       "types": "./dist/components/Input/Input.d.ts",
       "import": "./dist/components/Input/Input.js"
     },
+    "./radiobutton": {
+      "types": "./dist/components/RadioButton/RadioButton.d.ts",
+      "import": "./dist/components/RadioButton/RadioButton.js"
+    },
     "./spinner": {
       "types": "./dist/components/Spinner/Spinner.d.ts",
       "import": "./dist/components/Spinner/Spinner.js"
