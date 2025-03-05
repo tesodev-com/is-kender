@@ -100,6 +100,18 @@
     "./spinner": {
       "types": "./dist/components/Spinner/Spinner.d.ts",
       "import": "./dist/components/Spinner/Spinner.js"
+    },
+    "./tabs": {
+      "types": "./dist/components/Tabs/Tabs.d.ts",
+      "import": "./dist/components/Tabs/Tabs.js"
+    },
+    "./tab": {
+      "types": "./dist/components/Tab/Tab.d.ts",
+      "import": "./dist/components/Tab/Tab.js"
+    },
+    "./tabpanel": {
+      "types": "./dist/components/TabPanel/TabPanel.d.ts",
+      "import": "./dist/components/TabPanel/TabPanel.js"
     }
   },
   "scripts": {

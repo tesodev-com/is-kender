@@ -1,0 +1,11 @@
+{
+    "main": "./Tabs.vue",
+    "module": "./Tabs.vue",
+    "types": "./Tabs.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Tabs.d.ts",
+            "import": "./Tabs.vue"
+        }
+    }
+}
