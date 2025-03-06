@@ -101,9 +101,17 @@
       "types": "./dist/components/Checkbox/Checkbox.d.ts",
       "import": "./dist/components/Checkbox/Checkbox.js"
     },
+    "./radiobutton": {
+      "types": "./dist/components/RadioButton/RadioButton.d.ts",
+      "import": "./dist/components/RadioButton/RadioButton.js"
+    },
     "./spinner": {
       "types": "./dist/components/Spinner/Spinner.d.ts",
       "import": "./dist/components/Spinner/Spinner.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
     }
   },
   "scripts": {

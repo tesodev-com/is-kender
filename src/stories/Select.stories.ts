@@ -1,0 +1,256 @@
+import type { Meta, StoryObj } from '@storybook/vue3';
+import Select, { type SelectProps } from 'library/Select';
+import { arrowDownIcon, emailIcon } from '@/assets/icons';
+import Svg from 'library/Svg';
+import { ref } from 'vue';
+
+const meta: Meta<typeof Select> = {
+  component: Select,
+  title: 'Forms&Inputs/Select',
+  argTypes: {
+    options: {
+      control: 'object',
+      description: 'Array of selectable options, each containing `value` and `label` properties.',
+    },
+    label: {
+      control: 'text',
+      description: 'Text label displayed above the select dropdown.',
+    },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text displayed when no option is selected.',
+    },
+    leftIcon: {
+      control: 'text',
+      description: 'Optional icon displayed on the left side of the select field.',
+    },
+    required: {
+      control: 'boolean',
+      description: 'Marks the select field as required for form validation.',
+    },
+    hint: {
+      control: 'text',
+      description: 'A small hint text displayed below the select field.',
+    },
+    isMultiple: {
+      control: 'boolean',
+      description: 'Allows selection of multiple options when set to `true`.',
+    },
+    optionsPosition: {
+      control: 'radio',
+      options: ['top', 'bottom', 'left', 'right'],
+      description: 'Determines where the dropdown options appear relative to the select field.',
+    },
+    optionsOffset: {
+      control: 'number',
+      description: 'Adjusts the spacing (in pixels) between the select field and the dropdown options.',
+    },
+    isSearch: {
+      control: 'boolean',
+      description: 'Enables a search input inside the dropdown for filtering options.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables the select field when set to `true`, preventing interaction.',
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Select>;
+
+const commonArgs: Partial<SelectProps> = {
+  options: [
+    { label: 'Option 1', value: 'opt1' },
+    { label: 'Option 2', value: 'opt2' },
+    { label: 'Option 3', value: 'opt3' },
+    { label: 'Option 4', value: 'opt4' },
+    { label: 'Option 5', value: 'opt5' },
+    { label: 'Option 6', value: 'opt6' },
+    { label: 'Option 7', value: 'opt7' },
+    { label: 'Very Long Option Name Here', value: 'long-opt', slotKey: 'long-opt' },
+    { label: 'Very Long Option Name Here 2', value: 'long-opt-2', disabled: true },
+    { label: 'Very Very Very Long Option Name Here 2', value: 'long-opt-3' },
+  ],
+  placeholder: 'Select an option',
+  hint: 'Here is the extra information',
+  required: false,
+  leftIcon: emailIcon,
+};
+
+export const Default: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Select Dropdown',
+    required: true,
+    isSearch: true,
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      const search = ref<string>('');
+      return { args, selected, search, arrowDownIcon };
+    },
+    template: `
+         <div style="height:500px">
+           <Select v-model="selected" v-model:search="search" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+            <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const DefaultMultiple: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Select Dropdown',
+    required: true,
+    isMultiple: true,
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string[]>([]);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div style="height:500px">
+           <Select v-model:multiple="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+            <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const WithLabel: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Choose an option',
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div>
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p>Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const Required: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Required Field',
+    required: true,
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div>
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const NoOptions: Story = {
+  args: {
+    ...commonArgs,
+    options: [],
+    label: 'Empty Select',
+    placeholder: 'No options available',
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div>
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const NarrowContainer: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Narrow Select',
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div style="width: 150px; border: 1px dashed #ccc; padding: 10px;">
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
+export const BottomEdge: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Bottom Edge Select',
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div style="height: 300px; display: flex; flex-direction: column; justify-content: flex-end;">
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
