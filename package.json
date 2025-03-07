@@ -97,6 +97,10 @@
       "types": "./dist/components/Input/Input.d.ts",
       "import": "./dist/components/Input/Input.js"
     },
+    "./checkbox": {
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
+    },
     "./radiobutton": {
       "types": "./dist/components/RadioButton/RadioButton.d.ts",
       "import": "./dist/components/RadioButton/RadioButton.js"

@@ -9,3 +9,4 @@ export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/r
 export { default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as arrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
+export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';

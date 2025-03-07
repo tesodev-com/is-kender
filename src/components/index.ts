@@ -3,6 +3,7 @@ export { default as Alert } from 'library/Alert';
 export { default as Badge } from 'library/Badge';
 export { default as Breadcrumb } from 'library/Breadcrumb';
 export { default as Button } from 'library/Button';
+export { default as Checkbox } from 'library/Checkbox';
 export { default as Col } from 'library/Col';
 export { default as Container } from 'library/Container';
 export { default as Divider } from 'library/Divider';
