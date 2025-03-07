@@ -5,7 +5,7 @@ export interface InputProps {
   placeholder?: string;
   errorList?: string[];
   disabled?: boolean;
-  modelValue: string;
+  modelValue?: string;
   fluid?: boolean;
   label?: string;
   size?: 'sm' | 'lg';
