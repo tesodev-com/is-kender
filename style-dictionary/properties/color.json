@@ -894,5 +894,11 @@
       "value": "#7e2410ff",
       "blendMode": "normal"
     }
+  },
+  "bg-transparent": {
+    "description": "",
+    "type": "opacity",
+    "value": "transparent",
+    "blendMode": "normal"
   }
 }
