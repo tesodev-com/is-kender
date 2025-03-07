@@ -75,6 +75,7 @@ export const Default: Story = {
     selectable: true,
     searchable: true,
     stripedRows: true,
+    stickyHeader: true,
   },
   render: args => ({
     components: { Table, Svg, Badge, Button },

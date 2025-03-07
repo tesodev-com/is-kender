@@ -35,19 +35,26 @@
   }
 
   .table-data-container {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    position: relative;
+    overflow: auto;
+    overscroll-behavior: contain;
+    max-height: 37.5rem;
 
     .table-data {
       width: 100%;
-      border-collapse: collapse;
       caption-side: bottom;
+      border-spacing: 0;
+      border-collapse: separate;
 
       thead {
+        &.table-data-thead-sticky {
+          position: sticky;
+          top: 0;
+          z-index: 9999;
+        }
+
         .table-data-columns {
           background-color: $gray-50;
-          border-top: 1px solid $gray-200;
-          border-bottom: 1px solid $gray-200;
           height: 2.75rem;
           overflow: hidden;
 
@@ -84,6 +91,8 @@
           .column-cell {
             padding: 0 1.5rem;
             text-align: left;
+            border-top: 1px solid $gray-200;
+            border-bottom: 1px solid $gray-200;
             vertical-align: middle;
             height: 2.75rem;
             max-width: 100%;
@@ -166,16 +175,32 @@
 
         .row-cell-container {
           height: 4.5rem;
-          transition: background-color 0.3s ease-in-out;
+          background-color: $white;
+
+          .row-cell {
+            background-color: $white;
+            padding: 0 1.5rem;
+            text-align: left;
+            vertical-align: middle;
+            height: 4.5rem;
+            transition: background-color 0.3s ease-in-out;
+            min-width: 9.375rem;
+
+            @include text-sm(400, $gray-600);
+          }
 
           &-striped {
             &:nth-child(odd) {
-              background-color: $gray-25;
+              .row-cell {
+                background-color: $gray-25;
+              }
             }
           }
 
           &:hover {
-            background-color: $gray-50;
+            .row-cell {
+              background-color: $gray-50;
+            }
           }
 
           &:not(:last-child) {
@@ -208,15 +233,6 @@
             }
           }
 
-          .row-cell {
-            padding: 0 1.5rem;
-            text-align: left;
-            vertical-align: middle;
-            height: 4.5rem;
-
-            @include text-sm(400, $gray-600);
-          }
-
           .row-cell-actions {
             width: 5.625rem;
 
@@ -242,6 +258,7 @@
           .row-cell-checkbox {
             padding: 0;
             width: 2.75rem;
+            min-width: 2.75rem;
           }
 
           .row-cell-selectable {

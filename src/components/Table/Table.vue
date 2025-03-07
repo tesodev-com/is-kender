@@ -37,7 +37,7 @@
     </div>
     <div class="table-data-container">
       <table class="table-data">
-        <thead>
+        <thead :class="{ 'table-data-thead-sticky': stickyHeader }">
           <tr
             class="table-data-columns"
             :class="[{ 'table-data-columns-no-header': !isTableHeaderExists }]"

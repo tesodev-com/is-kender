@@ -33,6 +33,7 @@ export interface TableProps {
   selectable?: boolean;
   searchable?: boolean;
   stripedRows?: boolean;
+  stickyHeader?: boolean;
 }
 
 declare const Table: DefineComponent<TableProps>;
