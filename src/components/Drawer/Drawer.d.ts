@@ -7,6 +7,7 @@ export interface DrawerProps {
   hasHeader?: boolean;
   hasCloseButton?: boolean;
 }
+export type ToggleValue = boolean;
 
 declare const Drawer: DefineComponent<DrawerProps>;
 

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { closeIcon } from '@/assets/icons';
-import type { DrawerProps } from 'library/Drawer';
+import type { DrawerProps, ToggleValue } from 'library/Drawer';
 import Svg from 'library/Svg';
 import { computed, onMounted, ref, watch } from 'vue';
 const isOpen = ref(false);
@@ -53,7 +53,9 @@ const props = withDefaults(defineProps<DrawerProps>(), {
   hasCloseButton: true,
 });
 
-const emit = defineEmits(['toggle']);
+const emit = defineEmits<{
+  (event: 'toggle', value: ToggleValue): void;
+}>();
 
 const computeTransition = computed(() => {
   const transition = {
