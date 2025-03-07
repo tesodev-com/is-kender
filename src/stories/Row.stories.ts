@@ -1,6 +1,6 @@
-import Col from '@/components/Col';
-import Row from '@/components/Row';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Col from 'library/Col';
+import Row from 'library/Row';
 
 const meta: Meta<typeof Row> = {
   title: 'Layout&Structures/Row',

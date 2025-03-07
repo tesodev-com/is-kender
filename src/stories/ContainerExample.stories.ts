@@ -1,7 +1,7 @@
-import Col from '@/components/Col';
-import Container from '@/components/Container';
-import Row from '@/components/Row';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Col from 'library/Col';
+import Container from 'library/Container';
+import Row from 'library/Row';
 
 const meta: Meta<typeof Container> = {
   component: Container,

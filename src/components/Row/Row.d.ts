@@ -27,7 +27,7 @@ declare const Row: DefineComponent<RowProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Row: typeof Row;
+    LibRow: typeof Row;
   }
 }
 

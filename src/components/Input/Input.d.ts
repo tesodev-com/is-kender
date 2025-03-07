@@ -19,7 +19,7 @@ declare const Button: DefineComponent<InputProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Input: typeof Input;
+    LibInput: typeof Input;
   }
 }
 

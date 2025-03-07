@@ -18,7 +18,7 @@ declare const Link: DefineComponent<LinkProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Link: typeof Link;
+    LibLink: typeof Link;
   }
 }
 

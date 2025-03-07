@@ -29,7 +29,7 @@ declare const Container: DefineComponent<ContainerProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Container: typeof Container;
+    LibContainer: typeof Container;
   }
 }
 

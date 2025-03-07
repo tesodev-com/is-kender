@@ -12,7 +12,7 @@ declare const Text: DefineComponent<TextProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Text: typeof Text;
+    LibText: typeof Text;
   }
 }
 

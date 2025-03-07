@@ -11,7 +11,7 @@ declare const Svg: DefineComponent<SvgProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Svg: typeof Svg;
+    LibSvg: typeof Svg;
   }
 }
 

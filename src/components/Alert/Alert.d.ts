@@ -22,7 +22,7 @@ declare const Alert: DefineComponent<AlertProps, AlertSlots, AlertEmits>;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Alert: typeof Alert;
+    LibAlert: typeof Alert;
   }
 }
 

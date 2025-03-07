@@ -1,9 +1,9 @@
-import Divider from '@/components/Divider';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Divider from 'library/Divider';
 
 const meta: Meta<typeof Divider> = {
   component: Divider,
-  title: 'Components/Divider',
+  title: 'Layout&Structures/Divider',
   argTypes: {
     is: {
       control: 'text',

@@ -17,7 +17,9 @@ describe('Text.vue', () => {
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.element.tagName.toLowerCase()).toBe('p');
     expect(wrapper.classes()).toContain('text');
-    expect(wrapper.classes()).toContain('text-sm-normal-black');
+    expect(wrapper.classes()).toContain('text-sm');
+    expect(wrapper.classes()).toContain('font-normal');
+    expect(wrapper.classes()).toContain('color-black');
   });
 
   it('renders with different size', () => {
@@ -27,7 +29,9 @@ describe('Text.vue', () => {
 
   it('applies correct class based on props', () => {
     const wrapper = createWrapper({ fontSize: 'xl', fontWeight: 'semibold', fontColor: 'success' });
-    expect(wrapper.classes()).toContain('text-xl-semibold-success');
+    expect(wrapper.classes()).toContain('text-xl');
+    expect(wrapper.classes()).toContain('font-semibold');
+    expect(wrapper.classes()).toContain('color-success');
   });
 
   it('renders slot content correctly', () => {

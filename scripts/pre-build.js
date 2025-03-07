@@ -10,8 +10,8 @@ function setPackageExport() {
   folders.forEach(folder => {
     if (excludeFolders.includes(folder)) return;
     exports[`./${folder.toLowerCase()}`] = {
-      types: `./dist/components/${folder}.d.ts`,
-      import: `./dist/components/${folder}.js`,
+      types: `./dist/components/${folder}/${folder}.d.ts`,
+      import: `./dist/components/${folder}/${folder}.js`,
     };
   });
   packageJson.exports = exports;
@@ -23,7 +23,7 @@ function setComponentIndex() {
   const indexContent = folders
     .map(folder => {
       if (excludeFolders.includes(folder)) return;
-      return `export { default as ${folder} } from './${folder}/${folder}.vue';`;
+      return `export { default as ${folder} } from 'library/${folder}';`;
     })
     .filter(Boolean)
     .join('\n');

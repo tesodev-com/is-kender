@@ -1,0 +1,119 @@
+@use "sass:map";
+
+$sizes: (
+  sm: (
+    box: 1.25rem,
+    icon: 0.8rem,
+  ),
+  md: (
+    box: 1.5rem,
+    icon: 1rem,
+  ),
+  lg: (
+    box: 2rem,
+    icon: 1.2rem,
+  ),
+);
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+
+  &__box {
+    border: 1px solid $gray-300;
+    border-radius: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  &__input {
+    cursor: pointer;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 1;
+    outline: 0 none;
+    border: 1px solid transparent;
+    border-radius: 50%;
+  }
+
+  &__label {
+    display: inline;
+  }
+
+  &--disabled:not(.checkbox--checked) {
+    .checkbox__box {
+      background-color: $gray-50;
+    }
+
+    .checkbox__input {
+      cursor: not-allowed;
+    }
+
+    .checkbox__label {
+      color: $gray-300;
+    }
+  }
+
+  &--checked:not(.checkbox--disabled) {
+    .checkbox__box {
+      background-color: $primary-600;
+      border-color: $primary-600;
+    }
+
+    .checkbox__icon {
+      color: white;
+    }
+  }
+
+  &--checked.checkbox--disabled {
+    .checkbox__box {
+      background-color: $gray-50;
+    }
+
+    .checkbox__icon {
+      color: $gray-300;
+    }
+
+    .checkbox__input {
+      cursor: not-allowed;
+    }
+
+    .checkbox__label {
+      color: $gray-300;
+    }
+  }
+
+  @each $size, $values in $sizes {
+    &--#{$size} {
+      @if $size == sm {
+        @include text-sm(400);
+      } @else if $size == md {
+        @include text-md;
+      } @else if $size == lg {
+        @include text-lg;
+      }
+
+      .checkbox__box {
+        width: map.get($values, box);
+        height: map.get($values, box);
+      }
+
+      .checkbox__icon {
+        width: map.get($values, icon);
+        height: map.get($values, icon);
+      }
+    }
+  }
+}

@@ -61,8 +61,8 @@
 
 <script setup lang="ts">
 import { emailIcon, passwordIcon, telIcon } from '@/assets/icons';
+import BaseSvg from 'library/Svg';
 import { computed } from 'vue';
-import BaseSvg from '@/components/Svg/Svg.vue';
 import type { InputProps } from './Input.d.ts';
 
 const props = withDefaults(defineProps<InputProps>(), {
