@@ -21,3 +21,4 @@ export { default as Svg } from 'library/Svg';
 export { default as Text } from 'library/Text';
 export { default as Toast } from 'library/Toast';
 export { default as Toggle } from 'library/Toggle';
+export { default as Drawer } from 'library/Drawer';
