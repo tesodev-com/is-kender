@@ -93,6 +93,7 @@
             text-align: left;
             border-top: 1px solid $gray-200;
             border-bottom: 1px solid $gray-200;
+            background-color: $gray-50;
             vertical-align: middle;
             height: 2.75rem;
             max-width: 100%;
@@ -100,6 +101,23 @@
             transition: color 0.3s ease-in-out;
 
             @include text-xs(600, $gray-500);
+
+            &.column-sticky-left {
+              position: sticky;
+              left: 2.75rem;
+              z-index: 50;
+            }
+
+            &.column-sticky-right {
+              position: sticky;
+              right: 0;
+              z-index: 50;
+            }
+
+            &.column-cell-checkbox.column-sticky-left {
+              left: 0;
+              z-index: 60;
+            }
 
             &:hover {
               color: $gray-600;
@@ -187,6 +205,23 @@
             min-width: 9.375rem;
 
             @include text-sm(400, $gray-600);
+
+            &.column-sticky-left {
+              position: sticky;
+              left: 2.75rem;
+              z-index: 50;
+            }
+
+            &.column-sticky-right {
+              position: sticky;
+              right: 0;
+              z-index: 50;
+            }
+
+            &.row-cell-checkbox.column-sticky-left {
+              left: 0;
+              z-index: 60;
+            }
           }
 
           &-striped {

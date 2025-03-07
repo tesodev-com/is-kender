@@ -76,6 +76,8 @@ export const Default: Story = {
     searchable: true,
     stripedRows: true,
     stickyHeader: true,
+    stickyFirstColumn: true,
+    stickyLastColumn: true,
   },
   render: args => ({
     components: { Table, Svg, Badge, Button },

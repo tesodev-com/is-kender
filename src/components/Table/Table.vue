@@ -45,6 +45,7 @@
             <th
               v-if="selectable"
               class="column-cell column-cell-checkbox"
+              :class="{ 'column-sticky-left': stickyFirstColumn }"
               @click="selectAll"
             >
               <div
@@ -62,7 +63,13 @@
               v-for="(column, columnIndex) in columns"
               :key="column.key || columnIndex"
               class="column-cell"
-              :class="[{ 'column-cell-selectable': selectable && columnIndex === 0 }]"
+              :class="[
+                {
+                  'column-cell-selectable': selectable && columnIndex === 0,
+                  'column-sticky-left': stickyFirstColumn && columnIndex === 0,
+                  'column-sticky-right': stickyLastColumn && columnIndex === columns.length - 1,
+                },
+              ]"
             >
               <slot
                 :name="`column-${column.key}`"
@@ -138,6 +145,7 @@
               <td
                 v-if="selectable"
                 class="row-cell row-cell-checkbox"
+                :class="{ 'column-sticky-left': stickyFirstColumn }"
                 @click="selectRow(row)"
               >
                 <div
@@ -155,7 +163,14 @@
                 v-for="(column, colIndex) in columns"
                 :key="colIndex"
                 class="row-cell"
-                :class="[{ 'row-cell-selectable': selectable && colIndex === 0, 'row-cell-actions': column.key === 'actions' }]"
+                :class="[
+                  {
+                    'row-cell-selectable': selectable && colIndex === 0,
+                    'row-cell-actions': column.key === 'actions',
+                    'column-sticky-left': stickyFirstColumn && colIndex === 0,
+                    'column-sticky-right': stickyLastColumn && colIndex === columns.length - 1,
+                  },
+                ]"
               >
                 <slot
                   :name="`row-${column.key}`"
@@ -207,6 +222,8 @@ const props = withDefaults(defineProps<TableProps>(), {
   searchable: false,
   selectable: false,
   stripedRows: false,
+  stickyFirstColumn: false,
+  stickyLastColumn: false,
 });
 
 const emit = defineEmits<TableEmits>();
