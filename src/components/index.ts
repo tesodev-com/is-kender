@@ -18,6 +18,7 @@ export { default as Sidebar } from 'library/Sidebar';
 export { default as Skeleton } from 'library/Skeleton';
 export { default as Spinner } from 'library/Spinner';
 export { default as Svg } from 'library/Svg';
+export { default as Table } from 'library/Table';
 export { default as Text } from 'library/Text';
 export { default as Toast } from 'library/Toast';
 export { default as Toggle } from 'library/Toggle';

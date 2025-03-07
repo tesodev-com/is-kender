@@ -112,6 +112,10 @@
     "./select": {
       "types": "./dist/components/Select/Select.d.ts",
       "import": "./dist/components/Select/Select.js"
+    },
+    "./table": {
+      "types": "./dist/components/Table/Table.d.ts",
+      "import": "./dist/components/Table/Table.js"
     }
   },
   "scripts": {
