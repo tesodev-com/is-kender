@@ -1,7 +1,11 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { type DefineComponent } from 'vue';
 
-export interface TabPanelProps {}
+export interface TabPanelProps {
+  name: string;
+  index?: number;
+  role?: string;
+  disabled?: boolean;
+}
 
 declare const TabPanel: DefineComponent<TabPanelProps>;
 

@@ -1,33 +1,56 @@
 <template>
-  <div>
-    <div>
+  <div class="tabs">
+    <div class="tabs__title">
       {{ title }}
-      Tabs/Panels : {{ tabs.length / panels.length }}
     </div>
-    <slot></slot>
+    <div class="tabs__button-container">
+      <template v-if="slots.tabList">
+        <component
+          :is="tab?.component"
+          v-for="tab in tabList"
+          :key="tab.tabIndex"
+          :index="tab.tabIndex"
+          :disabled="tab.disabled"
+        />
+      </template>
+      <template v-else>
+        <Tab
+          v-for="panel in tabPanels"
+          :key="panel.tabName"
+          :index="panel.tabIndex"
+          :disabled="panel.disabled"
+        >
+          {{ panel.tabName }}
+        </Tab>
+      </template>
+    </div>
+    <div class="tabs__content">
+      <div v-if="!tabPanels?.[activeTab]">Please add panel content</div>
+      <component
+        :is="tabPanels?.[activeTab]?.component"
+        v-else
+        :index="tabPanels?.[activeTab]?.tabIndex"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { TabsProps } from 'library/Tabs';
-import { provide, ref } from 'vue';
 // imports
+import Tab from 'library/Tab';
+import type { TabsContext, TabsProps } from 'library/Tabs';
+import { computed, provide, ref, type VNode } from 'vue';
 
 // injects
 
 // interfaces & types
-interface TabObj {
-  name: string;
-  index: number;
-}
-interface TabPanelObj {
-  name: string;
-  index: number;
-}
+
 // constants
 const activeTab = ref<number>(0);
-const tabs = ref<TabObj[]>([]);
-const panels = ref<TabPanelObj[]>([]);
+const slots = defineSlots<{
+  default?: () => any;
+  tabList?: () => any;
+}>();
 // composable
 
 // props
@@ -37,22 +60,53 @@ defineProps<TabsProps>();
 // states (refs and reactives)
 
 // computed
+const tabPanels = computed(() => {
+  const nodes = getObjectAndSymbolNodes(slots.default?.());
+  return filterChildNodesName('TabPanel', nodes);
+});
+
+const tabList = computed(() => {
+  const nodes = getObjectAndSymbolNodes(slots.tabList?.());
+  return filterChildNodesName('Tab', nodes);
+});
 
 // watchers
 
 // lifecycles
 
 // methods
+
 function setActiveTab(index: number) {
   activeTab.value = index;
 }
-// provide
-provide('activeTab', activeTab);
-provide('setActiveTab', setActiveTab);
-provide('tabsContext', {
+function getObjectAndSymbolNodes(slotNodeList: VNode[]): VNode[] {
+  return slotNodeList?.flatMap((vnode: VNode) => {
+    if (typeof vnode.type === 'object') {
+      return vnode;
+    }
+    if (typeof vnode.type === 'symbol') {
+      return vnode.children as VNode[];
+    }
+    return [];
+  });
+}
+function filterChildNodesName<T = { tabIndex: number; tabName: string; component: VNode; disabled: boolean }>(subElement: string, nodeList: VNode[]): T[] {
+  return nodeList?.flatMap((vnode: VNode, index: number) => {
+    const props = vnode.props;
+    if (typeof vnode.type === 'object' && 'name' in vnode.type && vnode.type.name === subElement) {
+      return {
+        tabIndex: props?.index ?? index,
+        tabName: props?.name,
+        component: vnode,
+        disabled: props?.disabled,
+      } as T;
+    }
+    return [];
+  });
+}
+provide<TabsContext>('tabsContext', {
   activeTab,
-  registerTab: (tab: TabObj) => tabs.value.push(tab),
-  registerPanel: (panel: TabPanelObj) => panels.value.push(panel),
+  setActiveTab,
 });
 </script>
 

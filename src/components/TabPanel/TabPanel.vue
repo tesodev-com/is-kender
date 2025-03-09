@@ -1,8 +1,15 @@
-<template>TabPanel</template>
+<template>
+  <slot></slot>
+</template>
 
 <script setup lang="ts">
-// imports
+import { type TabPanelProps } from 'library/TabPanel';
+defineOptions({
+  name: 'TabPanel',
+});
 
+// imports
+// inject
 // interfaces & types
 
 // constants
@@ -10,6 +17,7 @@
 // composable
 
 // props
+defineProps<TabPanelProps>();
 
 // defineEmits
 

@@ -1,8 +1,9 @@
 import { type DefineComponent } from 'vue';
 
 export interface TabProps {
-  name: string;
+  name?: string;
   index?: number;
+  disabled?: boolean;
 }
 
 declare const Tab: DefineComponent<TabProps>;

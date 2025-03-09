@@ -21,7 +21,7 @@ export default {
     'scss/double-slash-comment-whitespace-inside': null,
     'scss/load-no-partial-leading-underscore': null,
     'scss/load-partial-extension': null,
-    'selector-class-pattern': '^[a-z][a-zA-Z0-9-]+$',
+    'selector-class-pattern': '^[a-z0-9-]+(__[a-z0-9-]+)?(--[a-z0-9-]+)?$',
     'block-no-empty': true,
     'no-duplicate-selectors': true,
     'rule-empty-line-before': ['always', { except: ['first-nested'] }],

@@ -1,7 +1,11 @@
-import { type DefineComponent } from 'vue';
+import { type DefineComponent, type Ref } from 'vue';
 
 export interface TabsProps {
-  title: string;
+  title?: string;
+}
+export interface TabsContext {
+  activeTab: Ref<number>;
+  setActiveTab: (index: number) => void;
 }
 
 declare const Tabs: DefineComponent<TabsProps>;
