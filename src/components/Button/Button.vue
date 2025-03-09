@@ -4,7 +4,7 @@
     :class="buttonClasses"
     v-bind="$attrs"
   >
-    <Spinner />
+    <Spinner v-if="loading" />
     <slot>{{ text }}</slot>
   </component>
 </template>

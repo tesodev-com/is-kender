@@ -15,7 +15,7 @@ const meta: Meta<typeof Input> = {
     type: { control: 'select', options: ['text', 'password', 'email', 'number', 'url', 'tel', 'search'] },
     modelValue: { control: 'text' },
     size: { control: 'select', options: ['sm', 'lg'] },
-    errorList: { control: 'array' },
+    errorList: { control: 'object' },
   },
 };
 
