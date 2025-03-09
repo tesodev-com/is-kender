@@ -104,6 +104,12 @@
 
             &.column-sticky-left {
               position: sticky;
+              left: 0;
+              z-index: 50;
+            }
+
+            &.column-sticky-left-selectable {
+              position: sticky;
               left: 2.75rem;
               z-index: 50;
             }
@@ -207,6 +213,12 @@
             @include text-sm(400, $gray-600);
 
             &.column-sticky-left {
+              position: sticky;
+              left: 0;
+              z-index: 50;
+            }
+
+            &.column-sticky-left-selectable {
               position: sticky;
               left: 2.75rem;
               z-index: 50;

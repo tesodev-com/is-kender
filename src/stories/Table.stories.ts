@@ -157,6 +157,8 @@ export const CustomColumnSlot: Story = {
   args: {
     ...commonArgs,
     title: 'Custom Column Table',
+    stickyFirstColumn: true,
+    stickyLastColumn: true,
   },
   render: args => ({
     components: { Table, Svg },

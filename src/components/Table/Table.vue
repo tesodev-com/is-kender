@@ -145,7 +145,7 @@
               <td
                 v-if="selectable"
                 class="row-cell row-cell-checkbox"
-                :class="{ 'column-sticky-left': stickyFirstColumn }"
+                :class="{ 'column-sticky-left': stickyFirstColumn && !selectable, 'column-sticky-left-selectable': stickyFirstColumn && selectable }"
                 @click="selectRow(row)"
               >
                 <div
@@ -167,7 +167,8 @@
                   {
                     'row-cell-selectable': selectable && colIndex === 0,
                     'row-cell-actions': column.key === 'actions',
-                    'column-sticky-left': stickyFirstColumn && colIndex === 0,
+                    'column-sticky-left': stickyFirstColumn && !selectable && colIndex === 0,
+                    'column-sticky-left-selectable': stickyFirstColumn && selectable && colIndex === 0,
                     'column-sticky-right': stickyLastColumn && colIndex === columns.length - 1,
                   },
                 ]"
