@@ -45,7 +45,7 @@
             <th
               v-if="selectable"
               class="column-cell column-cell-checkbox"
-              :class="{ 'column-sticky-left': stickyFirstColumn }"
+              :class="{ 'column-sticky-left': stickyFirstColumn, 'column-cell-border-top': isTableHeaderExists }"
               @click="selectAll"
             >
               <div
@@ -66,8 +66,10 @@
               :class="[
                 {
                   'column-cell-selectable': selectable && columnIndex === 0,
-                  'column-sticky-left': stickyFirstColumn && columnIndex === 0,
+                  'column-sticky-left': stickyFirstColumn && !selectable && columnIndex === 0,
+                  'column-sticky-left-selectable': stickyFirstColumn && selectable && columnIndex === 0,
                   'column-sticky-right': stickyLastColumn && columnIndex === columns.length - 1,
+                  'column-cell-border-top': isTableHeaderExists,
                 },
               ]"
             >
@@ -145,7 +147,7 @@
               <td
                 v-if="selectable"
                 class="row-cell row-cell-checkbox"
-                :class="{ 'column-sticky-left': stickyFirstColumn && !selectable, 'column-sticky-left-selectable': stickyFirstColumn && selectable }"
+                :class="{ 'column-sticky-left': stickyFirstColumn }"
                 @click="selectRow(row)"
               >
                 <div
