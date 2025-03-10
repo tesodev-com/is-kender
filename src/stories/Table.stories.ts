@@ -218,7 +218,7 @@ export const CustomEmptyState: Story = {
         <Table v-bind="args">
           <template #row-empty-state>
             <div style="text-align: center; padding: 40px;">
-              <Svg size="40" :src="checkIcon" style="margin-bottom: 16px;" />
+              <Svg size="40" :src="checkIcon" />
               <h3>No Users Found</h3>
               <p style="color: #666;">It looks like there are no users to display at the moment.<br />Try adjusting your search or adding new users.</p>
               <Button color="primary" style="margin-top: 16px;">Add User</Button>
