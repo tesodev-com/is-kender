@@ -11,9 +11,11 @@ export interface Row {
 }
 
 export interface TableEmits {
-  (e: 'selectionChange', rows: Row[], row?: Row): void;
-  (e: 'removeButtonClick'): void;
-  (e: 'editButtonClick'): void;
+  (e: 'sort', { key: string, order: string }): void;
+  (e: 'select', row: Row): void;
+  (e: 'selectAll', rows: Row[]): void;
+  (e: 'removeButtonClick', row: Row): void;
+  (e: 'editButtonClick', row: Row): void;
 }
 
 export interface TableSlots {

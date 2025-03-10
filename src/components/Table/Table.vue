@@ -5,11 +5,11 @@
       class="table-header"
     >
       <div
-        v-if="slots.title || title || slots.description || description"
+        v-if="hasHeaderLeft"
         class="table-header-left"
       >
         <slot
-          v-if="slots.title || title"
+          v-if="hasTitle"
           name="title"
         >
           <h3 class="table-header-title">
@@ -17,7 +17,7 @@
           </h3>
         </slot>
         <slot
-          v-if="slots.description || description"
+          v-if="hasDescription"
           name="description"
         >
           <h3 class="table-header-description">
@@ -147,7 +147,7 @@
               <td
                 v-if="selectable"
                 class="row-cell row-cell-checkbox"
-                :class="{ 'column-sticky-left': stickyFirstColumn }"
+                :class="{ 'row-sticky-left': stickyFirstColumn }"
                 @click="selectRow(row)"
               >
                 <div
@@ -169,9 +169,9 @@
                   {
                     'row-cell-selectable': selectable && colIndex === 0,
                     'row-cell-actions': column.key === 'actions',
-                    'column-sticky-left': stickyFirstColumn && !selectable && colIndex === 0,
-                    'column-sticky-left-selectable': stickyFirstColumn && selectable && colIndex === 0,
-                    'column-sticky-right': stickyLastColumn && colIndex === columns.length - 1,
+                    'row-sticky-left': stickyFirstColumn && !selectable && colIndex === 0,
+                    'row-sticky-left-selectable': stickyFirstColumn && selectable && colIndex === 0,
+                    'row-sticky-right': stickyLastColumn && colIndex === columns.length - 1,
                   },
                 ]"
               >
@@ -184,13 +184,13 @@
                 >
                   <template v-if="column.key === 'actions'">
                     <div class="actions">
-                      <button @click="emit('removeButtonClick')">
+                      <button @click="emit('removeButtonClick', row)">
                         <Svg
                           :src="deleteIcon"
                           size="16"
                         />
                       </button>
-                      <button @click="emit('editButtonClick')">
+                      <button @click="emit('editButtonClick', row)">
                         <Svg
                           :src="editIcon"
                           size="16"
@@ -242,6 +242,18 @@ const isTableHeaderExists = computed(() => {
   return props.title || slots.title || slots.description || props.description || props.searchable;
 });
 
+const hasHeaderLeft = computed(() => {
+  return props.title || slots.title || props.description || slots.description;
+});
+
+const hasTitle = computed(() => {
+  return props.title || slots.title;
+});
+
+const hasDescription = computed(() => {
+  return props.description || slots.description;
+});
+
 const filteredRows = computed(() => {
   let result = [...(props.rows || [])];
 
@@ -274,7 +286,7 @@ function selectAll() {
   } else {
     props.rows.forEach(row => selectedItems.value.add(row));
   }
-  emit('selectionChange', Array.from(selectedItems.value));
+  emit('selectAll', Array.from(selectedItems.value));
 }
 
 function selectRow(row: Row) {
@@ -283,7 +295,7 @@ function selectRow(row: Row) {
   } else {
     selectedItems.value.add(row);
   }
-  emit('selectionChange', Array.from(selectedItems.value), row);
+  emit('select', row);
 }
 
 function handleSort(key: string) {
@@ -293,6 +305,7 @@ function handleSort(key: string) {
     sortKey.value = key;
     sortOrder.value = 'asc';
   }
+  emit('sort', { key: sortKey.value, order: sortOrder.value });
 }
 
 function getSortIndicator(key: string) {

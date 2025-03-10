@@ -215,19 +215,19 @@
 
             @include text-sm(400, $gray-600);
 
-            &.column-sticky-left {
+            &.row-sticky-left {
               position: sticky;
               left: 0;
               z-index: 50;
             }
 
-            &.column-sticky-left-selectable {
+            &.row-sticky-left-selectable {
               position: sticky;
               left: 2.75rem;
               z-index: 50;
             }
 
-            &.column-sticky-right {
+            &.row-sticky-right {
               position: sticky;
               right: 0;
               z-index: 50;
@@ -284,7 +284,8 @@
           }
 
           .row-cell-actions {
-            width: 5.625rem;
+            width: 1.625rem;
+            min-width: 1.625rem;
 
             .actions {
               display: flex;
@@ -319,7 +320,7 @@
     }
   }
 
-  @media (width <= 768px) {
+  @media (width <= 1024px) {
     .table-header {
       flex-direction: column;
       align-items: start;
