@@ -46,11 +46,11 @@
               v-if="selectable"
               class="column-cell column-cell-checkbox"
               :class="{ 'column-sticky-left': stickyFirstColumn, 'column-cell-border-top': isTableHeaderExists }"
-              @click="selectAll"
             >
               <div
                 class="column-select-all"
                 :class="[{ 'column-select-all-selected': isAllSelected }]"
+                @click="selectAll"
               >
                 <Svg
                   v-if="isAllSelected"
@@ -113,6 +113,12 @@
                         size="20"
                         :src="searchIcon"
                       />
+                      <span
+                        v-for="circle in 6"
+                        :key="circle"
+                        class="search-icon-circle"
+                        :class="`search-icon-circle-${circle}`"
+                      />
                     </div>
                     <div
                       class="empty-state-text"
@@ -148,11 +154,11 @@
                 v-if="selectable"
                 class="row-cell row-cell-checkbox"
                 :class="{ 'row-sticky-left': stickyFirstColumn }"
-                @click="selectRow(row)"
               >
                 <div
                   class="row-select"
                   :class="[{ 'row-select-selected': selectedItems.has(row) }]"
+                  @click="selectRow(row)"
                 >
                   <Svg
                     v-if="selectedItems.has(row)"

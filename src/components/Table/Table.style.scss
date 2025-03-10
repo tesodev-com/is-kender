@@ -47,6 +47,9 @@
       border-collapse: separate;
 
       thead {
+        position: relative;
+        z-index: 100;
+
         &.table-data-thead-sticky {
           position: sticky;
           top: 0;
@@ -163,9 +166,10 @@
               justify-content: center;
               flex-direction: column;
               text-align: center;
-              padding: 2.5rem 2rem;
+              padding: 3rem 2rem;
 
               .search-icon {
+                position: relative;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -174,6 +178,25 @@
                 box-shadow: $shadow-xs;
                 border-radius: $rounded-md;
                 border: 1px solid $gray-200;
+                z-index: 10;
+
+                &-circle {
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                  border-radius: 50vw;
+                  border: 1px solid $gray-200;
+                  z-index: 0;
+
+                  @for $i from 1 through 6 {
+                    &-#{$i} {
+                      height: #{2 + $i * 4}rem;
+                      width: #{2 + $i * 4}rem;
+                      opacity: #{0.7 - $i * 0.1};
+                    }
+                  }
+                }
               }
 
               &-text {
@@ -182,6 +205,7 @@
                 gap: 0.25rem;
                 padding-top: 1rem;
                 padding-bottom: 1.5rem;
+                z-index: 10;
 
                 h3 {
                   @include text-md(600, $gray-900);
@@ -195,6 +219,10 @@
               &-text-no-query {
                 padding-top: 0;
                 padding-bottom: 0;
+              }
+
+              button {
+                z-index: 10;
               }
             }
           }
