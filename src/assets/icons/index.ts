@@ -8,5 +8,7 @@ export { default as addCircleOutlineIcon } from '@material-design-icons/svg/roun
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as arrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
+export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
+export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
 export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';

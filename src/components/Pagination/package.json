@@ -1,0 +1,11 @@
+{
+    "main": "./Pagination.vue",
+    "module": "./Pagination.vue",
+    "types": "./Pagination.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Pagination.d.ts",
+            "import": "./Pagination.vue"
+        }
+    }
+}
