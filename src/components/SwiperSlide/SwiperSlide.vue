@@ -35,10 +35,4 @@ const cKey = ref(instance ? instance.vnode.key : null);
 // methods
 </script>
 
-<style lang="scss" scoped>
-.swiper-slide {
-  flex-shrink: 0;
-  margin-right: var(--space-between);
-  width: calc((100% - (var(--space-between) * (var(--slides-per-view) - 1))) / var(--slides-per-view));
-}
-</style>
+<style lang="scss" scoped src="./SwiperSlide.style.scss"></style>

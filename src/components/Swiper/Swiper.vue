@@ -7,7 +7,7 @@
       ref="swiperWrapperRef"
       v-swipe="{ onSwipe }"
       class="swiper-wrapper"
-      :style="wrapperStyle"
+      :style="wrapperStyles"
     >
       <component
         :is="slide"
@@ -22,41 +22,40 @@
 </template>
 
 <script setup lang="ts">
-// imports
 import { vSwipe, type SwipeState } from '@/directives/vSwipe';
-import type { SwiperEmits, SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
-import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
+import type { SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
+import { computed, onMounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
+// imports
+
 // interfaces & types
 
 // constants
 
 // composable
 const slots = useSlots();
+
 // props
+defineSlots<SwiperSlots>();
 const props = withDefaults(defineProps<SwiperProps>(), {
-  slidesPerView: 'auto',
+  slidesPerView: 1,
   slidesPerGroup: 1,
   spaceBetween: 0,
   initialSlide: 0,
   allowTouchMove: true,
   threshold: 0.5,
 });
-defineEmits<SwiperEmits>();
-defineSlots<SwiperSlots>();
 // defineEmits
 
 // states (refs and reactives)
-const wrapperRef = useTemplateRef<HTMLDivElement>('swiperWrapperRef');
-const slidesNodes = ref<VNode[]>([]);
+const wrapperRef = useTemplateRef('swiperWrapperRef');
 const swiperState = ref<SwiperState>({
-  // Position and size
+  // Position and movement
   translateX: 0,
   deltaX: 0,
   duration: 0,
 
   // Indexes
   activeIndex: 0,
-  realIndex: 0,
 
   // State flags
   isBeginning: false,
@@ -68,19 +67,16 @@ const swiperState = ref<SwiperState>({
   totalSlidesWidth: 0,
   containerWidth: 0,
 });
+const slidesNodes = ref<VNode[]>([]);
 // computed
-const swiperStyles = computed(() => {
-  return {
-    '--slides-per-view': props.slidesPerView === 'auto' ? 1 : props.slidesPerView,
-    '--space-between': props.spaceBetween + 'px',
-  };
-});
-const wrapperStyle = computed(() => {
-  return {
-    transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
-    transitionDuration: `${swiperState.value.duration}ms`,
-  };
-});
+const swiperStyles = computed(() => ({
+  '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
+  '--space-between': `${props.spaceBetween}px`,
+}));
+const wrapperStyles = computed(() => ({
+  transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
+  transitionDuration: `${swiperState.value.duration}ms`,
+}));
 // watchers
 
 // lifecycles
@@ -88,22 +84,26 @@ setSlidesNodes();
 onMounted(() => {
   calculationGeneral();
   slideTo(props.initialSlide, 0);
-  window.addEventListener('resize', onResize);
-});
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize);
 });
 // methods
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   swiperState.value.deltaX = event.deltaX;
-  if (event.swipeState === 'move') {
-    swiperState.value.activeIndex = findNearestSlideIndex();
-  } else if (event.swipeState === 'end') {
-    swiperState.value.deltaX = event.deltaX;
+  swiperState.value.activeIndex = findNearestSlideIndex();
+  if (event.swipeState === 'end') {
     determineTargetSlide(event);
-    checkBoundaries();
   }
+}
+function slideTo(index: number = swiperState.value.activeIndex, duration: number = 300) {
+  swiperState.value.activeIndex = index;
+  delayedExec(() => {
+    swiperState.value.deltaX = 0;
+    swiperState.value.translateX = -swiperState.value.snapGrid[index];
+    swiperState.value.duration = duration;
+  }).then(() => {
+    swiperState.value.duration = 0;
+    checkBoundaries();
+  });
 }
 function determineTargetSlide(event: SwipeState) {
   if (event.swipeSpeed > props.threshold) {
@@ -112,42 +112,38 @@ function determineTargetSlide(event: SwipeState) {
     } else if (event.direction === 'right' && !swiperState.value.isBeginning) {
       slidePrev();
     } else {
-      slideTo(swiperState.value.activeIndex);
+      slideTo();
     }
   } else {
     slideTo(findNearestSlideIndex());
   }
 }
 function slidePrev() {
-  if (swiperState.value.isBeginning) return;
-  const prevIndex = Math.max(swiperState.value.activeIndex - props.slidesPerGroup, 0);
+  const { isBeginning, activeIndex } = swiperState.value;
+  if (isBeginning) return;
+  const prevIndex = Math.max(activeIndex - props.slidesPerGroup, 0);
   slideTo(prevIndex);
 }
 function slideNext() {
-  if (swiperState.value.isEnd) return;
-  const nextIndex = Math.min(swiperState.value.activeIndex + props.slidesPerGroup, slidesNodes.value.length - 1);
+  const { isEnd, activeIndex, snapGrid } = swiperState.value;
+  if (isEnd) return;
+  const nextIndex = Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
   slideTo(nextIndex);
 }
-function slideTo(index: number, speed = 300) {
-  swiperState.value.activeIndex = index;
-  delayedExec(() => {
-    const targetTranslate = swiperState.value.snapGrid[index];
-    const maxTranslate = Math.min(0, swiperState.value.totalSlidesWidth - swiperState.value.containerWidth);
-    swiperState.value.translateX = -Math.max(targetTranslate, maxTranslate);
-    swiperState.value.deltaX = 0;
-    swiperState.value.duration = speed;
-  }, speed).then(() => {
-    swiperState.value.duration = 0;
-    checkBoundaries();
-  });
-}
 function findNearestSlideIndex() {
-  if (swiperState.value.snapGrid.length === 0) return swiperState.value.activeIndex;
-  const currentTranslate = swiperState.value.translateX + swiperState.value.deltaX;
+  const { snapGrid, translateX, deltaX, totalSlidesWidth, containerWidth, activeIndex } = swiperState.value;
+  if (!snapGrid.length) return 0;
+  const currentTranslate = translateX + deltaX;
+  const maxTranslate = totalSlidesWidth - containerWidth;
+
+  if (maxTranslate < -currentTranslate) {
+    return activeIndex;
+  }
+
   let nearestIndex = 0;
   let minDistance = Infinity;
 
-  swiperState.value.snapGrid.forEach((snap, index) => {
+  snapGrid.forEach((snap, index) => {
     const distance = Math.abs(currentTranslate + snap);
     if (distance < minDistance) {
       minDistance = distance;
@@ -157,7 +153,7 @@ function findNearestSlideIndex() {
 
   return nearestIndex;
 }
-function getLimitedDeltaX(): number {
+function getLimitedDeltaX() {
   if (swiperState.value.isBeginning && swiperState.value.deltaX > 0) {
     return swiperState.value.deltaX * 0.25;
   }
@@ -169,7 +165,7 @@ function getLimitedDeltaX(): number {
 function checkBoundaries() {
   const maxTranslate = swiperState.value.totalSlidesWidth - swiperState.value.containerWidth;
   const isOverLeft = swiperState.value.translateX + swiperState.value.deltaX >= 0;
-  const isOverRight = swiperState.value.translateX + swiperState.value.deltaX < -maxTranslate;
+  const isOverRight = swiperState.value.translateX + swiperState.value.deltaX <= -maxTranslate;
 
   swiperState.value.isBeginning = isOverLeft;
   swiperState.value.isEnd = isOverRight;
@@ -185,7 +181,7 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   nodes.forEach(vnode => {
     if (typeof vnode.type === 'symbol' && vnode.children) {
       getSlidesFromSlot(vnode.children as VNode[], slides);
-    } else if (isNamedComponent(vnode.type) && vnode.type?.name === 'SwiperSlide') {
+    } else if (typeof vnode.type === 'object' && 'name' in vnode.type && vnode.type?.name === 'SwiperSlide') {
       slides.push(vnode);
     }
   });
@@ -193,19 +189,30 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
 }
 function calculationGeneral() {
   if (!wrapperRef.value) return;
-  const slidesWidth = Array.from(wrapperRef.value.children).map(child => child.clientWidth);
-  swiperState.value.containerWidth = wrapperRef.value.clientWidth;
+  const slidesWidth = Array.from(wrapperRef.value.children).map(el => (el as HTMLElement).offsetWidth);
+  const containerWidth = wrapperRef.value.offsetWidth;
   swiperState.value.slidesWidth = slidesWidth;
-  swiperState.value.totalSlidesWidth = slidesWidth.reduce((acc, width) => acc + width, 0);
-  swiperState.value.snapGrid = slidesWidth.reduce((acc, _, index) => {
-    if (index === 0) {
-      acc.push(0);
-    } else {
-      acc.push(acc[index - 1] + slidesWidth[index - 1] + props.spaceBetween);
+  swiperState.value.containerWidth = containerWidth;
+
+  let snapGrid: number[] = [];
+  let totalWidth = 0;
+
+  slidesWidth.forEach(width => {
+    snapGrid.push(totalWidth);
+    totalWidth += width + props.spaceBetween;
+  });
+
+  totalWidth -= props.spaceBetween;
+
+  if (totalWidth > containerWidth) {
+    snapGrid = snapGrid.filter(snap => snap <= totalWidth - containerWidth);
+    if (snapGrid[snapGrid.length - 1] < totalWidth - containerWidth) {
+      snapGrid.push(totalWidth - containerWidth);
     }
-    return acc;
-  }, [] as number[]);
-  checkBoundaries();
+  }
+
+  swiperState.value.snapGrid = snapGrid;
+  swiperState.value.totalSlidesWidth = totalWidth;
 }
 function delayedExec(callback: () => void, delay = 0) {
   callback();
@@ -215,13 +222,6 @@ function delayedExec(callback: () => void, delay = 0) {
     }, delay)
   );
 }
-function isNamedComponent(type: any): type is { name: string } {
-  return typeof type === 'object' && type !== null && typeof type.name === 'string';
-}
-function onResize() {
-  calculationGeneral();
-  slideTo(swiperState.value.activeIndex, 0);
-}
 </script>
 
-<style lang="scss" scoped src="./Swiper.style.scss"></style>
+<style lang="postcss" scoped src="./Swiper.style.scss"></style>

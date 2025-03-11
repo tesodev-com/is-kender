@@ -1,0 +1,11 @@
+{
+    "main": "./SwiperSlide.vue",
+    "module": "./SwiperSlide.vue",
+    "types": "./SwiperSlide.d.ts",
+    "exports": {
+        ".": {
+            "types": "./SwiperSlide.d.ts",
+            "import": "./SwiperSlide.vue"
+        }
+    }
+}

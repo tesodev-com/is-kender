@@ -1,0 +1,10 @@
+/* stylelint-disable scss/operator-no-newline-after */
+
+.swiper-slide {
+  flex-shrink: 0;
+  margin-right: var(--space-between);
+  width: calc(
+    (100% - (var(--space-between) * (var(--slides-per-view) - 1))) /
+      var(--slides-per-view)
+  );
+}
