@@ -10,12 +10,10 @@ export interface SwiperProps {
 
   // Behavior settings
   speed?: number;
-  threshold?: number;
 
   // Autoplay
   autoplay?: boolean;
   autoplayDelay?: number;
-  autoplayDisableOnInteraction?: boolean;
 
   // Navigation controls
   navigation?: boolean;

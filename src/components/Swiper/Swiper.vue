@@ -1,11 +1,11 @@
 <template>
   <div
+    v-swipe="{ onSwipe }"
     class="swiper"
     :style="swiperStyles"
   >
     <div
       ref="swiperWrapperRef"
-      v-swipe="{ onSwipe }"
       class="swiper-wrapper"
       :style="wrapperStyles"
     >
@@ -16,9 +16,6 @@
       />
     </div>
   </div>
-  <pre>
-    {{ swiperState }}
-  </pre>
 </template>
 
 <script setup lang="ts">
@@ -37,12 +34,22 @@ const slots = useSlots();
 // props
 defineSlots<SwiperSlots>();
 const props = withDefaults(defineProps<SwiperProps>(), {
+  // Basic configuration
   slidesPerView: 1,
   slidesPerGroup: 1,
   spaceBetween: 0,
   initialSlide: 0,
+
+  // Behavior settings
+  speed: 0.5,
+
+  // Autoplay
+  autoplay: false,
+  autoplayDelay: 3000,
+
+  // Loop and boundary behavior
+  loop: false,
   allowTouchMove: true,
-  threshold: 0.5,
 });
 // defineEmits
 
@@ -84,6 +91,7 @@ setSlidesNodes();
 onMounted(() => {
   calculationGeneral();
   slideTo(props.initialSlide, 0);
+  autoPlay();
 });
 // methods
 function onSwipe(event: SwipeState) {
@@ -95,6 +103,10 @@ function onSwipe(event: SwipeState) {
   }
 }
 function slideTo(index: number = swiperState.value.activeIndex, duration: number = 300) {
+  if (props.loop) {
+    index = ((index % swiperState.value.snapGrid.length) + swiperState.value.snapGrid.length) % swiperState.value.snapGrid.length;
+  }
+
   swiperState.value.activeIndex = index;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
@@ -106,7 +118,7 @@ function slideTo(index: number = swiperState.value.activeIndex, duration: number
   });
 }
 function determineTargetSlide(event: SwipeState) {
-  if (event.swipeSpeed > props.threshold) {
+  if (event.swipeSpeed > props.speed) {
     if (event.direction === 'left' && !swiperState.value.isEnd) {
       slideNext();
     } else if (event.direction === 'right' && !swiperState.value.isBeginning) {
@@ -118,16 +130,22 @@ function determineTargetSlide(event: SwipeState) {
     slideTo(findNearestSlideIndex());
   }
 }
+function autoPlay() {
+  if (!props.autoplay) return;
+  return setInterval(() => {
+    slideNext();
+  }, props.autoplayDelay);
+}
 function slidePrev() {
   const { isBeginning, activeIndex } = swiperState.value;
   if (isBeginning) return;
-  const prevIndex = Math.max(activeIndex - props.slidesPerGroup, 0);
+  const prevIndex = props.loop ? activeIndex - props.slidesPerGroup : Math.max(activeIndex - props.slidesPerGroup, 0);
   slideTo(prevIndex);
 }
 function slideNext() {
   const { isEnd, activeIndex, snapGrid } = swiperState.value;
   if (isEnd) return;
-  const nextIndex = Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
+  const nextIndex = props.loop ? activeIndex + props.slidesPerGroup : Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
   slideTo(nextIndex);
 }
 function findNearestSlideIndex() {
@@ -163,9 +181,14 @@ function getLimitedDeltaX() {
   return swiperState.value.deltaX;
 }
 function checkBoundaries() {
-  const maxTranslate = swiperState.value.totalSlidesWidth - swiperState.value.containerWidth;
-  const isOverLeft = swiperState.value.translateX + swiperState.value.deltaX >= 0;
-  const isOverRight = swiperState.value.translateX + swiperState.value.deltaX <= -maxTranslate;
+  let isOverLeft = false;
+  let isOverRight = false;
+
+  if (!props.loop) {
+    const maxTranslate = swiperState.value.totalSlidesWidth - swiperState.value.containerWidth;
+    isOverLeft = swiperState.value.translateX + swiperState.value.deltaX >= 0;
+    isOverRight = swiperState.value.translateX + swiperState.value.deltaX <= -maxTranslate;
+  }
 
   swiperState.value.isBeginning = isOverLeft;
   swiperState.value.isEnd = isOverRight;

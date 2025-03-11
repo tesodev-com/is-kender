@@ -22,11 +22,17 @@ const meta: Meta<typeof Swiper> = {
     speed: {
       control: { type: 'number' },
     },
-    threshold: {
-      control: { type: 'number' },
+    loop: {
+      control: { type: 'boolean' },
     },
     allowTouchMove: {
       control: { type: 'boolean' },
+    },
+    autoplay: {
+      control: { type: 'boolean' },
+    },
+    autoplayDelay: {
+      control: { type: 'number' },
     },
   },
 };
@@ -36,10 +42,12 @@ export default meta;
 type Story = StoryObj<typeof Swiper>;
 export const Default: Story = {
   args: {
-    slidesPerView: 'auto',
+    slidesPerView: 3,
     slidesPerGroup: 1,
     spaceBetween: 10,
-    loop: false,
+    autoplay: false,
+    autoplayDelay: 2000,
+    loop: true,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },
