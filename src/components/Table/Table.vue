@@ -146,7 +146,7 @@
           <template v-else>
             <tr
               v-for="(row, rowIndex) in filteredRows"
-              :key="rowIndex"
+              :key="row.key || rowIndex"
               class="row-cell-container"
               :class="[{ 'row-cell-container-striped': stripedRows }]"
             >
@@ -265,7 +265,13 @@ const filteredRows = computed(() => {
 
   if (searchQuery.value) {
     const lowerCaseQuery = searchQuery.value.toLowerCase();
-    result = result?.filter(row => Object.values(row).some(value => String(value).toLowerCase().includes(lowerCaseQuery)));
+    const columnKeys = props.columns.map(column => column.key);
+    result = result?.filter(row =>
+      columnKeys.some(key => {
+        const value = row[key];
+        return value != null && String(value).toLowerCase().includes(lowerCaseQuery);
+      })
+    );
   }
 
   if (sortKey.value) {
