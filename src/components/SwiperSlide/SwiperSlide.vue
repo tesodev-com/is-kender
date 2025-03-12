@@ -1,7 +1,7 @@
 <template>
   <div
     class="swiper-slide"
-    :data-index="cKey"
+    :data-index="slideIndex"
   >
     <slot></slot>
   </div>
@@ -9,23 +9,23 @@
 
 <script setup lang="ts">
 // imports
-import { getCurrentInstance, ref } from 'vue';
 
 // interfaces & types
-
+interface SwiperSlideProps {
+  slideIndex: number;
+}
 // constants
 
 // composable
 defineOptions({
   name: 'SwiperSlide',
 });
-const instance = getCurrentInstance();
 // props
-
+defineProps<SwiperSlideProps>();
 // defineEmits
 
 // states (refs and reactives)
-const cKey = ref(instance ? instance.vnode.key : null);
+
 // computed
 
 // watchers

@@ -42,12 +42,11 @@ export default meta;
 type Story = StoryObj<typeof Swiper>;
 export const Default: Story = {
   args: {
-    slidesPerView: 3,
+    slidesPerView: 'auto',
     slidesPerGroup: 1,
     spaceBetween: 10,
     autoplay: false,
     autoplayDelay: 2000,
-    loop: true,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },

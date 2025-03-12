@@ -11,7 +11,7 @@
     >
       <component
         :is="slide"
-        v-for="(slide, index) in slidesNodes"
+        v-for="(slide, index) in renderToSlides"
         :key="index"
       />
     </div>
@@ -84,6 +84,27 @@ const wrapperStyles = computed(() => ({
   transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
   transitionDuration: `${swiperState.value.duration}ms`,
 }));
+const renderToSlides = computed(() => {
+  const from = 0;
+  const to = slidesNodes.value.length;
+  const data = [];
+  for (let i = from; i < to; i++) {
+    const slide = slidesNodes.value[i];
+    if (slide.props) {
+      if (i === swiperState.value.activeIndex) {
+        slide.props.class = 'swiper-slide-active';
+      } else if (i === swiperState.value.activeIndex - 1) {
+        slide.props.class = 'swiper-slide-prev';
+      } else if (i === swiperState.value.activeIndex + 1) {
+        slide.props.class = 'swiper-slide-next';
+      } else {
+        slide.props.class = '';
+      }
+    }
+    data.push(slide);
+  }
+  return data;
+});
 // watchers
 
 // lifecycles
@@ -201,10 +222,11 @@ function setSlidesNodes() {
   slidesNodes.value = slides;
 }
 function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
-  nodes.forEach(vnode => {
+  nodes.forEach((vnode, index) => {
     if (typeof vnode.type === 'symbol' && vnode.children) {
       getSlidesFromSlot(vnode.children as VNode[], slides);
     } else if (typeof vnode.type === 'object' && 'name' in vnode.type && vnode.type?.name === 'SwiperSlide') {
+      if (vnode.props) Object.assign(vnode.props, { slideIndex: index });
       slides.push(vnode);
     }
   });
