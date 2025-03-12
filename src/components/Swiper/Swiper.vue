@@ -118,7 +118,6 @@ onMounted(() => {
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   swiperState.value.deltaX = event.deltaX;
-  swiperState.value.activeIndex = findNearestSlideIndex();
   if (event.swipeState === 'end') {
     determineTargetSlide(event);
   }
@@ -160,13 +159,13 @@ function autoPlay() {
 function slidePrev() {
   const { isBeginning, activeIndex } = swiperState.value;
   if (isBeginning) return;
-  const prevIndex = props.loop ? activeIndex - props.slidesPerGroup : Math.max(activeIndex - props.slidesPerGroup, 0);
+  const prevIndex = props.loop ? getModulo(activeIndex - props.slidesPerGroup) : Math.max(activeIndex - props.slidesPerGroup, 0);
   slideTo(prevIndex);
 }
 function slideNext() {
   const { isEnd, activeIndex, snapGrid } = swiperState.value;
   if (isEnd) return;
-  const nextIndex = props.loop ? activeIndex + props.slidesPerGroup : Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
+  const nextIndex = props.loop ? getModulo(activeIndex + props.slidesPerGroup) : Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
   slideTo(nextIndex);
 }
 function findNearestSlideIndex() {
@@ -231,6 +230,9 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
     }
   });
   return slides;
+}
+function getModulo(index: number, length: number = slidesNodes.value.length) {
+  return ((index % length) + length) % length;
 }
 function calculationGeneral() {
   if (!wrapperRef.value) return;
