@@ -45,6 +45,10 @@
       "types": "./dist/components/Button/Button.d.ts",
       "import": "./dist/components/Button/Button.js"
     },
+    "./checkbox": {
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
+    },
     "./col": {
       "types": "./dist/components/Col/Col.d.ts",
       "import": "./dist/components/Col/Col.js"
@@ -56,6 +60,10 @@
     "./divider": {
       "types": "./dist/components/Divider/Divider.d.ts",
       "import": "./dist/components/Divider/Divider.js"
+    },
+    "./drawer": {
+      "types": "./dist/components/Drawer/Drawer.d.ts",
+      "import": "./dist/components/Drawer/Drawer.js"
     },
     "./fileupload": {
       "types": "./dist/components/FileUpload/FileUpload.d.ts",
@@ -73,9 +81,17 @@
       "types": "./dist/components/ProgressBar/ProgressBar.d.ts",
       "import": "./dist/components/ProgressBar/ProgressBar.js"
     },
+    "./radiobutton": {
+      "types": "./dist/components/RadioButton/RadioButton.d.ts",
+      "import": "./dist/components/RadioButton/RadioButton.js"
+    },
     "./row": {
       "types": "./dist/components/Row/Row.d.ts",
       "import": "./dist/components/Row/Row.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
     },
     "./sidebar": {
       "types": "./dist/components/Sidebar/Sidebar.d.ts",
@@ -85,9 +101,21 @@
       "types": "./dist/components/Skeleton/Skeleton.d.ts",
       "import": "./dist/components/Skeleton/Skeleton.js"
     },
+    "./spinner": {
+      "types": "./dist/components/Spinner/Spinner.d.ts",
+      "import": "./dist/components/Spinner/Spinner.js"
+    },
     "./svg": {
       "types": "./dist/components/Svg/Svg.d.ts",
       "import": "./dist/components/Svg/Svg.js"
+    },
+    "./swiper": {
+      "types": "./dist/components/Swiper/Swiper.d.ts",
+      "import": "./dist/components/Swiper/Swiper.js"
+    },
+    "./swiperslide": {
+      "types": "./dist/components/SwiperSlide/SwiperSlide.d.ts",
+      "import": "./dist/components/SwiperSlide/SwiperSlide.js"
     },
     "./text": {
       "types": "./dist/components/Text/Text.d.ts",
@@ -100,14 +128,6 @@
     "./toggle": {
       "types": "./dist/components/Toggle/Toggle.d.ts",
       "import": "./dist/components/Toggle/Toggle.js"
-    },
-    "./swiper": {
-      "types": "./dist/components/Swiper/Swiper.d.ts",
-      "import": "./dist/components/Swiper/Swiper.js"
-    },
-    "./swiperslide": {
-      "types": "./dist/components/SwiperSlide/SwiperSlide.d.ts",
-      "import": "./dist/components/SwiperSlide/SwiperSlide.js"
     }
   },
   "scripts": {
@@ -135,56 +155,56 @@
   },
   "devDependencies": {
     "@babel/core": "^7.26.9",
-    "@chromatic-com/storybook": "^3.2.4",
+    "@chromatic-com/storybook": "^3.2.5",
     "@eslint/js": "^9.21.0",
     "@material-design-icons/svg": "^0.14.15",
-    "@storybook/addon-actions": "^8.5.8",
-    "@storybook/addon-essentials": "^8.5.8",
-    "@storybook/addon-interactions": "^8.5.8",
-    "@storybook/addon-links": "^8.5.8",
-    "@storybook/manager-api": "^8.5.8",
-    "@storybook/test": "^8.5.8",
-    "@storybook/theming": "^8.5.8",
-    "@storybook/vue3": "^8.5.8",
-    "@storybook/vue3-vite": "^8.5.8",
+    "@storybook/addon-actions": "^8.6.4",
+    "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
+    "@storybook/addon-links": "^8.6.4",
+    "@storybook/manager-api": "^8.6.4",
+    "@storybook/test": "^8.6.4",
+    "@storybook/theming": "^8.6.4",
+    "@storybook/vue3": "^8.6.4",
+    "@storybook/vue3-vite": "^8.6.4",
     "@types/jsdom": "^21.1.7",
-    "@typescript-eslint/eslint-plugin": "^8.24.1",
-    "@typescript-eslint/parser": "^8.24.1",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
     "@vitejs/plugin-vue": "^5.2.1",
-    "@vitest/coverage-v8": "^3.0.6",
-    "@vitest/ui": "^3.0.6",
-    "@volar/typescript": "^2.4.11",
+    "@vitest/coverage-v8": "^3.0.8",
+    "@vitest/ui": "^3.0.8",
+    "@volar/typescript": "^2.4.12",
     "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.4.0",
+    "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "babel-loader": "^9.2.1",
     "eslint": "^9.21.0",
-    "eslint-plugin-vue": "^9.32.0",
+    "eslint-plugin-vue": "^10.0.0",
     "glob": "^11.0.1",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
-    "prettier": "^3.5.2",
-    "sass": "^1.85.0",
-    "storybook": "^8.5.8",
+    "prettier": "^3.5.3",
+    "sass": "^1.85.1",
+    "storybook": "^8.6.4",
     "style-dictionary": "^4.3.3",
-    "stylelint": "^16.14.1",
+    "stylelint": "^16.15.0",
     "stylelint-config-recommended-vue": "^1.6.0",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-prettier": "^5.0.3",
     "stylelint-scss": "^6.11.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.1",
-    "vite": "^6.1.1",
-    "vite-plugin-dts": "^4.5.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0",
+    "vite": "^6.2.1",
+    "vite-plugin-dts": "^4.5.3",
     "vite-plugin-lib-inject-css": "^2.2.1",
-    "vitest": "^3.0.6",
+    "vitest": "^3.0.8",
     "vue-loader": "^17.4.2",
-    "vue-tsc": "^2.2.2"
+    "vue-tsc": "^2.2.8"
   }
 }

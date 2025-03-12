@@ -84,21 +84,10 @@
               class="delete"
               @click="handleDeleteFile(index)"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M18 6L6 18M6 6l12 12"
-                />
-              </svg>
+              <Svg
+                :src="closeIcon"
+                size="24"
+              />
             </span>
           </slot>
         </div>
@@ -110,6 +99,8 @@
 <script setup lang="ts">
 import type { CustomFile, FileErrorMessage, FileUploadEvents, FileUploadProps, FileUploadSlots } from 'library/FileUpload';
 import { computed, ref } from 'vue';
+import Svg from 'library/Svg';
+import { closeIcon } from '@/assets/icons';
 
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',

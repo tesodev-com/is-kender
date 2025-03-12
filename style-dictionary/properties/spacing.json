@@ -15,6 +15,9 @@
     "md": {
       "value": "0.5rem"
     },
+    "ml": {
+      "value": "0.625rem"
+    },
     "lg": {
       "value": "0.75rem"
     },

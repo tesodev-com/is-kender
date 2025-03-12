@@ -39,19 +39,10 @@
         class="sidebar-nav-link-icon"
         :class="{ 'sidebar-nav-link-icon-open': link.isOpen }"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <Svg
+          :src="keyboardArrowDownIcon"
+          size="24"
+        />
       </div>
     </div>
     <transition name="fade">
@@ -140,6 +131,7 @@
 import Svg from 'library/Svg';
 import Link from 'library/Link';
 import type { SidebarLink, SidebarItemEmits } from 'library/Sidebar';
+import { keyboardArrowDownIcon } from '@/assets/icons';
 
 defineProps<{
   link: SidebarLink;
