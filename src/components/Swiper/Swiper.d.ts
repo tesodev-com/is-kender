@@ -20,7 +20,8 @@ export interface SwiperProps {
   pagination?: boolean;
 
   // Loop and boundary behavior
-  loop?: boolean | 'rewind';
+  loop?: boolean;
+  rewind?: boolean;
   allowTouchMove?: boolean;
 }
 

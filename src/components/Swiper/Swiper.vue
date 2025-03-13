@@ -16,7 +16,9 @@
       />
     </div>
   </div>
-  {{ swiperState.snapGrid }}
+  <pre>
+  {{ swiperState }}
+  </pre>
 </template>
 
 <script setup lang="ts">
@@ -50,6 +52,7 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 
   // Loop and boundary behavior
   loop: false,
+  rewind: false,
   allowTouchMove: true,
 });
 // defineEmits
@@ -88,13 +91,9 @@ const wrapperStyles = computed(() => ({
 const renderToSlides = computed(() => {
   let from = 0;
   let to = slidesNodes.value.length;
-  if (props.loop && props.loop !== 'rewind') {
-    from = swiperState.value.activeIndex - props.slidesPerGroup;
-    to = swiperState.value.activeIndex + slidesNodes.value.length - props.slidesPerGroup;
-  }
   const data = [];
   for (let i = from; i < to; i++) {
-    const slide = slidesNodes.value[getModulo(i)];
+    const slide = slidesNodes.value[getModulo(i, slidesNodes.value.length)];
     if (slide?.props) {
       if (i === swiperState.value.activeIndex) {
         slide.props.class = 'swiper-slide-active';
@@ -128,10 +127,6 @@ function onSwipe(event: SwipeState) {
   }
 }
 function slideTo(index: number = swiperState.value.activeIndex, duration: number = 300) {
-  if (props.loop) {
-    index = getModulo(index, swiperState.value.snapGrid.length);
-  }
-
   swiperState.value.activeIndex = index;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
@@ -139,9 +134,6 @@ function slideTo(index: number = swiperState.value.activeIndex, duration: number
     swiperState.value.duration = duration;
   }).then(() => {
     swiperState.value.duration = 0;
-    if (props.loop && props.loop !== 'rewind') {
-      calculationGeneral();
-    }
     checkBoundaries();
   });
 }
@@ -167,24 +159,20 @@ function autoPlay() {
 function slidePrev() {
   const { isBeginning, activeIndex } = swiperState.value;
   if (isBeginning) return;
-  let newIndex;
-  if (props.loop === 'rewind') {
-    newIndex = getModulo(activeIndex - props.slidesPerGroup);
+  if (props.rewind) {
+    slideTo(getModulo(activeIndex - props.slidesPerGroup, swiperState.value.snapGrid.length));
   } else {
-    newIndex = Math.max(activeIndex - props.slidesPerGroup, 0);
+    slideTo(Math.max(activeIndex - props.slidesPerGroup, 0));
   }
-  slideTo(newIndex);
 }
 function slideNext() {
   const { isEnd, activeIndex, snapGrid } = swiperState.value;
   if (isEnd) return;
-  let newIndex;
-  if (props.loop === 'rewind') {
-    newIndex = Math.max(getModulo(activeIndex + props.slidesPerGroup), 0);
+  if (props.rewind) {
+    slideTo(getModulo(activeIndex + props.slidesPerGroup, swiperState.value.snapGrid.length));
   } else {
-    newIndex = Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
+    slideTo(Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1));
   }
-  slideTo(newIndex);
 }
 function findNearestSlideIndex() {
   const { snapGrid, translateX, deltaX, totalSlidesWidth, containerWidth, activeIndex } = swiperState.value;
@@ -222,7 +210,7 @@ function checkBoundaries() {
   let isOverLeft = false;
   let isOverRight = false;
 
-  if (!props.loop) {
+  if (!props.rewind) {
     const maxTranslate = swiperState.value.totalSlidesWidth - swiperState.value.containerWidth;
     isOverLeft = swiperState.value.translateX + swiperState.value.deltaX >= 0;
     isOverRight = swiperState.value.translateX + swiperState.value.deltaX <= -maxTranslate;
