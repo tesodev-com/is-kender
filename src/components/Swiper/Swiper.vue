@@ -97,7 +97,7 @@ const swiperStyles = computed(() => ({
   '--space-between': `${props.spaceBetween}px`,
 }));
 const wrapperStyles = computed(() => ({
-  transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
+  transform: `translateX(${currentTranslate.value}px)`,
   transitionDuration: `${swiperState.value.duration}ms`,
 }));
 const currentTranslate = computed(() => {
@@ -107,8 +107,8 @@ const renderedSlideElements = computed(() => {
   return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
 });
 const nearestSlide = computed(() => {
-  if (!wrapperRef.value) return { slide: null, index: 0 };
-  const { slide, index } = renderedSlideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
+  if (!wrapperRef.value) return 0;
+  const { index } = renderedSlideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
     (acc, el, index) => {
       const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
       if (distance < acc.distance) {
@@ -118,7 +118,7 @@ const nearestSlide = computed(() => {
     },
     { distance: Infinity, slide: null, index: 0 }
   );
-  return { slide, index };
+  return index;
 });
 // watchers
 watch(
@@ -148,7 +148,7 @@ function onStart() {
 function onMove(event: SwipeState) {
   swiperState.value.deltaX = event.deltaX;
   const nSlide = nearestSlide.value;
-  swiperState.value.virtualIndex = getModulo(nSlide.index, renderedSlideElements.value.length);
+  swiperState.value.virtualIndex = getModulo(nSlide, renderedSlideElements.value.length);
 }
 function onEnd(event: SwipeState) {
   let index = swiperState.value.virtualIndex;
@@ -172,7 +172,7 @@ function slideTo(index: number, duration: number = 300) {
   swiperState.value.virtualIndex = index;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
-    swiperState.value.translateX = -slideElement.offsetLeft;
+    swiperState.value.translateX = -Math.min(swiperState.value.lastTranslateX, slideElement.offsetLeft);
     swiperState.value.duration = duration;
   }, duration).then(() => {
     swiperState.value.duration = 0;
@@ -233,7 +233,7 @@ function calculationGeneral() {
 
   if (!props.loop) {
     swiperState.value.lastTranslateX = totalSlidesWidth - containerWidth - props.spaceBetween;
-    swiperState.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft + el.offsetWidth + props.spaceBetween >= swiperState.value.lastTranslateX);
+    swiperState.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft >= swiperState.value.lastTranslateX);
   }
 }
 function setSlidesNode() {
