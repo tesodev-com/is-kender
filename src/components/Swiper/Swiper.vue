@@ -39,20 +39,13 @@ const slots = useSlots();
 // props
 defineSlots<SwiperSlots>();
 const props = withDefaults(defineProps<SwiperProps>(), {
-  // Basic configuration
   slidesPerView: 1,
   slidesPerGroup: 1,
   spaceBetween: 0,
   initialSlide: 0,
-
-  // Behavior settings
   speed: 0.5,
-
-  // Autoplay
   autoplay: false,
   autoplayDelay: 3000,
-
-  // Loop and boundary behavior
   loop: false,
   rewind: false,
   allowTouchMove: true,
@@ -63,25 +56,26 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 const slidesNode = ref<VNode[]>([]);
 const wrapperRef = useTemplateRef('swiperWrapperRef');
 const swiperState = ref<SwiperState>({
-  // Position and size
   translateX: 0,
   deltaX: 0,
   duration: 0,
-
-  // Indexes
   virtualIndex: 0,
-
-  // State flags
   isBeginning: false,
   isEnd: false,
-
-  // Slide data
   totalSlidesWidth: 0,
   containerWidth: 0,
   lastTranslateX: 0,
   lastSlideIndex: 0,
 });
 // computed
+const swiperStyles = computed(() => ({
+  '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
+  '--space-between': `${props.spaceBetween}px`,
+}));
+const wrapperStyles = computed(() => ({
+  transform: `translateX(${currentTranslate.value}px)`,
+  transitionDuration: `${swiperState.value.duration}ms`,
+}));
 const renderToSlides = computed(() => {
   let from = 0;
   let to = slidesNode.value.length;
@@ -92,14 +86,6 @@ const renderToSlides = computed(() => {
   }
   return data;
 });
-const swiperStyles = computed(() => ({
-  '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
-  '--space-between': `${props.spaceBetween}px`,
-}));
-const wrapperStyles = computed(() => ({
-  transform: `translateX(${currentTranslate.value}px)`,
-  transitionDuration: `${swiperState.value.duration}ms`,
-}));
 const currentTranslate = computed(() => {
   return swiperState.value.translateX + getLimitedDeltaX();
 });
@@ -183,12 +169,11 @@ function slideTo(index: number, duration: number = 300) {
     checkBoundaries();
   });
 }
-function slidePrev(offset = -props.slidesPerGroup) {
-  const prevIndex = swiperState.value.virtualIndex + offset;
+function slidePrev(offset = props.slidesPerGroup) {
+  const prevIndex = swiperState.value.virtualIndex - offset;
   if (props.rewind) {
     slideTo(swiperState.value.isBeginning ? swiperState.value.lastSlideIndex : prevIndex);
   } else {
-    if (swiperState.value.isBeginning) return;
     slideTo(Math.max(prevIndex, 0));
   }
 }
@@ -197,7 +182,6 @@ function slideNext(offset = props.slidesPerGroup) {
   if (props.rewind) {
     slideTo(swiperState.value.isEnd ? 0 : nextIndex);
   } else {
-    if (swiperState.value.isEnd) return;
     slideTo(Math.min(nextIndex, swiperState.value.lastSlideIndex));
   }
 }
