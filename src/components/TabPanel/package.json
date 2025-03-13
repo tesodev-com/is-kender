@@ -1,0 +1,11 @@
+{
+    "main": "./TabPanel.vue",
+    "module": "./TabPanel.vue",
+    "types": "./TabPanel.d.ts",
+    "exports": {
+        ".": {
+            "types": "./TabPanel.d.ts",
+            "import": "./TabPanel.vue"
+        }
+    }
+}
