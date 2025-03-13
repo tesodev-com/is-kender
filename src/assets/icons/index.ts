@@ -1,13 +1,14 @@
-export { default as checkIcon } from '@material-design-icons/svg/round/check.svg?raw';
-export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';
-export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
+export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
 export { default as telIcon } from '@material-design-icons/svg/outlined/call.svg?raw';
+export { default as infoIcon } from '@material-design-icons/svg/outlined/info.svg?raw';
+export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
+export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';
+export { default as addCircleOutlineIcon } from '@material-design-icons/svg/round/add_circle_outline.svg?raw';
+export { default as checkIcon } from '@material-design-icons/svg/round/check.svg?raw';
 export { default as closeIcon } from '@material-design-icons/svg/round/close.svg?raw';
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';
-export { default as addCircleOutlineIcon } from '@material-design-icons/svg/round/add_circle_outline.svg?raw';
+export { default as arrowDownIcon, default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
-export { default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
-export { default as arrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as expandLessIcon } from '@material-design-icons/svg/round/expand_less.svg?raw';
 export { default as expandMoreIcon } from '@material-design-icons/svg/round/expand_more.svg?raw';
 export { default as importExportIcon } from '@material-design-icons/svg/round/import_export.svg?raw';
@@ -17,4 +18,4 @@ export { default as searchIcon } from '@material-design-icons/svg/round/search.s
 export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
 export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
-export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
+

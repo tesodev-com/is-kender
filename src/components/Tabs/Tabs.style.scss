@@ -1,0 +1,29 @@
+.tabs {
+  .tabs__title {
+    @include text-2xl;
+
+    padding: $spacing-xl $spacing-3xl $spacing-xl 0;
+  }
+
+  .tabs__button-container {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    position: relative;
+
+    .tabs__underline {
+      position: absolute;
+      height: 2px;
+      background-color: $primary-600;
+      bottom: 0;
+      left: 0;
+      transition: all 0.3s ease;
+    }
+  }
+
+  .tabs__content {
+    padding: $spacing-xl $spacing-3xl $spacing-xl 0;
+    width: 100%;
+    min-height: 1rem;
+  }
+}

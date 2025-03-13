@@ -2,18 +2,25 @@
   <div
     id="input-container"
     class="input-container"
+    :class="inputContainerClasses"
   >
     <label
       v-if="label"
       class="input-label"
     >
-      {{ label }}
-      <span
-        v-if="props.required"
-        class="input-label--required"
-      >
-        *
-      </span>
+      <div>
+        {{ label }}
+        <span
+          v-if="props.required"
+          class="input-label--required"
+        >
+          *
+        </span>
+      </div>
+      <Svg
+        v-tooltip="tooltip"
+        :src="infoIcon"
+      ></Svg>
     </label>
     <div
       class="input-wrapper"
@@ -21,11 +28,11 @@
       @click="(e: Event) => emit('clickInput', e)"
     >
       <slot name="left">
-        <BaseSvg
+        <Svg
           v-if="defaultLeftIcon.state"
           :src="defaultLeftIcon.icon"
           class="input-wrapper__left-icon"
-        />
+        ></Svg>
       </slot>
       <input
         v-model="inputValue"
@@ -60,11 +67,11 @@
 </template>
 
 <script setup lang="ts">
-import { emailIcon, passwordIcon, telIcon } from '@/assets/icons';
-import BaseSvg from 'library/Svg';
+import { emailIcon, infoIcon, passwordIcon, telIcon } from '@/assets/icons';
+import { vTooltip } from '@/directives/vTooltip';
+import Svg from 'library/Svg';
 import { computed } from 'vue';
 import type { InputProps } from './Input.d.ts';
-
 const props = withDefaults(defineProps<InputProps>(), {
   fluid: false,
   size: 'sm',
@@ -86,7 +93,9 @@ const inputWrapperClasses = computed(() => ({
   'input-wrapper--disabled': props.disabled,
   [`input-wrapper--${props.size}`]: true,
 }));
-
+const inputContainerClasses = computed(() => ({
+  'input-container--fluid': props.fluid,
+}));
 const defaultLeftIcon = computed(() => {
   const defaultIconList = ['email', 'password', 'tel'];
   const typeObj: Record<(typeof defaultIconList)[number], string> = {
