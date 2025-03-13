@@ -16,6 +16,7 @@
       />
     </div>
   </div>
+  {{ swiperState.snapGrid }}
 </template>
 
 <script setup lang="ts">
@@ -85,12 +86,16 @@ const wrapperStyles = computed(() => ({
   transitionDuration: `${swiperState.value.duration}ms`,
 }));
 const renderToSlides = computed(() => {
-  const from = 0;
-  const to = slidesNodes.value.length;
+  let from = 0;
+  let to = slidesNodes.value.length;
+  if (props.loop && props.loop !== 'rewind') {
+    from = swiperState.value.activeIndex - props.slidesPerGroup;
+    to = swiperState.value.activeIndex + slidesNodes.value.length - props.slidesPerGroup;
+  }
   const data = [];
   for (let i = from; i < to; i++) {
-    const slide = slidesNodes.value[i];
-    if (slide.props) {
+    const slide = slidesNodes.value[getModulo(i)];
+    if (slide?.props) {
       if (i === swiperState.value.activeIndex) {
         slide.props.class = 'swiper-slide-active';
       } else if (i === swiperState.value.activeIndex - 1) {
@@ -124,7 +129,7 @@ function onSwipe(event: SwipeState) {
 }
 function slideTo(index: number = swiperState.value.activeIndex, duration: number = 300) {
   if (props.loop) {
-    index = ((index % swiperState.value.snapGrid.length) + swiperState.value.snapGrid.length) % swiperState.value.snapGrid.length;
+    index = getModulo(index, swiperState.value.snapGrid.length);
   }
 
   swiperState.value.activeIndex = index;
@@ -159,14 +164,26 @@ function autoPlay() {
 function slidePrev() {
   const { isBeginning, activeIndex } = swiperState.value;
   if (isBeginning) return;
-  const prevIndex = props.loop ? getModulo(activeIndex - props.slidesPerGroup) : Math.max(activeIndex - props.slidesPerGroup, 0);
-  slideTo(prevIndex);
+  let newIndex;
+  if (props.loop === 'rewind') {
+    newIndex = getModulo(activeIndex - props.slidesPerGroup);
+  } else {
+    newIndex = Math.max(activeIndex - props.slidesPerGroup, 0);
+  }
+  swiperState.value.activeIndex = newIndex;
+  slideTo(newIndex);
 }
 function slideNext() {
   const { isEnd, activeIndex, snapGrid } = swiperState.value;
   if (isEnd) return;
-  const nextIndex = props.loop ? getModulo(activeIndex + props.slidesPerGroup) : Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
-  slideTo(nextIndex);
+  let newIndex;
+  if (props.loop === 'rewind') {
+    newIndex = Math.max(getModulo(activeIndex + props.slidesPerGroup), 0);
+  } else {
+    newIndex = Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
+  }
+  swiperState.value.activeIndex = newIndex;
+  slideTo(newIndex);
 }
 function findNearestSlideIndex() {
   const { snapGrid, translateX, deltaX, totalSlidesWidth, containerWidth, activeIndex } = swiperState.value;
