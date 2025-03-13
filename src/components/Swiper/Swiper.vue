@@ -3,6 +3,8 @@
     v-swipe="{ onSwipe }"
     class="swiper"
     :style="swiperStyles"
+    @mouseover="onOver"
+    @mouseleave="onLeave"
   >
     <div
       ref="swiperWrapperRef"
@@ -141,7 +143,7 @@ function onSwipe(event: SwipeState) {
   if (event.swipeState === 'end') onEnd(event);
 }
 function onStart() {
-  if (autoPlayInterval) clearInterval(autoPlayInterval);
+  autoPlay('stop');
 }
 function onMove(event: SwipeState) {
   swiperState.value.deltaX = event.deltaX;
@@ -156,6 +158,12 @@ function onEnd(event: SwipeState) {
     index = props.rewind ? 0 : swiperState.value.lastSlideIndex;
   }
   slideTo(index);
+  autoPlay();
+}
+function onOver() {
+  autoPlay('stop');
+}
+function onLeave() {
   autoPlay();
 }
 function slideTo(index: number, duration: number = 300) {
@@ -187,11 +195,13 @@ function slideNext() {
     slideTo(Math.min(swiperState.value.virtualIndex + 1, swiperState.value.lastSlideIndex));
   }
 }
-function autoPlay() {
-  if (props.autoplay) {
+function autoPlay(status: 'start' | 'stop' = 'start') {
+  if (props.autoplay && status === 'start') {
     autoPlayInterval = setInterval(() => {
       slideNext();
     }, props.autoplayDelay);
+  } else if (autoPlayInterval && status === 'stop') {
+    clearInterval(autoPlayInterval);
   }
 }
 function getLimitedDeltaX() {
