@@ -9,5 +9,7 @@ export { default as closeIcon } from '@material-design-icons/svg/round/close.svg
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';
 export { default as arrowDownIcon, default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
+export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
+export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
 
