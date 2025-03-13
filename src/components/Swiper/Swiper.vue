@@ -28,7 +28,7 @@
 // imports
 import { vSwipe, type SwipeState } from '@/directives/vSwipe';
 import type { SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
-import { computed, onMounted, ref, useSlots, useTemplateRef, watch, type VNode } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch, type VNode } from 'vue';
 // interfaces & types
 
 // constants
@@ -133,7 +133,12 @@ onMounted(() => {
   calculationGeneral();
   updateSlideClasses();
   slideTo(props.initialSlide);
-  autoPlay();
+  autoPlay('start');
+  window.addEventListener('resize', calculationGeneral);
+});
+onUnmounted(() => {
+  autoPlay('stop');
+  window.removeEventListener('resize', calculationGeneral);
 });
 // methods
 function onSwipe(event: SwipeState) {
@@ -151,25 +156,24 @@ function onMove(event: SwipeState) {
   swiperState.value.virtualIndex = getModulo(nSlide, renderedSlideElements.value.length);
 }
 function onEnd(event: SwipeState) {
-  let index = swiperState.value.virtualIndex;
-  if (swiperState.value.isBeginning && event.direction === 'right') {
-    index = props.rewind ? swiperState.value.lastSlideIndex : 0;
-  } else if (swiperState.value.isEnd && event.direction === 'left') {
-    index = props.rewind ? 0 : swiperState.value.lastSlideIndex;
+  if (event.swipeSpeed >= props.speed) {
+    if (event.direction === 'left') slideNext();
+    if (event.direction === 'right') slidePrev();
+  } else {
+    slideTo(swiperState.value.virtualIndex);
   }
-  slideTo(index);
-  autoPlay();
+  autoPlay('start');
 }
 function onOver() {
   autoPlay('stop');
 }
 function onLeave() {
-  autoPlay();
+  autoPlay('start');
 }
 function slideTo(index: number, duration: number = 300) {
   if (!wrapperRef.value) return;
-  const slideElement = renderedSlideElements.value[index] as HTMLElement;
   swiperState.value.virtualIndex = index;
+  const slideElement = renderedSlideElements.value[swiperState.value.virtualIndex] as HTMLElement;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
     swiperState.value.translateX = -Math.min(swiperState.value.lastTranslateX, slideElement.offsetLeft);
@@ -179,23 +183,25 @@ function slideTo(index: number, duration: number = 300) {
     checkBoundaries();
   });
 }
-function slidePrev() {
+function slidePrev(offset = -props.slidesPerGroup) {
+  const prevIndex = swiperState.value.virtualIndex + offset;
   if (props.rewind) {
-    slideTo(swiperState.value.isBeginning ? swiperState.value.lastSlideIndex : swiperState.value.virtualIndex - 1);
+    slideTo(swiperState.value.isBeginning ? swiperState.value.lastSlideIndex : prevIndex);
   } else {
     if (swiperState.value.isBeginning) return;
-    slideTo(Math.max(swiperState.value.virtualIndex - 1, 0));
+    slideTo(Math.max(prevIndex, 0));
   }
 }
-function slideNext() {
+function slideNext(offset = props.slidesPerGroup) {
+  const nextIndex = swiperState.value.virtualIndex + offset;
   if (props.rewind) {
-    slideTo(swiperState.value.isEnd ? 0 : swiperState.value.virtualIndex + 1);
+    slideTo(swiperState.value.isEnd ? 0 : nextIndex);
   } else {
     if (swiperState.value.isEnd) return;
-    slideTo(Math.min(swiperState.value.virtualIndex + 1, swiperState.value.lastSlideIndex));
+    slideTo(Math.min(nextIndex, swiperState.value.lastSlideIndex));
   }
 }
-function autoPlay(status: 'start' | 'stop' = 'start') {
+function autoPlay(status: 'start' | 'stop') {
   if (props.autoplay && status === 'start') {
     autoPlayInterval = setInterval(() => {
       slideNext();
