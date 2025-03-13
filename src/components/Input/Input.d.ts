@@ -15,7 +15,7 @@ export interface InputProps {
   required?: boolean;
 }
 
-declare const Button: DefineComponent<InputProps>;
+declare const Input: DefineComponent<InputProps>;
 
 declare module 'vue' {
   export interface GlobalComponents {

@@ -7,6 +7,7 @@ export { default as Checkbox } from 'library/Checkbox';
 export { default as Col } from 'library/Col';
 export { default as Container } from 'library/Container';
 export { default as Divider } from 'library/Divider';
+export { default as Drawer } from 'library/Drawer';
 export { default as FileUpload } from 'library/FileUpload';
 export { default as Input } from 'library/Input';
 export { default as Link } from 'library/Link';
