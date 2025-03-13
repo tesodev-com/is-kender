@@ -139,6 +139,9 @@ function slideTo(index: number = swiperState.value.activeIndex, duration: number
     swiperState.value.duration = duration;
   }).then(() => {
     swiperState.value.duration = 0;
+    if (props.loop && props.loop !== 'rewind') {
+      calculationGeneral();
+    }
     checkBoundaries();
   });
 }
@@ -170,7 +173,6 @@ function slidePrev() {
   } else {
     newIndex = Math.max(activeIndex - props.slidesPerGroup, 0);
   }
-  swiperState.value.activeIndex = newIndex;
   slideTo(newIndex);
 }
 function slideNext() {
@@ -182,7 +184,6 @@ function slideNext() {
   } else {
     newIndex = Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1);
   }
-  swiperState.value.activeIndex = newIndex;
   slideTo(newIndex);
 }
 function findNearestSlideIndex() {
