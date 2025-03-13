@@ -14,5 +14,7 @@ export { default as importExportIcon } from '@material-design-icons/svg/round/im
 export { default as deleteIcon } from '@material-design-icons/svg/round/delete.svg?raw';
 export { default as editIcon } from '@material-design-icons/svg/round/edit.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
+export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
+export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
 export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
