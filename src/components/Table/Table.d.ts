@@ -32,9 +32,13 @@ export interface TableProps {
   description?: string;
   columns: Column[];
   rows: Row[];
+  pagination?: boolean;
+  itemsPerPage?: number;
+  currentPage?: number;
   selectable?: boolean;
   searchable?: boolean;
   stripedRows?: boolean;
+  rowsBorder?: boolean;
   stickyHeader?: boolean;
   stickyFirstColumn?: boolean;
   stickyLastColumn?: boolean;

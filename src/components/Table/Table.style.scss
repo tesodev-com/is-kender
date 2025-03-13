@@ -76,10 +76,6 @@
             width: 1.25rem;
             margin-left: 1.5rem;
             cursor: pointer;
-            transition:
-              background-color 0.2s ease-in-out,
-              color 0.2s ease-in-out,
-              border 0.2s ease-in-out;
           }
 
           .column-select-all-selected {
@@ -89,6 +85,10 @@
             .column-select-all-icon {
               color: $white;
             }
+          }
+
+          .column-select-all-disabled {
+            cursor: not-allowed;
           }
 
           .column-cell {
@@ -231,6 +231,7 @@
         .row-cell-container {
           height: 4.5rem;
           background-color: $white;
+          border-bottom: 1px solid $gray-200;
 
           .row-cell {
             background-color: $white;
@@ -281,6 +282,14 @@
             }
           }
 
+          &.row-cell-container-border {
+            &:not(:last-child) {
+              .row-cell {
+                border-bottom: 1px solid $gray-200;
+              }
+            }
+          }
+
           &:not(:last-child) {
             border-bottom: 1px solid $gray-200;
           }
@@ -296,10 +305,6 @@
             width: 1.25rem;
             margin-left: 1.5rem;
             cursor: pointer;
-            transition:
-              background-color 0.2s ease-in-out,
-              color 0.2s ease-in-out,
-              border 0.2s ease-in-out;
           }
 
           .row-select-selected {
@@ -346,6 +351,11 @@
         }
       }
     }
+  }
+
+  .table-pagination {
+    border-top: 1px solid $gray-200;
+    padding: 0.875rem 1.5rem;
   }
 
   @media (width <= 1024px) {

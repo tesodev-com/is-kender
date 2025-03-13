@@ -49,7 +49,7 @@
             >
               <div
                 class="column-select-all"
-                :class="[{ 'column-select-all-selected': isAllSelected }]"
+                :class="[{ 'column-select-all-selected': isAllSelected, 'column-select-all-disabled': paginatedRows.length === 0 }]"
                 @click="selectAll"
               >
                 <Svg
@@ -145,10 +145,10 @@
           </template>
           <template v-else>
             <tr
-              v-for="(row, rowIndex) in filteredRows"
+              v-for="(row, rowIndex) in paginatedRows"
               :key="row.key || rowIndex"
               class="row-cell-container"
-              :class="[{ 'row-cell-container-striped': stripedRows }]"
+              :class="[{ 'row-cell-container-striped': stripedRows, 'row-cell-container-border': rowsBorder }]"
             >
               <td
                 v-if="selectable"
@@ -216,21 +216,38 @@
         </tbody>
       </table>
     </div>
+    <div
+      v-if="pagination"
+      class="table-pagination"
+    >
+      <Pagination
+        v-model:currentPage="currentPage"
+        :itemsPerPage="itemsPerPage"
+        :totalItems="filteredRows.length"
+        :showTopBorder="false"
+        outlineButtons
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Svg from 'library/Svg';
 import Button from 'library/Button';
 import Input from 'library/Input';
+import Pagination from 'library/Pagination';
 import { checkIcon, expandLessIcon, expandMoreIcon, importExportIcon, editIcon, deleteIcon, searchIcon } from '@/assets/icons';
 import type { Row, TableEmits, TableProps, TableSlots } from 'library/Table';
 
 const props = withDefaults(defineProps<TableProps>(), {
+  pagination: false,
+  currentPage: 1,
+  itemsPerPage: 10,
   searchable: false,
   selectable: false,
   stripedRows: false,
+  rowsBorder: false,
   stickyFirstColumn: false,
   stickyLastColumn: false,
 });
@@ -243,6 +260,8 @@ const selectedItems = ref(new Set<Row>());
 const searchQuery = ref('');
 const sortKey = ref('');
 const sortOrder = ref<'asc' | 'desc'>('asc');
+const currentPage = ref(props.currentPage);
+const itemsPerPage = ref(props.itemsPerPage);
 
 const isTableHeaderExists = computed(() => {
   return props.title || slots.title || slots.description || props.description || props.searchable;
@@ -288,15 +307,28 @@ const filteredRows = computed(() => {
   return result;
 });
 
-const isAllSelected = computed(() => {
-  return props.rows.length > 0 && props.rows.every(item => selectedItems.value.has(item));
+const paginatedRows = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredRows.value.slice(start, end);
 });
+
+const isAllSelected = computed(() => {
+  return paginatedRows.value.length > 0 && paginatedRows.value.every(item => selectedItems.value.has(item));
+});
+
+watch(
+  () => searchQuery.value,
+  () => {
+    currentPage.value = 1;
+  }
+);
 
 function selectAll() {
   if (isAllSelected.value) {
-    props.rows.forEach(row => selectedItems.value.delete(row));
+    paginatedRows.value.forEach(row => selectedItems.value.delete(row));
   } else {
-    props.rows.forEach(row => selectedItems.value.add(row));
+    paginatedRows.value.forEach(row => selectedItems.value.add(row));
   }
   emit('selectAll', Array.from(selectedItems.value));
 }
@@ -329,6 +361,7 @@ function getSortIndicator(key: string) {
 
 function clearSearch() {
   searchQuery.value = '';
+  currentPage.value = 1;
 }
 </script>
 
