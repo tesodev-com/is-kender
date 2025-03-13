@@ -290,10 +290,6 @@
             }
           }
 
-          &:not(:last-child) {
-            border-bottom: 1px solid $gray-200;
-          }
-
           .row-select {
             display: flex;
             align-items: center;
