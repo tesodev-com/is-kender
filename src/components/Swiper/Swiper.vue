@@ -17,16 +17,16 @@
     </div>
   </div>
   <pre>
-  {{ swiperState }}
+    {{ nearestSlide }}
+    {{ swiperState }}
   </pre>
 </template>
 
 <script setup lang="ts">
+// imports
 import { vSwipe, type SwipeState } from '@/directives/vSwipe';
 import type { SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
-import { computed, onMounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
-// imports
-
+import { computed, onMounted, ref, useSlots, useTemplateRef, watch, type VNode } from 'vue';
 // interfaces & types
 
 // constants
@@ -58,28 +58,39 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 // defineEmits
 
 // states (refs and reactives)
+const slidesNode = ref<VNode[]>([]);
 const wrapperRef = useTemplateRef('swiperWrapperRef');
 const swiperState = ref<SwiperState>({
-  // Position and movement
+  // Position and size
   translateX: 0,
   deltaX: 0,
   duration: 0,
 
   // Indexes
   activeIndex: 0,
+  virtualIndex: 0,
 
   // State flags
   isBeginning: false,
   isEnd: false,
 
   // Slide data
-  snapGrid: [],
-  slidesWidth: [],
   totalSlidesWidth: 0,
   containerWidth: 0,
+  lastTranslateX: 0,
+  lastSlideIndex: 0,
 });
-const slidesNodes = ref<VNode[]>([]);
 // computed
+const renderToSlides = computed(() => {
+  let from = 0;
+  let to = slidesNode.value.length;
+  const data = [];
+  for (let i = from; i < to; i++) {
+    const slide = slidesNode.value[getModulo(i, slidesNode.value.length)];
+    data.push(slide);
+  }
+  return data;
+});
 const swiperStyles = computed(() => ({
   '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
   '--space-between': `${props.spaceBetween}px`,
@@ -88,143 +99,118 @@ const wrapperStyles = computed(() => ({
   transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
   transitionDuration: `${swiperState.value.duration}ms`,
 }));
-const renderToSlides = computed(() => {
-  let from = 0;
-  let to = slidesNodes.value.length;
-  const data = [];
-  for (let i = from; i < to; i++) {
-    const slide = slidesNodes.value[getModulo(i, slidesNodes.value.length)];
-    if (slide?.props) {
-      if (i === swiperState.value.activeIndex) {
-        slide.props.class = 'swiper-slide-active';
-      } else if (i === swiperState.value.activeIndex - 1) {
-        slide.props.class = 'swiper-slide-prev';
-      } else if (i === swiperState.value.activeIndex + 1) {
-        slide.props.class = 'swiper-slide-next';
-      } else {
-        slide.props.class = '';
+const isLastSlideVisible = computed(() => {
+  return !props.loop && swiperState.value.lastTranslateX <= -currentTranslate.value;
+});
+const isFirstSlideVisible = computed(() => {
+  return !props.loop && -currentTranslate.value <= 0;
+});
+const currentTranslate = computed(() => {
+  return swiperState.value.translateX + getLimitedDeltaX();
+});
+const renderedSlideElements = computed(() => {
+  return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
+});
+const nearestSlide = computed(() => {
+  if (!wrapperRef.value) return { slide: null, index: 0 };
+  const { slide, index } = renderedSlideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
+    (acc, el, index) => {
+      const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
+      if (distance < acc.distance) {
+        return { distance, slide: el, index };
       }
-    }
-    data.push(slide);
-  }
-  return data;
+      return acc;
+    },
+    { distance: Infinity, slide: null, index: 0 }
+  );
+  return { slide, index };
 });
 // watchers
-
+watch(
+  () => swiperState.value.virtualIndex,
+  () => {
+    updateSlideClasses();
+  }
+);
 // lifecycles
-setSlidesNodes();
+setSlidesNode();
 onMounted(() => {
   calculationGeneral();
-  slideTo(props.initialSlide, 0);
-  autoPlay();
+  updateSlideClasses();
+  checkBoundaries();
+  slideTo(props.initialSlide);
 });
 // methods
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
-  swiperState.value.deltaX = event.deltaX;
-  if (event.swipeState === 'end') {
-    determineTargetSlide(event);
-  }
+  if (event.swipeState === 'move') onMove(event);
+  if (event.swipeState === 'end') onEnd();
 }
-function slideTo(index: number = swiperState.value.activeIndex, duration: number = 300) {
-  swiperState.value.activeIndex = index;
+function onMove(event: SwipeState) {
+  swiperState.value.deltaX = event.deltaX;
+  const nSlide = nearestSlide.value;
+  swiperState.value.activeIndex = nSlide.index;
+  swiperState.value.virtualIndex = getModulo(nSlide.index, renderedSlideElements.value.length);
+}
+function onEnd() {
+  let index = swiperState.value.virtualIndex;
+  if (isFirstSlideVisible.value) {
+    index = props.rewind ? swiperState.value.lastSlideIndex : 0;
+  } else if (isLastSlideVisible.value) {
+    index = props.rewind ? 0 : swiperState.value.lastSlideIndex;
+  }
+  slideTo(index);
+  checkBoundaries();
+}
+function slideTo(index: number, duration: number = 300) {
+  if (!wrapperRef.value) return;
+  const slideElement = renderedSlideElements.value[index] as HTMLElement;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
-    swiperState.value.translateX = -swiperState.value.snapGrid[index];
+    swiperState.value.translateX = -slideElement.offsetLeft;
     swiperState.value.duration = duration;
-  }).then(() => {
+  }, duration).then(() => {
     swiperState.value.duration = 0;
-    checkBoundaries();
   });
-}
-function determineTargetSlide(event: SwipeState) {
-  if (event.swipeSpeed > props.speed) {
-    if (event.direction === 'left' && !swiperState.value.isEnd) {
-      slideNext();
-    } else if (event.direction === 'right' && !swiperState.value.isBeginning) {
-      slidePrev();
-    } else {
-      slideTo();
-    }
-  } else {
-    slideTo(findNearestSlideIndex());
-  }
-}
-function autoPlay() {
-  if (!props.autoplay) return;
-  return setInterval(() => {
-    slideNext();
-  }, props.autoplayDelay);
-}
-function slidePrev() {
-  const { isBeginning, activeIndex } = swiperState.value;
-  if (isBeginning) return;
-  if (props.rewind) {
-    slideTo(getModulo(activeIndex - props.slidesPerGroup, swiperState.value.snapGrid.length));
-  } else {
-    slideTo(Math.max(activeIndex - props.slidesPerGroup, 0));
-  }
-}
-function slideNext() {
-  const { isEnd, activeIndex, snapGrid } = swiperState.value;
-  if (isEnd) return;
-  if (props.rewind) {
-    slideTo(getModulo(activeIndex + props.slidesPerGroup, swiperState.value.snapGrid.length));
-  } else {
-    slideTo(Math.min(activeIndex + props.slidesPerGroup, snapGrid.length - 1));
-  }
-}
-function findNearestSlideIndex() {
-  const { snapGrid, translateX, deltaX, totalSlidesWidth, containerWidth, activeIndex } = swiperState.value;
-  if (!snapGrid.length) return 0;
-  const currentTranslate = translateX + deltaX;
-  const maxTranslate = totalSlidesWidth - containerWidth;
-
-  if (maxTranslate < -currentTranslate) {
-    return activeIndex;
-  }
-
-  let nearestIndex = 0;
-  let minDistance = Infinity;
-
-  snapGrid.forEach((snap, index) => {
-    const distance = Math.abs(currentTranslate + snap);
-    if (distance < minDistance) {
-      minDistance = distance;
-      nearestIndex = index;
-    }
-  });
-
-  return nearestIndex;
 }
 function getLimitedDeltaX() {
-  if (swiperState.value.isBeginning && swiperState.value.deltaX > 0) {
-    return swiperState.value.deltaX * 0.25;
+  let limitedDeltaX = swiperState.value.deltaX;
+  if (!props.loop && ((swiperState.value.isBeginning && swiperState.value.deltaX > 0) || (swiperState.value.isEnd && swiperState.value.deltaX < 0))) {
+    limitedDeltaX *= 0.25;
   }
-  if (swiperState.value.isEnd && swiperState.value.deltaX < 0) {
-    return swiperState.value.deltaX * 0.25;
-  }
-  return swiperState.value.deltaX;
+  return limitedDeltaX;
 }
 function checkBoundaries() {
-  let isOverLeft = false;
-  let isOverRight = false;
+  const offset = 5; // Prevents the slide from being stuck;
+  let isOverLeft = -currentTranslate.value <= 0;
+  let isOverRight = -currentTranslate.value >= swiperState.value.lastTranslateX - offset;
 
-  if (!props.rewind) {
-    const maxTranslate = swiperState.value.totalSlidesWidth - swiperState.value.containerWidth;
-    isOverLeft = swiperState.value.translateX + swiperState.value.deltaX >= 0;
-    isOverRight = swiperState.value.translateX + swiperState.value.deltaX <= -maxTranslate;
+  if (props.loop) {
+    isOverLeft = false;
+    isOverRight = false;
   }
 
   swiperState.value.isBeginning = isOverLeft;
   swiperState.value.isEnd = isOverRight;
 }
-function setSlidesNodes() {
+function calculationGeneral() {
+  if (!wrapperRef.value) return;
+  const totalSlidesWidth = Array.from(wrapperRef.value.children).reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + props.spaceBetween, 0);
+  const containerWidth = wrapperRef.value.offsetWidth;
+  swiperState.value.totalSlidesWidth = totalSlidesWidth;
+  swiperState.value.containerWidth = containerWidth;
+
+  if (!props.loop) {
+    swiperState.value.lastTranslateX = totalSlidesWidth - containerWidth - props.spaceBetween;
+    swiperState.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft + el.offsetWidth + props.spaceBetween >= swiperState.value.lastTranslateX);
+  }
+}
+function setSlidesNode() {
   const defaultNodes = slots?.default?.() as VNode[];
   if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
   const slides: VNode[] = [];
   getSlidesFromSlot(defaultNodes, slides);
-  slidesNodes.value = slides;
+  slidesNode.value = slides;
 }
 function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   nodes.forEach((vnode, index) => {
@@ -237,35 +223,25 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   });
   return slides;
 }
-function getModulo(index: number, length: number = slidesNodes.value.length) {
-  return ((index % length) + length) % length;
-}
-function calculationGeneral() {
-  if (!wrapperRef.value) return;
-  const slidesWidth = Array.from(wrapperRef.value.children).map(el => (el as HTMLElement).offsetWidth);
-  const containerWidth = wrapperRef.value.offsetWidth;
-  swiperState.value.slidesWidth = slidesWidth;
-  swiperState.value.containerWidth = containerWidth;
-
-  let snapGrid: number[] = [];
-  let totalWidth = 0;
-
-  slidesWidth.forEach(width => {
-    snapGrid.push(totalWidth);
-    totalWidth += width + props.spaceBetween;
-  });
-
-  totalWidth -= props.spaceBetween;
-
-  if (totalWidth > containerWidth) {
-    snapGrid = snapGrid.filter(snap => snap <= totalWidth - containerWidth);
-    if (snapGrid[snapGrid.length - 1] < totalWidth - containerWidth) {
-      snapGrid.push(totalWidth - containerWidth);
+function updateSlideClasses() {
+  if (!renderedSlideElements.value.length) return;
+  renderedSlideElements.value.forEach((el, index) => {
+    if (index === swiperState.value.virtualIndex - 1) {
+      el.classList.add('swiper-slide-prev');
+      el.classList.remove('swiper-slide-next', 'swiper-slide-active');
+    } else if (index === swiperState.value.virtualIndex) {
+      el.classList.add('swiper-slide-active');
+      el.classList.remove('swiper-slide-prev', 'swiper-slide-next');
+    } else if (index === swiperState.value.virtualIndex + 1) {
+      el.classList.add('swiper-slide-next');
+      el.classList.remove('swiper-slide-prev', 'swiper-slide-active');
+    } else {
+      el.classList.remove('swiper-slide-prev', 'swiper-slide-next', 'swiper-slide-active');
     }
-  }
-
-  swiperState.value.snapGrid = snapGrid;
-  swiperState.value.totalSlidesWidth = totalWidth;
+  });
+}
+function getModulo(index: number, length: number) {
+  return ((index % length) + length) % length;
 }
 function delayedExec(callback: () => void, delay = 0) {
   callback();
@@ -277,4 +253,4 @@ function delayedExec(callback: () => void, delay = 0) {
 }
 </script>
 
-<style lang="postcss" scoped src="./Swiper.style.scss"></style>
+<style lang="scss" scoped src="./Swiper.style.scss"></style>

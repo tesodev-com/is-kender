@@ -43,16 +43,17 @@ export interface SwiperState {
 
   // Indexes
   activeIndex: number;
+  virtualIndex: number;
 
   // State flags
   isBeginning: boolean;
   isEnd: boolean;
 
   // Slide data
-  snapGrid: number[];
-  slidesWidth: number[];
   totalSlidesWidth: number;
   containerWidth: number;
+  lastTranslateX: number; // If loop is disabled and last slide is completely visible
+  lastSlideIndex: number; // If loop is disabled and last slide is completely visible
 }
 
 declare const Swiper: DefineComponent<SwiperProps, SwiperSlots, SwiperEmits>;
