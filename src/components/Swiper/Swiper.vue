@@ -30,7 +30,7 @@ import { computed, onMounted, ref, useSlots, useTemplateRef, watch, type VNode }
 // interfaces & types
 
 // constants
-
+let autoPlayInterval: NodeJS.Timeout | null = null;
 // composable
 const slots = useSlots();
 
@@ -130,14 +130,18 @@ setSlidesNode();
 onMounted(() => {
   calculationGeneral();
   updateSlideClasses();
-  checkBoundaries();
   slideTo(props.initialSlide);
+  autoPlay();
 });
 // methods
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
+  if (event.swipeState === 'start') onStart();
   if (event.swipeState === 'move') onMove(event);
   if (event.swipeState === 'end') onEnd(event);
+}
+function onStart() {
+  if (autoPlayInterval) clearInterval(autoPlayInterval);
 }
 function onMove(event: SwipeState) {
   swiperState.value.deltaX = event.deltaX;
@@ -152,7 +156,7 @@ function onEnd(event: SwipeState) {
     index = props.rewind ? 0 : swiperState.value.lastSlideIndex;
   }
   slideTo(index);
-  checkBoundaries();
+  autoPlay();
 }
 function slideTo(index: number, duration: number = 300) {
   if (!wrapperRef.value) return;
@@ -164,7 +168,31 @@ function slideTo(index: number, duration: number = 300) {
     swiperState.value.duration = duration;
   }, duration).then(() => {
     swiperState.value.duration = 0;
+    checkBoundaries();
   });
+}
+function slidePrev() {
+  if (props.rewind) {
+    slideTo(swiperState.value.isBeginning ? swiperState.value.lastSlideIndex : swiperState.value.virtualIndex - 1);
+  } else {
+    if (swiperState.value.isBeginning) return;
+    slideTo(Math.max(swiperState.value.virtualIndex - 1, 0));
+  }
+}
+function slideNext() {
+  if (props.rewind) {
+    slideTo(swiperState.value.isEnd ? 0 : swiperState.value.virtualIndex + 1);
+  } else {
+    if (swiperState.value.isEnd) return;
+    slideTo(Math.min(swiperState.value.virtualIndex + 1, swiperState.value.lastSlideIndex));
+  }
+}
+function autoPlay() {
+  if (props.autoplay) {
+    autoPlayInterval = setInterval(() => {
+      slideNext();
+    }, props.autoplayDelay);
+  }
 }
 function getLimitedDeltaX() {
   let limitedDeltaX = swiperState.value.deltaX;
