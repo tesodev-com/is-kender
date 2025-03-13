@@ -1,5 +1,5 @@
+import { type Tooltip } from '@/directives/vTooltip';
 import { type DefineComponent } from 'vue';
-
 export interface InputProps {
   type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
   placeholder?: string;
@@ -13,6 +13,7 @@ export interface InputProps {
   minlength?: number;
   hint?: string;
   required?: boolean;
+  tooltip?: Tooltip;
 }
 
 declare const Input: DefineComponent<InputProps>;

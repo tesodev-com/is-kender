@@ -40,3 +40,12 @@ export const ErrorInput: Story = {
     label: 'Label',
   },
 };
+export const TooltipInput: Story = {
+  args: {
+    size: 'lg',
+    required: true,
+    hint: 'Example hint',
+    label: 'Label',
+    tooltip: { title: 'Title', content: 'Lorem ipsum dolar sit amet', position: 'bottom' },
+  },
+};
