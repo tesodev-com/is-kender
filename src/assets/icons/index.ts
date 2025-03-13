@@ -9,13 +9,13 @@ export { default as closeIcon } from '@material-design-icons/svg/round/close.svg
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';
 export { default as arrowDownIcon, default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
+export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
+export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as expandLessIcon } from '@material-design-icons/svg/round/expand_less.svg?raw';
 export { default as expandMoreIcon } from '@material-design-icons/svg/round/expand_more.svg?raw';
 export { default as importExportIcon } from '@material-design-icons/svg/round/import_export.svg?raw';
 export { default as deleteIcon } from '@material-design-icons/svg/round/delete.svg?raw';
 export { default as editIcon } from '@material-design-icons/svg/round/edit.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
-export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
-export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
 
