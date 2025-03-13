@@ -67,7 +67,6 @@ const swiperState = ref<SwiperState>({
   duration: 0,
 
   // Indexes
-  activeIndex: 0,
   virtualIndex: 0,
 
   // State flags
@@ -99,12 +98,6 @@ const wrapperStyles = computed(() => ({
   transform: `translateX(${swiperState.value.translateX + getLimitedDeltaX()}px)`,
   transitionDuration: `${swiperState.value.duration}ms`,
 }));
-const isLastSlideVisible = computed(() => {
-  return !props.loop && swiperState.value.lastTranslateX <= -currentTranslate.value;
-});
-const isFirstSlideVisible = computed(() => {
-  return !props.loop && -currentTranslate.value <= 0;
-});
 const currentTranslate = computed(() => {
   return swiperState.value.translateX + getLimitedDeltaX();
 });
@@ -144,19 +137,18 @@ onMounted(() => {
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   if (event.swipeState === 'move') onMove(event);
-  if (event.swipeState === 'end') onEnd();
+  if (event.swipeState === 'end') onEnd(event);
 }
 function onMove(event: SwipeState) {
   swiperState.value.deltaX = event.deltaX;
   const nSlide = nearestSlide.value;
-  swiperState.value.activeIndex = nSlide.index;
   swiperState.value.virtualIndex = getModulo(nSlide.index, renderedSlideElements.value.length);
 }
-function onEnd() {
+function onEnd(event: SwipeState) {
   let index = swiperState.value.virtualIndex;
-  if (isFirstSlideVisible.value) {
+  if (swiperState.value.isBeginning && event.direction === 'right') {
     index = props.rewind ? swiperState.value.lastSlideIndex : 0;
-  } else if (isLastSlideVisible.value) {
+  } else if (swiperState.value.isEnd && event.direction === 'left') {
     index = props.rewind ? 0 : swiperState.value.lastSlideIndex;
   }
   slideTo(index);
@@ -165,6 +157,7 @@ function onEnd() {
 function slideTo(index: number, duration: number = 300) {
   if (!wrapperRef.value) return;
   const slideElement = renderedSlideElements.value[index] as HTMLElement;
+  swiperState.value.virtualIndex = index;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
     swiperState.value.translateX = -slideElement.offsetLeft;
