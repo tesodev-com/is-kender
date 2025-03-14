@@ -42,8 +42,8 @@ export interface SwiperState {
   duration: number;
 
   // Indexes
-  virtualIndex: number;
-  realIndex: number;
+  activeIndex: number;
+  previousIndex: number;
 
   // State flags
   isBeginning: boolean;

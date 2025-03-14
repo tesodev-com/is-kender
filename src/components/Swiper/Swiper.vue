@@ -59,8 +59,8 @@ const swiperState = ref<SwiperState>({
   translateX: 0,
   deltaX: 0,
   duration: 0,
-  virtualIndex: 0,
-  realIndex: 0,
+  activeIndex: 0,
+  previousIndex: 0,
   isBeginning: false,
   isEnd: false,
   totalSlidesWidth: 0,
@@ -109,9 +109,12 @@ const nearestSlide = computed(() => {
 });
 // watchers
 watch(
-  () => swiperState.value.virtualIndex,
-  () => {
-    updateSlideClasses();
+  () => swiperState.value.activeIndex,
+  (newIndex, oldIndex) => {
+    if (newIndex !== oldIndex) {
+      swiperState.value.previousIndex = oldIndex;
+      updateSlideClasses();
+    }
   }
 );
 // lifecycles
@@ -139,15 +142,14 @@ function onStart() {
 }
 function onMove(event: SwipeState) {
   swiperState.value.deltaX = event.deltaX;
-  const nSlide = nearestSlide.value;
-  swiperState.value.virtualIndex = getModulo(nSlide, renderedSlideElements.value.length);
+  updateSlideClasses(nearestSlide.value);
 }
 function onEnd(event: SwipeState) {
   if (event.swipeSpeed >= props.speed) {
-    if (event.direction === 'left') slideNext();
     if (event.direction === 'right') slidePrev();
+    if (event.direction === 'left') slideNext();
   } else {
-    slideTo(swiperState.value.virtualIndex);
+    slideTo(nearestSlide.value);
   }
   autoPlay('start');
 }
@@ -159,8 +161,10 @@ function onLeave() {
 }
 function slideTo(index: number, duration: number = 300) {
   if (!wrapperRef.value) return;
-  if (index !== swiperState.value.virtualIndex) swiperState.value.virtualIndex = index;
-  const slideElement = renderedSlideElements.value[swiperState.value.virtualIndex] as HTMLElement;
+  const safeIndex = Math.max(0, Math.min(index, swiperState.value.lastSlideIndex));
+  if (safeIndex !== swiperState.value.activeIndex) swiperState.value.activeIndex = safeIndex;
+  const slideElement = renderedSlideElements.value[swiperState.value.activeIndex] as HTMLElement;
+  if (!slideElement) return;
   delayedExec(() => {
     swiperState.value.deltaX = 0;
     swiperState.value.translateX = -Math.min(swiperState.value.lastTranslateX, slideElement.offsetLeft);
@@ -171,19 +175,19 @@ function slideTo(index: number, duration: number = 300) {
   });
 }
 function slidePrev(offset = props.slidesPerGroup) {
-  const prevIndex = swiperState.value.virtualIndex - offset;
+  const prevIndex = swiperState.value.activeIndex - offset;
   if (props.rewind) {
     slideTo(swiperState.value.isBeginning ? swiperState.value.lastSlideIndex : prevIndex);
   } else {
-    slideTo(Math.max(prevIndex, 0));
+    slideTo(prevIndex);
   }
 }
 function slideNext(offset = props.slidesPerGroup) {
-  const nextIndex = swiperState.value.virtualIndex + offset;
+  const nextIndex = swiperState.value.activeIndex + offset;
   if (props.rewind) {
     slideTo(swiperState.value.isEnd ? 0 : nextIndex);
   } else {
-    slideTo(Math.min(nextIndex, swiperState.value.lastSlideIndex));
+    slideTo(nextIndex);
   }
 }
 function autoPlay(status: 'start' | 'stop') {
@@ -245,20 +249,16 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   });
   return slides;
 }
-function updateSlideClasses() {
+function updateSlideClasses(activeIndex = swiperState.value.activeIndex) {
   if (!renderedSlideElements.value.length) return;
   renderedSlideElements.value.forEach((el, index) => {
-    if (index === swiperState.value.virtualIndex - 1) {
+    el.classList.remove('swiper-slide-prev', 'swiper-slide-next', 'swiper-slide-active');
+    if (index === activeIndex - 1) {
       el.classList.add('swiper-slide-prev');
-      el.classList.remove('swiper-slide-next', 'swiper-slide-active');
-    } else if (index === swiperState.value.virtualIndex) {
+    } else if (index === activeIndex) {
       el.classList.add('swiper-slide-active');
-      el.classList.remove('swiper-slide-prev', 'swiper-slide-next');
-    } else if (index === swiperState.value.virtualIndex + 1) {
+    } else if (index === activeIndex + 1) {
       el.classList.add('swiper-slide-next');
-      el.classList.remove('swiper-slide-prev', 'swiper-slide-active');
-    } else {
-      el.classList.remove('swiper-slide-prev', 'swiper-slide-next', 'swiper-slide-active');
     }
   });
 }
