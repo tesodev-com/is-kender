@@ -60,6 +60,7 @@ const swiperState = ref<SwiperState>({
   deltaX: 0,
   duration: 0,
   virtualIndex: 0,
+  realIndex: 0,
   isBeginning: false,
   isEnd: false,
   totalSlidesWidth: 0,
@@ -158,7 +159,7 @@ function onLeave() {
 }
 function slideTo(index: number, duration: number = 300) {
   if (!wrapperRef.value) return;
-  swiperState.value.virtualIndex = index;
+  if (index !== swiperState.value.virtualIndex) swiperState.value.virtualIndex = index;
   const slideElement = renderedSlideElements.value[swiperState.value.virtualIndex] as HTMLElement;
   delayedExec(() => {
     swiperState.value.deltaX = 0;

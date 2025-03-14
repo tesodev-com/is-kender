@@ -1,6 +1,7 @@
 /* stylelint-disable scss/operator-no-newline-after */
 
 .swiper-slide {
+  position: relative;
   flex-shrink: 0;
   margin-right: var(--space-between);
   width: calc(
