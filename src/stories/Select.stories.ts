@@ -53,6 +53,18 @@ const meta: Meta<typeof Select> = {
       control: 'boolean',
       description: 'Disables the select field when set to `true`, preventing interaction.',
     },
+    virtualScroll: {
+      control: 'boolean',
+      description: 'Enables virtual scrolling for large option lists to improve performance.',
+    },
+    itemHeight: {
+      control: 'number',
+      description: 'Height (in pixels) of each option item, used for virtual scroll calculations.',
+    },
+    virtualScrollBuffer: {
+      control: 'number',
+      description: 'Number of extra items rendered above and below the visible area in virtual scroll mode.',
+    },
   },
 };
 
@@ -106,9 +118,23 @@ const commonArgs: Partial<SelectProps> = {
   leftIcon: emailIcon,
 };
 
+const generateLargeOptions = () => {
+  const largeOptions = [];
+  for (let i = 1; i <= 100; i++) {
+    const isDisabled = i % 50 === 0;
+    largeOptions.push({
+      label: `Option ${i}${isDisabled ? ' (Disabled)' : ''}`,
+      value: `opt-${i}`,
+      disabled: isDisabled,
+    });
+  }
+  return largeOptions;
+};
+
 export const Default: Story = {
   args: {
     ...commonArgs,
+    options: generateLargeOptions(),
     label: 'Select Dropdown',
     required: true,
     isSearch: true,
@@ -123,11 +149,7 @@ export const Default: Story = {
     },
     template: `
          <div style="height:500px">
-           <Select v-model="selected" v-model:search="search" v-bind="args">
-             <template #long-opt="{ label }">
-               🎉 {{ label }} slot key
-             </template>
-           </Select>
+           <Select v-model="selected" v-model:search="search" v-bind="args" />
             <p style="padding-top: 96px;">Selected value: {{ selected }}</p>
          </div>
       `,

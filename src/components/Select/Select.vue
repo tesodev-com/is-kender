@@ -356,12 +356,15 @@ function scrollToSelectedItem() {
         dropdown.value.scrollTop = scrollPosition - (visibleItems / 2) * props.itemHeight;
         focusedIndex.value = selectedIndex;
       } else {
-        const selectedElement = dropdown.value.querySelectorAll('.select-dropdown-item')[selectedIndex];
-        if (selectedElement) {
-          selectedElement.scrollIntoView({
-            block: 'nearest',
-          });
-          focusedIndex.value = selectedIndex;
+        const items = dropdown.value.querySelectorAll('.select-dropdown-item');
+        if (items.length > 0 && selectedIndex >= 0 && selectedIndex < items.length) {
+          const selectedElement = items[selectedIndex];
+          if (selectedElement && typeof selectedElement.scrollIntoView === 'function') {
+            selectedElement.scrollIntoView({
+              block: 'nearest',
+            });
+            focusedIndex.value = selectedIndex;
+          }
         }
       }
     }
