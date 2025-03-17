@@ -36,6 +36,9 @@ export interface SwiperSlots {
 }
 
 export interface SwiperState {
+  // ID
+  swiperId: string;
+
   // Position and size
   translateX: number;
   deltaX: number;

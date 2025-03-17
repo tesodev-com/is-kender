@@ -1,8 +1,13 @@
-import type { SwiperProps, SwiperState } from 'library/Swiper';
-import { computed, ref, type SetupContext, type VNode } from 'vue';
+import type { SwiperState } from 'library/Swiper';
+import { computed, ref, type Ref, type SetupContext, type VNode } from 'vue';
 import Helpers from './helpers';
 
-export const initialProps: SwiperProps = {
+interface UseSwiper {
+  slots: SetupContext['slots'];
+  wrapperRef: Ref<HTMLElement | null>;
+}
+
+export const initialProps = {
   slidesPerView: 1,
   slidesPerGroup: 1,
   spaceBetween: 0,
@@ -15,26 +20,25 @@ export const initialProps: SwiperProps = {
   allowTouchMove: true,
 };
 
-export function useSwiper(slots: SetupContext['slots']) {
+export const state = ref<SwiperState>({
+  swiperId: `swiper-${Helpers.generateUUID()}`,
+  translateX: 0,
+  deltaX: 0,
+  duration: 0,
+  activeIndex: 0,
+  previousIndex: 0,
+  isBeginning: false,
+  isEnd: false,
+  totalSlidesWidth: 0,
+  containerWidth: 0,
+  lastTranslateX: 0,
+  lastSlideIndex: 0,
+});
+
+export function useSwiper({ slots, wrapperRef }: UseSwiper) {
   // constants
-
-  // composable
-
   // states (refs and reactives)
   const slidesNode = ref<VNode[]>([]);
-  const state = ref<SwiperState>({
-    translateX: 0,
-    deltaX: 0,
-    duration: 0,
-    activeIndex: 0,
-    previousIndex: 0,
-    isBeginning: false,
-    isEnd: false,
-    totalSlidesWidth: 0,
-    containerWidth: 0,
-    lastTranslateX: 0,
-    lastSlideIndex: 0,
-  });
   // computed
   const renderToSlides = computed(() => {
     const from = 0;
@@ -46,12 +50,26 @@ export function useSwiper(slots: SetupContext['slots']) {
     }
     return data;
   });
+  const renderedSlideElements = computed(() => {
+    return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
+  });
   // watchers
-
   // lifecycles
   setSlidesNode();
-
   // methods
+  function updateSlideClasses(activeIndex = state.value.activeIndex) {
+    if (!renderedSlideElements.value.length) return;
+    renderedSlideElements.value.forEach((el, index) => {
+      el.classList.remove('swiper-slide-prev', 'swiper-slide-next', 'swiper-slide-active');
+      if (index === activeIndex - 1) {
+        el.classList.add('swiper-slide-prev');
+      } else if (index === activeIndex) {
+        el.classList.add('swiper-slide-active');
+      } else if (index === activeIndex + 1) {
+        el.classList.add('swiper-slide-next');
+      }
+    });
+  }
   function setSlidesNode() {
     const defaultNodes = slots?.default?.() as VNode[];
     if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
@@ -72,8 +90,9 @@ export function useSwiper(slots: SetupContext['slots']) {
   }
 
   return {
-    state,
     slidesNode,
     renderToSlides,
+    renderedSlideElements,
+    updateSlideClasses,
   };
 }
