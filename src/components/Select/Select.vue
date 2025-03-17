@@ -249,6 +249,10 @@ watch(
   () => isOpen.value,
   newIsOpen => {
     nextTick(() => {
+      if (props.virtualScroll) {
+        updateVisibleCount();
+      }
+      scrollToSelectedItem();
       if (dropdown.value) {
         if (newIsOpen) {
           dropdown.value.addEventListener('scroll', handleScroll);
@@ -305,12 +309,6 @@ function updateDropdownPosition() {
       preferredPosition: props.optionsPosition,
       offset: props.optionsOffset,
     });
-
-    if (props.virtualScroll) {
-      updateVisibleCount();
-    }
-
-    scrollToSelectedItem();
   });
 }
 

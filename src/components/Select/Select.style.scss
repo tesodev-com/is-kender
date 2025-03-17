@@ -118,6 +118,7 @@
   background-color: $white;
   max-height: 16rem;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: 0.25rem 0.375rem;
   z-index: 9999;
   outline: none;

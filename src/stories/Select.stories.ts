@@ -184,6 +184,31 @@ export const WithLabel: Story = {
   }),
 };
 
+export const WithLabelVirtualScroll: Story = {
+  args: {
+    ...commonArgs,
+    label: 'Choose an option',
+    virtualScroll: true,
+  },
+  render: args => ({
+    components: { Select, Svg },
+    setup() {
+      const selected = ref<string | null>(null);
+      return { args, selected, arrowDownIcon };
+    },
+    template: `
+         <div>
+           <Select v-model="selected" v-bind="args">
+             <template #long-opt="{ label }">
+               🎉 {{ label }} slot key
+             </template>
+           </Select>
+           <p>Selected value: {{ selected }}</p>
+         </div>
+      `,
+  }),
+};
+
 export const Required: Story = {
   args: {
     ...commonArgs,
