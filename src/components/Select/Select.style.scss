@@ -122,6 +122,12 @@
   z-index: 9999;
   outline: none;
 
+  .virtual-list,
+  .select-list {
+    position: relative;
+    width: 100%;
+  }
+
   &-item {
     display: flex;
     align-items: center;

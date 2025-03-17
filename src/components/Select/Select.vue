@@ -53,14 +53,12 @@
     </div>
     <Teleport to="body">
       <transition name="select-fade">
-        <ul
+        <div
           v-if="isOpen"
           :id="`${selectId}-dropdown`"
           ref="dropdown"
           class="select-dropdown"
           :style="dropdownPosition"
-          role="listbox"
-          tabindex="-1"
           @click="handleDropdownClick"
         >
           <template v-if="isSearch && options.length > 0">
@@ -76,49 +74,93 @@
               <p>No options available</p>
             </li>
           </template>
-          <template v-else>
-            <li
-              v-for="(option, index) in searchFilterList"
-              :key="option.value"
-              class="select-dropdown-item"
-              :class="[
-                {
-                  'select-dropdown-item-selected': isSelected(option.value),
-                  'select-dropdown-item-disabled': option.disabled,
-                  'select-dropdown-item-focused': focusedIndex === index && !option.disabled,
-                },
-              ]"
-              role="option"
-              :aria-selected="isSelected(option.value)"
-              :aria-disabled="option.disabled"
-              @click="selectOption(option)"
-              @mouseover="focusedIndex = index"
+          <template v-if="props.virtualScroll && searchFilterList.length">
+            <ul
+              class="virtual-list"
+              role="listbox"
+              tabindex="-1"
+              :style="{ height: `${virtualListHeight}px` }"
             >
-              <div
-                v-if="option.slotKey"
-                class="select-dropdown-item-label"
+              <li
+                v-for="(option, index) in visibleOptions"
+                :key="option.value"
+                class="select-dropdown-item"
+                :style="getItemStyle(index)"
+                :class="getItemClasses(option, index + startIndex)"
+                role="option"
+                :aria-selected="isSelected(option.value)"
+                :aria-disabled="option.disabled"
+                @click="selectOption(option)"
+                @mouseover="handleMouseover(index + startIndex)"
               >
-                <slot
-                  :name="option.slotKey"
-                  v-bind="option"
+                <div
+                  v-if="option.slotKey"
+                  class="select-dropdown-item-label"
+                >
+                  <slot
+                    :name="option.slotKey"
+                    v-bind="option"
+                  />
+                </div>
+                <p
+                  v-else
+                  class="select-dropdown-item-label"
+                >
+                  {{ option.label }}
+                </p>
+                <Svg
+                  v-if="isSelected(option.value)"
+                  :src="checkIcon"
+                  size="20"
+                  class="select-dropdown-item-icon"
+                  :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
                 />
-              </div>
-              <p
-                v-else
-                class="select-dropdown-item-label"
-              >
-                {{ option.label }}
-              </p>
-              <Svg
-                v-if="isSelected(option.value)"
-                :src="checkIcon"
-                size="20"
-                class="select-dropdown-item-icon"
-                :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
-              />
-            </li>
+              </li>
+            </ul>
           </template>
-        </ul>
+          <template v-else-if="searchFilterList.length">
+            <ul
+              class="select-list"
+              role="listbox"
+              tabindex="-1"
+            >
+              <li
+                v-for="(option, index) in searchFilterList"
+                :key="option.value"
+                class="select-dropdown-item"
+                :class="getItemClasses(option, index)"
+                role="option"
+                :aria-selected="isSelected(option.value)"
+                :aria-disabled="option.disabled"
+                @click="selectOption(option)"
+                @mouseover="handleMouseover(index)"
+              >
+                <div
+                  v-if="option.slotKey"
+                  class="select-dropdown-item-label"
+                >
+                  <slot
+                    :name="option.slotKey"
+                    v-bind="option"
+                  />
+                </div>
+                <p
+                  v-else
+                  class="select-dropdown-item-label"
+                >
+                  {{ option.label }}
+                </p>
+                <Svg
+                  v-if="isSelected(option.value)"
+                  :src="checkIcon"
+                  size="20"
+                  class="select-dropdown-item-icon"
+                  :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
+                />
+              </li>
+            </ul>
+          </template>
+        </div>
       </transition>
     </Teleport>
     <div
@@ -137,7 +179,7 @@
 
 <script setup lang="ts">
 import Svg from 'library/Svg';
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef } from 'vue';
+import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
 import { arrowDownIcon, checkIcon } from '@/assets/icons';
 import type { SelectOption, SelectProps } from 'library/Select';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
@@ -147,6 +189,9 @@ const props = withDefaults(defineProps<SelectProps>(), {
   optionsPosition: 'bottom',
   optionsOffset: 4,
   isSearch: false,
+  itemHeight: 40,
+  virtualScroll: false,
+  virtualScrollBuffer: 3,
 });
 
 const selectId = useId();
@@ -158,8 +203,14 @@ const selectContainer = useTemplateRef('selectContainer');
 const selectTrigger = useTemplateRef('selectTrigger');
 const dropdown = useTemplateRef('dropdown');
 const isOpen = ref<boolean>(false);
-const dropdownPosition = ref<PositionStyle>({ top: '0px', left: '0px', width: '0px' });
+const dropdownPosition = ref<PositionStyle>({
+  top: '0px',
+  left: '0px',
+  width: '0px',
+});
 const focusedIndex = ref<number>(-1);
+const startIndex = ref(0);
+const visibleCount = ref(0);
 
 const selectedValue = computed(() => {
   if (props.isMultiple) {
@@ -184,9 +235,35 @@ const searchFilterList = computed(() => {
   return props.options;
 });
 
+const virtualListHeight = computed(() => {
+  return props.virtualScroll ? searchFilterList.value.length * props.itemHeight : 0;
+});
+
+const visibleOptions = computed(() => {
+  if (!props.virtualScroll) return [];
+  const endIndex = Math.min(startIndex.value + visibleCount.value, searchFilterList.value.length);
+  return searchFilterList.value.slice(startIndex.value, endIndex);
+});
+
+watch(
+  () => isOpen.value,
+  newIsOpen => {
+    nextTick(() => {
+      if (dropdown.value) {
+        if (newIsOpen) {
+          dropdown.value.addEventListener('scroll', handleScroll);
+        } else {
+          dropdown.value.removeEventListener('scroll', handleScroll);
+        }
+      }
+    });
+  }
+);
+
 onMounted(() => {
   window.addEventListener('click', handleOutsideClick);
   window.addEventListener('resize', handleResize);
+  if (props.virtualScroll) updateVisibleCount();
 });
 
 onBeforeUnmount(() => {
@@ -220,7 +297,7 @@ function isSelected(value: string) {
   return props.isMultiple ? modelMultiple.value.includes(value) : model.value === value;
 }
 
-async function updateDropdownPosition() {
+function updateDropdownPosition() {
   nextTick(() => {
     if (!selectContainer.value || !selectTrigger.value || !dropdown.value || !isOpen.value) return;
 
@@ -228,6 +305,10 @@ async function updateDropdownPosition() {
       preferredPosition: props.optionsPosition,
       offset: props.optionsOffset,
     });
+
+    if (props.virtualScroll) {
+      updateVisibleCount();
+    }
 
     scrollToSelectedItem();
   });
@@ -264,15 +345,27 @@ function handleDropdownClick(event: MouseEvent) {
 }
 
 function scrollToSelectedItem() {
-  if (!dropdown.value) return;
-
   nextTick(() => {
-    const selectedElement = dropdown.value?.querySelector(`.select-dropdown-item.select-dropdown-item-selected`);
+    if (!dropdown.value) return;
 
-    if (selectedElement) {
-      selectedElement.scrollIntoView({
-        block: 'nearest',
-      });
+    const selectedIndex = props.isMultiple ? searchFilterList.value.findIndex(opt => modelMultiple.value.includes(opt.value)) : searchFilterList.value.findIndex(opt => opt.value === model.value);
+
+    if (selectedIndex !== -1) {
+      if (props.virtualScroll) {
+        const visibleItems = Math.floor(dropdown.value.clientHeight / props.itemHeight);
+        startIndex.value = Math.max(0, selectedIndex - Math.floor(visibleItems / 2));
+        const scrollPosition = selectedIndex * props.itemHeight;
+        dropdown.value.scrollTop = scrollPosition - (visibleItems / 2) * props.itemHeight;
+        focusedIndex.value = selectedIndex;
+      } else {
+        const selectedElement = dropdown.value.querySelectorAll('.select-dropdown-item')[selectedIndex];
+        if (selectedElement) {
+          selectedElement.scrollIntoView({
+            block: 'nearest',
+          });
+          focusedIndex.value = selectedIndex;
+        }
+      }
     }
   });
 }
@@ -411,6 +504,43 @@ function scrollToFocusedItem() {
       }
     }
   });
+}
+
+function getItemClasses(option: SelectOption, index: number): Record<string, boolean> {
+  return {
+    'select-dropdown-item-selected': isSelected(option.value),
+    'select-dropdown-item-disabled': !!option.disabled,
+    'select-dropdown-item-focused': focusedIndex.value === index && !option.disabled,
+  };
+}
+
+function handleMouseover(index: number) {
+  focusedIndex.value = index;
+}
+
+function updateVisibleCount() {
+  if (!props.virtualScroll || !dropdown.value) return;
+  const containerHeight = dropdown.value.clientHeight;
+  visibleCount.value = Math.ceil(containerHeight / props.itemHeight) + props.virtualScrollBuffer * 2;
+}
+
+function handleScroll(event: Event) {
+  if (!props.virtualScroll) return;
+  const scrollTop = (event.target as HTMLElement).scrollTop;
+  const newStartIndex = Math.floor(scrollTop / props.itemHeight);
+  startIndex.value = Math.max(0, newStartIndex - props.virtualScrollBuffer);
+  updateVisibleCount();
+}
+
+function getItemStyle(index: number) {
+  if (!props.virtualScroll) return {};
+  const absoluteIndex = startIndex.value + index;
+  return {
+    position: 'absolute',
+    top: `${absoluteIndex * props.itemHeight}px`,
+    left: '0px',
+    height: `${props.itemHeight}px`,
+  } as CSSProperties;
 }
 </script>
 
