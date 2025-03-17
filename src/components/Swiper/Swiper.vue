@@ -152,7 +152,7 @@ function updateSlideClass(activeIndex = state.value.activeIndex) {
   });
 }
 async function loadEffect() {
-  const effectArgs = { props, state, slideElements, setWrapperStyle, slidePrev, slideNext };
+  const effectArgs = { props, state, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
   if (effects[props.effect]) {
     const module = await effects[props.effect]();
     return module.default(effectArgs);

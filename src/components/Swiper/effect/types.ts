@@ -7,6 +7,7 @@ export interface EffectOptions {
   state: Ref<SwiperState>;
   slideElements: ComputedRef<HTMLElement[]>;
   setWrapperStyle: (style: Partial<CSSStyleDeclaration>) => void;
+  updateSlideClass: (index?: number) => void;
   slideNext: (offset?: number) => void;
   slidePrev: (offset?: number) => void;
 }

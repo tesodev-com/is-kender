@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { Helpers } from '../core';
 import type { EffectOptions } from './types';
 
-function useSlideEffect({ props, state, slideElements, setWrapperStyle, slidePrev, slideNext }: EffectOptions) {
+function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext }: EffectOptions) {
   const currentTranslate = computed(() => {
     return state.value.translateX + getLimitedDeltaX();
   });
@@ -75,6 +75,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, slidePre
       transform: `translateX(${currentTranslate.value}px)`,
       transitionDuration: `${state.value.duration}ms`,
     });
+    updateSlideClass(nearestSlide.value);
   }
   function getLimitedDeltaX() {
     let limitedDeltaX = state.value.deltaX;
