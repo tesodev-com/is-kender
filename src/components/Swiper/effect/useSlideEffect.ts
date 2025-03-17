@@ -1,15 +1,15 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import type { SwiperProps } from 'library/Swiper';
-import { computed, onMounted, onUnmounted, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, type ComputedRef } from 'vue';
 import { Helpers, initialProps, state } from '../core';
 
 interface UseSlideEffect {
   props: SwiperProps;
-  wrapperRef: Ref<HTMLElement | null>;
   renderedSlideElements: ComputedRef<HTMLElement[]>;
+  updateSlideClasses: (activeIndex?: number) => void;
 }
 
-export function useSlideEffect({ props, wrapperRef, renderedSlideElements }: UseSlideEffect) {
+export function useSlideEffect({ props, renderedSlideElements, updateSlideClasses }: UseSlideEffect) {
   // constants
   // composable
   // states (refs and reactives)
@@ -22,7 +22,7 @@ export function useSlideEffect({ props, wrapperRef, renderedSlideElements }: Use
     return state.value.translateX + getLimitedDeltaX();
   });
   const nearestSlide = computed(() => {
-    if (!wrapperRef.value) return 0;
+    if (!renderedSlideElements.value.length) return 0;
     const { index } = renderedSlideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
       (acc, el, index) => {
         const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
@@ -39,11 +39,6 @@ export function useSlideEffect({ props, wrapperRef, renderedSlideElements }: Use
   // lifecycles
   onMounted(() => {
     slideTo(props.initialSlide || initialProps.initialSlide);
-    calculationGeneral();
-    window.addEventListener('resize', calculationGeneral);
-  });
-  onUnmounted(() => {
-    window.removeEventListener('resize', calculationGeneral);
   });
   // methods
   function onSwipe(event: SwipeState) {
@@ -53,6 +48,7 @@ export function useSlideEffect({ props, wrapperRef, renderedSlideElements }: Use
   }
   function onMove(event: SwipeState) {
     state.value.deltaX = event.deltaX;
+    updateSlideClasses(nearestSlide.value);
   }
   function onEnd(event: SwipeState) {
     if (event.swipeSpeed >= (props.speed || initialProps.speed)) {
@@ -90,18 +86,6 @@ export function useSlideEffect({ props, wrapperRef, renderedSlideElements }: Use
       slideTo(state.value.isEnd ? 0 : nextIndex);
     } else {
       slideTo(nextIndex);
-    }
-  }
-  function calculationGeneral() {
-    if (!wrapperRef.value || !renderedSlideElements.value.length) return;
-    const totalSlidesWidth = renderedSlideElements.value.reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + (props.spaceBetween || initialProps.spaceBetween), 0);
-    const containerWidth = wrapperRef.value.offsetWidth;
-    state.value.totalSlidesWidth = totalSlidesWidth;
-    state.value.containerWidth = containerWidth;
-
-    if (!props.loop) {
-      state.value.lastTranslateX = totalSlidesWidth - containerWidth;
-      state.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft >= state.value.lastTranslateX);
     }
   }
   function checkBoundaries() {

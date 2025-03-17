@@ -24,7 +24,7 @@
 // imports
 import { vSwipe } from '@/directives/vSwipe';
 import type { SwiperProps, SwiperSlots } from 'library/Swiper';
-import { computed, onMounted, onUnmounted, useSlots, useTemplateRef, watch } from 'vue';
+import { computed, useSlots, useTemplateRef, watch } from 'vue';
 import { initialProps, state, useAutoplay, useSwiper } from './core';
 import { useSlideEffect } from './effect';
 // interfaces & types
@@ -54,16 +54,9 @@ watch(
   }
 );
 // lifecycles
-const { renderToSlides, renderedSlideElements, updateSlideClasses } = useSwiper({ slots, wrapperRef });
-const { onSwipe, wrapperStyles, slideNext } = useSlideEffect({ props, wrapperRef, renderedSlideElements });
+const { renderToSlides, renderedSlideElements, updateSlideClasses } = useSwiper({ props, slots, wrapperRef });
+const { onSwipe, wrapperStyles, slideNext } = useSlideEffect({ props, renderedSlideElements, updateSlideClasses });
 const { autoPlay } = useAutoplay({ props, cb: slideNext });
-onMounted(() => {
-  updateSlideClasses();
-  autoPlay('start');
-});
-onUnmounted(() => {
-  autoPlay('stop');
-});
 // methods
 function onOver() {
   autoPlay('stop');

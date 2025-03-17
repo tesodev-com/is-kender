@@ -1,3 +1,4 @@
+import { onMounted, onUnmounted } from 'vue';
 import type { SwiperProps } from '../Swiper';
 
 interface UseAutoplay {
@@ -12,6 +13,12 @@ export function useAutoplay({ props, cb }: UseAutoplay) {
   // computed
   // watchers
   // lifecycles
+  onMounted(() => {
+    autoPlay('start');
+  });
+  onUnmounted(() => {
+    autoPlay('stop');
+  });
   // methods
   function autoPlay(status: 'start' | 'stop') {
     if (props.autoplay && status === 'start') {

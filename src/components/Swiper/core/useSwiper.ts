@@ -1,8 +1,9 @@
-import type { SwiperState } from 'library/Swiper';
-import { computed, ref, type Ref, type SetupContext, type VNode } from 'vue';
+import type { SwiperProps, SwiperState } from 'library/Swiper';
+import { computed, onMounted, onUnmounted, ref, type Ref, type SetupContext, type VNode } from 'vue';
 import Helpers from './helpers';
 
 interface UseSwiper {
+  props: SwiperProps;
   slots: SetupContext['slots'];
   wrapperRef: Ref<HTMLElement | null>;
 }
@@ -35,7 +36,7 @@ export const state = ref<SwiperState>({
   lastSlideIndex: 0,
 });
 
-export function useSwiper({ slots, wrapperRef }: UseSwiper) {
+export function useSwiper({ props, slots, wrapperRef }: UseSwiper) {
   // constants
   // states (refs and reactives)
   const slidesNode = ref<VNode[]>([]);
@@ -56,6 +57,14 @@ export function useSwiper({ slots, wrapperRef }: UseSwiper) {
   // watchers
   // lifecycles
   setSlidesNode();
+  onMounted(() => {
+    updateSlideClasses();
+    calculationGeneral();
+    window.addEventListener('resize', calculationGeneral);
+  });
+  onUnmounted(() => {
+    window.removeEventListener('resize', calculationGeneral);
+  });
   // methods
   function updateSlideClasses(activeIndex = state.value.activeIndex) {
     if (!renderedSlideElements.value.length) return;
@@ -69,6 +78,18 @@ export function useSwiper({ slots, wrapperRef }: UseSwiper) {
         el.classList.add('swiper-slide-next');
       }
     });
+  }
+  function calculationGeneral() {
+    if (!wrapperRef.value) return;
+    const totalSlidesWidth = renderedSlideElements.value.reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + (props.spaceBetween || initialProps.spaceBetween), 0);
+    const containerWidth = wrapperRef.value.offsetWidth;
+    state.value.totalSlidesWidth = totalSlidesWidth;
+    state.value.containerWidth = containerWidth;
+
+    if (!props.loop) {
+      state.value.lastTranslateX = totalSlidesWidth - containerWidth;
+      state.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft >= state.value.lastTranslateX);
+    }
   }
   function setSlidesNode() {
     const defaultNodes = slots?.default?.() as VNode[];
