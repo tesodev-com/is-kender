@@ -121,8 +121,8 @@ watch(
 setSlidesNode();
 onMounted(() => {
   calculationGeneral();
-  updateSlideClasses();
   slideTo(props.initialSlide);
+  updateSlideClasses();
   autoPlay('start');
   window.addEventListener('resize', calculationGeneral);
 });
@@ -227,7 +227,7 @@ function calculationGeneral() {
   swiperState.value.containerWidth = containerWidth;
 
   if (!props.loop) {
-    swiperState.value.lastTranslateX = totalSlidesWidth - containerWidth - props.spaceBetween;
+    swiperState.value.lastTranslateX = totalSlidesWidth - containerWidth;
     swiperState.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft >= swiperState.value.lastTranslateX);
   }
 }

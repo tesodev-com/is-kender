@@ -55,7 +55,7 @@ export const Default: Story = {
     },
     template: `
         <Swiper v-bind="args">
-          <SwiperSlide v-for="i in 10" :key="i" :style="{width: Math.random() * 10 * 50 + 'px'}">
+          <SwiperSlide v-for="i in 10" :key="i" :style="{width: 25 + Math.random() * 50 + '%'}">
             <Skeleton height="200px" style="display: flex; justify-content: center; align-items: center; user-select: none;">
               Slide - {{ i - 1}}
             </Skeleton>
