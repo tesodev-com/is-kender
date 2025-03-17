@@ -10,6 +10,7 @@ export interface SwiperProps {
 
   // Behavior settings
   speed?: number;
+  effect?: 'slide' | 'fade';
 
   // Autoplay
   autoplay?: boolean;

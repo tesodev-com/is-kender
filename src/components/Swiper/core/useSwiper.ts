@@ -8,7 +8,7 @@ interface UseSwiper {
   wrapperRef: Ref<HTMLElement | null>;
 }
 
-export const initialProps = {
+export const initialProps: SwiperProps = {
   slidesPerView: 1,
   slidesPerGroup: 1,
   spaceBetween: 0,
@@ -19,6 +19,7 @@ export const initialProps = {
   loop: false,
   rewind: false,
   allowTouchMove: true,
+  effect: 'slide',
 };
 
 export const state = ref<SwiperState>({
@@ -47,6 +48,9 @@ export function useSwiper({ props, slots, wrapperRef }: UseSwiper) {
     const data = [];
     for (let i = from; i < to; i++) {
       const slide = slidesNode.value[Helpers.getModulo(i, slidesNode.value.length)];
+      if (slide.props && props.effect === 'fade') {
+        slide.props.class = 'swiper-slide-fade';
+      }
       data.push(slide);
     }
     return data;
@@ -81,15 +85,8 @@ export function useSwiper({ props, slots, wrapperRef }: UseSwiper) {
   }
   function calculationGeneral() {
     if (!wrapperRef.value) return;
-    const totalSlidesWidth = renderedSlideElements.value.reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + (props.spaceBetween || initialProps.spaceBetween), 0);
     const containerWidth = wrapperRef.value.offsetWidth;
-    state.value.totalSlidesWidth = totalSlidesWidth;
     state.value.containerWidth = containerWidth;
-
-    if (!props.loop) {
-      state.value.lastTranslateX = totalSlidesWidth - containerWidth;
-      state.value.lastSlideIndex = renderedSlideElements.value.findIndex(el => el.offsetLeft >= state.value.lastTranslateX);
-    }
   }
   function setSlidesNode() {
     const defaultNodes = slots?.default?.() as VNode[];

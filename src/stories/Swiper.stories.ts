@@ -34,6 +34,10 @@ const meta: Meta<typeof Swiper> = {
     autoplayDelay: {
       control: { type: 'number' },
     },
+    effect: {
+      control: 'select',
+      options: ['slide', 'fade'],
+    },
   },
 };
 
@@ -61,6 +65,34 @@ export const Default: Story = {
             </Skeleton>
           </SwiperSlide>
         </Swiper>
+        `,
+  }),
+};
+
+export const Fade: Story = {
+  args: {
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    spaceBetween: 10,
+    autoplay: false,
+    autoplayDelay: 2000,
+    effect: 'fade',
+  },
+  render: args => ({
+    components: { Swiper, SwiperSlide, Skeleton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div style="width: 100%; height: 200px;">
+        <Swiper v-bind="args">
+          <SwiperSlide v-for="i in 10" :key="i">
+            <Skeleton width="100%" height="200px" style="display: flex; justify-content: center; align-items: center; user-select: none;">
+              Slide - {{ i - 1}}
+            </Skeleton>
+          </SwiperSlide>
+        </Swiper>
+      </div>
         `,
   }),
 };

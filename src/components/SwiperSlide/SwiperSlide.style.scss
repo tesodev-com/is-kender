@@ -4,8 +4,21 @@
   position: relative;
   flex-shrink: 0;
   margin-right: var(--space-between);
-  width: calc(
-    (100% - (var(--space-between) * (var(--slides-per-view) - 1))) /
-      var(--slides-per-view)
-  );
+
+  &:not(.swiper-slide-fade) {
+    width: calc(
+      (100% - (var(--space-between) * (var(--slides-per-view) - 1))) /
+        var(--slides-per-view)
+    );
+  }
+
+  &.swiper-slide-fade {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+
+    &.swiper-slide-active {
+      opacity: 1;
+    }
+  }
 }

@@ -1,15 +1,16 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import type { SwiperProps } from 'library/Swiper';
 import { Helpers, initialProps, state } from 'library/Swiper/core';
-import { computed, onMounted, type ComputedRef } from 'vue';
+import { computed, onMounted, type ComputedRef, type Ref, type VNode } from 'vue';
 
 interface UseSlideEffect {
   props: SwiperProps;
+  slidesNode: Ref<VNode[]>;
   renderedSlideElements: ComputedRef<HTMLElement[]>;
   updateSlideClasses: (activeIndex?: number) => void;
 }
 
-export function useSlideEffect({ props, renderedSlideElements, updateSlideClasses }: UseSlideEffect) {
+export function useSlideEffect({ props, slidesNode, renderedSlideElements, updateSlideClasses }: UseSlideEffect) {
   // constants
   // composable
   // states (refs and reactives)
@@ -38,7 +39,8 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
   // watchers
   // lifecycles
   onMounted(() => {
-    slideTo(props.initialSlide || initialProps.initialSlide);
+    calculationGeneral();
+    slideTo(props.initialSlide || initialProps.initialSlide!);
   });
   // methods
   function onSwipe(event: SwipeState) {
@@ -51,7 +53,7 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
     updateSlideClasses(nearestSlide.value);
   }
   function onEnd(event: SwipeState) {
-    if (event.swipeSpeed >= (props.speed || initialProps.speed)) {
+    if (event.swipeSpeed >= (props.speed || initialProps.speed)!) {
       if (event.direction === 'right') slidePrev();
       if (event.direction === 'left') slideNext();
     } else {
@@ -62,6 +64,7 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
     const safeIndex = Math.max(0, Math.min(index, state.value.lastSlideIndex));
     if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
     const slideElement = renderedSlideElements.value[state.value.activeIndex] as HTMLElement;
+
     if (!slideElement) return;
     Helpers.delayedExec(() => {
       state.value.deltaX = 0;
@@ -72,7 +75,7 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
       checkBoundaries();
     });
   }
-  function slidePrev(offset = props.slidesPerGroup || initialProps.slidesPerGroup) {
+  function slidePrev(offset = props.slidesPerGroup || initialProps.slidesPerGroup!) {
     const prevIndex = state.value.activeIndex - offset;
     if (props.rewind) {
       slideTo(state.value.isBeginning ? state.value.lastSlideIndex : prevIndex);
@@ -80,12 +83,23 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
       slideTo(prevIndex);
     }
   }
-  function slideNext(offset = props.slidesPerGroup || initialProps.slidesPerGroup) {
+  function slideNext(offset = props.slidesPerGroup || initialProps.slidesPerGroup!) {
     const nextIndex = state.value.activeIndex + offset;
     if (props.rewind) {
       slideTo(state.value.isEnd ? 0 : nextIndex);
     } else {
       slideTo(nextIndex);
+    }
+  }
+  function calculationGeneral() {
+    if (!renderedSlideElements.value.length) return;
+
+    const totalSlidesWidth = (renderedSlideElements.value || []).reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + (props.spaceBetween || initialProps.spaceBetween)!, 0);
+    state.value.totalSlidesWidth = totalSlidesWidth;
+
+    if (!props.loop) {
+      state.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || initialProps.spaceBetween)!;
+      state.value.lastSlideIndex = props.slidesPerView === 1 ? slidesNode.value.length - 1 : renderedSlideElements.value.findIndex(el => el.offsetLeft >= state.value.lastTranslateX);
     }
   }
   function checkBoundaries() {
@@ -111,9 +125,9 @@ export function useSlideEffect({ props, renderedSlideElements, updateSlideClasse
 
   return {
     onSwipe,
+    slideTo,
     slidePrev,
     slideNext,
-    slideTo,
     wrapperStyles,
   };
 }

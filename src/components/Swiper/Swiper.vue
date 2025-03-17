@@ -18,6 +18,9 @@
       />
     </div>
   </div>
+  <pre>
+    {{ state }}
+  </pre>
 </template>
 
 <script setup lang="ts">
@@ -54,8 +57,8 @@ watch(
   }
 );
 // lifecycles
-const { renderToSlides, renderedSlideElements, updateSlideClasses } = useSwiper({ props, slots, wrapperRef });
-const { onSwipe, wrapperStyles, slideNext } = useSlideEffect({ props, renderedSlideElements, updateSlideClasses });
+const { slidesNode, renderToSlides, renderedSlideElements, updateSlideClasses } = useSwiper({ props, slots, wrapperRef });
+const { onSwipe, wrapperStyles, slideNext } = useSlideEffect({ props, slidesNode, renderedSlideElements, updateSlideClasses });
 const { autoPlay } = useAutoplay({ props, cb: slideNext });
 // methods
 function onOver() {
