@@ -1,30 +1,15 @@
 import type { SwipeState } from '@/directives/vSwipe';
-import type { SwiperProps } from 'library/Swiper';
-import { Helpers, initialProps, state } from 'library/Swiper/core';
-import { computed, onMounted, type ComputedRef, type Ref, type VNode } from 'vue';
+import { computed } from 'vue';
+import { Helpers } from '../core';
+import type { EffectOptions } from './types';
 
-interface UseSlideEffect {
-  props: SwiperProps;
-  slidesNode: Ref<VNode[]>;
-  renderedSlideElements: ComputedRef<HTMLElement[]>;
-  updateSlideClasses: (activeIndex?: number) => void;
-}
-
-export function useSlideEffect({ props, slidesNode, renderedSlideElements, updateSlideClasses }: UseSlideEffect) {
-  // constants
-  // composable
-  // states (refs and reactives)
-  // computed
-  const wrapperStyles = computed(() => ({
-    transform: `translateX(${currentTranslate.value}px)`,
-    transitionDuration: `${state.value.duration}ms`,
-  }));
+function useSlideEffect({ props, state, slideElements, setWrapperStyle, slidePrev, slideNext }: EffectOptions) {
   const currentTranslate = computed(() => {
     return state.value.translateX + getLimitedDeltaX();
   });
   const nearestSlide = computed(() => {
-    if (!renderedSlideElements.value.length) return 0;
-    const { index } = renderedSlideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
+    if (!slideElements.value.length) return 0;
+    const { index } = slideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
       (acc, el, index) => {
         const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
         if (distance < acc.distance) {
@@ -36,13 +21,23 @@ export function useSlideEffect({ props, slidesNode, renderedSlideElements, updat
     );
     return index;
   });
-  // watchers
-  // lifecycles
-  onMounted(() => {
-    calculationGeneral();
-    slideTo(props.initialSlide || initialProps.initialSlide!);
-  });
-  // methods
+  function init() {
+    if (!slideElements.value.length) return;
+
+    const totalSlidesWidth = slideElements.value.reduce((acc, el) => acc + el.offsetWidth + (props.spaceBetween || 0), 0);
+    state.value.totalSlidesWidth = totalSlidesWidth;
+
+    if (!props.loop) {
+      state.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || 0);
+      state.value.lastSlideIndex = props.slidesPerView === 'auto' ? slideElements.value.length - 1 : slideElements.value.findIndex(el => el.offsetLeft >= state.value.totalSlidesWidth);
+    }
+
+    if (props.initialSlide) {
+      slideTo(props.initialSlide, 0);
+    } else {
+      checkBoundaries();
+    }
+  }
   function onSwipe(event: SwipeState) {
     if (!props.allowTouchMove) return;
     if (event.swipeState === 'move') onMove(event);
@@ -50,10 +45,10 @@ export function useSlideEffect({ props, slidesNode, renderedSlideElements, updat
   }
   function onMove(event: SwipeState) {
     state.value.deltaX = event.deltaX;
-    updateSlideClasses(nearestSlide.value);
+    update();
   }
   function onEnd(event: SwipeState) {
-    if (event.swipeSpeed >= (props.speed || initialProps.speed)!) {
+    if (event.swipeSpeed >= (props.speed || 0.5)) {
       if (event.direction === 'right') slidePrev();
       if (event.direction === 'left') slideNext();
     } else {
@@ -63,44 +58,30 @@ export function useSlideEffect({ props, slidesNode, renderedSlideElements, updat
   function slideTo(index: number, duration: number = 300) {
     const safeIndex = Math.max(0, Math.min(index, state.value.lastSlideIndex));
     if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
-    const slideElement = renderedSlideElements.value[state.value.activeIndex] as HTMLElement;
-
+    const slideElement = slideElements.value[state.value.activeIndex];
     if (!slideElement) return;
     Helpers.delayedExec(() => {
       state.value.deltaX = 0;
       state.value.translateX = -Math.min(state.value.lastTranslateX, slideElement.offsetLeft);
       state.value.duration = duration;
+      update();
     }, duration).then(() => {
       state.value.duration = 0;
       checkBoundaries();
     });
   }
-  function slidePrev(offset = props.slidesPerGroup || initialProps.slidesPerGroup!) {
-    const prevIndex = state.value.activeIndex - offset;
-    if (props.rewind) {
-      slideTo(state.value.isBeginning ? state.value.lastSlideIndex : prevIndex);
-    } else {
-      slideTo(prevIndex);
-    }
+  function update() {
+    setWrapperStyle({
+      transform: `translateX(${currentTranslate.value}px)`,
+      transitionDuration: `${state.value.duration}ms`,
+    });
   }
-  function slideNext(offset = props.slidesPerGroup || initialProps.slidesPerGroup!) {
-    const nextIndex = state.value.activeIndex + offset;
-    if (props.rewind) {
-      slideTo(state.value.isEnd ? 0 : nextIndex);
-    } else {
-      slideTo(nextIndex);
+  function getLimitedDeltaX() {
+    let limitedDeltaX = state.value.deltaX;
+    if (!props.loop && ((state.value.isBeginning && state.value.deltaX > 0) || (state.value.isEnd && state.value.deltaX < 0))) {
+      limitedDeltaX *= 0.25;
     }
-  }
-  function calculationGeneral() {
-    if (!renderedSlideElements.value.length) return;
-
-    const totalSlidesWidth = (renderedSlideElements.value || []).reduce((acc, el) => acc + (el as HTMLElement).offsetWidth + (props.spaceBetween || initialProps.spaceBetween)!, 0);
-    state.value.totalSlidesWidth = totalSlidesWidth;
-
-    if (!props.loop) {
-      state.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || initialProps.spaceBetween)!;
-      state.value.lastSlideIndex = props.slidesPerView === 1 ? slidesNode.value.length - 1 : renderedSlideElements.value.findIndex(el => el.offsetLeft >= state.value.lastTranslateX);
-    }
+    return limitedDeltaX;
   }
   function checkBoundaries() {
     const offset = 5; // Prevents the slide from being stuck;
@@ -115,19 +96,12 @@ export function useSlideEffect({ props, slidesNode, renderedSlideElements, updat
     state.value.isBeginning = isOverLeft;
     state.value.isEnd = isOverRight;
   }
-  function getLimitedDeltaX() {
-    let limitedDeltaX = state.value.deltaX;
-    if (!props.loop && ((state.value.isBeginning && state.value.deltaX > 0) || (state.value.isEnd && state.value.deltaX < 0))) {
-      limitedDeltaX *= 0.25;
-    }
-    return limitedDeltaX;
-  }
 
   return {
+    init,
     onSwipe,
     slideTo,
-    slidePrev,
-    slideNext,
-    wrapperStyles,
   };
 }
+
+export default useSlideEffect;

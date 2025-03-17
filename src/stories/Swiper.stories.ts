@@ -51,6 +51,7 @@ export const Default: Story = {
     spaceBetween: 10,
     autoplay: false,
     autoplayDelay: 2000,
+    rewind: true,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },
