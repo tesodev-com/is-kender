@@ -1,7 +1,7 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import type { SwiperProps } from 'library/Swiper';
+import { Helpers, initialProps, state } from 'library/Swiper/core';
 import { computed, onMounted, type ComputedRef } from 'vue';
-import { Helpers, initialProps, state } from '../core';
 
 interface UseSlideEffect {
   props: SwiperProps;

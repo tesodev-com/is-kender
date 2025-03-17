@@ -1,5 +1,5 @@
+import type { SwiperProps } from 'library/Swiper';
 import { onMounted, onUnmounted } from 'vue';
-import type { SwiperProps } from '../Swiper';
 
 interface UseAutoplay {
   props: SwiperProps;

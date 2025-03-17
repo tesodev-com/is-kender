@@ -1,6 +1,6 @@
 import type { SwiperProps, SwiperState } from 'library/Swiper';
+import { Helpers } from 'library/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, type Ref, type SetupContext, type VNode } from 'vue';
-import Helpers from './helpers';
 
 interface UseSwiper {
   props: SwiperProps;
