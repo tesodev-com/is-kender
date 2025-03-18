@@ -35,6 +35,8 @@ export interface SwiperEmits {
 
 export interface SwiperSlots {
   default(): any;
+  'button-prev'(): any;
+  'button-next'(): any;
 }
 
 export interface SwiperState {

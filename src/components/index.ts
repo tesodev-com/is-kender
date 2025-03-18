@@ -11,6 +11,7 @@ export { default as Drawer } from 'library/Drawer';
 export { default as FileUpload } from 'library/FileUpload';
 export { default as Input } from 'library/Input';
 export { default as Link } from 'library/Link';
+export { default as Pagination } from 'library/Pagination';
 export { default as ProgressBar } from 'library/ProgressBar';
 export { default as RadioButton } from 'library/RadioButton';
 export { default as Row } from 'library/Row';
@@ -27,4 +28,3 @@ export { default as Tabs } from 'library/Tabs';
 export { default as Text } from 'library/Text';
 export { default as Toast } from 'library/Toast';
 export { default as Toggle } from 'library/Toggle';
-

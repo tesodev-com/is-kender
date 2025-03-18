@@ -53,7 +53,7 @@ import { keyboardArrowLeftIcon, keyboardArrowRightIcon } from '@/assets/icons';
 import type { SwipeState } from '@/directives/vSwipe';
 import { vSwipe } from '@/directives/vSwipe';
 import Svg from 'library/Svg';
-import type { SwiperProps, SwiperState } from 'library/Swiper';
+import type { SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
 import { Helpers } from 'library/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
 import type { EffectReturnType } from './effect/types';
@@ -68,6 +68,7 @@ let interval: NodeJS.Timeout | null = null;
 // composable
 const slots = useSlots();
 // props
+defineSlots<SwiperSlots>();
 const props = withDefaults(defineProps<SwiperProps>(), {
   slidesPerView: 1,
   slidesPerGroup: 1,
