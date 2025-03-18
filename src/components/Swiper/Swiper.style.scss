@@ -47,7 +47,7 @@
     }
   }
 
-  .swiper-button {
+  .swiper-navigation {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,12 +70,35 @@
       background-color: rgba($blue-gray-500, 0.6);
     }
 
+    &-disabled {
+      cursor: not-allowed;
+      background-color: rgba($blue-gray-500, 0.1) !important;
+    }
+
     &-prev {
       right: 56px;
     }
 
     &-next {
       right: 16px;
+    }
+  }
+
+  .swiper-fraction {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    color: $white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: rgba($blue-gray-500, 0.2);
+    padding: 4px 8px;
+    border-radius: $rounded-xs;
+  }
+
+  &:has(.swiper-navigation) {
+    .swiper-fraction {
+      right: 96px;
     }
   }
 }

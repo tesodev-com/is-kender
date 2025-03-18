@@ -17,9 +17,10 @@ export interface SwiperProps {
   autoplay?: boolean;
   autoplayDelay?: number;
 
-  // Navigation controls
+  // Controls
   navigation?: boolean;
   pagination?: boolean;
+  fraction?: boolean;
 
   // Loop and boundary behavior
   loop?: boolean;
@@ -35,8 +36,8 @@ export interface SwiperEmits {
 
 export interface SwiperSlots {
   default(): any;
-  'button-prev'(): any;
-  'button-next'(): any;
+  'navigation-prev'(): any;
+  'navigation-next'(): any;
 }
 
 export interface SwiperState {

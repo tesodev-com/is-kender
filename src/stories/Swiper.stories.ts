@@ -22,11 +22,12 @@ const meta: Meta<typeof Swiper> = {
     speed: {
       control: { type: 'number' },
     },
-    loop: {
-      control: { type: 'boolean' },
+    effect: {
+      control: 'select',
+      options: ['slide', 'fade'],
     },
-    allowTouchMove: {
-      control: { type: 'boolean' },
+    animationDuration: {
+      control: { type: 'number' },
     },
     autoplay: {
       control: { type: 'boolean' },
@@ -34,9 +35,23 @@ const meta: Meta<typeof Swiper> = {
     autoplayDelay: {
       control: { type: 'number' },
     },
-    effect: {
-      control: 'select',
-      options: ['slide', 'fade'],
+    navigation: {
+      control: { type: 'boolean' },
+    },
+    pagination: {
+      control: { type: 'boolean' },
+    },
+    fraction: {
+      control: { type: 'boolean' },
+    },
+    loop: {
+      control: { type: 'boolean' },
+    },
+    rewind: {
+      control: { type: 'boolean' },
+    },
+    allowTouchMove: {
+      control: { type: 'boolean' },
     },
   },
 };
@@ -51,7 +66,9 @@ export const Default: Story = {
     spaceBetween: 10,
     autoplay: false,
     autoplayDelay: 2000,
-    rewind: true,
+    navigation: true,
+    pagination: true,
+    fraction: true,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },
@@ -75,10 +92,12 @@ export const Fade: Story = {
     slidesPerView: 1,
     slidesPerGroup: 1,
     spaceBetween: 10,
+    effect: 'fade',
     autoplay: false,
     autoplayDelay: 2000,
-    effect: 'fade',
-    loop: true,
+    navigation: true,
+    pagination: true,
+    fraction: true,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },

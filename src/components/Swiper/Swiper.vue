@@ -28,21 +28,29 @@
     </div>
     <div
       v-if="props.navigation"
-      class="swiper-button swiper-button-prev"
+      class="swiper-navigation swiper-navigation-prev"
+      :class="[{ 'swiper-navigation-disabled': navigationState.prev }]"
       @click="slidePrev"
     >
-      <slot name="button-prev">
+      <slot name="navigation-prev">
         <Svg :src="keyboardArrowLeftIcon"></Svg>
       </slot>
     </div>
     <div
       v-if="props.navigation"
-      class="swiper-button swiper-button-next"
+      class="swiper-navigation swiper-navigation-next"
+      :class="[{ 'swiper-navigation-disabled': navigationState.next }]"
       @click="slideNext"
     >
-      <slot name="button-next">
+      <slot name="navigation-next">
         <Svg :src="keyboardArrowRightIcon"></Svg>
       </slot>
+    </div>
+    <div
+      v-if="props.fraction"
+      class="swiper-fraction"
+    >
+      <span>{{ state.activeIndex }} / {{ state.lastSlideIndex }}</span>
     </div>
   </div>
 </template>
@@ -81,6 +89,7 @@ const props = withDefaults(defineProps<SwiperProps>(), {
   autoplayDelay: 3000,
   navigation: false,
   pagination: false,
+  fraction: false,
   loop: false,
   rewind: false,
   allowTouchMove: true,
@@ -117,6 +126,10 @@ const renderToSlides = computed(() => {
 const slideElements = computed(() => {
   return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
 });
+const navigationState = computed(() => ({
+  prev: state.value.isBeginning && !props.loop && !props.rewind,
+  next: state.value.isEnd && !props.loop && !props.rewind,
+}));
 // watchers
 // lifecycles
 setSlideNodes();
