@@ -8,6 +8,7 @@
     (100% - (var(--space-between) * (var(--slides-per-view) - 1))) /
       var(--slides-per-view)
   );
+  height: 100%;
 
   &.swiper-slide-fade {
     position: absolute;

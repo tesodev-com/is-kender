@@ -88,9 +88,9 @@ export const Fade: Story = {
       <div style="width: 100%; height: 200px;">
         <Swiper v-bind="args">
           <SwiperSlide v-for="i in 10" :key="i">
-            <Skeleton width="100%" height="200px" style="display: flex; justify-content: center; align-items: center; user-select: none;">
-              Slide - {{ i - 1}}
-            </Skeleton>
+            <div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; user-select: none; background: #dadada;">
+              <span>Slide - {{ i - 1}}</span>
+            </div>
           </SwiperSlide>
         </Swiper>
       </div>

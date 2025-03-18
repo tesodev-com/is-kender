@@ -55,7 +55,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
       slideTo(nearestSlide.value);
     }
   }
-  function slideTo(index: number, duration: number = 300) {
+  function slideTo(index: number, duration: number = 500) {
     const safeIndex = Math.max(0, Math.min(index, state.value.lastSlideIndex));
     if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
     const slideElement = slideElements.value[state.value.activeIndex];

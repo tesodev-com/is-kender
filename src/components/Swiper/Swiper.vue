@@ -33,6 +33,7 @@ import type { EffectReturnType } from './effect/types';
 let effect: EffectReturnType | null = null;
 const effects = {
   slide: () => import('./effect/useSlideEffect'),
+  fade: () => import('./effect/useFadeEffect'),
 };
 let interval: NodeJS.Timeout | null = null;
 // composable
@@ -174,7 +175,13 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
     if (typeof vnode.type === 'symbol' && vnode.children) {
       getSlidesFromSlot(vnode.children as VNode[], slides);
     } else if (typeof vnode.type === 'object' && 'name' in vnode.type && vnode.type?.name === 'SwiperSlide') {
-      if (vnode.props) Object.assign(vnode.props, { slideIndex: index });
+      if (vnode.props)
+        Object.assign(vnode.props, {
+          slideIndex: index,
+          class: {
+            'swiper-slide-fade': props.effect === 'fade',
+          },
+        });
       slides.push(vnode);
     }
   });
