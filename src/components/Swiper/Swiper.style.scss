@@ -94,6 +94,7 @@
     background-color: rgba($blue-gray-500, 0.2);
     padding: 4px 8px;
     border-radius: $rounded-xs;
+    user-select: none;
   }
 
   &:has(.swiper-navigation) {

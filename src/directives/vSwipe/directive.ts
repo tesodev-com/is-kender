@@ -1,44 +1,18 @@
 import type { SwipeOptions, SwipeState } from './types';
 
-const options: SwipeOptions = {
-  preventDefaultOnStart: false,
-  preventDefaultOnMove: false,
-  preventDefaultOnEnd: false,
-};
-
-const state: SwipeState = {
-  isSwiping: false,
-  startX: 0,
-  startY: 0,
-  endX: 0,
-  endY: 0,
-  deltaX: 0,
-  deltaY: 0,
-  elapsedTime: 0,
-  startTime: 0,
-  swipeSpeed: 0,
-  direction: 'none',
-};
-
-const handlers = {
-  onStart(event: MouseEvent | TouchEvent) {
+function getHandlers(options: SwipeOptions, state: SwipeState) {
+  function onStart(event: MouseEvent | TouchEvent) {
     if (options.preventDefaultOnStart) event.preventDefault();
     resetState();
     const e = event instanceof TouchEvent ? event.touches[0] : event;
 
-    setState({
-      swipeState: 'start',
-      startX: e.clientX,
-      startY: e.clientY,
-      startTime: Date.now(),
-      isSwiping: true,
-    });
+    setState({ swipeState: 'start', startX: e.clientX, startY: e.clientY, startTime: Date.now(), isSwiping: true });
 
     options.onSwipeStart?.({ ...state });
     options.onSwipe?.({ ...state });
-  },
+  }
 
-  onMove(event: MouseEvent | TouchEvent) {
+  function onMove(event: MouseEvent | TouchEvent) {
     if (!state.isSwiping) return;
     if (options.preventDefaultOnMove) event.preventDefault();
     const e = event instanceof TouchEvent ? event.touches[0] : event;
@@ -48,9 +22,9 @@ const handlers = {
 
     options.onSwipeMove?.({ ...state });
     options.onSwipe?.({ ...state });
-  },
+  }
 
-  onEnd(event: MouseEvent | TouchEvent) {
+  function onEnd(event: MouseEvent | TouchEvent) {
     if (options.preventDefaultOnEnd) event.preventDefault();
     if (!state.isSwiping) return;
     const e = event instanceof TouchEvent ? event.touches[0] : event;
@@ -60,50 +34,72 @@ const handlers = {
 
     options.onSwipeEnd?.({ ...state });
     options.onSwipe?.({ ...state });
-  },
-};
-
-function calculateSwipe({ startX, startY, endX, endY, startTime }: Partial<SwipeState> = {}) {
-  const deltaX = (endX || state.endX) - (startX || state.startX);
-  const deltaY = (endY || state.endY) - (startY || state.startY);
-  const elapsedTime = Date.now() - (startTime || state.startTime);
-  const swipeSpeed = Math.sqrt(deltaX ** 2 + deltaY ** 2) / elapsedTime;
-  const direction = detectDirection();
-  return { deltaX, deltaY, elapsedTime, direction, swipeSpeed };
-}
-
-function detectDirection(): SwipeState['direction'] {
-  const absX = Math.abs(state.deltaX);
-  const absY = Math.abs(state.deltaY);
-  if (absX > absY) {
-    return state.deltaX > 0 ? 'right' : 'left';
   }
-  return state.deltaY > 0 ? 'bottom' : 'top';
-}
 
-function setState(values: Partial<SwipeState>) {
-  Object.assign(state, values);
-}
+  function calculateSwipe({ startX, startY, endX, endY, startTime }: Partial<SwipeState> = {}) {
+    const deltaX = (endX || state.endX) - (startX || state.startX);
+    const deltaY = (endY || state.endY) - (startY || state.startY);
+    const elapsedTime = Date.now() - (startTime || state.startTime);
+    const swipeSpeed = Math.sqrt(deltaX ** 2 + deltaY ** 2) / elapsedTime;
+    const direction = detectDirection();
+    return { deltaX, deltaY, elapsedTime, direction, swipeSpeed };
+  }
 
-function resetState() {
-  setState({
-    isSwiping: false,
-    startX: 0,
-    startY: 0,
-    endX: 0,
-    endY: 0,
-    deltaX: 0,
-    deltaY: 0,
-    elapsedTime: 0,
-    startTime: 0,
-    swipeSpeed: 0,
-  });
+  function detectDirection(): SwipeState['direction'] {
+    const absX = Math.abs(state.deltaX);
+    const absY = Math.abs(state.deltaY);
+    if (absX > absY) {
+      return state.deltaX > 0 ? 'right' : 'left';
+    }
+    return state.deltaY > 0 ? 'bottom' : 'top';
+  }
+
+  function setState(values: Partial<SwipeState>) {
+    Object.assign(state, values);
+  }
+
+  function resetState() {
+    setState({
+      isSwiping: false,
+      startX: 0,
+      startY: 0,
+      endX: 0,
+      endY: 0,
+      deltaX: 0,
+      deltaY: 0,
+      elapsedTime: 0,
+      startTime: 0,
+      swipeSpeed: 0,
+    });
+  }
+
+  return { onStart, onMove, onEnd };
 }
 
 const SwipeDirective = {
   mounted(el: HTMLElement, binding: any) {
-    const { onStart, onMove, onEnd } = handlers;
-    Object.assign(options, binding.value);
+    const options: SwipeOptions = {
+      preventDefaultOnStart: false,
+      preventDefaultOnMove: false,
+      preventDefaultOnEnd: false,
+      ...binding.value,
+    };
+
+    const state: SwipeState = {
+      isSwiping: false,
+      startX: 0,
+      startY: 0,
+      endX: 0,
+      endY: 0,
+      deltaX: 0,
+      deltaY: 0,
+      elapsedTime: 0,
+      startTime: 0,
+      swipeSpeed: 0,
+      direction: 'none',
+    };
+
+    const { onStart, onMove, onEnd } = getHandlers(options, state);
     el.addEventListener('touchstart', onStart, { passive: false });
     el.addEventListener('mousedown', onStart);
     el.addEventListener('touchmove', onMove, { passive: false });

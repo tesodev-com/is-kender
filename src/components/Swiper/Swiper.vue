@@ -134,16 +134,15 @@ const navigationState = computed(() => ({
 // lifecycles
 setSlideNodes();
 onMounted(async () => {
-  await init();
-  effect = await loadEffect();
-  if (effect && effect?.init) effect.init();
+  init();
+  await loadEffect();
   autoPlay('start');
 });
 onUnmounted(() => {
   autoPlay('stop');
 });
 // methods
-async function init() {
+function init() {
   if (!wrapperRef.value) return;
   state.value.activeIndex = props.initialSlide;
   state.value.containerWidth = wrapperRef.value.offsetWidth;
@@ -152,6 +151,7 @@ async function init() {
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   if (effect?.onSwipe) effect.onSwipe(event);
+  autoPlay('stop');
 }
 function slideTo(index: number) {
   if (!effect?.slideTo) return;
@@ -207,12 +207,12 @@ async function loadEffect() {
   const effectArgs = { props, state, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
   if (effects[props.effect]) {
     const module = await effects[props.effect]();
-    return module.default(effectArgs);
+    effect = module.default(effectArgs);
   } else {
-    console.error('Effect not found');
     const defaultModule = await effects.slide();
-    return defaultModule.default(effectArgs);
+    effect = defaultModule.default(effectArgs);
   }
+  if (effect.init) effect.init();
 }
 function setSlideNodes() {
   const defaultNodes = slots?.default?.() as VNode[];
