@@ -1,0 +1,135 @@
+.pagination-container {
+  width: 100%;
+
+  .pagination-top-border {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: $gray-200;
+    margin-bottom: 1.25rem;
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .pagination-numbers {
+      display: flex;
+      align-items: center;
+      gap: 0.125rem;
+
+      .ellipsis {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 2.5rem;
+        height: 2.5rem;
+
+        @include text-sm(500, $gray-600);
+      }
+
+      button {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      .active-number {
+        background-color: $gray-50;
+      }
+    }
+  }
+
+  .pagination-minimal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    &-left {
+      flex-direction: row-reverse;
+    }
+
+    &-right {
+      flex-direction: row;
+    }
+
+    &-info {
+      @include text-sm(500, $gray-700);
+    }
+
+    &-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  }
+
+  .pagination-mobile {
+    .pagination-left-button,
+    .pagination-right-button {
+      button {
+        width: 2.25rem;
+        height: 2.25rem;
+      }
+    }
+  }
+
+  .pagination-button-group {
+    display: flex;
+    align-items: center;
+    box-shadow: $shadow-xs;
+    border-radius: $rounded-sm;
+    border: 1px solid $gray-300;
+    width: fit-content;
+    overflow: hidden;
+
+    &-left {
+      justify-self: start;
+    }
+
+    &-center {
+      justify-self: center;
+    }
+
+    &-right {
+      justify-self: end;
+    }
+
+    > * {
+      border-radius: 0;
+      border: 0;
+    }
+
+    > *:not(:last-child) {
+      border-right: 1px solid $gray-300;
+    }
+
+    .button-group {
+      width: 2.5rem;
+      height: 2.5rem;
+
+      &-active-number {
+        background-color: $gray-50;
+      }
+    }
+
+    .button-group-left,
+    .button-group-right {
+      height: 2.5rem;
+    }
+
+    .group-ellipsis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 2.5rem;
+      height: 2.5rem;
+
+      @include text-sm(500, $gray-700);
+    }
+  }
+}

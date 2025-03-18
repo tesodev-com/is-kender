@@ -1,8 +1,11 @@
 export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
 export { default as telIcon } from '@material-design-icons/svg/outlined/call.svg?raw';
+export { default as infoIcon } from '@material-design-icons/svg/outlined/info.svg?raw';
 export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
 export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';
 export { default as addCircleOutlineIcon } from '@material-design-icons/svg/round/add_circle_outline.svg?raw';
+export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
+export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
 export { default as checkIcon } from '@material-design-icons/svg/round/check.svg?raw';
 export { default as closeIcon } from '@material-design-icons/svg/round/close.svg?raw';
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';

@@ -30,8 +30,20 @@ $input-states: (
   margin-bottom: 20px;
   gap: $spacing-sm;
 
+  &:not(.input-container--fluid) {
+    max-width: 300px;
+  }
+
+  &--fluid {
+    width: 100%;
+  }
+
   .input-label {
     @include text-sm(400);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     &--required {
       color: $primary-500;
@@ -73,6 +85,7 @@ $input-states: (
     border-color: $gray-300;
     border-radius: 0.5rem;
     display: flex;
+    align-items: center;
 
     &:not(.input-wrapper--fluid) {
       max-width: 300px;

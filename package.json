@@ -128,6 +128,50 @@
     "./toggle": {
       "types": "./dist/components/Toggle/Toggle.d.ts",
       "import": "./dist/components/Toggle/Toggle.js"
+    },
+    "./sidebar": {
+      "types": "./dist/components/Sidebar/Sidebar.d.ts",
+      "import": "./dist/components/Sidebar/Sidebar.js"
+    },
+    "./link": {
+      "types": "./dist/components/Link/Link.d.ts",
+      "import": "./dist/components/Link/Link.js"
+    },
+    "./input": {
+      "types": "./dist/components/Input/Input.d.ts",
+      "import": "./dist/components/Input/Input.js"
+    },
+    "./checkbox": {
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
+    },
+    "./radiobutton": {
+      "types": "./dist/components/RadioButton/RadioButton.d.ts",
+      "import": "./dist/components/RadioButton/RadioButton.js"
+    },
+    "./spinner": {
+      "types": "./dist/components/Spinner/Spinner.d.ts",
+      "import": "./dist/components/Spinner/Spinner.js"
+    },
+    "./tabs": {
+      "types": "./dist/components/Tabs/Tabs.d.ts",
+      "import": "./dist/components/Tabs/Tabs.js"
+    },
+    "./tab": {
+      "types": "./dist/components/Tab/Tab.d.ts",
+      "import": "./dist/components/Tab/Tab.js"
+    },
+    "./tabpanel": {
+      "types": "./dist/components/TabPanel/TabPanel.d.ts",
+      "import": "./dist/components/TabPanel/TabPanel.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
+    },
+    "./drawer": {
+      "types": "./dist/components/Drawer/Drawer.d.ts",
+      "import": "./dist/components/Drawer/Drawer.js"
     }
   },
   "scripts": {

@@ -21,6 +21,10 @@ export { default as Spinner } from 'library/Spinner';
 export { default as Svg } from 'library/Svg';
 export { default as Swiper } from 'library/Swiper';
 export { default as SwiperSlide } from 'library/SwiperSlide';
+export { default as Tab } from 'library/Tab';
+export { default as TabPanel } from 'library/TabPanel';
+export { default as Tabs } from 'library/Tabs';
 export { default as Text } from 'library/Text';
 export { default as Toast } from 'library/Toast';
 export { default as Toggle } from 'library/Toggle';
+
