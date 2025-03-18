@@ -3,16 +3,18 @@ import { ref } from 'vue';
 import { Helpers } from '../core';
 import type { EffectOptions } from './types';
 
+interface EffectState {
+  opacityArray: number[];
+}
+
 function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePrev, slideNext }: EffectOptions) {
-  const opacityArray = ref<number[]>(Array.from({ length: slideElements.value.length }).map((_, index) => (index === state.value.activeIndex ? 1 : 0)));
+  const effectState = ref<EffectState>({
+    opacityArray: Array.from({ length: slideElements.value.length }).map((_, index) => (index === state.value.activeIndex ? 1 : 0)),
+  });
   const transitionRatio = 0.5;
   function init() {
     if (!slideElements.value.length) return;
-    if (props.initialSlide) {
-      slideTo(props.initialSlide, 0);
-    } else {
-      checkBoundaries();
-    }
+    checkBoundaries();
     update();
   }
   function onSwipe(event: SwipeState) {
@@ -23,15 +25,15 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
   function onMove(event: SwipeState) {
     const ratio = Math.abs(getLimitedDeltaX(event.deltaX) / (state.value.containerWidth * 0.5));
     const activeIndex = state.value.activeIndex;
+    let newIndex = activeIndex;
+    effectState.value.opacityArray[activeIndex] = 1 - ratio;
     if (event.direction === 'left') {
-      opacityArray.value[activeIndex] = 1 - ratio;
-      opacityArray.value[activeIndex + 1] = ratio;
-      updateSlideClass(Math.abs(opacityArray.value[activeIndex + 1]) > transitionRatio ? activeIndex + 1 : activeIndex);
+      newIndex = props.loop ? Helpers.getModulo(activeIndex + 1, slideElements.value.length) : activeIndex + 1;
     } else {
-      opacityArray.value[activeIndex] = 1 - ratio;
-      opacityArray.value[activeIndex - 1] = ratio;
-      updateSlideClass(Math.abs(opacityArray.value[activeIndex - 1]) > transitionRatio ? activeIndex - 1 : activeIndex);
+      newIndex = props.loop ? Helpers.getModulo(activeIndex - 1, slideElements.value.length) : activeIndex - 1;
     }
+    updateSlideClass(Math.abs(effectState.value.opacityArray[newIndex]) > transitionRatio ? newIndex : activeIndex);
+    effectState.value.opacityArray[newIndex] = ratio;
     update();
   }
   function onEnd(event: SwipeState) {
@@ -39,7 +41,7 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
       if (event.direction === 'right') slidePrev();
       if (event.direction === 'left') slideNext();
     } else {
-      const currentOpacity = opacityArray.value[state.value.activeIndex];
+      const currentOpacity = effectState.value.opacityArray[state.value.activeIndex];
       if (Math.abs(currentOpacity) < transitionRatio) {
         if (event.direction === 'right') slidePrev();
         if (event.direction === 'left') slideNext();
@@ -48,14 +50,14 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
       }
     }
   }
-  function slideTo(index: number, duration: number = 500) {
+  function slideTo(index: number, duration: number = props.animationDuration || 500) {
     const safeIndex = Math.max(0, Math.min(index, slideElements.value.length - 1));
     if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
-    opacityArray.value = opacityArray.value.map((_, i) => (i === safeIndex ? 1 : 0));
+    effectState.value.opacityArray = effectState.value.opacityArray.map((_, i) => (i === safeIndex ? 1 : 0));
     Helpers.delayedExec(() => {
       slideElements.value.forEach((slideElement, i) => {
         if (!slideElement) return;
-        slideElement.style.opacity = opacityArray.value[i].toString();
+        slideElement.style.opacity = effectState.value.opacityArray[i].toString();
         slideElement.style.transitionDuration = `${duration}ms`;
       });
       updateSlideClass();
@@ -70,7 +72,7 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
   function update() {
     slideElements.value.forEach((slideElement, index) => {
       if (!slideElement) return;
-      slideElement.style.opacity = opacityArray.value[index].toString();
+      slideElement.style.opacity = effectState.value.opacityArray[index].toString();
     });
   }
   function getLimitedDeltaX(deltaX: number) {

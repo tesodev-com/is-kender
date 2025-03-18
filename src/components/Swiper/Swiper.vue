@@ -15,9 +15,6 @@
       />
     </div>
   </div>
-  <pre>
-    {{ state }}
-  </pre>
 </template>
 
 <script setup lang="ts">
@@ -45,12 +42,15 @@ const props = withDefaults(defineProps<SwiperProps>(), {
   spaceBetween: 0,
   initialSlide: 0,
   speed: 0.5,
+  effect: 'slide',
+  animationDuration: 300,
   autoplay: false,
   autoplayDelay: 3000,
+  navigation: false,
+  pagination: false,
   loop: false,
   rewind: false,
   allowTouchMove: true,
-  effect: 'slide',
 });
 // defineEmits
 // states (refs and reactives)
@@ -58,17 +58,12 @@ const wrapperRef = useTemplateRef('swiperWrapperRef');
 const slideNodes = ref<VNode[]>([]);
 const state = ref<SwiperState>({
   swiperId: `swiper-${Helpers.generateUUID()}`,
-  translateX: 0,
   deltaX: 0,
   duration: 0,
   activeIndex: 0,
-  previousIndex: 0,
   isBeginning: false,
   isEnd: false,
-  totalSlidesWidth: 0,
   containerWidth: 0,
-  lastTranslateX: 0,
-  lastSlideIndex: 0,
 });
 // computed
 const swiperStyles = computed(() => ({
@@ -104,6 +99,7 @@ onUnmounted(() => {
 async function init() {
   if (!wrapperRef.value) return;
   state.value.containerWidth = wrapperRef.value.offsetWidth;
+  state.value.activeIndex = props.initialSlide;
   updateSlideClass();
 }
 function onSwipe(event: SwipeState) {
@@ -113,7 +109,9 @@ function onSwipe(event: SwipeState) {
 function slidePrev(offset = props.slidesPerGroup) {
   const prevIndex = state.value.activeIndex - offset;
   if (props.rewind) {
-    effect?.slideTo(state.value.isBeginning ? state.value.lastSlideIndex : prevIndex);
+    effect?.slideTo(state.value.isBeginning ? slideNodes.value.length - 1 : prevIndex);
+  } else if (props.loop) {
+    effect?.slideTo(Helpers.getModulo(prevIndex, slideNodes.value.length));
   } else {
     effect?.slideTo(prevIndex);
   }
@@ -122,6 +120,8 @@ function slideNext(offset = props.slidesPerGroup) {
   const nextIndex = state.value.activeIndex + offset;
   if (props.rewind) {
     effect?.slideTo(state.value.isEnd ? 0 : nextIndex);
+  } else if (props.loop) {
+    effect?.slideTo(Helpers.getModulo(nextIndex, slideNodes.value.length));
   } else {
     effect?.slideTo(nextIndex);
   }

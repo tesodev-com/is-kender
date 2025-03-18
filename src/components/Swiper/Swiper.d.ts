@@ -11,6 +11,7 @@ export interface SwiperProps {
   // Behavior settings
   speed?: number;
   effect?: 'slide' | 'fade';
+  animationDuration?: number;
 
   // Autoplay
   autoplay?: boolean;
@@ -41,23 +42,18 @@ export interface SwiperState {
   swiperId: string;
 
   // Position and size
-  translateX: number;
   deltaX: number;
   duration: number;
 
   // Indexes
   activeIndex: number;
-  previousIndex: number;
 
   // State flags
   isBeginning: boolean;
   isEnd: boolean;
 
   // Slide data
-  totalSlidesWidth: number;
   containerWidth: number;
-  lastTranslateX: number; // If loop is disabled and last slide is completely visible
-  lastSlideIndex: number; // If loop is disabled and last slide is completely visible
 }
 
 declare const Swiper: DefineComponent<SwiperProps, SwiperSlots, SwiperEmits>;
