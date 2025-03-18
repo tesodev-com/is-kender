@@ -15,9 +15,9 @@
 
   .swiper-pagination {
     position: absolute;
-    left: 0;
-    bottom: 8px;
-    width: 100%;
+    left: 16px;
+    bottom: 16px;
+    width: max-content;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,15 +27,55 @@
     &-bullet {
       width: 8px;
       height: 8px;
-      border-radius: 50%;
-      background-color: $blue-gray-300;
+      border-radius: $rounded-full;
+      background-color: rgba($blue-gray-500, 0.2);
       cursor: pointer;
       display: inline-block;
       transition: background-color 150ms;
 
+      &:hover {
+        background-color: rgba($blue-gray-500, 0.4);
+      }
+
+      &:active {
+        background-color: rgba($blue-gray-500, 0.6);
+      }
+
       &-active {
         background-color: $blue-gray-500;
       }
+    }
+  }
+
+  .swiper-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min-content;
+    height: min-content;
+    position: absolute;
+    bottom: 16px;
+    color: $white;
+    background-color: rgba($blue-gray-500, 0.2);
+    padding: 8px;
+    border-radius: $rounded-xs;
+    cursor: pointer;
+    transition: background-color 150ms;
+
+    &:hover {
+      background-color: rgba($blue-gray-500, 0.4);
+    }
+
+    &:active {
+      background-color: rgba($blue-gray-500, 0.6);
+    }
+
+    &-prev {
+      right: 56px;
+    }
+
+    &-next {
+      right: 16px;
     }
   }
 }

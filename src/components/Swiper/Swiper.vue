@@ -26,14 +26,33 @@
         @click="effect.slideTo(i - 1)"
       ></span>
     </div>
+    <div
+      v-if="props.navigation"
+      class="swiper-button swiper-button-prev"
+      @click="slidePrev"
+    >
+      <slot name="button-prev">
+        <Svg :src="keyboardArrowLeftIcon"></Svg>
+      </slot>
+    </div>
+    <div
+      v-if="props.navigation"
+      class="swiper-button swiper-button-next"
+      @click="slideNext"
+    >
+      <slot name="button-next">
+        <Svg :src="keyboardArrowRightIcon"></Svg>
+      </slot>
+    </div>
   </div>
-  {{ state }}
 </template>
 
 <script setup lang="ts">
 // imports
+import { keyboardArrowLeftIcon, keyboardArrowRightIcon } from '@/assets/icons';
 import type { SwipeState } from '@/directives/vSwipe';
 import { vSwipe } from '@/directives/vSwipe';
+import Svg from 'library/Svg';
 import type { SwiperProps, SwiperState } from 'library/Swiper';
 import { Helpers } from 'library/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
@@ -120,8 +139,8 @@ function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   if (effect?.onSwipe) effect.onSwipe(event);
 }
-function slidePrev(offset = props.slidesPerGroup) {
-  const prevIndex = state.value.activeIndex - offset;
+function slidePrev() {
+  const prevIndex = state.value.activeIndex - props.slidesPerGroup;
   if (props.rewind) {
     effect?.slideTo(state.value.isBeginning ? slideNodes.value.length - 1 : prevIndex);
   } else if (props.loop) {
@@ -130,8 +149,8 @@ function slidePrev(offset = props.slidesPerGroup) {
     effect?.slideTo(prevIndex);
   }
 }
-function slideNext(offset = props.slidesPerGroup) {
-  const nextIndex = state.value.activeIndex + offset;
+function slideNext() {
+  const nextIndex = state.value.activeIndex + props.slidesPerGroup;
   if (props.rewind) {
     effect?.slideTo(state.value.isEnd ? 0 : nextIndex);
   } else if (props.loop) {
