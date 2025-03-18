@@ -14,7 +14,10 @@
         :key="index"
       />
     </div>
-    <div class="swiper-pagination">
+    <div
+      v-if="props.pagination"
+      class="swiper-pagination"
+    >
       <span
         v-for="i in state.lastSlideIndex + 1"
         :key="i"
