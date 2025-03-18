@@ -67,7 +67,7 @@ import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type V
 import type { EffectReturnType } from './effect/types';
 // interfaces & types
 // constants
-let effect: EffectReturnType | null = null;
+let effect: EffectReturnType;
 const effects = {
   slide: () => import('./effect/useSlideEffect'),
   fade: () => import('./effect/useFadeEffect'),
@@ -136,7 +136,7 @@ setSlideNodes();
 onMounted(async () => {
   await init();
   effect = await loadEffect();
-  if (effect.init) effect.init();
+  if (effect && effect?.init) effect.init();
   autoPlay('start');
 });
 onUnmounted(() => {
@@ -153,24 +153,28 @@ function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   if (effect?.onSwipe) effect.onSwipe(event);
 }
+function slideTo(index: number) {
+  if (!effect?.slideTo) return;
+  effect?.slideTo(index);
+}
 function slidePrev() {
   const prevIndex = state.value.activeIndex - props.slidesPerGroup;
   if (props.rewind) {
-    effect?.slideTo(state.value.isBeginning ? slideNodes.value.length - 1 : prevIndex);
+    slideTo(state.value.isBeginning ? slideNodes.value.length - 1 : prevIndex);
   } else if (props.loop) {
-    effect?.slideTo(Helpers.getModulo(prevIndex, slideNodes.value.length));
+    slideTo(Helpers.getModulo(prevIndex, slideNodes.value.length));
   } else {
-    effect?.slideTo(prevIndex);
+    slideTo(prevIndex);
   }
 }
 function slideNext() {
   const nextIndex = state.value.activeIndex + props.slidesPerGroup;
   if (props.rewind) {
-    effect?.slideTo(state.value.isEnd ? 0 : nextIndex);
+    slideTo(state.value.isEnd ? 0 : nextIndex);
   } else if (props.loop) {
-    effect?.slideTo(Helpers.getModulo(nextIndex, slideNodes.value.length));
+    slideTo(Helpers.getModulo(nextIndex, slideNodes.value.length));
   } else {
-    effect?.slideTo(nextIndex);
+    slideTo(nextIndex);
   }
 }
 function autoPlay(status: 'start' | 'stop') {
@@ -234,6 +238,7 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   });
   return slides;
 }
+defineExpose({ slidePrev, slideNext, slideTo, state });
 </script>
 
 <style lang="scss" scoped src="./Swiper.style.scss"></style>

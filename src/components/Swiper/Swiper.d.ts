@@ -36,8 +36,8 @@ export interface SwiperEmits {
 
 export interface SwiperSlots {
   default(): any;
-  'navigation-prev'(): any;
-  'navigation-next'(): any;
+  'navigation-prev'?(): any;
+  'navigation-next'?(): any;
 }
 
 export interface SwiperState {

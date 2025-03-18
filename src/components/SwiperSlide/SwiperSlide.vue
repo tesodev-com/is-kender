@@ -12,7 +12,7 @@
 
 // interfaces & types
 interface SwiperSlideProps {
-  slideIndex: number;
+  slideIndex?: number;
 }
 // constants
 
