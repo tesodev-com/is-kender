@@ -6,7 +6,6 @@ import type { EffectOptions } from './types';
 interface EffectState {
   translateX: number;
   lastTranslateX: number;
-  lastSlideIndex: number;
   totalSlidesWidth: number;
 }
 
@@ -14,7 +13,6 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
   const effectState = ref<EffectState>({
     translateX: -slideElements.value[state.value.activeIndex].offsetLeft,
     lastTranslateX: 0,
-    lastSlideIndex: 0,
     totalSlidesWidth: 0,
   });
   const currentTranslate = computed(() => {
@@ -42,7 +40,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
 
     if (!props.loop) {
       effectState.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || 0);
-      effectState.value.lastSlideIndex = props.slidesPerView === 'auto' ? slideElements.value.length - 1 : slideElements.value.findIndex(el => el.offsetLeft >= effectState.value.totalSlidesWidth);
+      state.value.lastSlideIndex = slideElements.value.findIndex(el => el.offsetLeft >= effectState.value.lastTranslateX);
     }
 
     update();
@@ -66,7 +64,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
     }
   }
   function slideTo(index: number, duration: number = props.animationDuration || 500) {
-    const safeIndex = Math.max(0, Math.min(index, effectState.value.lastSlideIndex));
+    const safeIndex = Math.max(0, Math.min(index, state.value.lastSlideIndex));
     const slideElement = slideElements.value[safeIndex];
     if (!slideElement) return;
     Helpers.delayedExec(() => {

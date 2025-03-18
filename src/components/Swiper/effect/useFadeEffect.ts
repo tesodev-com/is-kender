@@ -14,6 +14,7 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
   const transitionRatio = 0.5;
   function init() {
     if (!slideElements.value.length) return;
+    state.value.lastSlideIndex = slideElements.value.length - 1;
     checkBoundaries();
     update();
   }

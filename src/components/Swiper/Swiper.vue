@@ -14,7 +14,17 @@
         :key="index"
       />
     </div>
+    <div class="swiper-pagination">
+      <span
+        v-for="i in state.lastSlideIndex + 1"
+        :key="i"
+        class="swiper-pagination-bullet"
+        :class="[{ 'swiper-pagination-bullet-active': i - 1 === state.activeIndex }]"
+        @click="effect.slideTo(i - 1)"
+      ></span>
+    </div>
   </div>
+  {{ state }}
 </template>
 
 <script setup lang="ts">
@@ -64,6 +74,7 @@ const state = ref<SwiperState>({
   isBeginning: false,
   isEnd: false,
   containerWidth: 0,
+  lastSlideIndex: 0,
 });
 // computed
 const swiperStyles = computed(() => ({
@@ -98,8 +109,8 @@ onUnmounted(() => {
 // methods
 async function init() {
   if (!wrapperRef.value) return;
-  state.value.containerWidth = wrapperRef.value.offsetWidth;
   state.value.activeIndex = props.initialSlide;
+  state.value.containerWidth = wrapperRef.value.offsetWidth;
   updateSlideClass();
 }
 function onSwipe(event: SwipeState) {

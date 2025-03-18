@@ -52,7 +52,6 @@ export const Default: Story = {
     autoplay: false,
     autoplayDelay: 2000,
     rewind: true,
-    initialSlide: 1,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },
@@ -80,7 +79,6 @@ export const Fade: Story = {
     autoplayDelay: 2000,
     effect: 'fade',
     loop: true,
-    initialSlide: 0,
   },
   render: args => ({
     components: { Swiper, SwiperSlide, Skeleton },

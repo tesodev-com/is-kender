@@ -54,6 +54,7 @@ export interface SwiperState {
 
   // Slide data
   containerWidth: number;
+  lastSlideIndex: number;
 }
 
 declare const Swiper: DefineComponent<SwiperProps, SwiperSlots, SwiperEmits>;

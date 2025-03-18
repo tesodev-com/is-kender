@@ -12,4 +12,30 @@
     height: 100%;
     display: flex;
   }
+
+  .swiper-pagination {
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 1;
+
+    &-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: $blue-gray-300;
+      cursor: pointer;
+      display: inline-block;
+      transition: background-color 150ms;
+
+      &-active {
+        background-color: $blue-gray-500;
+      }
+    }
+  }
 }
