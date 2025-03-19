@@ -31,7 +31,7 @@ build_test:
     max: 2
     when: runner_system_failure
   only:
-    - test
+    - master
   timeout: 10 minutes
   when: manual
   allow_failure: false
@@ -49,7 +49,7 @@ deploy_to_test:
   script:
     - *deploy
   only:
-    - test
+    - master
   timeout: 10 minutes
   when: manual
   environment:
