@@ -1,0 +1,11 @@
+{
+    "main": "ExampleTable.vue",
+    "module": "ExampleTable.vue",
+    "types": "./Table.d.ts",
+    "exports": {
+        ".": {
+            "types": "./Table.d.ts",
+            "import": "./Table.vue"
+        }
+    }
+}

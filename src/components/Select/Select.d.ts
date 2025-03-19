@@ -19,6 +19,9 @@ export interface SelectProps {
   optionsOffset?: number;
   isSearch?: boolean;
   disabled?: boolean;
+  virtualScroll?: boolean;
+  itemHeight?: number;
+  virtualScrollBuffer?: number;
 }
 
 declare const Select: DefineComponent<SelectProps>;

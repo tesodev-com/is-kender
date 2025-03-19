@@ -114,4 +114,65 @@ describe('Select.vue', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.find('.select-dropdown').exists()).toBe(false);
   });
+
+  it('renders hint text when provided', () => {
+    wrapper = createWrapper({ hint: 'This is a hint' });
+    expect(wrapper.find('.select-hint').text()).toBe('This is a hint');
+  });
+
+  it('renders slotted hint content', async () => {
+    wrapper = mount(Select, {
+      props: { options },
+      slots: { hint: '<span>Custom hint</span>' },
+      global: { stubs: { Svg: true, Teleport: true } },
+    });
+    expect(wrapper.find('.select-hint span').text()).toBe('Custom hint');
+  });
+
+  it('sets aria attributes correctly', () => {
+    const trigger = wrapper.find('.select-trigger');
+    expect(trigger.attributes('role')).toBe('combobox');
+    expect(trigger.attributes('aria-expanded')).toBe('false');
+    expect(trigger.attributes('aria-controls')).toBeDefined();
+  });
+
+  it('closes dropdown with Escape key', async () => {
+    await wrapper.find('.select-trigger').trigger('click');
+    const trigger = wrapper.find('.select-trigger');
+    await trigger.trigger('keydown', { key: 'Escape' });
+    expect(wrapper.find('.select-dropdown').exists()).toBe(false);
+  });
+
+  it('does not open dropdown with keys when disabled', async () => {
+    wrapper = createWrapper({ disabled: true });
+    const trigger = wrapper.find('.select-trigger');
+    await trigger.trigger('keydown', { key: 'Enter' });
+    expect(wrapper.find('.select-dropdown').exists()).toBe(false);
+  });
+
+  it('renders no options message when filtered list is empty', async () => {
+    wrapper = createWrapper({ isSearch: true });
+    await wrapper.find('.select-trigger').trigger('click');
+    const searchInput = wrapper.find('.select-dropdown-search');
+    await searchInput.setValue('Nonexistent');
+    expect(wrapper.find('.select-dropdown-no-content').text()).toBe('No options available');
+  });
+
+  it('handles virtual scrolling with many options', async () => {
+    const manyOptions = Array.from({ length: 100 }, (_, i) => ({
+      value: `${i}`,
+      label: `Option ${i}`,
+    }));
+    wrapper = createWrapper({ virtualScroll: true, options: manyOptions, itemHeight: 40 });
+    await wrapper.find('.select-trigger').trigger('click');
+    const visibleItems = wrapper.findAll('.select-dropdown-item');
+    expect(visibleItems.length).toBeLessThan(100);
+  });
+
+  it('handles mouseover to focus items', async () => {
+    await wrapper.find('.select-trigger').trigger('click');
+    const items = wrapper.findAll('.select-dropdown-item');
+    await items[2].trigger('mouseover');
+    expect(items[2].classes()).toContain('select-dropdown-item-focused');
+  });
 });
