@@ -6,7 +6,7 @@ import ts from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['node_modules/**', 'dist/**', 'build/**', '**/*.min.js', '**/__mocks__/**'],
+    ignores: ['node_modules/**', 'dist/**', 'storybook-static/**', 'build/**', '**/*.min.js', '**/__mocks__/**'],
   },
   {
     languageOptions: {

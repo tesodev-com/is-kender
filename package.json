@@ -132,6 +132,14 @@
     "./table": {
       "types": "./dist/components/Table/Table.d.ts",
       "import": "./dist/components/Table/Table.js"
+    },
+    "./otpinput": {
+      "types": "./dist/components/OtpInput/OtpInput.d.ts",
+      "import": "./dist/components/OtpInput/OtpInput.js"
+    },
+    "./pagination": {
+      "types": "./dist/components/Pagination/Pagination.d.ts",
+      "import": "./dist/components/Pagination/Pagination.js"
     }
   },
   "scripts": {
