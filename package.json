@@ -21,9 +21,9 @@
       "types": "./dist/utils/formValidation/index.d.ts",
       "import": "./dist/utils/formValidation/index.js"
     },
-    "./button": {
-      "types": "./dist/components/Button/Button.d.ts",
-      "import": "./dist/components/Button/Button.js"
+    "./v-swipe": {
+      "types": "./dist/directives/vSwipe/types.d.ts",
+      "import": "./dist/directives/vSwipe/index.js"
     },
     "./accordion": {
       "types": "./dist/components/Accordion/Accordion.d.ts",
@@ -41,6 +41,14 @@
       "types": "./dist/components/Breadcrumb/Breadcrumb.d.ts",
       "import": "./dist/components/Breadcrumb/Breadcrumb.js"
     },
+    "./button": {
+      "types": "./dist/components/Button/Button.d.ts",
+      "import": "./dist/components/Button/Button.js"
+    },
+    "./checkbox": {
+      "types": "./dist/components/Checkbox/Checkbox.d.ts",
+      "import": "./dist/components/Checkbox/Checkbox.js"
+    },
     "./col": {
       "types": "./dist/components/Col/Col.d.ts",
       "import": "./dist/components/Col/Col.js"
@@ -53,25 +61,61 @@
       "types": "./dist/components/Divider/Divider.d.ts",
       "import": "./dist/components/Divider/Divider.js"
     },
+    "./drawer": {
+      "types": "./dist/components/Drawer/Drawer.d.ts",
+      "import": "./dist/components/Drawer/Drawer.js"
+    },
     "./fileupload": {
       "types": "./dist/components/FileUpload/FileUpload.d.ts",
       "import": "./dist/components/FileUpload/FileUpload.js"
+    },
+    "./input": {
+      "types": "./dist/components/Input/Input.d.ts",
+      "import": "./dist/components/Input/Input.js"
+    },
+    "./link": {
+      "types": "./dist/components/Link/Link.d.ts",
+      "import": "./dist/components/Link/Link.js"
     },
     "./progressbar": {
       "types": "./dist/components/ProgressBar/ProgressBar.d.ts",
       "import": "./dist/components/ProgressBar/ProgressBar.js"
     },
+    "./radiobutton": {
+      "types": "./dist/components/RadioButton/RadioButton.d.ts",
+      "import": "./dist/components/RadioButton/RadioButton.js"
+    },
     "./row": {
       "types": "./dist/components/Row/Row.d.ts",
       "import": "./dist/components/Row/Row.js"
+    },
+    "./select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
+    },
+    "./sidebar": {
+      "types": "./dist/components/Sidebar/Sidebar.d.ts",
+      "import": "./dist/components/Sidebar/Sidebar.js"
     },
     "./skeleton": {
       "types": "./dist/components/Skeleton/Skeleton.d.ts",
       "import": "./dist/components/Skeleton/Skeleton.js"
     },
+    "./spinner": {
+      "types": "./dist/components/Spinner/Spinner.d.ts",
+      "import": "./dist/components/Spinner/Spinner.js"
+    },
     "./svg": {
       "types": "./dist/components/Svg/Svg.d.ts",
       "import": "./dist/components/Svg/Svg.js"
+    },
+    "./swiper": {
+      "types": "./dist/components/Swiper/Swiper.d.ts",
+      "import": "./dist/components/Swiper/Swiper.js"
+    },
+    "./swiperslide": {
+      "types": "./dist/components/SwiperSlide/SwiperSlide.d.ts",
+      "import": "./dist/components/SwiperSlide/SwiperSlide.js"
     },
     "./text": {
       "types": "./dist/components/Text/Text.d.ts",
@@ -84,30 +128,6 @@
     "./toggle": {
       "types": "./dist/components/Toggle/Toggle.d.ts",
       "import": "./dist/components/Toggle/Toggle.js"
-    },
-    "./sidebar": {
-      "types": "./dist/components/Sidebar/Sidebar.d.ts",
-      "import": "./dist/components/Sidebar/Sidebar.js"
-    },
-    "./link": {
-      "types": "./dist/components/Link/Link.d.ts",
-      "import": "./dist/components/Link/Link.js"
-    },
-    "./input": {
-      "types": "./dist/components/Input/Input.d.ts",
-      "import": "./dist/components/Input/Input.js"
-    },
-    "./checkbox": {
-      "types": "./dist/components/Checkbox/Checkbox.d.ts",
-      "import": "./dist/components/Checkbox/Checkbox.js"
-    },
-    "./radiobutton": {
-      "types": "./dist/components/RadioButton/RadioButton.d.ts",
-      "import": "./dist/components/RadioButton/RadioButton.js"
-    },
-    "./spinner": {
-      "types": "./dist/components/Spinner/Spinner.d.ts",
-      "import": "./dist/components/Spinner/Spinner.js"
     },
     "./tabs": {
       "types": "./dist/components/Tabs/Tabs.d.ts",

@@ -3,7 +3,9 @@
     class="skeleton"
     :class="[classes]"
     :style="styles"
-  ></div>
+  >
+    <slot></slot>
+  </div>
 </template>
 
 <script setup lang="ts">

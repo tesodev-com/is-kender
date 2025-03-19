@@ -1,0 +1,22 @@
+/* stylelint-disable scss/operator-no-newline-after */
+
+.swiper-slide {
+  position: relative;
+  flex-shrink: 0;
+  margin-right: var(--space-between);
+  width: calc(
+    (100% - (var(--space-between) * (var(--slides-per-view) - 1))) /
+      var(--slides-per-view)
+  );
+  height: 100%;
+
+  &.swiper-slide-fade {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+
+    &.swiper-slide-active {
+      opacity: 1;
+    }
+  }
+}

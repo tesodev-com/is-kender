@@ -12,7 +12,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       entryRoot: resolve(__dirname, 'src'),
-      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts', 'src/utils/**/*.ts'],
+      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts', 'src/directives/**/*.ts', 'src/utils/**/*.ts'],
       exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
       cleanVueFileName: true,
       copyDtsFiles: true,
@@ -58,7 +58,7 @@ export default defineConfig({
       { find: '@', replacement: path.resolve(__dirname, './src') },
       { find: 'library', replacement: path.resolve(__dirname, 'src/components') },
       { find: 'library', replacement: path.resolve(__dirname, 'src/composables') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/globalTypes') },
+      { find: 'library', replacement: path.resolve(__dirname, 'src/directives') },
       { find: 'library', replacement: path.resolve(__dirname, 'src/utils') },
     ],
   },
