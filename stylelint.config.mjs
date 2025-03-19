@@ -1,7 +1,7 @@
 export default {
   extends: ['stylelint-prettier/recommended', 'stylelint-config-standard', 'stylelint-config-recommended-vue', 'stylelint-config-standard-scss'],
   plugins: ['stylelint-scss', 'stylelint-prettier'],
-  ignores: ['node_modules/**', 'dist/**/*', 'build/**', '**/*.min.js', '**/__mocks__/**'],
+  ignores: ['node_modules/**', 'dist/**/*', 'build/**', '**/*.min.js', '**/__mocks__/**', 'storybook-static/**/*'],
   overrides: [
     {
       files: ['**/*.vue'],

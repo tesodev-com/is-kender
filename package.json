@@ -141,6 +141,22 @@
       "types": "./dist/components/TabPanel/TabPanel.d.ts",
       "import": "./dist/components/TabPanel/TabPanel.js"
     },
+    "./select": {
+      "types": "./dist/components/Select/Select.d.ts",
+      "import": "./dist/components/Select/Select.js"
+    },
+    "./drawer": {
+      "types": "./dist/components/Drawer/Drawer.d.ts",
+      "import": "./dist/components/Drawer/Drawer.js"
+    },
+    "./table": {
+      "types": "./dist/components/Table/Table.d.ts",
+      "import": "./dist/components/Table/Table.js"
+    },
+    "./otpinput": {
+      "types": "./dist/components/OtpInput/OtpInput.d.ts",
+      "import": "./dist/components/OtpInput/OtpInput.js"
+    },
     "./pagination": {
       "types": "./dist/components/Pagination/Pagination.d.ts",
       "import": "./dist/components/Pagination/Pagination.js"

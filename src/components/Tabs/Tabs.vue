@@ -25,7 +25,9 @@
       </template>
     </div>
     <div class="tabs__content">
-      <div v-if="!tabPanels?.[activeTab]">Please add panel content</div>
+      <div v-if="!tabPanels?.[activeTab]">
+        {{ emptyPanelText }}
+      </div>
       <component
         :is="tabPanels?.[activeTab]?.component"
         v-else
@@ -46,6 +48,7 @@ import { computed, provide, ref, type VNode } from 'vue';
 // interfaces & types
 
 // constants
+const emptyPanelText = 'Please add panel content';
 const activeTab = ref<number>(0);
 const slots = defineSlots<{
   default?: () => any;

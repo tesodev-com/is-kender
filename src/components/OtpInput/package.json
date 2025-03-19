@@ -1,0 +1,11 @@
+{
+    "main": "./OtpInput.vue",
+    "module": "./OtpInput.vue",
+    "types": "./OtpInput.d.ts",
+    "exports": {
+        ".": {
+            "types": "./OtpInput.d.ts",
+            "import": "./OtpInput.vue"
+        }
+    }
+}

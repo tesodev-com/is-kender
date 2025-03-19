@@ -1,0 +1,95 @@
+$sizes: (
+  xs: (
+    width: 2rem,
+    height: 2rem,
+  ),
+  sm: (
+    width: 3rem,
+    height: 3rem,
+  ),
+  md: (
+    width: 4rem,
+    height: 4rem,
+  ),
+  lg: (
+    width: 5rem,
+    height: 5rem,
+  ),
+  xl: (
+    width: 6rem,
+    height: 6rem,
+  ),
+);
+
+.otp-container {
+  .otp-label {
+    display: block;
+    margin-bottom: 0.375rem;
+
+    @include text-sm(500, $gray-700);
+  }
+
+  .otp-inputs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .otp-input {
+      @each $size, $value in $sizes {
+        &-#{$size} {
+          @each $property, $propertyValue in $value {
+            #{$property}: $propertyValue;
+          }
+
+          @if $size == "xs" {
+            @include text-sm(500, $gray-700);
+          } @else if $size == "sm" {
+            @include display-sm(500, $gray-700);
+          } @else if $size == "md" {
+            @include display-md(500, $gray-700);
+          } @else if $size == "lg" {
+            @include display-lg(500, $gray-700);
+          } @else if $size == "xl" {
+            @include display-xl(500, $gray-700);
+          }
+
+          &::placeholder {
+            @if $size == "xs" {
+              @include text-sm(500, $gray-300);
+            } @else if $size == "sm" {
+              @include display-sm(500, $gray-300);
+            } @else if $size == "md" {
+              @include display-md(500, $gray-300);
+            } @else if $size == "lg" {
+              @include display-lg(500, $gray-300);
+            } @else if $size == "xl" {
+              @include display-xl(500, $gray-300);
+            }
+          }
+        }
+      }
+
+      border: 1px solid $gray-300;
+      box-shadow: $shadow-xs;
+      text-align: center;
+      border-radius: $rounded-md;
+
+      &:focus {
+        border: 1px solid $primary-500;
+        outline: 1px solid $primary-500;
+      }
+    }
+
+    .otp-divider {
+      @include display-lg(500, $gray-300);
+    }
+  }
+
+  .otp-hint {
+    display: block;
+    margin-top: 0.375rem;
+
+    @include text-sm(400, $gray-600);
+  }
+}

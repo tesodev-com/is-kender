@@ -3,7 +3,7 @@ import { create } from '@storybook/theming/create';
 
 const theme = create({
   base: 'dark',
-  brandTitle: 'is-kender.js',
+  brandTitle: 'iskender.js',
   brandUrl: 'https://tesodev.com/',
   brandImage: '/logo.png',
   brandTarget: '_blank',

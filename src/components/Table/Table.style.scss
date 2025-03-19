@@ -1,0 +1,373 @@
+.table-container {
+  width: 100%;
+  overflow: hidden;
+  box-shadow: $shadow-xs;
+  border-radius: $rounded-sm;
+  border: 1px solid $gray-200;
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: $white;
+    padding: 1.25rem 1.5rem;
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+
+      .table-header-title {
+        @include text-lg(600, $gray-900);
+      }
+
+      .table-header-description {
+        @include text-sm(400, $gray-600);
+      }
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .table-data-container {
+    position: relative;
+    overflow: auto;
+    overscroll-behavior: contain;
+    max-height: 37.5rem;
+
+    .table-data {
+      width: 100%;
+      caption-side: bottom;
+      border-spacing: 0;
+      border-collapse: separate;
+
+      thead {
+        position: relative;
+        z-index: 100;
+
+        &.table-data-thead-sticky {
+          position: sticky;
+          top: 0;
+          z-index: 9999;
+        }
+
+        .table-data-columns {
+          background-color: $gray-50;
+          height: 2.75rem;
+          overflow: hidden;
+
+          &-no-header {
+            border-top: none;
+          }
+
+          .column-select-all {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid $gray-300;
+            border-radius: $rounded-xs;
+            background-color: $white;
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-left: 1.5rem;
+            cursor: pointer;
+          }
+
+          .column-select-all-selected {
+            border: 1px solid $primary-500;
+            background-color: $primary-500;
+
+            .column-select-all-icon {
+              color: $white;
+            }
+          }
+
+          .column-select-all-disabled {
+            cursor: not-allowed;
+          }
+
+          .column-cell {
+            padding: 0 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid $gray-200;
+            background-color: $gray-50;
+            vertical-align: middle;
+            height: 2.75rem;
+            max-width: 100%;
+            white-space: nowrap;
+            transition: color 0.3s ease-in-out;
+
+            @include text-xs(600, $gray-500);
+
+            &-border-top {
+              border-top: 1px solid $gray-200;
+            }
+
+            &.column-sticky-left {
+              position: sticky;
+              left: 0;
+              z-index: 50;
+            }
+
+            &.column-sticky-left-selectable {
+              position: sticky;
+              left: 2.75rem;
+              z-index: 50;
+            }
+
+            &.column-sticky-right {
+              position: sticky;
+              right: 0;
+              z-index: 50;
+            }
+
+            &.column-cell-checkbox.column-sticky-left {
+              left: 0;
+              z-index: 60;
+            }
+
+            &:hover {
+              color: $gray-600;
+            }
+
+            &-sort {
+              all: unset;
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+              cursor: pointer;
+            }
+          }
+
+          .column-cell-checkbox {
+            padding: 0;
+            width: 2.75rem;
+          }
+
+          .column-cell-selectable {
+            padding: 0 2.25rem 0 0.75rem;
+          }
+        }
+      }
+
+      tbody {
+        background-color: $white;
+
+        .row-empty-state {
+          .row-empty-state-cell {
+            .empty-state {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              text-align: center;
+              padding: 3rem 2rem;
+
+              .search-icon {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $gray-700;
+                padding: 0.5rem;
+                box-shadow: $shadow-xs;
+                border-radius: $rounded-md;
+                border: 1px solid $gray-200;
+                z-index: 10;
+
+                &-circle {
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                  border-radius: 50vw;
+                  border: 1px solid $gray-200;
+                  z-index: 0;
+
+                  @for $i from 1 through 6 {
+                    &-#{$i} {
+                      height: #{2 + $i * 4}rem;
+                      width: #{2 + $i * 4}rem;
+                      opacity: #{0.7 - $i * 0.1};
+                    }
+                  }
+                }
+              }
+
+              &-text {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                padding-top: 1rem;
+                padding-bottom: 1.5rem;
+                z-index: 10;
+
+                h3 {
+                  @include text-md(600, $gray-900);
+                }
+
+                p {
+                  @include text-sm(400, $gray-600);
+                }
+              }
+
+              &-text-no-query {
+                padding-top: 0;
+                padding-bottom: 0;
+              }
+
+              button {
+                z-index: 10;
+              }
+            }
+          }
+        }
+
+        .row-cell-container {
+          height: 4.5rem;
+          background-color: $white;
+          border-bottom: 1px solid $gray-200;
+
+          .row-cell {
+            background-color: $white;
+            padding: 0 1.5rem;
+            text-align: left;
+            vertical-align: middle;
+            height: 4.5rem;
+            transition: background-color 0.3s ease-in-out;
+            min-width: 9.375rem;
+
+            @include text-sm(400, $gray-600);
+
+            &.row-sticky-left {
+              position: sticky;
+              left: 0;
+              z-index: 50;
+            }
+
+            &.row-sticky-left-selectable {
+              position: sticky;
+              left: 2.75rem;
+              z-index: 50;
+            }
+
+            &.row-sticky-right {
+              position: sticky;
+              right: 0;
+              z-index: 50;
+            }
+
+            &.row-cell-checkbox.column-sticky-left {
+              left: 0;
+              z-index: 60;
+            }
+          }
+
+          &-striped {
+            &:nth-child(odd) {
+              .row-cell {
+                background-color: $gray-25;
+              }
+            }
+          }
+
+          &:hover {
+            .row-cell {
+              background-color: $gray-50;
+            }
+          }
+
+          &.row-cell-container-border {
+            &:not(:last-child) {
+              .row-cell {
+                border-bottom: 1px solid $gray-200;
+              }
+            }
+          }
+
+          .row-select {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid $gray-300;
+            border-radius: $rounded-xs;
+            background-color: $white;
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-left: 1.5rem;
+            cursor: pointer;
+          }
+
+          .row-select-selected {
+            border: 1px solid $primary-500;
+            background-color: $primary-500;
+
+            .row-select-icon {
+              color: $white;
+            }
+          }
+
+          .row-cell-actions {
+            width: 1.625rem;
+            min-width: 1.625rem;
+
+            .actions {
+              display: flex;
+              align-items: center;
+              gap: 0.125rem;
+
+              button {
+                all: unset;
+                padding: 0.375rem;
+                cursor: pointer;
+                color: $gray-400;
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                  color: $gray-600;
+                }
+              }
+            }
+          }
+
+          .row-cell-checkbox {
+            padding: 0;
+            width: 2.75rem;
+            min-width: 2.75rem;
+          }
+
+          .row-cell-selectable {
+            padding: 0 2.25rem 0 0.75rem;
+          }
+        }
+      }
+    }
+  }
+
+  .table-pagination {
+    border-top: 1px solid $gray-200;
+    padding: 0.875rem 1.5rem;
+  }
+
+  @media (width <= 1024px) {
+    .table-header {
+      flex-direction: column;
+      align-items: start;
+
+      &-right {
+        width: 100%;
+        align-items: start;
+        flex-direction: column;
+
+        .input-container {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
