@@ -18,4 +18,3 @@ export { default as deleteIcon } from '@material-design-icons/svg/round/delete.s
 export { default as editIcon } from '@material-design-icons/svg/round/edit.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
-
