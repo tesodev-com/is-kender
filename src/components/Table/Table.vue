@@ -35,7 +35,11 @@
         <slot name="header-right" />
       </div>
     </div>
-    <div class="table-data-container">
+    <div
+      ref="scrollContainer"
+      class="table-data-container"
+      @scroll="handleScroll"
+    >
       <table class="table-data">
         <thead :class="{ 'table-data-thead-sticky': stickyHeader }">
           <tr
@@ -56,7 +60,7 @@
                   v-if="isAllSelected"
                   class="column-select-all-icon"
                   :src="checkIcon"
-                />
+                ></Svg>
               </div>
             </th>
             <th
@@ -86,7 +90,7 @@
                     <Svg
                       :src="getSortIndicator(column.key)"
                       size="16"
-                    />
+                    ></Svg>
                   </button>
                 </template>
                 <template v-else>
@@ -112,7 +116,7 @@
                       <Svg
                         size="20"
                         :src="searchIcon"
-                      />
+                      ></Svg>
                       <span
                         v-for="circle in 6"
                         :key="circle"
@@ -143,6 +147,81 @@
               </td>
             </tr>
           </template>
+          <template v-else-if="virtualScroll">
+            <tr :style="{ height: virtualPadding.top }" />
+            <tr
+              v-for="(row, rowIndex) in visibleRows"
+              :key="row.key || `${virtualStartIndex + rowIndex}`"
+              class="row-cell-container"
+              :class="[{ 'row-cell-container-striped': stripedRows && (virtualStartIndex + rowIndex) % 2 === 0, 'row-cell-container-border': rowsBorder }]"
+              :style="{ height: `${rowHeight}px` }"
+            >
+              <td
+                v-if="selectable"
+                class="row-cell row-cell-checkbox"
+                :class="{ 'row-sticky-left': stickyFirstColumn }"
+                :style="{ height: `${rowHeight}px` }"
+              >
+                <div
+                  class="row-select"
+                  :class="[{ 'row-select-selected': selectedItems.has(row) }]"
+                  @click="selectRow(row)"
+                >
+                  <Svg
+                    v-if="selectedItems.has(row)"
+                    class="row-select-icon"
+                    :src="checkIcon"
+                  ></Svg>
+                </div>
+              </td>
+              <td
+                v-for="(column, colIndex) in columns"
+                :key="colIndex"
+                class="row-cell"
+                :class="[
+                  {
+                    'row-cell-selectable': selectable && colIndex === 0,
+                    'row-cell-actions': column.key === 'actions',
+                    'row-sticky-left': stickyFirstColumn && !selectable && colIndex === 0,
+                    'row-sticky-left-selectable': stickyFirstColumn && selectable && colIndex === 0,
+                    'row-sticky-right': stickyLastColumn && colIndex === columns.length - 1,
+                  },
+                ]"
+                :style="{ height: `${rowHeight}px` }"
+              >
+                <slot
+                  :name="`row-${column.key}`"
+                  :row="row"
+                  :value="row[column.key]"
+                  :rowIndex="rowIndex"
+                  :colIndex="colIndex"
+                >
+                  <template v-if="column.key === 'actions'">
+                    <div class="actions">
+                      <button @click="emit('removeButtonClick', row)">
+                        <Svg
+                          :src="deleteIcon"
+                          size="16"
+                        ></Svg>
+                      </button>
+                      <button @click="emit('editButtonClick', row)">
+                        <Svg
+                          :src="editIcon"
+                          size="16"
+                        ></Svg>
+                      </button>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div>
+                      {{ row[column.key] }}
+                    </div>
+                  </template>
+                </slot>
+              </td>
+            </tr>
+            <tr :style="{ height: virtualPadding.bottom }" />
+          </template>
           <template v-else>
             <tr
               v-for="(row, rowIndex) in paginatedRows"
@@ -164,7 +243,7 @@
                     v-if="selectedItems.has(row)"
                     class="row-select-icon"
                     :src="checkIcon"
-                  />
+                  ></Svg>
                 </div>
               </td>
               <td
@@ -194,13 +273,13 @@
                         <Svg
                           :src="deleteIcon"
                           size="16"
-                        />
+                        ></Svg>
                       </button>
                       <button @click="emit('editButtonClick', row)">
                         <Svg
                           :src="editIcon"
                           size="16"
-                        />
+                        ></Svg>
                       </button>
                     </div>
                   </template>
@@ -217,7 +296,7 @@
       </table>
     </div>
     <div
-      v-if="pagination"
+      v-if="pagination && !virtualScroll"
       class="table-pagination"
     >
       <Pagination
@@ -232,7 +311,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import Svg from 'library/Svg';
 import Button from 'library/Button';
 import Input from 'library/Input';
@@ -250,18 +329,29 @@ const props = withDefaults(defineProps<TableProps>(), {
   rowsBorder: false,
   stickyFirstColumn: false,
   stickyLastColumn: false,
+  virtualScroll: true,
+  rowHeight: 72,
+  virtualScrollBuffer: 5,
+  selectOnlyVisibleRows: false,
 });
 
 const emit = defineEmits<TableEmits>();
 
 const slots = defineSlots<TableSlots>();
 
+const scrollContainer = useTemplateRef('scrollContainer');
 const selectedItems = ref(new Set<Row>());
 const searchQuery = ref('');
 const sortKey = ref('');
 const sortOrder = ref<'asc' | 'desc'>('asc');
 const currentPage = ref(props.currentPage);
 const itemsPerPage = ref(props.itemsPerPage);
+const virtualStartIndex = ref(0);
+const visibleRowCount = ref(0);
+
+const containerHeight = computed(() => {
+  return scrollContainer.value?.clientHeight || 0;
+});
 
 const isTableHeaderExists = computed(() => {
   return props.title || slots.title || slots.description || props.description || props.searchable;
@@ -285,7 +375,7 @@ const filteredRows = computed(() => {
   if (searchQuery.value) {
     const lowerCaseQuery = searchQuery.value.toLowerCase();
     const columnKeys = props.columns.map(column => column.key);
-    result = result?.filter(row =>
+    result = (result || []).filter(row =>
       columnKeys.some(key => {
         const value = row[key];
         return value != null && String(value).toLowerCase().includes(lowerCaseQuery);
@@ -294,7 +384,7 @@ const filteredRows = computed(() => {
   }
 
   if (sortKey.value) {
-    result.sort((a, b) => {
+    (result || []).sort((a, b) => {
       const valueA = a[sortKey.value];
       const valueB = b[sortKey.value];
       if (sortOrder.value === 'asc') {
@@ -304,31 +394,69 @@ const filteredRows = computed(() => {
     });
   }
 
-  return result;
+  return result || [];
+});
+
+const visibleRows = computed(() => {
+  if (!props.virtualScroll) return paginatedRows.value;
+
+  const start = Math.max(0, virtualStartIndex.value);
+  const end = Math.min(start + visibleRowCount.value, (filteredRows.value || [])?.length);
+  return (filteredRows.value || [])?.slice(start, end);
 });
 
 const paginatedRows = computed(() => {
+  if (props.virtualScroll) return filteredRows.value;
+
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
-  return filteredRows.value.slice(start, end);
+  return (filteredRows.value || [])?.slice(start, end);
 });
 
 const isAllSelected = computed(() => {
-  return paginatedRows.value.length > 0 && paginatedRows.value.every(item => selectedItems.value.has(item));
+  return (paginatedRows.value || [])?.length > 0 && (paginatedRows.value || [])?.every(item => selectedItems.value.has(item));
+});
+
+const virtualPadding = computed(() => {
+  if (!props.virtualScroll) return { top: '0px', bottom: '0px' };
+
+  const topPadding = virtualStartIndex.value * props.rowHeight;
+  const bottomPadding = Math.max(0, (filteredRows.value.length - (virtualStartIndex.value + visibleRowCount.value)) * props.rowHeight);
+
+  return { top: `${topPadding}px`, bottom: `${bottomPadding}px` };
 });
 
 watch(
   () => searchQuery.value,
   () => {
-    currentPage.value = 1;
+    if (!props.virtualScroll) {
+      currentPage.value = 1;
+    }
   }
 );
 
+watch(filteredRows, () => {
+  if (props.virtualScroll && scrollContainer.value) {
+    virtualStartIndex.value = 0;
+    visibleRowCount.value = Math.ceil(containerHeight.value / props.rowHeight) + props.virtualScrollBuffer;
+    scrollContainer.value.scrollTop = 0;
+  }
+});
+
+onMounted(() => {
+  if (props.virtualScroll && scrollContainer.value) {
+    visibleRowCount.value = Math.ceil(containerHeight.value / props.rowHeight) + props.virtualScrollBuffer;
+    handleScroll();
+  }
+});
+
 function selectAll() {
+  const currentRows = props.virtualScroll && props.selectOnlyVisibleRows ? visibleRows : paginatedRows;
+
   if (isAllSelected.value) {
-    paginatedRows.value.forEach(row => selectedItems.value.delete(row));
+    currentRows.value.forEach(row => selectedItems.value.delete(row));
   } else {
-    paginatedRows.value.forEach(row => selectedItems.value.add(row));
+    currentRows.value.forEach(row => selectedItems.value.add(row));
   }
   emit('selectAll', Array.from(selectedItems.value));
 }
@@ -361,7 +489,25 @@ function getSortIndicator(key: string) {
 
 function clearSearch() {
   searchQuery.value = '';
-  currentPage.value = 1;
+  if (!props.virtualScroll) {
+    currentPage.value = 1;
+  }
+  if (props.virtualScroll && scrollContainer.value) {
+    virtualStartIndex.value = 0;
+    visibleRowCount.value = Math.ceil(containerHeight.value / props.rowHeight) + props.virtualScrollBuffer;
+    scrollContainer.value.scrollTop = 0;
+  }
+}
+
+function handleScroll() {
+  if (!props.virtualScroll || !scrollContainer.value) return;
+
+  const scrollTop = scrollContainer.value.scrollTop;
+  const startIndex = Math.floor(scrollTop / props.rowHeight);
+  const visibleCount = Math.ceil(containerHeight.value / props.rowHeight) + props.virtualScrollBuffer;
+
+  virtualStartIndex.value = Math.max(0, startIndex - Math.floor(props.virtualScrollBuffer / 2));
+  visibleRowCount.value = Math.min(visibleCount, filteredRows.value.length - virtualStartIndex.value);
 }
 </script>
 

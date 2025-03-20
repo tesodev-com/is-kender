@@ -42,6 +42,10 @@ export interface TableProps {
   stickyHeader?: boolean;
   stickyFirstColumn?: boolean;
   stickyLastColumn?: boolean;
+  virtualScroll?: boolean;
+  rowHeight?: number;
+  virtualScrollBuffer?: number;
+  selectOnlyVisibleRows?: boolean;
 }
 
 declare const Table: DefineComponent<TableProps>;

@@ -65,6 +65,22 @@ const meta: Meta<typeof Table> = {
       control: 'boolean',
       description: 'Makes the last column sticky when set to `true`.',
     },
+    virtualScroll: {
+      control: 'boolean',
+      description: 'Enables virtual scrolling for large datasets when set to `true`. Disables pagination when enabled.',
+    },
+    rowHeight: {
+      control: 'number',
+      description: 'The height of each row in pixels when virtual scrolling is enabled. Default is 72.',
+    },
+    virtualScrollBuffer: {
+      control: 'number',
+      description: 'Number of extra rows to render above and below the visible area in virtual scroll mode. Default is 5.',
+    },
+    selectOnlyVisibleRows: {
+      control: 'boolean',
+      description: 'When `true` and virtual scrolling is enabled, `selectAll` only selects visible rows instead of all rows.',
+    },
   },
 };
 
@@ -193,9 +209,98 @@ const commonArgs: Partial<TableProps> = {
   stickyLastColumn: false,
 };
 
+const firstNames = [
+  'John',
+  'Jane',
+  'Bob',
+  'Alice',
+  'Michael',
+  'Sarah',
+  'David',
+  'Emily',
+  'Thomas',
+  'Laura',
+  'Chris',
+  'Anna',
+  'Mark',
+  'Lisa',
+  'James',
+  'Megan',
+  'Paul',
+  'Rachel',
+  'Steven',
+  'Olivia',
+  'Ethan',
+  'Sophie',
+  'Henry',
+  'Mia',
+  'George',
+  'Ella',
+  'Lucas',
+  'Ava',
+  'Nathan',
+  'Grace',
+];
+const lastNames = [
+  'Doe',
+  'Smith',
+  'Johnson',
+  'Brown',
+  'Lee',
+  'Davis',
+  'Wilson',
+  'Clark',
+  'Moore',
+  'Taylor',
+  'Evans',
+  'White',
+  'Harris',
+  'Adams',
+  'Carter',
+  'Turner',
+  'Walker',
+  'Green',
+  'King',
+  'Scott',
+  'Brown',
+  'Lewis',
+  'Allen',
+  'Harris',
+  'Clark',
+  'Wright',
+  'Parker',
+  'Miller',
+  'Hill',
+  'Young',
+];
+const statuses = ['Active', 'In Review', 'Admin', 'Inactive', 'Pending'];
+
+const generateRows = () => {
+  const rows = [];
+
+  for (let i = 1; i <= 1000; i++) {
+    const firstName = firstNames[i % firstNames.length];
+    const lastName = lastNames[i % lastNames.length];
+    const age = 25 + (i % 28);
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i % 10}@example.com`;
+    const status = statuses[i % statuses.length];
+
+    rows.push({
+      key: String(i),
+      name: `${firstName} ${lastName}`,
+      age,
+      email,
+      status,
+    });
+  }
+
+  return rows;
+};
+
 export const Default: Story = {
   args: {
     ...commonArgs,
+    rows: generateRows(),
     title: 'User List',
     description: 'A comprehensive list of registered users with advanced features.',
     selectable: true,
