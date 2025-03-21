@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ColProps } from 'library-components/Col';
 import { computed } from 'vue';
+import type { ColProps } from './types';
 
 const props = withDefaults(defineProps<ColProps>(), {
   cols: '',

@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import type { RowProps } from 'library-components/Row';
 import { computed } from 'vue';
+import type { RowProps } from './types';
 
 const props = withDefaults(defineProps<RowProps>(), {
   align: 'top',

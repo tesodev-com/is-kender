@@ -20,7 +20,7 @@
             v-if="link.iconSrc"
             :src="link.iconSrc"
             size="20"
-          />
+          ></Svg>
           {{ link.text }}
         </slot>
       </div>
@@ -32,7 +32,7 @@
           v-if="link.iconSrc"
           :src="link.iconSrc"
           size="20"
-        />
+        ></Svg>
         {{ link.text }}
       </div>
       <div
@@ -42,7 +42,7 @@
         <Svg
           :src="keyboardArrowDownIcon"
           size="24"
-        />
+        ></Svg>
       </div>
     </div>
     <transition name="fade">
@@ -70,7 +70,7 @@
                 v-if="child.iconSrc"
                 :src="child.iconSrc"
                 size="20"
-              />
+              ></Svg>
               {{ child.text }}
             </slot>
           </div>
@@ -82,7 +82,7 @@
               v-if="child.iconSrc"
               :src="child.iconSrc"
               size="20"
-            />
+            ></Svg>
             {{ child.text }}
           </div>
         </Link>
@@ -109,7 +109,7 @@
           v-if="link.iconSrc"
           :src="link.iconSrc"
           size="20"
-        />
+        ></Svg>
         {{ link.text }}
       </slot>
     </div>
@@ -121,7 +121,7 @@
         v-if="link.iconSrc"
         :src="link.iconSrc"
         size="20"
-      />
+      ></Svg>
       {{ link.text }}
     </div>
   </Link>
@@ -130,8 +130,8 @@
 <script setup lang="ts">
 import { keyboardArrowDownIcon } from '@/assets/icons';
 import Link from 'library-components/Link';
-import type { SidebarItemEmits, SidebarLink } from 'library-components/Sidebar';
 import Svg from 'library-components/Svg';
+import type { SidebarItemEmits, SidebarLink } from './types';
 
 defineProps<{
   link: SidebarLink;

@@ -56,8 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import type { OtpInputEmits, OtpInputProps, OtpInputSlots } from 'library-components/OtpInput';
 import { computed, onMounted, useId, useTemplateRef } from 'vue';
+import type { OtpInputEmits, OtpInputProps, OtpInputSlots } from './types';
 
 const props = withDefaults(defineProps<OtpInputProps>(), {
   size: 'md',

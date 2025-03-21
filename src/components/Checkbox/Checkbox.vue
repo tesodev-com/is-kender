@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
 import { tickIcon } from '@/assets/icons';
-import type { CheckboxProps } from 'library-components/Checkbox';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
+import type { CheckboxProps } from './types';
 // imports
 
 // interfaces & types

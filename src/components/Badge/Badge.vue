@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import type { BadgeProps } from 'library-components/Badge';
 import { computed } from 'vue';
+import type { BadgeProps } from './types';
 
 const props = withDefaults(defineProps<BadgeProps>(), {
   color: 'gray',

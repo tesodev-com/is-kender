@@ -64,7 +64,7 @@
         <Svg
           :src="closeIcon"
           size="24"
-        />
+        ></Svg>
       </div>
     </transition>
   </Teleport>
@@ -115,10 +115,10 @@
 <script setup lang="ts">
 import { closeIcon } from '@/assets/icons';
 import { EventBus } from '@/utils';
-import type { SidebarEmits, SidebarLink, SidebarProps, SidebarSlots } from 'library-components/Sidebar';
 import Svg from 'library-components/Svg';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import SidebarItem from './SidebarItem.vue';
+import type { SidebarEmits, SidebarLink, SidebarProps, SidebarSlots } from './types';
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   title: 'Sidebar',

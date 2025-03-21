@@ -56,7 +56,7 @@
                   v-if="isAllSelected"
                   class="column-select-all-icon"
                   :src="checkIcon"
-                />
+                ></Svg>
               </div>
             </th>
             <th
@@ -86,7 +86,7 @@
                     <Svg
                       :src="getSortIndicator(column.key)"
                       size="16"
-                    />
+                    ></Svg>
                   </button>
                 </template>
                 <template v-else>
@@ -112,7 +112,7 @@
                       <Svg
                         size="20"
                         :src="searchIcon"
-                      />
+                      ></Svg>
                       <span
                         v-for="circle in 6"
                         :key="circle"
@@ -164,7 +164,7 @@
                     v-if="selectedItems.has(row)"
                     class="row-select-icon"
                     :src="checkIcon"
-                  />
+                  ></Svg>
                 </div>
               </td>
               <td
@@ -194,13 +194,13 @@
                         <Svg
                           :src="deleteIcon"
                           size="16"
-                        />
+                        ></Svg>
                       </button>
                       <button @click="emit('editButtonClick', row)">
                         <Svg
                           :src="editIcon"
                           size="16"
-                        />
+                        ></Svg>
                       </button>
                     </div>
                   </template>
@@ -237,8 +237,8 @@ import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import Pagination from 'library-components/Pagination';
 import Svg from 'library-components/Svg';
-import type { Row, TableEmits, TableProps, TableSlots } from 'library-components/Table';
 import { computed, ref, watch } from 'vue';
+import type { Row, TableEmits, TableProps, TableSlots } from './types';
 
 const props = withDefaults(defineProps<TableProps>(), {
   pagination: false,

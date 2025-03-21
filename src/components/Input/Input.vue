@@ -71,7 +71,7 @@ import { emailIcon, infoIcon, passwordIcon, telIcon } from '@/assets/icons';
 import { vTooltip } from '@/directives/vTooltip';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
-import type { InputProps } from './Input.d.ts';
+import type { InputProps } from './types';
 const props = withDefaults(defineProps<InputProps>(), {
   fluid: false,
   size: 'sm',

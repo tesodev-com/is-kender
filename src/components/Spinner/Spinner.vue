@@ -10,9 +10,9 @@
 <script setup lang="ts">
 // imports
 import { loadingIcon } from '@/assets/icons';
-import type { SpinnerProps } from 'library-components/Spinner';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
+import type { SpinnerProps } from './types';
 
 // interfaces & types
 

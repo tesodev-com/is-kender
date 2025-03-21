@@ -40,8 +40,8 @@
 <script setup lang="ts">
 // imports
 import Tab from 'library-components/Tab';
-import type { TabsContext, TabsProps } from 'library-components/Tabs';
 import { computed, provide, ref, type VNode } from 'vue';
+import type { TabsContext, TabsProps } from './types';
 
 // injects
 

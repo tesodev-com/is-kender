@@ -20,7 +20,7 @@
             <Svg
               :src="arrowBackIcon"
               size="20"
-            />
+            ></Svg>
             Previous
           </Button>
         </div>
@@ -60,7 +60,7 @@
             <Svg
               :src="arrowForwardIcon"
               size="20"
-            />
+            ></Svg>
           </Button>
         </div>
       </div>
@@ -143,7 +143,7 @@
             <Svg
               :src="arrowBackIcon"
               size="20"
-            />
+            ></Svg>
           </Button>
         </div>
         <div class="pagination-minimal-info">
@@ -160,7 +160,7 @@
             <Svg
               :src="arrowForwardIcon"
               size="20"
-            />
+            ></Svg>
           </Button>
         </div>
       </div>
@@ -181,7 +181,7 @@
           <Svg
             :src="arrowBackIcon"
             size="20"
-          />
+          ></Svg>
           Previous
         </Button>
         <template
@@ -219,7 +219,7 @@
           <Svg
             :src="arrowForwardIcon"
             size="20"
-          />
+          ></Svg>
         </Button>
       </div>
     </div>
@@ -229,9 +229,9 @@
 <script setup lang="ts">
 import { arrowBackIcon, arrowForwardIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
-import type { PaginationProps } from 'library-components/Pagination/Pagination';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
+import type { PaginationProps } from './types';
 
 const props = withDefaults(defineProps<PaginationProps>(), {
   variant: 'default',

@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { type BreadcrumbProps } from 'library-components/Breadcrumb';
 import BreadcrumbItem from './BreadcrumbItem.vue';
+import type { BreadcrumbProps } from './types';
 
 withDefaults(defineProps<BreadcrumbProps>(), {
   useRouter: true,

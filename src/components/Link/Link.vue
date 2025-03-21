@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import type { LinkProps } from 'library-components/Link';
 import { computed } from 'vue';
+import type { LinkProps } from './types';
 
 const props = withDefaults(defineProps<LinkProps>(), {
   useRouter: false,

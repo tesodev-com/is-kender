@@ -61,10 +61,10 @@ import { keyboardArrowLeftIcon, keyboardArrowRightIcon } from '@/assets/icons';
 import type { SwipeState } from '@/directives/vSwipe';
 import { vSwipe } from '@/directives/vSwipe';
 import Svg from 'library-components/Svg';
-import type { SwiperProps, SwiperSlots, SwiperState } from 'library-components/Swiper';
 import { Helpers } from 'library-components/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
 import type { EffectReturnType } from './effect/types';
+import type { SwiperProps, SwiperSlots, SwiperState } from './types';
 // interfaces & types
 // constants
 let effect: EffectReturnType;
@@ -72,7 +72,7 @@ const effects = {
   slide: () => import('./effect/useSlideEffect'),
   fade: () => import('./effect/useFadeEffect'),
 };
-let interval: NodeJS.Timeout | null = null;
+let interval: string | number | NodeJS.Timeout | undefined;
 // composable
 const slots = useSlots();
 // props
