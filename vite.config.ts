@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue';
 import { glob } from 'glob';
-import path, { extname, relative, resolve } from 'path';
+import { extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -12,8 +12,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       entryRoot: resolve(__dirname, 'src'),
-      include: ['src/main.ts', 'src/components/**/*.ts', 'src/composables/**/*.ts', 'src/directives/**/*.ts', 'src/utils/**/*.ts'],
-      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
+      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts'],
       cleanVueFileName: true,
       copyDtsFiles: true,
     }),
@@ -60,13 +59,13 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: [
-      { find: '@', replacement: path.resolve(__dirname, './src') },
-      { find: 'library-components', replacement: path.resolve(__dirname, 'src/components') },
-      { find: 'library-composables', replacement: path.resolve(__dirname, 'src/composables') },
-      { find: 'library-directives', replacement: path.resolve(__dirname, 'src/directives') },
-      { find: 'library-utils', replacement: path.resolve(__dirname, 'src/utils') },
-    ],
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      'library-components': resolve(__dirname, 'src/components'),
+      'library-composables': resolve(__dirname, 'src/composables'),
+      'library-directives': resolve(__dirname, 'src/directives'),
+      'library-utils': resolve(__dirname, 'src/utils'),
+    },
   },
   server: {
     port: 3001,
