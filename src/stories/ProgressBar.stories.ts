@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import ProgressBar from 'library/ProgressBar';
+import ProgressBar from 'library-components/ProgressBar';
 
 const meta: Meta<typeof ProgressBar> = {
   title: 'DataDisplay/ProgressBar',

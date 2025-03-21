@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Badge, { type BadgeProps } from 'library/Badge';
+import Badge, { type BadgeProps } from 'library-components/Badge';
 import { describe, expect, it } from 'vitest';
 
 describe('Badge.vue', () => {

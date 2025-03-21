@@ -23,7 +23,7 @@ function setComponentIndex() {
   const indexContent = folders
     .map(folder => {
       if (excludeFolders.includes(folder)) return;
-      return `export { default as ${folder} } from 'library/${folder}';`;
+      return `export { default as ${folder} } from 'library-components/${folder}';`;
     })
     .filter(Boolean)
     .join('\n');

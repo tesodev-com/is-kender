@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Text, { type TextProps } from 'library/Text';
+import Text, { type TextProps } from 'library-components/Text';
 import { describe, expect, it } from 'vitest';
 
 describe('Text.vue', () => {

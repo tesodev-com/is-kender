@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ButtonProps } from 'library/Button';
-import Spinner from 'library/Spinner';
+import type { ButtonProps } from 'library-components/Button';
+import Spinner from 'library-components/Spinner';
 import { computed } from 'vue';
 const props = withDefaults(defineProps<ButtonProps>(), {
   el: 'button',

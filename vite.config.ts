@@ -12,7 +12,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       entryRoot: resolve(__dirname, 'src'),
-      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts', 'src/directives/**/*.ts', 'src/utils/**/*.ts'],
+      include: ['src/main.ts', 'src/components/**/*.ts', 'src/composables/**/*.ts', 'src/directives/**/*.ts', 'src/utils/**/*.ts'],
       exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
       cleanVueFileName: true,
       copyDtsFiles: true,
@@ -38,8 +38,14 @@ export default defineConfig({
       ),
       external: ['vue'],
       output: {
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: assetInfo => {
+          if (assetInfo.names[0].endsWith('.css')) {
+            return 'assets/css/[name].css';
+          }
+          return 'assets/[name].[ext]';
+        },
         entryFileNames: '[name].js',
+        chunkFileNames: 'assets/js/[name].js',
         globals: {
           vue: 'Vue',
         },
@@ -56,10 +62,10 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: path.resolve(__dirname, './src') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/components') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/composables') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/directives') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/utils') },
+      { find: 'library-components', replacement: path.resolve(__dirname, 'src/components') },
+      { find: 'library-composables', replacement: path.resolve(__dirname, 'src/composables') },
+      { find: 'library-directives', replacement: path.resolve(__dirname, 'src/directives') },
+      { find: 'library-utils', replacement: path.resolve(__dirname, 'src/utils') },
     ],
   },
   server: {

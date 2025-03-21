@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProgressBarProps } from 'library/ProgressBar';
+import type { ProgressBarProps } from 'library-components/ProgressBar';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<ProgressBarProps>(), {

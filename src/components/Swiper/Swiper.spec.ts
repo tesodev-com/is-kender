@@ -1,7 +1,7 @@
 import { vSwipe } from '@/directives/vSwipe';
 import { flushPromises, mount } from '@vue/test-utils';
-import type { SwiperProps } from 'library/Swiper';
-import SwiperSlide from 'library/SwiperSlide';
+import type { SwiperProps } from 'library-components/Swiper';
+import SwiperSlide from 'library-components/SwiperSlide';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import Swiper from './Swiper.vue';
 
@@ -26,7 +26,7 @@ vi.mock('@/assets/icons', () => ({
   keyboardArrowLeftIcon: 'left-icon',
   keyboardArrowRightIcon: 'right-icon',
 }));
-vi.mock('library/Swiper/core', () => ({
+vi.mock('library-components/Swiper/core', () => ({
   Helpers: {
     generateUUID: vi.fn().mockReturnValue('test-uuid'),
     getModulo: vi.fn((value, total) => ((value % total) + total) % total),

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Spinner from 'library/Spinner';
+import Spinner from 'library-components/Spinner';
 
 const meta: Meta<typeof Spinner> = {
   component: Spinner,

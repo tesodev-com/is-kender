@@ -29,10 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import type { ToastMessageProps } from 'library/Toast';
-import { computed, onMounted } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import type { ToastMessageProps } from 'library-components/Toast';
+import { computed, onMounted } from 'vue';
 
 interface ToastMessageEmits {
   (e: 'close'): void;

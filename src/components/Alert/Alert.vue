@@ -43,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import type { AlertEmits, AlertProps, AlertSlots } from 'library/Alert';
-import { computed, onMounted, ref } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
+import type { AlertEmits, AlertProps, AlertSlots } from 'library-components/Alert';
+import Svg from 'library-components/Svg';
+import { computed, onMounted, ref } from 'vue';
 
 const props = withDefaults(defineProps<AlertProps>(), {
   color: 'primary',

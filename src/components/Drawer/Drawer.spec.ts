@@ -1,5 +1,5 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils';
-import Drawer from 'library/Drawer';
+import Drawer from 'library-components/Drawer';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Drawer.vue', () => {

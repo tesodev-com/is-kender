@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
-import Select, { type SelectOption, type SelectProps } from 'library/Select';
+import Select, { type SelectOption, type SelectProps } from 'library-components/Select';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 const options: SelectOption[] = [
   { value: '1', label: 'Option 1' },

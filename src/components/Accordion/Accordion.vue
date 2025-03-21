@@ -78,10 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import { type AccordionEmits, type AccordionProps } from 'library/Accordion';
-import { computed, ref } from 'vue';
-import Svg from 'library/Svg';
 import { addCircleOutlineIcon, removeCircleOutlineIcon } from '@/assets/icons';
+import { type AccordionEmits, type AccordionProps } from 'library-components/Accordion';
+import Svg from 'library-components/Svg';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(defineProps<AccordionProps>(), {
   allowMultiple: false,

@@ -60,9 +60,9 @@
 import { keyboardArrowLeftIcon, keyboardArrowRightIcon } from '@/assets/icons';
 import type { SwipeState } from '@/directives/vSwipe';
 import { vSwipe } from '@/directives/vSwipe';
-import Svg from 'library/Svg';
-import type { SwiperProps, SwiperSlots, SwiperState } from 'library/Swiper';
-import { Helpers } from 'library/Swiper/core';
+import Svg from 'library-components/Svg';
+import type { SwiperProps, SwiperSlots, SwiperState } from 'library-components/Swiper';
+import { Helpers } from 'library-components/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
 import type { EffectReturnType } from './effect/types';
 // interfaces & types

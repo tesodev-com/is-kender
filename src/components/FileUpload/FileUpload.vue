@@ -97,10 +97,10 @@
 </template>
 
 <script setup lang="ts">
-import type { CustomFile, FileErrorMessage, FileUploadEvents, FileUploadProps, FileUploadSlots } from 'library/FileUpload';
-import { computed, ref } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
+import type { CustomFile, FileErrorMessage, FileUploadEvents, FileUploadProps, FileUploadSlots } from 'library-components/FileUpload';
+import Svg from 'library-components/Svg';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(defineProps<FileUploadProps>(), {
   sizeErrorMessage: 'File size exceeds the limit of $value bytes',

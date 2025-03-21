@@ -227,10 +227,10 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'library/Button';
-import Svg from 'library/Svg';
-import type { PaginationProps } from 'library/Pagination/Pagination';
 import { arrowBackIcon, arrowForwardIcon } from '@/assets/icons';
+import Button from 'library-components/Button';
+import type { PaginationProps } from 'library-components/Pagination/Pagination';
+import Svg from 'library-components/Svg';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<PaginationProps>(), {

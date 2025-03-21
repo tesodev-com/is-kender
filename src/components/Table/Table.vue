@@ -232,13 +232,13 @@
 </template>
 
 <script setup lang="ts">
+import { checkIcon, deleteIcon, editIcon, expandLessIcon, expandMoreIcon, importExportIcon, searchIcon } from '@/assets/icons';
+import Button from 'library-components/Button';
+import Input from 'library-components/Input';
+import Pagination from 'library-components/Pagination';
+import Svg from 'library-components/Svg';
+import type { Row, TableEmits, TableProps, TableSlots } from 'library-components/Table';
 import { computed, ref, watch } from 'vue';
-import Svg from 'library/Svg';
-import Button from 'library/Button';
-import Input from 'library/Input';
-import Pagination from 'library/Pagination';
-import { checkIcon, expandLessIcon, expandMoreIcon, importExportIcon, editIcon, deleteIcon, searchIcon } from '@/assets/icons';
-import type { Row, TableEmits, TableProps, TableSlots } from 'library/Table';
 
 const props = withDefaults(defineProps<TableProps>(), {
   pagination: false,

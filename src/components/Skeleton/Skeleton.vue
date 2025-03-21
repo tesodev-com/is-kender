@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SkeletonProps } from 'library/Skeleton';
+import type { SkeletonProps } from 'library-components/Skeleton';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<SkeletonProps>(), {

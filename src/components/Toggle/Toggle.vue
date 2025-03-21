@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ToggleProps } from 'library/Toggle';
+import type { ToggleProps } from 'library-components/Toggle';
 import { computed } from 'vue';
 
 const modelValue = defineModel<boolean>({ required: true });

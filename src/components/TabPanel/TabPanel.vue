@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { type TabPanelProps } from 'library/TabPanel';
+import { type TabPanelProps } from 'library-components/TabPanel';
 defineOptions({
   name: 'TabPanel',
 });

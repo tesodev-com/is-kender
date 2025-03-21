@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Divider from 'library/Divider';
+import Divider from 'library-components/Divider';
 
 const meta: Meta<typeof Divider> = {
   component: Divider,

@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { type BreadcrumbProps } from 'library/Breadcrumb';
+import { type BreadcrumbProps } from 'library-components/Breadcrumb';
 import BreadcrumbItem from './BreadcrumbItem.vue';
 
 withDefaults(defineProps<BreadcrumbProps>(), {

@@ -1,5 +1,5 @@
 import { EventBus } from '@/utils';
-import type { ToastMessageProps } from 'library/Toast';
+import type { ToastMessageProps } from 'library-components/Toast';
 
 export function useToast() {
   return {

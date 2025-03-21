@@ -128,10 +128,10 @@
 </template>
 
 <script setup lang="ts">
-import Svg from 'library/Svg';
-import Link from 'library/Link';
-import type { SidebarLink, SidebarItemEmits } from 'library/Sidebar';
 import { keyboardArrowDownIcon } from '@/assets/icons';
+import Link from 'library-components/Link';
+import type { SidebarItemEmits, SidebarLink } from 'library-components/Sidebar';
+import Svg from 'library-components/Svg';
 
 defineProps<{
   link: SidebarLink;

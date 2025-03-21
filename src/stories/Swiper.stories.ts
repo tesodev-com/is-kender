@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Skeleton from 'library/Skeleton';
-import Swiper from 'library/Swiper';
-import SwiperSlide from 'library/SwiperSlide';
+import Skeleton from 'library-components/Skeleton';
+import Swiper from 'library-components/Swiper';
+import SwiperSlide from 'library-components/SwiperSlide';
 
 const meta: Meta<typeof Swiper> = {
   title: 'Utility-Components/Swiper',

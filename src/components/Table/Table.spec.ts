@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
-import Table, { type TableProps } from 'library/Table';
+import Table, { type TableProps } from 'library-components/Table';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 const columns = [
   { key: 'id', label: 'ID' },

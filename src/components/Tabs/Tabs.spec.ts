@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import Tab from 'library/Tab';
-import TabPanel from 'library/TabPanel';
+import Tab from 'library-components/Tab';
+import TabPanel from 'library-components/TabPanel';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import Tabs from './Tabs.vue';

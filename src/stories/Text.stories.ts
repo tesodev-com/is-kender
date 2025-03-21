@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Text from 'library/Text';
+import Text from 'library-components/Text';
 
 const meta: Meta<typeof Text> = {
   title: 'Typography/Text',

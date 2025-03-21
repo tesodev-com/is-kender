@@ -178,11 +178,11 @@
 </template>
 
 <script setup lang="ts">
-import Svg from 'library/Svg';
-import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
 import { arrowDownIcon, checkIcon } from '@/assets/icons';
-import type { SelectOption, SelectProps } from 'library/Select';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
+import type { SelectOption, SelectProps } from 'library-components/Select';
+import Svg from 'library-components/Svg';
+import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
 
 const props = withDefaults(defineProps<SelectProps>(), {
   isMultiple: false,

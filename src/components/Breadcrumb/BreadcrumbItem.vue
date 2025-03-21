@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import Link from 'library/Link';
-import type { BreadcrumbItemProps } from 'library/Breadcrumb';
+import type { BreadcrumbItemProps } from 'library-components/Breadcrumb';
+import Link from 'library-components/Link';
 import { computed } from 'vue';
 
 const props = defineProps<BreadcrumbItemProps>();

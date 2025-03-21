@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ContainerProps } from 'library/Container';
+import type { ContainerProps } from 'library-components/Container';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<ContainerProps>(), {

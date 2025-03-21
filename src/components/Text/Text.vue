@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TextProps } from 'library/Text';
+import type { TextProps } from 'library-components/Text';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<TextProps>(), {

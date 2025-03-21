@@ -36,6 +36,16 @@ $sizes: (
     gap: 0.5rem;
 
     .otp-input {
+      border: 1px solid $gray-300;
+      box-shadow: $shadow-xs;
+      text-align: center;
+      border-radius: $rounded-md;
+
+      &:focus {
+        border: 1px solid $primary-500;
+        outline: 1px solid $primary-500;
+      }
+
       @each $size, $value in $sizes {
         &-#{$size} {
           @each $property, $propertyValue in $value {
@@ -68,16 +78,6 @@ $sizes: (
             }
           }
         }
-      }
-
-      border: 1px solid $gray-300;
-      box-shadow: $shadow-xs;
-      text-align: center;
-      border-radius: $rounded-md;
-
-      &:focus {
-        border: 1px solid $primary-500;
-        outline: 1px solid $primary-500;
       }
     }
 

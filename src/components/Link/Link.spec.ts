@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
-import Link, { type LinkProps } from 'library/Link';
+import Link, { type LinkProps } from 'library-components/Link';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Link.vue', () => {
   let wrapper: VueWrapper<any>;

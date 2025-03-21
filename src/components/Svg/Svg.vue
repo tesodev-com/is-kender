@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SvgProps } from 'library/Svg';
+import type { SvgProps } from 'library-components/Svg';
 import { onMounted, onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
 
 if (import.meta.env.SSR) {

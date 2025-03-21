@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/vue3';
-import Input from 'library/Input';
+import Input from 'library-components/Input';
 
 const meta: Meta<typeof Input> = {
   title: 'Forms&Inputs/Input',

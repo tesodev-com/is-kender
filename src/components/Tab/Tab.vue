@@ -12,8 +12,8 @@
 
 <script setup lang="ts">
 // imports
-import type { TabProps } from 'library/Tab';
-import type { TabsContext } from 'library/Tabs';
+import type { TabProps } from 'library-components/Tab';
+import type { TabsContext } from 'library-components/Tabs';
 import { computed, inject } from 'vue';
 // interfaces & types
 defineOptions({

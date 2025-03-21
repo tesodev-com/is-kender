@@ -156,7 +156,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
+    "build": "rimraf dist && node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "preview": "vite preview --port 3001",
     "lint:js": "eslint --fix",
@@ -212,6 +212,7 @@
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "sass": "^1.85.1",
     "storybook": "^8.6.4",
     "style-dictionary": "^4.3.3",

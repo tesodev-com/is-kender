@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { EventBus } from '@/utils';
-import type { ToastMessageProps, ToastProps } from 'library/Toast';
+import type { ToastMessageProps, ToastProps } from 'library-components/Toast';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import ToastMessage from './ToastMessage.vue';
 export type MessageProps = Partial<ToastMessageProps>;

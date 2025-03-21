@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { BadgeProps } from 'library/Badge';
+import type { BadgeProps } from 'library-components/Badge';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<BadgeProps>(), {

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-import Table, { type Row, type TableProps } from 'library/Table';
-import Svg from 'library/Svg';
-import Badge from 'library/Badge';
-import Button from 'library/Button';
 import { checkIcon } from '@/assets/icons';
+import type { Meta, StoryObj } from '@storybook/vue3';
+import Badge from 'library-components/Badge';
+import Button from 'library-components/Button';
+import Svg from 'library-components/Svg';
+import Table, { type Row, type TableProps } from 'library-components/Table';
 
 const meta: Meta<typeof Table> = {
   component: Table,

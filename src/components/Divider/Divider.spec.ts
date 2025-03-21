@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Divider, { type DividerProps } from 'library/Divider';
+import Divider, { type DividerProps } from 'library-components/Divider';
 import { describe, expect, it } from 'vitest';
 
 describe('Divider.vue', () => {

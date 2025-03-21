@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Link, { type LinkProps } from 'library/Link';
+import Link, { type LinkProps } from 'library-components/Link';
 
 const meta: Meta<typeof Link> = {
   component: Link,
