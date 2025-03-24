@@ -26,8 +26,8 @@
 
 <script setup lang="ts">
 // imports
-import type { RadioButtonProps } from 'library/RadioButton';
 import { computed } from 'vue';
+import type { RadioButtonProps } from './types';
 // interfaces & types
 
 // constants

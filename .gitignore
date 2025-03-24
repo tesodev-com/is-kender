@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules
 node_modules/*
+storybook-static
+storybook-static/*
 dist
 dist-ssr
 *.local
@@ -26,3 +28,4 @@ yarn.lock
 *.sw?
 
 coverage
+*storybook.log

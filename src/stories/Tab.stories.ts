@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Tab from 'library/Tab';
+import Tab from 'library-components/Tab';
 
 const meta: Meta<typeof Tab> = {
   component: Tab,

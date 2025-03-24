@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { LinkProps } from 'library/Link';
+import type { LinkProps } from './types';
 
 const props = withDefaults(defineProps<LinkProps>(), {
   useRouter: false,

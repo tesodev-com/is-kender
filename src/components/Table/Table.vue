@@ -311,13 +311,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
-import Svg from 'library/Svg';
-import Button from 'library/Button';
-import Input from 'library/Input';
-import Pagination from 'library/Pagination';
-import { checkIcon, expandLessIcon, expandMoreIcon, importExportIcon, editIcon, deleteIcon, searchIcon } from '@/assets/icons';
-import type { Row, TableEmits, TableProps, TableSlots } from 'library/Table';
+import { checkIcon, deleteIcon, editIcon, expandLessIcon, expandMoreIcon, importExportIcon, searchIcon } from '@/assets/icons';
+import Button from 'library-components/Button';
+import Input from 'library-components/Input';
+import Pagination from 'library-components/Pagination';
+import Svg from 'library-components/Svg';
+import { computed, ref, watch, onMounted, useTemplateRef } from 'vue';
+import type { Row, TableEmits, TableProps, TableSlots } from './types';
 
 const props = withDefaults(defineProps<TableProps>(), {
   pagination: false,

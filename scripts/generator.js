@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { dtsFile, mapPlaceholders, packageJson, scssFile, storyFile, testFile, vueFile } from './templates.js';
+import { indexFile, mapPlaceholders, scssFile, storyFile, testFile, typesFile, vueFile } from './templates.js';
 
 const files = [
   {
@@ -19,8 +19,15 @@ const files = [
   },
   {
     type: 'components',
-    ext: '.d.ts',
-    template: placeholders => mapPlaceholders(dtsFile, placeholders),
+    name: 'index',
+    ext: '.ts',
+    template: placeholders => mapPlaceholders(indexFile, placeholders),
+  },
+  {
+    type: 'components',
+    name: 'types',
+    ext: '.ts',
+    template: placeholders => mapPlaceholders(typesFile, placeholders),
   },
   {
     type: 'stories',
@@ -42,12 +49,11 @@ function createComponentFiles() {
     fs.mkdirSync(path);
     files.forEach(file => {
       if (file.type === 'components') {
-        fs.writeFileSync(`${path}/${componentNameCapitalized}${file.ext}`, typeof file.template === 'function' ? file.template(placeholders) : file.template);
+        fs.writeFileSync(`${path}/${file?.name || componentNameCapitalized}${file.ext}`, typeof file.template === 'function' ? file.template(placeholders) : file.template);
       } else if (file.type === 'stories') {
         fs.writeFileSync(`./src/stories/${componentNameCapitalized}${file.ext}`, typeof file.template === 'function' ? file.template(placeholders) : file.template);
       }
     });
-    fs.writeFileSync(`${path}/package.json`, mapPlaceholders(packageJson, placeholders));
   } catch (error) {
     if (error.code === 'EEXIST') {
       console.error('Component already exists');

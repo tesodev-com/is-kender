@@ -1,6 +1,6 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import Pagination from 'library/Pagination';
+import Pagination from 'library-components/Pagination';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Pagination.vue', () => {
   let wrapper: VueWrapper<any>;

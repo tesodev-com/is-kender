@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Skeleton from 'library/Skeleton';
+import Skeleton from 'library-components/Skeleton';
 
 const meta: Meta<typeof Skeleton> = {
   component: Skeleton,

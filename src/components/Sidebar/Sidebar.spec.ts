@@ -1,7 +1,7 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
+import type { SidebarLink } from 'library-components/Sidebar';
+import { beforeEach, describe, expect, it } from 'vitest';
 import Sidebar from './Sidebar.vue';
-import type { SidebarLink } from 'library/Sidebar';
 
 const links: SidebarLink[] = [
   { text: 'Home', href: '/', isOpen: false },

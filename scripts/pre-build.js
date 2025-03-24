@@ -10,8 +10,8 @@ function setPackageExport() {
   folders.forEach(folder => {
     if (excludeFolders.includes(folder)) return;
     exports[`./${folder.toLowerCase()}`] = {
-      types: `./dist/components/${folder}/${folder}.d.ts`,
-      import: `./dist/components/${folder}/${folder}.js`,
+      types: `./dist/components/${folder}/index.d.ts`,
+      import: `./dist/components/${folder}/index.js`,
     };
   });
   packageJson.exports = exports;
@@ -23,7 +23,7 @@ function setComponentIndex() {
   const indexContent = folders
     .map(folder => {
       if (excludeFolders.includes(folder)) return;
-      return `export { default as ${folder} } from 'library/${folder}';`;
+      return `export { default as ${folder} } from 'library-components/${folder}';`;
     })
     .filter(Boolean)
     .join('\n');

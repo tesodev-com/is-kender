@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue';
 import { glob } from 'glob';
-import path, { extname, relative, resolve } from 'path';
+import { extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -12,10 +12,8 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       entryRoot: resolve(__dirname, 'src'),
-      include: ['src/**/*.d.ts', 'src/main.ts', 'src/components/index.ts', 'src/composables/**/*.ts', 'src/utils/**/*.ts'],
-      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/**/*.vue'],
+      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts'],
       cleanVueFileName: true,
-      copyDtsFiles: true,
     }),
     libInjectCss(),
   ],
@@ -32,14 +30,20 @@ export default defineConfig({
       input: Object.fromEntries(
         glob
           .sync('src/**/*.{ts,js,vue}', {
-            ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts'],
+            ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/components/**/index.ts', 'src/components/**/types.ts'],
           })
           .map(file => [relative('src', file.slice(0, file.length - extname(file).length)), fileURLToPath(new URL(file, import.meta.url))])
       ),
       external: ['vue'],
       output: {
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: assetInfo => {
+          if (assetInfo.names[0].endsWith('.css')) {
+            return 'assets/css/[name].css';
+          }
+          return 'assets/[name].[ext]';
+        },
         entryFileNames: '[name].js',
+        chunkFileNames: 'assets/js/[name].js',
         globals: {
           vue: 'Vue',
         },
@@ -54,13 +58,13 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: [
-      { find: '@', replacement: path.resolve(__dirname, './src') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/components') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/composables') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/globalTypes') },
-      { find: 'library', replacement: path.resolve(__dirname, 'src/utils') },
-    ],
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      'library-components': resolve(__dirname, 'src/components'),
+      'library-composables': resolve(__dirname, 'src/composables'),
+      'library-directives': resolve(__dirname, 'src/directives'),
+      'library-utils': resolve(__dirname, 'src/utils'),
+    },
   },
   server: {
     port: 3001,

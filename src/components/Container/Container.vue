@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ContainerProps } from 'library/Container';
 import { computed } from 'vue';
+import type { ContainerProps } from './types';
 
 const props = withDefaults(defineProps<ContainerProps>(), {
   maxWidth: '75rem',

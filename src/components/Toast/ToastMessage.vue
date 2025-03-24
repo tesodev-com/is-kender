@@ -22,17 +22,17 @@
         <Svg
           :src="closeIcon"
           size="20"
-        />
+        ></Svg>
       </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { ToastMessageProps } from 'library/Toast';
-import { computed, onMounted } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import { computed, onMounted } from 'vue';
+import type { ToastMessageProps } from './types';
 
 interface ToastMessageEmits {
   (e: 'close'): void;

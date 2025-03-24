@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import type { DividerProps } from 'library/Divider';
 import { computed } from 'vue';
+import type { DividerProps } from './types';
 
 const props = withDefaults(defineProps<DividerProps>(), {
   is: 'div',

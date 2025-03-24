@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ProgressBarProps } from 'library/ProgressBar';
 import { computed } from 'vue';
+import type { ProgressBarProps } from './types';
 
 const props = withDefaults(defineProps<ProgressBarProps>(), {
   showPercentage: false,

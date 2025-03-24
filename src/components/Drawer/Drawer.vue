@@ -41,9 +41,9 @@
 
 <script setup lang="ts">
 import { closeIcon } from '@/assets/icons';
-import type { DrawerProps, ToggleValue } from 'library/Drawer';
-import Svg from 'library/Svg';
+import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, watch } from 'vue';
+import type { DrawerProps, ToggleValue } from './types';
 const isOpen = ref(false);
 const props = withDefaults(defineProps<DrawerProps>(), {
   position: 'left',

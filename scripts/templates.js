@@ -1,3 +1,6 @@
+export const indexFile = `export { default } from './Link.vue';
+export * from './types';
+`;
 export const vueFile = `<template>$template</template>
 
 <script setup lang="ts">
@@ -26,35 +29,10 @@ export const vueFile = `<template>$template</template>
 
 <style lang="scss" scoped src="./$scssFile"></style>
 `;
-export const dtsFile = `/* eslint-disable @typescript-eslint/no-empty-object-type */
-import { type DefineComponent } from 'vue';
-
-export interface $templateProps {}
-
-declare const $template: DefineComponent<$templateProps>;
-
-declare module 'vue' {
-  export interface GlobalComponents {
-    Lib$template: typeof $template;
-  }
-}
-
-export default $template;
-`;
-export const packageJson = `{
-    "main": "./$template.vue",
-    "module": "./$template.vue",
-    "types": "./$template.d.ts",
-    "exports": {
-        ".": {
-            "types": "./$template.d.ts",
-            "import": "./$template.vue"
-        }
-    }
-}`;
 export const scssFile = '/* SCSS */';
 export const testFile = '/* TEST */';
 export const storyFile = '/* STORY */';
+export const typesFile = '/* TYPES */';
 
 export function mapPlaceholders(template, placeholders) {
   Object.keys(placeholders).forEach(key => {

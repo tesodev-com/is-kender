@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import type { SvgProps } from 'library/Svg';
 import { onMounted, onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
+import type { SvgProps } from './types';
 
 if (import.meta.env.SSR) {
   onServerPrefetch(async () => {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Pagination from 'library/Pagination';
+import Pagination from 'library-components/Pagination';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Pagination> = {
