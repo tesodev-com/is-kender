@@ -1,6 +1,6 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import type { ComputedRef, Ref } from 'vue';
-import type { SwiperProps, SwiperState } from '../Swiper';
+import type { SwiperProps, SwiperState } from '../types';
 
 export interface EffectOptions {
   props: SwiperProps;

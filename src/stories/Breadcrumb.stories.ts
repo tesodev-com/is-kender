@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/vue3';
-import Breadcrumb, { type BreadcrumbItemProps } from 'library/Breadcrumb';
+import Breadcrumb, { type BreadcrumbItemProps } from 'library-components/Breadcrumb';
 
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Navigation/Breadcrumb',
@@ -8,7 +8,7 @@ const meta: Meta<typeof Breadcrumb> = {
     items: [
       { text: 'Home', to: '/' },
       { text: 'Library', to: '/library' },
-      { text: 'Data', to: '/library/data' },
+      { text: 'Data', to: '/library-components/data' },
     ],
   },
 };
@@ -26,7 +26,7 @@ export const SlotItem: Story = {
       const items: BreadcrumbItemProps[] = [
         { text: 'Home', to: '/' },
         { text: 'Library', to: '/library' },
-        { text: 'Data', to: '/library/data' },
+        { text: 'Data', to: '/library-components/data' },
       ];
       return { items };
     },
@@ -43,7 +43,7 @@ export const SlotItemIcon: Story = {
       const items: BreadcrumbItemProps[] = [
         { text: 'Home', to: '/' },
         { text: 'Library', to: '/library', icon: 'at' },
-        { text: 'Data', to: '/library/data' },
+        { text: 'Data', to: '/library-components/data' },
       ];
       return { items };
     },

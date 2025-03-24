@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import OTPInput from 'library/OtpInput';
+import OTPInput from 'library-components/OtpInput';
 import { ref } from 'vue';
 
 const meta: Meta<typeof OTPInput> = {

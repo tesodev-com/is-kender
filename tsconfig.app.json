@@ -11,13 +11,11 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "library/*": [
-        "src/components/*",
-        "src/composables/*",
-        "src/directives/*",
-        "src/utils/*"
-      ]
+      "@/*": ["./src/*"],
+      "library-components/*": ["./src/components/*"],
+      "library-composables/*": ["./src/composables/*"],
+      "library-directives/*": ["./src/directives/*"],
+      "library-utils/*": ["./src/utils/*"]
     }
   },
   "include": [

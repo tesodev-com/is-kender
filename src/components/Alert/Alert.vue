@@ -35,7 +35,7 @@
           <Svg
             :src="closeIcon"
             size="20"
-          />
+          ></Svg>
         </span>
       </div>
     </div>
@@ -43,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import type { AlertEmits, AlertProps, AlertSlots } from 'library/Alert';
-import { computed, onMounted, ref } from 'vue';
-import Svg from 'library/Svg';
 import { closeIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import { computed, onMounted, ref } from 'vue';
+import type { AlertEmits, AlertProps, AlertSlots } from './types';
 
 const props = withDefaults(defineProps<AlertProps>(), {
   color: 'primary',

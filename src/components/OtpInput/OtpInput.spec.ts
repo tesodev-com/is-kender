@@ -1,5 +1,5 @@
-import OTPInput from 'library/OtpInput';
 import { shallowMount, type VueWrapper } from '@vue/test-utils';
+import OTPInput from 'library-components/OtpInput';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { ref } from 'vue';
 

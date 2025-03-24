@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-import Select, { type SelectProps } from 'library/Select';
 import { arrowDownIcon, emailIcon } from '@/assets/icons';
-import Svg from 'library/Svg';
+import type { Meta, StoryObj } from '@storybook/vue3';
+import Select, { type SelectProps } from 'library-components/Select';
+import Svg from 'library-components/Svg';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Select> = {

@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import type { TextProps } from 'library/Text';
 import { computed } from 'vue';
+import type { TextProps } from './types';
 
 const props = withDefaults(defineProps<TextProps>(), {
   size: 'p',

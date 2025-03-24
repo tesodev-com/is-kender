@@ -15,13 +15,13 @@
             :src="removeCircleOutlineIcon"
             size="24"
             class="accordion-arrow"
-          />
+          ></Svg>
           <Svg
             v-else
             :src="addCircleOutlineIcon"
             size="24"
             class="accordion-arrow"
-          />
+          ></Svg>
         </template>
         <slot
           v-if="!!$slots.title"
@@ -37,13 +37,13 @@
             :src="removeCircleOutlineIcon"
             size="24"
             class="accordion-arrow"
-          />
+          ></Svg>
           <Svg
             v-else
             :src="addCircleOutlineIcon"
             size="24"
             class="accordion-arrow"
-          />
+          ></Svg>
         </template>
       </div>
       <transition
@@ -78,10 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import { type AccordionEmits, type AccordionProps } from 'library/Accordion';
-import { computed, ref } from 'vue';
-import Svg from 'library/Svg';
 import { addCircleOutlineIcon, removeCircleOutlineIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import { computed, ref } from 'vue';
+import type { AccordionEmits, AccordionProps } from './types';
 
 const props = withDefaults(defineProps<AccordionProps>(), {
   allowMultiple: false,

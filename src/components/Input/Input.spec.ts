@@ -1,5 +1,5 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils';
-import Input, { type InputProps } from 'library/Input';
+import Input, { type InputProps } from 'library-components/Input';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Input.vue', () => {

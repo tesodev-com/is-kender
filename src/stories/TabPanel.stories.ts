@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import TabPanel from 'library/TabPanel';
+import TabPanel from 'library-components/TabPanel';
 
 const meta: Meta<typeof TabPanel> = {
   component: TabPanel,

@@ -16,9 +16,9 @@
 
 <script setup lang="ts">
 import { EventBus } from '@/utils';
-import type { ToastMessageProps, ToastProps } from 'library/Toast';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import ToastMessage from './ToastMessage.vue';
+import type { ToastMessageProps, ToastProps } from './types';
 export type MessageProps = Partial<ToastMessageProps>;
 const props = withDefaults(defineProps<ToastProps>(), {
   position: 'top-right',

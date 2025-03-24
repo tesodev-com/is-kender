@@ -37,7 +37,7 @@
         :src="leftIcon"
         size="20"
         class="select-trigger-left-icon"
-      />
+      ></Svg>
       <p
         class="select-trigger-value"
         :class="[{ 'select-trigger-value-selected': hasSelectedValue }]"
@@ -49,7 +49,7 @@
         size="20"
         class="select-trigger-arrow"
         :class="[{ 'select-trigger-arrow-open': isOpen }]"
-      />
+      ></Svg>
     </div>
     <Teleport to="body">
       <transition name="select-fade">
@@ -114,7 +114,7 @@
                   size="20"
                   class="select-dropdown-item-icon"
                   :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
-                />
+                ></Svg>
               </li>
             </ul>
           </template>
@@ -156,7 +156,7 @@
                   size="20"
                   class="select-dropdown-item-icon"
                   :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
-                />
+                ></Svg>
               </li>
             </ul>
           </template>
@@ -178,11 +178,11 @@
 </template>
 
 <script setup lang="ts">
-import Svg from 'library/Svg';
-import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
 import { arrowDownIcon, checkIcon } from '@/assets/icons';
-import type { SelectOption, SelectProps } from 'library/Select';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
+import Svg from 'library-components/Svg';
+import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
+import type { SelectOption, SelectProps } from './types';
 
 const props = withDefaults(defineProps<SelectProps>(), {
   isMultiple: false,

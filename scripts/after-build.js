@@ -1,20 +1,21 @@
 import fs from 'fs';
-import { glob } from 'glob';
-import { dirname, join, relative } from 'path';
+import { getFolders } from './utils.js';
 
-function copyPackageJson() {
-  const packageJsonFiles = glob.sync('./src/**/package.json');
-  packageJsonFiles.forEach(file => {
-    const srcDir = dirname(file);
-    const relativePath = relative('src', srcDir);
-    const destDir = join('dist', relativePath);
-    if (fs.existsSync(destDir)) {
-      const json = fs.readFileSync(file, 'utf8');
-      const replacedJson = json.replace(new RegExp('.vue', 'g'), '.js');
-      fs.writeFileSync(join(destDir, 'package.json'), replacedJson);
-      return;
-    }
+function globalDTs() {
+  const template = `
+declare module 'vue' {
+  export interface GlobalComponents {
+$componentList
+  }
+}`;
+  const components = getFolders('./src/components');
+  const globalComponents = components.map(component => {
+    const componentName = component.charAt(0).toUpperCase() + component.slice(1);
+    return `    Lib${componentName}: typeof import('./components/${component}')['default']`;
   });
+  const globalComponentsString = globalComponents.join('\n');
+  const replacedTemplate = template.replace('$componentList', globalComponentsString);
+  fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
 }
 
-copyPackageJson();
+globalDTs();

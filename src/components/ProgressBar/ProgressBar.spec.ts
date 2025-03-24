@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import ProgressBar, { type ProgressBarProps } from 'library/ProgressBar';
+import ProgressBar, { type ProgressBarProps } from 'library-components/ProgressBar';
 import { describe, expect, it } from 'vitest';
 
 describe('ProgressBar.vue', () => {

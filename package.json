@@ -26,137 +26,137 @@
       "import": "./dist/directives/vSwipe/index.js"
     },
     "./accordion": {
-      "types": "./dist/components/Accordion/Accordion.d.ts",
-      "import": "./dist/components/Accordion/Accordion.js"
+      "types": "./dist/components/Accordion/index.d.ts",
+      "import": "./dist/components/Accordion/index.js"
     },
     "./alert": {
-      "types": "./dist/components/Alert/Alert.d.ts",
-      "import": "./dist/components/Alert/Alert.js"
+      "types": "./dist/components/Alert/index.d.ts",
+      "import": "./dist/components/Alert/index.js"
     },
     "./badge": {
-      "types": "./dist/components/Badge/Badge.d.ts",
-      "import": "./dist/components/Badge/Badge.js"
+      "types": "./dist/components/Badge/index.d.ts",
+      "import": "./dist/components/Badge/index.js"
     },
     "./breadcrumb": {
-      "types": "./dist/components/Breadcrumb/Breadcrumb.d.ts",
-      "import": "./dist/components/Breadcrumb/Breadcrumb.js"
+      "types": "./dist/components/Breadcrumb/index.d.ts",
+      "import": "./dist/components/Breadcrumb/index.js"
     },
     "./button": {
-      "types": "./dist/components/Button/Button.d.ts",
-      "import": "./dist/components/Button/Button.js"
+      "types": "./dist/components/Button/index.d.ts",
+      "import": "./dist/components/Button/index.js"
     },
     "./checkbox": {
-      "types": "./dist/components/Checkbox/Checkbox.d.ts",
-      "import": "./dist/components/Checkbox/Checkbox.js"
+      "types": "./dist/components/Checkbox/index.d.ts",
+      "import": "./dist/components/Checkbox/index.js"
     },
     "./col": {
-      "types": "./dist/components/Col/Col.d.ts",
-      "import": "./dist/components/Col/Col.js"
+      "types": "./dist/components/Col/index.d.ts",
+      "import": "./dist/components/Col/index.js"
     },
     "./container": {
-      "types": "./dist/components/Container/Container.d.ts",
-      "import": "./dist/components/Container/Container.js"
+      "types": "./dist/components/Container/index.d.ts",
+      "import": "./dist/components/Container/index.js"
     },
     "./divider": {
-      "types": "./dist/components/Divider/Divider.d.ts",
-      "import": "./dist/components/Divider/Divider.js"
+      "types": "./dist/components/Divider/index.d.ts",
+      "import": "./dist/components/Divider/index.js"
     },
     "./drawer": {
-      "types": "./dist/components/Drawer/Drawer.d.ts",
-      "import": "./dist/components/Drawer/Drawer.js"
+      "types": "./dist/components/Drawer/index.d.ts",
+      "import": "./dist/components/Drawer/index.js"
     },
     "./fileupload": {
-      "types": "./dist/components/FileUpload/FileUpload.d.ts",
-      "import": "./dist/components/FileUpload/FileUpload.js"
+      "types": "./dist/components/FileUpload/index.d.ts",
+      "import": "./dist/components/FileUpload/index.js"
     },
     "./input": {
-      "types": "./dist/components/Input/Input.d.ts",
-      "import": "./dist/components/Input/Input.js"
+      "types": "./dist/components/Input/index.d.ts",
+      "import": "./dist/components/Input/index.js"
     },
     "./link": {
-      "types": "./dist/components/Link/Link.d.ts",
-      "import": "./dist/components/Link/Link.js"
+      "types": "./dist/components/Link/index.d.ts",
+      "import": "./dist/components/Link/index.js"
     },
     "./progressbar": {
-      "types": "./dist/components/ProgressBar/ProgressBar.d.ts",
-      "import": "./dist/components/ProgressBar/ProgressBar.js"
+      "types": "./dist/components/ProgressBar/index.d.ts",
+      "import": "./dist/components/ProgressBar/index.js"
     },
     "./radiobutton": {
-      "types": "./dist/components/RadioButton/RadioButton.d.ts",
-      "import": "./dist/components/RadioButton/RadioButton.js"
+      "types": "./dist/components/RadioButton/index.d.ts",
+      "import": "./dist/components/RadioButton/index.js"
     },
     "./row": {
-      "types": "./dist/components/Row/Row.d.ts",
-      "import": "./dist/components/Row/Row.js"
+      "types": "./dist/components/Row/index.d.ts",
+      "import": "./dist/components/Row/index.js"
     },
     "./select": {
-      "types": "./dist/components/Select/Select.d.ts",
-      "import": "./dist/components/Select/Select.js"
+      "types": "./dist/components/Select/index.d.ts",
+      "import": "./dist/components/Select/index.js"
     },
     "./sidebar": {
-      "types": "./dist/components/Sidebar/Sidebar.d.ts",
-      "import": "./dist/components/Sidebar/Sidebar.js"
+      "types": "./dist/components/Sidebar/index.d.ts",
+      "import": "./dist/components/Sidebar/index.js"
     },
     "./skeleton": {
-      "types": "./dist/components/Skeleton/Skeleton.d.ts",
-      "import": "./dist/components/Skeleton/Skeleton.js"
+      "types": "./dist/components/Skeleton/index.d.ts",
+      "import": "./dist/components/Skeleton/index.js"
     },
     "./spinner": {
-      "types": "./dist/components/Spinner/Spinner.d.ts",
-      "import": "./dist/components/Spinner/Spinner.js"
+      "types": "./dist/components/Spinner/index.d.ts",
+      "import": "./dist/components/Spinner/index.js"
     },
     "./svg": {
-      "types": "./dist/components/Svg/Svg.d.ts",
-      "import": "./dist/components/Svg/Svg.js"
+      "types": "./dist/components/Svg/index.d.ts",
+      "import": "./dist/components/Svg/index.js"
     },
     "./swiper": {
-      "types": "./dist/components/Swiper/Swiper.d.ts",
-      "import": "./dist/components/Swiper/Swiper.js"
+      "types": "./dist/components/Swiper/index.d.ts",
+      "import": "./dist/components/Swiper/index.js"
     },
     "./swiperslide": {
-      "types": "./dist/components/SwiperSlide/SwiperSlide.d.ts",
-      "import": "./dist/components/SwiperSlide/SwiperSlide.js"
+      "types": "./dist/components/SwiperSlide/index.d.ts",
+      "import": "./dist/components/SwiperSlide/index.js"
     },
     "./text": {
-      "types": "./dist/components/Text/Text.d.ts",
-      "import": "./dist/components/Text/Text.js"
+      "types": "./dist/components/Text/index.d.ts",
+      "import": "./dist/components/Text/index.js"
     },
     "./toast": {
-      "types": "./dist/components/Toast/Toast.d.ts",
-      "import": "./dist/components/Toast/Toast.js"
+      "types": "./dist/components/Toast/index.d.ts",
+      "import": "./dist/components/Toast/index.js"
     },
     "./toggle": {
-      "types": "./dist/components/Toggle/Toggle.d.ts",
-      "import": "./dist/components/Toggle/Toggle.js"
+      "types": "./dist/components/Toggle/index.d.ts",
+      "import": "./dist/components/Toggle/index.js"
     },
     "./tabs": {
-      "types": "./dist/components/Tabs/Tabs.d.ts",
-      "import": "./dist/components/Tabs/Tabs.js"
+      "types": "./dist/components/Tabs/index.d.ts",
+      "import": "./dist/components/Tabs/index.js"
     },
     "./tab": {
-      "types": "./dist/components/Tab/Tab.d.ts",
-      "import": "./dist/components/Tab/Tab.js"
+      "types": "./dist/components/Tab/index.d.ts",
+      "import": "./dist/components/Tab/index.js"
     },
     "./tabpanel": {
-      "types": "./dist/components/TabPanel/TabPanel.d.ts",
-      "import": "./dist/components/TabPanel/TabPanel.js"
+      "types": "./dist/components/TabPanel/index.d.ts",
+      "import": "./dist/components/TabPanel/index.js"
     },
     "./table": {
-      "types": "./dist/components/Table/Table.d.ts",
-      "import": "./dist/components/Table/Table.js"
+      "types": "./dist/components/Table/index.d.ts",
+      "import": "./dist/components/Table/index.js"
     },
     "./otpinput": {
-      "types": "./dist/components/OtpInput/OtpInput.d.ts",
-      "import": "./dist/components/OtpInput/OtpInput.js"
+      "types": "./dist/components/OtpInput/index.d.ts",
+      "import": "./dist/components/OtpInput/index.js"
     },
     "./pagination": {
-      "types": "./dist/components/Pagination/Pagination.d.ts",
-      "import": "./dist/components/Pagination/Pagination.js"
+      "types": "./dist/components/Pagination/index.d.ts",
+      "import": "./dist/components/Pagination/index.js"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
+    "build": "rimraf dist && node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "preview": "vite preview --port 3001",
     "lint:js": "eslint --fix",
@@ -186,11 +186,13 @@
     "@storybook/addon-essentials": "^8.6.4",
     "@storybook/addon-interactions": "^8.6.4",
     "@storybook/addon-links": "^8.6.4",
+    "@storybook/addon-onboarding": "^8.6.7",
+    "@storybook/blocks": "^8.6.7",
     "@storybook/manager-api": "^8.6.4",
     "@storybook/test": "^8.6.4",
     "@storybook/theming": "^8.6.4",
     "@storybook/vue3": "^8.6.4",
-    "@storybook/vue3-vite": "^8.6.4",
+    "@storybook/vue3-vite": "^8.6.7",
     "@types/jsdom": "^21.1.7",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
@@ -204,6 +206,7 @@
     "@vue/tsconfig": "^0.7.0",
     "babel-loader": "^9.2.1",
     "eslint": "^9.21.0",
+    "eslint-plugin-storybook": "^0.11.6",
     "eslint-plugin-vue": "^10.0.0",
     "glob": "^11.0.1",
     "globals": "^16.0.0",
@@ -212,6 +215,7 @@
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "sass": "^1.85.1",
     "storybook": "^8.6.4",
     "style-dictionary": "^4.3.3",
@@ -230,5 +234,10 @@
     "vitest": "^3.0.8",
     "vue-loader": "^17.4.2",
     "vue-tsc": "^2.2.8"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }

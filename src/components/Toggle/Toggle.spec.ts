@@ -1,5 +1,5 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import Toggle, { type ToggleProps } from 'library/Toggle';
+import Toggle, { type ToggleProps } from 'library-components/Toggle';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Toggle.vue', () => {

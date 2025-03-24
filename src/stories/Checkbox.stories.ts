@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Checkbox from 'library/Checkbox';
+import Checkbox from 'library-components/Checkbox';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Checkbox> = {
