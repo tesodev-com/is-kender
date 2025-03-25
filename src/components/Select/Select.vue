@@ -389,7 +389,7 @@ function handleResize() {
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (props.disabled || !searchFilterList.value.length) return;
+  if (props.disabled) return;
 
   switch (event.key) {
     case 'Enter':
@@ -434,7 +434,7 @@ function handleKeydown(event: KeyboardEvent) {
 }
 
 function handleSearchKeydown(event: KeyboardEvent) {
-  if (props.disabled || !searchFilterList.value.length) return;
+  if (props.disabled) return;
 
   switch (event.key) {
     case 'ArrowDown':

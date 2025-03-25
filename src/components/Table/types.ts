@@ -4,6 +4,7 @@ export interface Column {
   key: string;
   label: string;
   sortable?: boolean;
+  style?: string;
 }
 
 export interface Row {
