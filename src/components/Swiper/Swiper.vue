@@ -72,7 +72,7 @@ const effects = {
   slide: () => import('./effect/useSlideEffect'),
   fade: () => import('./effect/useFadeEffect'),
 };
-let interval: string | number | NodeJS.Timeout | undefined;
+let interval: ReturnType<typeof setTimeout> | undefined;
 // composable
 const slots = useSlots();
 // props
