@@ -118,6 +118,8 @@ const accordionContentClasses = computed(() => {
 function toggleAccordion(index: number) {
   const item = accordionItems.value[index];
 
+  if (item.disabled) return;
+
   if (!props.allowMultiple) {
     accordionItems.value.forEach((item, i) => {
       if (i !== index) item.isOpen = false;

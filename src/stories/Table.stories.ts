@@ -207,6 +207,7 @@ const commonArgs: Partial<TableProps> = {
   stickyHeader: false,
   stickyFirstColumn: false,
   stickyLastColumn: false,
+  virtualScroll: false,
 };
 
 const firstNames = [
@@ -300,6 +301,13 @@ const generateRows = () => {
 export const Default: Story = {
   args: {
     ...commonArgs,
+    columns: [
+      { key: 'name', label: 'Name', sortable: true, style: 'width:100px' },
+      { key: 'age', label: 'Age', sortable: true, style: 'width:100px' },
+      { key: 'email', label: 'Email', sortable: true, style: 'width:400px' },
+      { key: 'status', label: 'Status', style: 'width:100px' },
+      { key: 'actions', label: '', style: 'width:50px' },
+    ],
     rows: generateRows(),
     title: 'User List',
     description: 'A comprehensive list of registered users with advanced features.',
@@ -310,6 +318,7 @@ export const Default: Story = {
     stickyHeader: true,
     stickyFirstColumn: true,
     stickyLastColumn: true,
+    virtualScroll: true,
   },
   render: args => ({
     components: { Table, Svg, Badge, Button },

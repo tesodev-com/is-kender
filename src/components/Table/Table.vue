@@ -67,6 +67,7 @@
               v-for="(column, columnIndex) in columns"
               :key="column.key || columnIndex"
               class="column-cell"
+              :style="column.style ? column.style : {}"
               :class="[
                 {
                   'column-cell-selectable': selectable && columnIndex === 0,
@@ -329,7 +330,7 @@ const props = withDefaults(defineProps<TableProps>(), {
   rowsBorder: false,
   stickyFirstColumn: false,
   stickyLastColumn: false,
-  virtualScroll: true,
+  virtualScroll: false,
   rowHeight: 72,
   virtualScrollBuffer: 5,
   selectOnlyVisibleRows: false,
