@@ -30,3 +30,4 @@ export { default as Tabs } from 'library-components/Tabs';
 export { default as Text } from 'library-components/Text';
 export { default as Toast } from 'library-components/Toast';
 export { default as Toggle } from 'library-components/Toggle';
+export { default as TreeSelect } from 'library-components/TreeSelect';
