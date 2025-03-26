@@ -20,7 +20,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
   });
   const nearestSlide = computed(() => {
     if (!slideElements.value.length) return 0;
-    const { index } = slideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
+    const { slide, index } = slideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
       (acc, el, index) => {
         const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
         if (distance < acc.distance) {
@@ -30,7 +30,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
       },
       { distance: Infinity, slide: null, index: 0 }
     );
-    return index;
+    return parseInt(slide?.attributes.getNamedItem('data-index')?.value || '0') || index;
   });
   function init() {
     if (!slideElements.value.length) return;
@@ -41,6 +41,9 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
     if (!props.loop) {
       effectState.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || 0);
       state.value.lastSlideIndex = slideElements.value.findIndex(el => el.offsetLeft >= effectState.value.lastTranslateX);
+    } else {
+      effectState.value.lastTranslateX = totalSlidesWidth;
+      state.value.lastSlideIndex = slideElements.value.length - 1;
     }
 
     update();
@@ -93,17 +96,13 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
     return limitedDeltaX;
   }
   function checkBoundaries() {
-    const offset = 5; // Prevents the slide from being stuck;
-    let isOverLeft = -currentTranslate.value <= 0;
-    let isOverRight = -currentTranslate.value >= effectState.value.lastTranslateX - offset;
-
     if (props.loop) {
-      isOverLeft = false;
-      isOverRight = false;
+      state.value.isBeginning = false;
+      state.value.isEnd = false;
+    } else {
+      state.value.isBeginning = -currentTranslate.value <= 0;
+      state.value.isEnd = -currentTranslate.value >= effectState.value.lastTranslateX;
     }
-
-    state.value.isBeginning = isOverLeft;
-    state.value.isEnd = isOverRight;
   }
 
   return {

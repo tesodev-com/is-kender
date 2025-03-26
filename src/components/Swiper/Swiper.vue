@@ -63,7 +63,7 @@ import { vSwipe } from '@/directives/vSwipe';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
 import { Helpers } from './core';
-import type { EffectReturnType } from './effect/types';
+import type { EffectOptions, EffectReturnType } from './effect/types';
 import type { SwiperProps, SwiperSlots, SwiperState } from './types';
 // interfaces & types
 // constants
@@ -97,7 +97,7 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 // defineEmits
 // states (refs and reactives)
 const wrapperRef = useTemplateRef('swiperWrapperRef');
-const slideNodes = ref<VNode[]>([]);
+const originalSlides = ref<VNode[]>([]);
 const state = ref<SwiperState>({
   swiperId: `swiper-${Helpers.generateUUID()}`,
   deltaX: 0,
@@ -114,11 +114,15 @@ const swiperStyles = computed(() => ({
   '--space-between': `${props.spaceBetween}px`,
 }));
 const renderToSlides = computed(() => {
-  const from = 0;
-  const to = slideNodes.value.length;
+  let from = 0;
+  let to = originalSlides.value.length;
+  if (props.loop) {
+    from = state.value.activeIndex - 1;
+    to = state.value.activeIndex + originalSlides.value.length - 1;
+  }
   const data = [];
   for (let i = from; i < to; i++) {
-    const slide = slideNodes.value[Helpers.getModulo(i, slideNodes.value.length)];
+    const slide = originalSlides.value[Helpers.getModulo(i, originalSlides.value.length)];
     data.push(slide);
   }
   return data;
@@ -132,7 +136,7 @@ const navigationState = computed(() => ({
 }));
 // watchers
 // lifecycles
-setSlideNodes();
+setOriginalSlides();
 onMounted(async () => {
   init();
   await loadEffect();
@@ -160,9 +164,9 @@ function slideTo(index: number) {
 function slidePrev() {
   const prevIndex = state.value.activeIndex - props.slidesPerGroup;
   if (props.rewind) {
-    slideTo(state.value.isBeginning ? slideNodes.value.length - 1 : prevIndex);
+    slideTo(state.value.isBeginning ? originalSlides.value.length - 1 : prevIndex);
   } else if (props.loop) {
-    slideTo(Helpers.getModulo(prevIndex, slideNodes.value.length));
+    slideTo(Helpers.getModulo(prevIndex, originalSlides.value.length));
   } else {
     slideTo(prevIndex);
   }
@@ -172,7 +176,7 @@ function slideNext() {
   if (props.rewind) {
     slideTo(state.value.isEnd ? 0 : nextIndex);
   } else if (props.loop) {
-    slideTo(Helpers.getModulo(nextIndex, slideNodes.value.length));
+    slideTo(Helpers.getModulo(nextIndex, originalSlides.value.length));
   } else {
     slideTo(nextIndex);
   }
@@ -204,7 +208,7 @@ function updateSlideClass(activeIndex = state.value.activeIndex) {
   });
 }
 async function loadEffect() {
-  const effectArgs = { props, state, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
+  const effectArgs: EffectOptions = { props, state, originalSlides, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
   if (effects[props.effect]) {
     const module = await effects[props.effect]();
     effect = module.default(effectArgs);
@@ -214,12 +218,12 @@ async function loadEffect() {
   }
   if (effect?.init) effect.init();
 }
-function setSlideNodes() {
+function setOriginalSlides() {
   const defaultNodes = slots?.default?.() as VNode[];
   if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
   const slides: VNode[] = [];
   getSlidesFromSlot(defaultNodes, slides);
-  slideNodes.value = slides;
+  originalSlides.value = slides;
 }
 function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   nodes.forEach((vnode, index) => {

@@ -1,10 +1,11 @@
 import type { SwipeState } from '@/directives/vSwipe';
-import type { ComputedRef, Ref } from 'vue';
+import type { ComputedRef, Ref, VNode } from 'vue';
 import type { SwiperProps, SwiperState } from '../types';
 
 export interface EffectOptions {
   props: SwiperProps;
   state: Ref<SwiperState>;
+  originalSlides: Ref<VNode[]>;
   slideElements: ComputedRef<HTMLElement[]>;
   setWrapperStyle: (style: Partial<CSSStyleDeclaration>) => void;
   updateSlideClass: (index?: number) => void;
