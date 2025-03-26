@@ -61,8 +61,8 @@ import { keyboardArrowLeftIcon, keyboardArrowRightIcon } from '@/assets/icons';
 import type { SwipeState } from '@/directives/vSwipe';
 import { vSwipe } from '@/directives/vSwipe';
 import Svg from 'library-components/Svg';
-import { Helpers } from 'library-components/Swiper/core';
 import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type VNode } from 'vue';
+import { Helpers } from './core';
 import type { EffectReturnType } from './effect/types';
 import type { SwiperProps, SwiperSlots, SwiperState } from './types';
 // interfaces & types
@@ -212,7 +212,7 @@ async function loadEffect() {
     const defaultModule = await effects.slide();
     effect = defaultModule.default(effectArgs);
   }
-  if (effect.init) effect.init();
+  if (effect?.init) effect.init();
 }
 function setSlideNodes() {
   const defaultNodes = slots?.default?.() as VNode[];

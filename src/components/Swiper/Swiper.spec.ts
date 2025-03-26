@@ -1,9 +1,10 @@
 import { vSwipe } from '@/directives/vSwipe';
 import { flushPromises, mount } from '@vue/test-utils';
-import type { SwiperProps } from 'library-components/Swiper';
 import SwiperSlide from 'library-components/SwiperSlide';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { h } from 'vue';
 import Swiper from './Swiper.vue';
+import type { SwiperProps } from './types';
 
 const mockEffect = {
   init: vi.fn(),
@@ -12,12 +13,12 @@ const mockEffect = {
     return index;
   }),
 };
-vi.mock('@/components/Swiper/effect/useSlideEffect', async () => {
+vi.mock('./effect/useSlideEffect', async () => {
   return {
     default: vi.fn().mockReturnValue(mockEffect),
   };
 });
-vi.mock('@/components/Swiper/effect/useFadeEffect', async () => {
+vi.mock('./effect/useFadeEffect', async () => {
   return {
     default: vi.fn().mockReturnValue(mockEffect),
   };
@@ -26,7 +27,7 @@ vi.mock('@/assets/icons', () => ({
   keyboardArrowLeftIcon: 'left-icon',
   keyboardArrowRightIcon: 'right-icon',
 }));
-vi.mock('library-components/Swiper/core', () => ({
+vi.mock('./core', () => ({
   Helpers: {
     generateUUID: vi.fn().mockReturnValue('test-uuid'),
     getModulo: vi.fn((value, total) => ((value % total) + total) % total),
@@ -48,7 +49,7 @@ describe('Swiper', () => {
         },
       },
       slots: {
-        default: Array.from({ length: 5 }, (_, i) => `<SwiperSlide :slide-index="${i}">Slide-${i}</SwiperSlide>`),
+        default: () => Array.from({ length: 5 }, (_, i) => h(SwiperSlide, { slideIndex: i }, () => `Slide-${i}`)),
       },
     });
   }
