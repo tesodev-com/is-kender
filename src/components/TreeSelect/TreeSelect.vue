@@ -30,6 +30,7 @@
       :aria-expanded="isOpen"
       :aria-controls="`${selectId}-dropdown`"
       @click="toggleDropdown"
+      @keydown="handleKeydown"
     >
       <Svg
         v-if="leftIcon"
@@ -297,6 +298,25 @@ function getNodeSelectionState(node: TreeSelectNode, selectedValues: string[]) {
       isSelected: isNodeSelected,
       isPartial: hasSelectedChildNodes && !isNodeSelected,
     };
+  }
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  switch (event.key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      if (!isOpen.value) {
+        toggleDropdown();
+      }
+      break;
+    case 'Escape':
+      event.preventDefault();
+      if (isOpen.value) {
+        isOpen.value = false;
+        selectTrigger.value?.focus();
+      }
+      break;
   }
 }
 </script>
