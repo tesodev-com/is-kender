@@ -152,6 +152,10 @@
     "./pagination": {
       "types": "./dist/components/Pagination/index.d.ts",
       "import": "./dist/components/Pagination/index.js"
+    },
+    "./textarea": {
+      "types": "./dist/components/Textarea/index.d.ts",
+      "import": "./dist/components/Textarea/index.js"
     }
   },
   "scripts": {
