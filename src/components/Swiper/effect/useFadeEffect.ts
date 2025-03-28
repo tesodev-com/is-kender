@@ -1,7 +1,7 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import { ref } from 'vue';
 import { Helpers } from '../core';
-import type { EffectOptions } from './types';
+import type { EffectOptions, SlideToOptions } from './types';
 
 interface EffectState {
   opacityArray: number[];
@@ -47,14 +47,20 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
         if (event.direction === 'right') slidePrev();
         if (event.direction === 'left') slideNext();
       } else {
-        slideTo(state.value.activeIndex);
+        slideTo({ index: state.value.activeIndex });
       }
     }
   }
-  function slideTo(index: number, duration: number = props.animationDuration || 500) {
-    const safeIndex = Math.max(0, Math.min(index, slideElements.value.length - 1));
-    if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
-    effectState.value.opacityArray = effectState.value.opacityArray.map((_, i) => (i === safeIndex ? 1 : 0));
+  function slideTo({ slide, index, duration }: SlideToOptions) {
+    let slideElement;
+    if (index) {
+      slideElement = slideElements.value[Helpers.getModulo(index, slideElements.value.length)];
+    } else if (slide) {
+      slideElement = slide;
+    }
+    if (!slideElement) return;
+    const slideIndex = Helpers.getSlideIndex(slideElement);
+    effectState.value.opacityArray = effectState.value.opacityArray.map((_, i) => (i === slideIndex ? 1 : 0));
     Helpers.delayedExec(() => {
       slideElements.value.forEach((slideElement, i) => {
         if (!slideElement) return;

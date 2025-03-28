@@ -23,7 +23,7 @@
         :key="i"
         class="swiper-pagination-bullet"
         :class="[{ 'swiper-pagination-bullet-active': i - 1 === state.activeIndex }]"
-        @click="effect.slideTo(i - 1)"
+        @click="effect.slideTo({ index: i - 1 })"
       ></span>
     </div>
     <div
@@ -53,6 +53,10 @@
       <span>{{ state.activeIndex }} / {{ state.lastSlideIndex }}</span>
     </div>
   </div>
+  <pre>
+    {{ effect }}
+    {{ state }}
+  </pre>
 </template>
 
 <script setup lang="ts">
@@ -108,25 +112,12 @@ const state = ref<SwiperState>({
   containerWidth: 0,
   lastSlideIndex: 0,
 });
+const renderToSlides = ref<VNode[]>([]);
 // computed
 const swiperStyles = computed(() => ({
   '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
   '--space-between': `${props.spaceBetween}px`,
 }));
-const renderToSlides = computed(() => {
-  let from = 0;
-  let to = originalSlides.value.length;
-  if (props.loop) {
-    from = state.value.activeIndex - 1;
-    to = state.value.activeIndex + originalSlides.value.length - 1;
-  }
-  const data = [];
-  for (let i = from; i < to; i++) {
-    const slide = originalSlides.value[Helpers.getModulo(i, originalSlides.value.length)];
-    data.push(slide);
-  }
-  return data;
-});
 const slideElements = computed(() => {
   return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
 });
@@ -137,6 +128,7 @@ const navigationState = computed(() => ({
 // watchers
 // lifecycles
 setOriginalSlides();
+setRenderToSlides();
 onMounted(async () => {
   init();
   await loadEffect();
@@ -159,7 +151,7 @@ function onSwipe(event: SwipeState) {
 }
 function slideTo(index: number) {
   if (!effect?.slideTo) return;
-  effect?.slideTo(index);
+  effect?.slideTo({ index });
 }
 function slidePrev() {
   const prevIndex = state.value.activeIndex - props.slidesPerGroup;
@@ -208,7 +200,7 @@ function updateSlideClass(activeIndex = state.value.activeIndex) {
   });
 }
 async function loadEffect() {
-  const effectArgs: EffectOptions = { props, state, originalSlides, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
+  const effectArgs: EffectOptions = { props, state, originalSlides, renderToSlides, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
   if (effects[props.effect]) {
     const module = await effects[props.effect]();
     effect = module.default(effectArgs);
@@ -217,6 +209,16 @@ async function loadEffect() {
     effect = defaultModule.default(effectArgs);
   }
   if (effect?.init) effect.init();
+}
+function setRenderToSlides() {
+  const from = 0;
+  const to = originalSlides.value.length;
+  const data = [];
+  for (let i = from; i < to; i++) {
+    const slide = originalSlides.value[Helpers.getModulo(i, originalSlides.value.length)];
+    data.push(slide);
+  }
+  renderToSlides.value = data;
 }
 function setOriginalSlides() {
   const defaultNodes = slots?.default?.() as VNode[];
