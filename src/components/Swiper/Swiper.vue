@@ -160,7 +160,7 @@ function slidePrev() {
   } else if (props.loop) {
     slideTo(Helpers.getModulo(prevIndex, originalSlides.value.length));
   } else {
-    slideTo(prevIndex);
+    slideTo(Math.max(prevIndex, 0));
   }
 }
 function slideNext() {
@@ -170,7 +170,7 @@ function slideNext() {
   } else if (props.loop) {
     slideTo(Helpers.getModulo(nextIndex, originalSlides.value.length));
   } else {
-    slideTo(nextIndex);
+    slideTo(Math.min(nextIndex, originalSlides.value.length - 1));
   }
 }
 function autoPlay(status: 'start' | 'stop') {

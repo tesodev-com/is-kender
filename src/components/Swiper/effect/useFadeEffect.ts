@@ -52,15 +52,17 @@ function useFadeEffect({ props, state, slideElements, updateSlideClass, slidePre
     }
   }
   function slideTo({ slide, index, duration }: SlideToOptions) {
-    let slideElement;
-    if (index) {
-      slideElement = slideElements.value[Helpers.getModulo(index, slideElements.value.length)];
-    } else if (slide) {
+    let slideElement = null;
+    if (slide) {
       slideElement = slide;
+    } else if (typeof index === 'number' && !isNaN(index)) {
+      slideElement = slideElements.value[Helpers.getModulo(index, slideElements.value.length)];
+    } else {
+      slideElement = slideElements.value[Helpers.getModulo(state.value.activeIndex, slideElements.value.length)];
     }
-    if (!slideElement) return;
     const slideIndex = Helpers.getSlideIndex(slideElement);
-    effectState.value.opacityArray = effectState.value.opacityArray.map((_, i) => (i === slideIndex ? 1 : 0));
+    if (slideIndex !== state.value.activeIndex) state.value.activeIndex = slideIndex;
+    effectState.value.opacityArray = effectState.value.opacityArray.map((_, i) => (i === state.value.activeIndex ? 1 : 0));
     Helpers.delayedExec(() => {
       slideElements.value.forEach((slideElement, i) => {
         if (!slideElement) return;
