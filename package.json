@@ -1,7 +1,7 @@
 {
-  "name": "component-library",
+  "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -156,7 +156,8 @@
     "./treeselect": {
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "dev": "vite",
@@ -174,6 +175,9 @@
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json",
     "prepare": "husky",
     "create-component": "node scripts/generator.js"
+  },
+  "publishConfig": {
+    "@tsd:registry": "https://gitlab.tesodev.com/api/v4/projects/16/packages/npm/"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
