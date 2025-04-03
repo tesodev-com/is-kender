@@ -19,4 +19,6 @@ export { default as keyboardArrowLeftIcon } from '@material-design-icons/svg/rou
 export { default as keyboardArrowRightIcon } from '@material-design-icons/svg/round/keyboard_arrow_right.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
+export { default as removeIcon } from '@material-design-icons/svg/round/remove.svg?raw';
+export { default as chevronRightIcon } from '@material-design-icons/svg/round/chevron_right.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';

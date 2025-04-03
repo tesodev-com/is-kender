@@ -152,6 +152,10 @@
     "./pagination": {
       "types": "./dist/components/Pagination/index.d.ts",
       "import": "./dist/components/Pagination/index.js"
+    },
+    "./treeselect": {
+      "types": "./dist/components/TreeSelect/index.d.ts",
+      "import": "./dist/components/TreeSelect/index.js"
     }
   },
   "scripts": {
