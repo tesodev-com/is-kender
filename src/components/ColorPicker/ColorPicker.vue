@@ -42,7 +42,7 @@
         </div>
 
         <div class="color-picker-content">
-          <!-- Renk seçim alanı -->
+          <!-- Color selection area -->
           <div
             ref="colorArea"
             class="color-area"
@@ -117,7 +117,7 @@
             </Button>
           </div>
 
-          <!-- Renk formatı seçimi -->
+          <!-- Color format selection -->
           <div class="format-selector">
             <button
               v-for="format in colorFormats"
@@ -283,28 +283,27 @@
 </template>
 
 <script setup lang="ts">
-declare global {
-  interface Window {
-    EyeDropper: {
-      new (): {
-        open(): Promise<{ sRGBHex: string }>;
-      };
-    };
-  }
-}
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
-
+// 📌 1. Imports (Libraries, Components, Utils)
 import { colorizeIcon } from '@/assets/icons';
 import { Button, Svg, Text } from '@/components/';
 import useClickOutside from '@/composables/useClickOutside';
 import useDraggable from '@/composables/useDraggable';
 import { calculatePosition } from '@/utils/position';
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
+import { colorUtils } from './colorUtils';
 import type { ColorPickerProps } from './types';
 
-// Use defineModel for two-way binding
-const modelValue = defineModel<string | undefined>('modelValue', { default: undefined });
+// 📌 2. Types & Interfaces
+// Types are imported from './types'
 
-// Define props without modelValue (it's handled by defineModel)
+// 📌 3. Constants
+const MAX_HEX_LENGTH = 7;
+const MAX_ALPHA_LENGTH = 3;
+const MAX_RGB_VALUE = 255;
+const MAX_HSB_VALUES = { h: 360, s: 100, b: 100 };
+
+// 📌 4. Props & Emits
+const modelValue = defineModel<string | undefined>('modelValue', { default: undefined });
 const props = withDefaults(defineProps<Omit<ColorPickerProps, 'modelValue'>>(), {
   pickerPosition: 'right',
   isDraggable: false,
@@ -318,16 +317,39 @@ const props = withDefaults(defineProps<Omit<ColorPickerProps, 'modelValue'>>(), 
   }),
 });
 
-// Picker durumu
+// 📌 5. DOM References
+const colorArea = ref<HTMLElement | null>(null);
+const hueSlider = ref<HTMLElement | null>(null);
+const alphaSlider = ref<HTMLElement | null>(null);
+const bodyRef = ref<HTMLElement | null>(null);
+const headerRef = ref<HTMLElement | null>(null);
+const buttonRef = useTemplateRef<HTMLElement | null>('buttonRef');
+const popupRef = useTemplateRef<HTMLElement | null>('popupRef');
+
+// 📌 6. Composables
+const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
+  initialValue: props.initialPosition,
+  containerElement: bodyRef,
+  handle: headerRef,
+  preventDefault: true,
+});
+
+useClickOutside([popupRef, buttonRef], () => {
+  if (isOpen.value) {
+    isOpen.value = false;
+    stopAllSelections();
+  }
+});
+
+// 📌 7. Reactive State
 const isOpen = ref(false);
-
 const isInitiallyUndefined = ref(modelValue.value === undefined);
-
-// Renk formatı seçenekleri
-const colorFormats = computed(() => props.colorFormats);
 const currentFormat = ref(props.colorFormats[0]);
+const isColorSelecting = ref(false);
+const isHueSelecting = ref(false);
+const isAlphaSelecting = ref(false);
+const isEyeDropperSupported = ref(false);
 
-// Renk değerleri için state
 const colorState = reactive({
   hex: '#000000',
   rgb: { r: 0, g: 0, b: 0 },
@@ -337,7 +359,6 @@ const colorState = reactive({
   brightness: 0,
 });
 
-// Geçici input değerleri
 const tempValues = reactive({
   hex: '#000000',
   rgb: { r: 0, g: 0, b: 0 },
@@ -351,247 +372,38 @@ const positionStyles = reactive({
   bottom: '',
 });
 
-// Renk dönüşüm yardımcı fonksiyonları
-const colorUtils = {
-  hexToRgb(hex: string) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  },
+// 📌 8. Computed Properties
+const colorFormats = computed(() => props.colorFormats);
+const suggestedColors = computed(() => props.suggestedColors);
 
-  rgbToHex(r: number, g: number, b: number) {
-    const toHex = (n: number) => {
-      const hex = Math.max(0, Math.min(255, Math.round(n))).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    };
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-  },
+const outputColor = computed(() => {
+  if (isInitiallyUndefined.value) return undefined;
+  const { r, g, b } = colorState.rgb;
+  const a = colorState.alpha / 100;
 
-  rgbToHsb(r: number, g: number, b: number) {
-    r /= 255;
-    g /= 255;
-    b /= 255;
+  if (a === 0) return 'rgba(0, 0, 0, 0)';
+  return a < 1 ? `rgba(${r}, ${g}, ${b}, ${a})` : colorState.hex;
+});
 
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const d = max - min;
-    let h = 0;
-    const s = max === 0 ? 0 : d / max;
-    const v = max;
+const previewColor = computed(() => {
+  const { r, g, b } = colorState.rgb;
+  const a = colorState.alpha / 100;
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+});
 
-    if (max !== min) {
-      switch (max) {
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
-          break;
-        case g:
-          h = (b - r) / d + 2;
-          break;
-        case b:
-          h = (r - g) / d + 4;
-          break;
-      }
-      h /= 6;
-    }
+const getColorWithoutAlpha = computed(() => {
+  const { r, g, b } = colorState.rgb;
+  return `rgb(${r}, ${g}, ${b})`;
+});
 
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      b: Math.round(v * 100),
-    };
-  },
+const sliderPositions = computed(() => ({
+  hue: (colorState.hsb.h / 360) * 100,
+  saturation: colorState.hsb.s,
+  brightness: colorState.hsb.b,
+  alpha: colorState.alpha,
+}));
 
-  hsbToRgb(h: number, s: number, v: number) {
-    h = (h % 360) / 360;
-    s = Math.min(100, Math.max(0, s)) / 100;
-    v = Math.min(100, Math.max(0, v)) / 100;
-
-    const i = Math.floor(h * 6);
-    const f = h * 6 - i;
-    const p = v * (1 - s);
-    const q = v * (1 - f * s);
-    const t = v * (1 - (1 - f) * s);
-
-    let r = 0,
-      g = 0,
-      b = 0;
-
-    switch (i % 6) {
-      case 0:
-        r = v;
-        g = t;
-        b = p;
-        break;
-      case 1:
-        r = q;
-        g = v;
-        b = p;
-        break;
-      case 2:
-        r = p;
-        g = v;
-        b = t;
-        break;
-      case 3:
-        r = p;
-        g = q;
-        b = v;
-        break;
-      case 4:
-        r = t;
-        g = p;
-        b = v;
-        break;
-      case 5:
-        r = v;
-        g = p;
-        b = q;
-        break;
-    }
-
-    return {
-      r: Math.round(r * 255),
-      g: Math.round(g * 255),
-      b: Math.round(b * 255),
-    };
-  },
-
-  isValidHex(hex: string) {
-    return /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.test(hex);
-  },
-
-  completeHex(input: string): string {
-    let hex = input.replace(/#/g, '').trim().toLowerCase();
-    hex = hex.replace(/[^0-9a-f]/g, '');
-
-    if (hex.length >= 6) {
-      return '#' + hex.slice(0, 6);
-    }
-
-    if (hex.length >= 3) {
-      const shorthand = hex.slice(0, 3);
-      return (
-        '#' +
-        shorthand
-          .split('')
-          .map(c => c + c)
-          .join('')
-      );
-    }
-
-    return colorState.hex;
-  },
-};
-
-// Input handlers
-const handleHexInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  tempValues.hex = input.value;
-
-  // Sadece geçerli hex karakterlerine izin ver
-  if (!/^#?[0-9a-fA-F]*$/.test(input.value)) {
-    input.value = tempValues.hex.replace(/[^#0-9a-fA-F]/g, '');
-    return;
-  }
-
-  // Maksimum uzunluk kontrolü
-  if (input.value.length > 7) {
-    input.value = input.value.slice(0, 7);
-  }
-};
-
-const handleHexBlur = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const newHex = colorUtils.completeHex(input.value);
-
-  if (colorUtils.isValidHex(newHex)) {
-    if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
-      colorState.alpha = 100;
-    }
-    isInitiallyUndefined.value = false;
-    colorState.hex = newHex;
-    const rgb = colorUtils.hexToRgb(newHex);
-    if (rgb) {
-      colorState.rgb = rgb;
-      colorState.hsb = colorUtils.rgbToHsb(rgb.r, rgb.g, rgb.b);
-      emitColorChange();
-    }
-  }
-
-  // Input değerini normalize et
-  input.value = colorState.hex.replace('#', '');
-};
-
-const handleRgbInput = (channel: 'r' | 'g' | 'b', event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const value = Math.min(255, Math.max(0, parseInt(input.value) || 0));
-  tempValues.rgb[channel] = value;
-};
-
-const handleRgbBlur = () => {
-  if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
-    colorState.alpha = 100;
-  }
-  isInitiallyUndefined.value = false;
-  const { r, g, b } = tempValues.rgb;
-  colorState.rgb = { r, g, b };
-  colorState.hex = colorUtils.rgbToHex(r, g, b);
-  colorState.hsb = colorUtils.rgbToHsb(r, g, b);
-  emitColorChange();
-};
-
-const handleHsbInput = (channel: 'h' | 's' | 'b', event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const maxValues = { h: 360, s: 100, b: 100 };
-  const value = Math.min(maxValues[channel], Math.max(0, parseInt(input.value) || 0));
-  tempValues.hsb[channel] = value;
-};
-
-const handleHsbBlur = () => {
-  if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
-    colorState.alpha = 100;
-  }
-  isInitiallyUndefined.value = false;
-  const { h, s, b } = tempValues.hsb;
-  colorState.hsb = { h, s, b };
-  const rgb = colorUtils.hsbToRgb(h, s, b);
-  colorState.rgb = rgb;
-  colorState.hex = colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b);
-  emitColorChange();
-};
-
-const handleAlphaInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  // Sadece 3 karaktere izin ver
-  if (input.value.length > 3) {
-    input.value = input.value.slice(0, 3);
-  }
-};
-
-const handleAlphaBlur = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const value = parseInt(input.value) || 0;
-  const clampedValue = Math.min(100, Math.max(0, value));
-
-  // Eğer geçersiz bir değer girilmişse input değerini düzelt
-  if (value !== clampedValue) {
-    input.value = clampedValue.toString();
-  }
-
-  colorState.alpha = clampedValue;
-  emitColorChange();
-};
-
-const emitColorChange = () => {
-  modelValue.value = outputColor.value;
-};
-
-// İlk yükleme - gelen değeri parse et
+// The method was moved up here due to method dependency.
 const parseInitialColor = () => {
   const color = modelValue.value || '';
 
@@ -628,39 +440,7 @@ const parseInitialColor = () => {
   }
 };
 
-// Computed değerler
-const outputColor = computed(() => {
-  if (isInitiallyUndefined.value) return undefined;
-  const { r, g, b } = colorState.rgb;
-  const a = colorState.alpha / 100;
-
-  // Transparent renk için özel durum
-  if (a === 0) return 'rgba(0, 0, 0, 0)';
-
-  // Normal renk durumu
-  return a < 1 ? `rgba(${r}, ${g}, ${b}, ${a})` : colorState.hex;
-});
-
-const previewColor = computed(() => {
-  const { r, g, b } = colorState.rgb;
-  const a = colorState.alpha / 100;
-  return `rgba(${r}, ${g}, ${b}, ${a})`;
-});
-
-const getColorWithoutAlpha = computed(() => {
-  const { r, g, b } = colorState.rgb;
-  return `rgb(${r}, ${g}, ${b})`;
-});
-
-// Slider pozisyonları için computed değerler
-const sliderPositions = computed(() => ({
-  hue: (colorState.hsb.h / 360) * 100,
-  saturation: colorState.hsb.s,
-  brightness: colorState.hsb.b,
-  alpha: colorState.alpha,
-}));
-
-// Model değişikliklerini izle
+// 📌 9. Watchers
 watch(
   () => modelValue.value,
   newValue => {
@@ -671,51 +451,30 @@ watch(
   { immediate: true }
 );
 
-// DOM referansları
-const colorArea = ref<HTMLElement | null>(null);
-const hueSlider = ref<HTMLElement | null>(null);
-const alphaSlider = ref<HTMLElement | null>(null);
-const bodyRef = ref<HTMLElement | null>(null);
-const headerRef = ref<HTMLElement | null>(null);
-
-// Mouse seçim durumları
-const isColorSelecting = ref(false);
-const isHueSelecting = ref(false);
-const isAlphaSelecting = ref(false);
-
-// Picker pozisyonu için referans
-const buttonRef = useTemplateRef<HTMLElement | null>('buttonRef');
-const popupRef = useTemplateRef<HTMLElement | null>('popupRef');
-
-useClickOutside([popupRef, buttonRef], () => {
-  if (isOpen.value) {
-    isOpen.value = false;
-    stopAllSelections();
+// 📌 10. Lifecycle Hooks
+onMounted(() => {
+  if (window.frameElement && window.parent) {
+    bodyRef.value = window.parent.document.body as HTMLElement;
+  } else {
+    bodyRef.value = document.body as HTMLElement;
   }
+  document.addEventListener('mouseup', stopAllSelections);
+  window.addEventListener('resize', updatePosition);
+  window.addEventListener('scroll', updatePosition, true);
+
+  parseInitialColor();
+  isEyeDropperSupported.value = typeof window !== 'undefined' && 'EyeDropper' in window;
 });
 
-const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
-  initialValue: props.initialPosition,
-  containerElement: bodyRef,
-  handle: headerRef,
-  preventDefault: true,
+onUnmounted(() => {
+  document.removeEventListener('mouseup', stopAllSelections);
+  window.removeEventListener('resize', updatePosition);
+  window.removeEventListener('scroll', updatePosition, true);
+  stopAllSelections();
 });
 
-const updatePosition = () => {
-  nextTick(() => {
-    if (!popupRef.value || !buttonRef.value || !isOpen.value) return;
-    const newPositionStyles = calculatePosition({
-      triggerElement: buttonRef.value,
-      popupElement: popupRef.value,
-      pickerPosition: props.pickerPosition,
-      isMobile: false,
-    });
-
-    Object.assign(positionStyles, newPositionStyles);
-  });
-};
-
-// Throttle fonksiyonu ekleyelim
+// 📌 11. Methods
+// Utility Methods
 const throttle = <T extends (...args: any[]) => void>(func: T, limit: number): T => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let lastRan = 0;
@@ -741,7 +500,35 @@ const throttle = <T extends (...args: any[]) => void>(func: T, limit: number): T
   } as T;
 };
 
-// Tüm seçim işlemlerini durdur
+const updatePosition = () => {
+  nextTick(() => {
+    if (!popupRef.value || !buttonRef.value || !isOpen.value) return;
+    const newPositionStyles = calculatePosition({
+      triggerElement: buttonRef.value,
+      popupElement: popupRef.value,
+      pickerPosition: props.pickerPosition,
+      isMobile: false,
+    });
+    Object.assign(positionStyles, newPositionStyles);
+  });
+};
+
+// Event Handlers
+const togglePicker = () => {
+  isOpen.value = !isOpen.value;
+  if (!isOpen.value) {
+    stopAllSelections();
+  }
+  updatePosition();
+};
+
+const handleMouseLeave = (event: MouseEvent) => {
+  const pickerElement = document.querySelector('.color-picker-popup');
+  if (pickerElement && !pickerElement.contains(event.relatedTarget as Node)) {
+    stopAllSelections();
+  }
+};
+
 const stopAllSelections = () => {
   if (isColorSelecting.value) {
     isColorSelecting.value = false;
@@ -754,45 +541,7 @@ const stopAllSelections = () => {
   }
 };
 
-// Mouse popup dışına çıktığında kontrol et
-const handleMouseLeave = (event: MouseEvent) => {
-  const pickerElement = document.querySelector('.color-picker-popup');
-  if (pickerElement && !pickerElement.contains(event.relatedTarget as Node)) {
-    stopAllSelections();
-  }
-};
-
-// İlk yükleme ve temizleme
-onMounted(() => {
-  bodyRef.value = document.body as HTMLElement;
-  document.addEventListener('mouseup', stopAllSelections);
-  window.addEventListener('resize', updatePosition);
-  window.addEventListener('scroll', updatePosition, true);
-
-  parseInitialColor();
-
-  // EyeDropper API desteğini kontrol et
-  isEyeDropperSupported.value = typeof window !== 'undefined' && 'EyeDropper' in window;
-});
-
-onUnmounted(() => {
-  document.removeEventListener('mouseup', stopAllSelections);
-  window.removeEventListener('resize', updatePosition);
-  window.removeEventListener('scroll', updatePosition, true);
-
-  stopAllSelections();
-});
-
-// Picker'ı aç/kapat
-const togglePicker = () => {
-  isOpen.value = !isOpen.value;
-  if (!isOpen.value) {
-    stopAllSelections();
-  }
-  updatePosition();
-};
-
-// Renk seçim alanı için fare kontrolleri
+// Color Selection Methods
 const startColorSelection = (event: MouseEvent | TouchEvent) => {
   if (!colorArea.value) return;
   isColorSelecting.value = true;
@@ -823,7 +572,6 @@ const startColorSelection = (event: MouseEvent | TouchEvent) => {
       colorState.rgb = rgb;
       colorState.hex = colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b);
 
-      // tempValues'ı güncelle
       tempValues.rgb = { ...colorState.rgb };
       tempValues.hsb = { ...colorState.hsb };
       tempValues.hex = colorState.hex;
@@ -851,7 +599,6 @@ const startColorSelection = (event: MouseEvent | TouchEvent) => {
   handleColorUpdate(event);
 };
 
-// Hue slider için fare kontrolleri
 const startHueSelection = (event: MouseEvent | TouchEvent) => {
   if (!hueSlider.value) return;
   isHueSelecting.value = true;
@@ -873,7 +620,6 @@ const startHueSelection = (event: MouseEvent | TouchEvent) => {
       colorState.rgb = rgb;
       colorState.hex = colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b);
 
-      // tempValues'ı güncelle
       tempValues.rgb = { ...colorState.rgb };
       tempValues.hsb = { ...colorState.hsb };
       tempValues.hex = colorState.hex;
@@ -898,7 +644,6 @@ const startHueSelection = (event: MouseEvent | TouchEvent) => {
   handleHueUpdate(event);
 };
 
-// Alpha slider için fare kontrolleri
 const startAlphaSelection = (event: MouseEvent | TouchEvent) => {
   if (!alphaSlider.value) return;
   isAlphaSelecting.value = true;
@@ -944,8 +689,103 @@ const startAlphaSelection = (event: MouseEvent | TouchEvent) => {
   handleAlphaUpdate(event);
 };
 
-// Önerilen renkler
-const suggestedColors = computed(() => props.suggestedColors);
+// Input Handlers
+const handleHexInput = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  tempValues.hex = input.value;
+
+  if (!/^#?[0-9a-fA-F]*$/.test(input.value)) {
+    input.value = tempValues.hex.replace(/[^#0-9a-fA-F]/g, '');
+    return;
+  }
+
+  if (input.value.length > MAX_HEX_LENGTH) {
+    input.value = input.value.slice(0, MAX_HEX_LENGTH);
+  }
+};
+
+const handleHexBlur = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const newHex = colorUtils.completeHex(input.value);
+
+  if (colorUtils.isValidHex(newHex)) {
+    if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
+      colorState.alpha = 100;
+    }
+    isInitiallyUndefined.value = false;
+    colorState.hex = newHex;
+    const rgb = colorUtils.hexToRgb(newHex);
+    if (rgb) {
+      colorState.rgb = rgb;
+      colorState.hsb = colorUtils.rgbToHsb(rgb.r, rgb.g, rgb.b);
+      emitColorChange();
+    }
+  }
+
+  input.value = colorState.hex.replace('#', '');
+};
+
+const handleRgbInput = (channel: 'r' | 'g' | 'b', event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const value = Math.min(MAX_RGB_VALUE, Math.max(0, parseInt(input.value) || 0));
+  tempValues.rgb[channel] = value;
+};
+
+const handleRgbBlur = () => {
+  if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
+    colorState.alpha = 100;
+  }
+  isInitiallyUndefined.value = false;
+  const { r, g, b } = tempValues.rgb;
+  colorState.rgb = { r, g, b };
+  colorState.hex = colorUtils.rgbToHex(r, g, b);
+  colorState.hsb = colorUtils.rgbToHsb(r, g, b);
+  emitColorChange();
+};
+
+const handleHsbInput = (channel: 'h' | 's' | 'b', event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const value = Math.min(MAX_HSB_VALUES[channel], Math.max(0, parseInt(input.value) || 0));
+  tempValues.hsb[channel] = value;
+};
+
+const handleHsbBlur = () => {
+  if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
+    colorState.alpha = 100;
+  }
+  isInitiallyUndefined.value = false;
+  const { h, s, b } = tempValues.hsb;
+  colorState.hsb = { h, s, b };
+  const rgb = colorUtils.hsbToRgb(h, s, b);
+  colorState.rgb = rgb;
+  colorState.hex = colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b);
+  emitColorChange();
+};
+
+const handleAlphaInput = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  if (input.value.length > MAX_ALPHA_LENGTH) {
+    input.value = input.value.slice(0, MAX_ALPHA_LENGTH);
+  }
+};
+
+const handleAlphaBlur = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const value = parseInt(input.value) || 0;
+  const clampedValue = Math.min(100, Math.max(0, value));
+
+  if (value !== clampedValue) {
+    input.value = clampedValue.toString();
+  }
+
+  colorState.alpha = clampedValue;
+  emitColorChange();
+};
+
+// Color Management Methods
+const emitColorChange = () => {
+  modelValue.value = outputColor.value;
+};
 
 const selectSuggestedColor = (color: string) => {
   if (isInitiallyUndefined.value && color !== 'transparent') {
@@ -953,13 +793,11 @@ const selectSuggestedColor = (color: string) => {
   }
   isInitiallyUndefined.value = false;
   if (color === 'transparent') {
-    // Tüm değerleri sıfırla
     colorState.rgb = { r: 0, g: 0, b: 0 };
     colorState.hex = '#000000';
     colorState.hsb = { h: 0, s: 0, b: 0 };
     colorState.alpha = 0;
 
-    // tempValues'ı da güncelle
     tempValues.rgb = { ...colorState.rgb };
     tempValues.hsb = { ...colorState.hsb };
     tempValues.hex = colorState.hex;
@@ -972,7 +810,6 @@ const selectSuggestedColor = (color: string) => {
       colorState.hsb = colorUtils.rgbToHsb(rgb.r, rgb.g, rgb.b);
       colorState.alpha = 100;
 
-      // tempValues'ı güncelle
       tempValues.rgb = { ...colorState.rgb };
       tempValues.hsb = { ...colorState.hsb };
       tempValues.hex = hex;
@@ -981,16 +818,12 @@ const selectSuggestedColor = (color: string) => {
   emitColorChange();
 };
 
-// EyeDropper API için destek kontrolü
-const isEyeDropperSupported = ref(false);
-
 const activateEyeDropper = async () => {
   if (!isEyeDropperSupported.value) return;
   try {
     const eyeDropper = new window.EyeDropper();
     const result = await eyeDropper.open();
 
-    // Seçilen rengi uygula
     const colorValue = result.sRGBHex;
     const rgb = colorUtils.hexToRgb(colorValue);
 

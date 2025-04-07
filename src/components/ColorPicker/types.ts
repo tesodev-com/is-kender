@@ -1,3 +1,13 @@
+declare global {
+  interface Window {
+    EyeDropper: {
+      new (): {
+        open(): Promise<{ sRGBHex: string }>;
+      };
+    };
+  }
+}
+
 /**
  * Props for the ColorPicker component
  */
