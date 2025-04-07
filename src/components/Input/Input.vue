@@ -18,6 +18,7 @@
         </span>
       </div>
       <Svg
+        v-if="tooltip"
         v-tooltip="tooltip"
         :src="infoIcon"
       ></Svg>
