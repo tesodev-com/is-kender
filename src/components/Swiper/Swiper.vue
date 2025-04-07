@@ -101,7 +101,6 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 // defineEmits
 // states (refs and reactives)
 const wrapperRef = useTemplateRef('swiperWrapperRef');
-const originalSlides = ref<VNode[]>([]);
 const state = ref<SwiperState>({
   swiperId: `swiper-${Helpers.generateUUID()}`,
   deltaX: 0,
@@ -112,7 +111,6 @@ const state = ref<SwiperState>({
   containerWidth: 0,
   lastSlideIndex: 0,
 });
-const renderToSlides = ref<VNode[]>([]);
 // computed
 const swiperStyles = computed(() => ({
   '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
@@ -125,10 +123,25 @@ const navigationState = computed(() => ({
   prev: state.value.isBeginning && !props.loop && !props.rewind,
   next: state.value.isEnd && !props.loop && !props.rewind,
 }));
+const originalSlides = computed(() => {
+  const defaultNodes = slots?.default?.() as VNode[];
+  if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
+  const slides: VNode[] = [];
+  getSlidesFromSlot(defaultNodes, slides);
+  return slides;
+});
+const renderToSlides = computed(() => {
+  const from = 0;
+  const to = originalSlides.value.length;
+  const data = [];
+  for (let i = from; i < to; i++) {
+    const slide = originalSlides.value[Helpers.getModulo(i, originalSlides.value.length)];
+    data.push(slide);
+  }
+  return data;
+});
 // watchers
 // lifecycles
-setOriginalSlides();
-setRenderToSlides();
 onMounted(async () => {
   init();
   await loadEffect();
@@ -209,23 +222,6 @@ async function loadEffect() {
     effect = defaultModule.default(effectArgs);
   }
   if (effect?.init) effect.init();
-}
-function setRenderToSlides() {
-  const from = 0;
-  const to = originalSlides.value.length;
-  const data = [];
-  for (let i = from; i < to; i++) {
-    const slide = originalSlides.value[Helpers.getModulo(i, originalSlides.value.length)];
-    data.push(slide);
-  }
-  renderToSlides.value = data;
-}
-function setOriginalSlides() {
-  const defaultNodes = slots?.default?.() as VNode[];
-  if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
-  const slides: VNode[] = [];
-  getSlidesFromSlot(defaultNodes, slides);
-  originalSlides.value = slides;
 }
 function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   nodes.forEach((vnode, index) => {
