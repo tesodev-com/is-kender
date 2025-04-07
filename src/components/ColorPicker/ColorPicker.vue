@@ -292,14 +292,14 @@ declare global {
     };
   }
 }
-import { ref, computed, watch, onMounted, onUnmounted, reactive, useTemplateRef, nextTick } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
 
+import { colorizeIcon } from '@/assets/icons';
+import { Button, Svg, Text } from '@/components/';
 import useClickOutside from '@/composables/useClickOutside';
 import useDraggable from '@/composables/useDraggable';
-import { Button, Text, Svg } from '@/components/';
-import type { ColorPickerProps } from './types';
 import { calculatePosition } from '@/utils/position';
-import { colorizeIcon } from '@/assets/icons';
+import type { ColorPickerProps } from './types';
 
 // Use defineModel for two-way binding
 const modelValue = defineModel<string | undefined>('modelValue', { default: undefined });
@@ -350,24 +350,6 @@ const positionStyles = reactive({
   right: '',
   bottom: '',
 });
-
-// Storybook ortamında olup olmadığımızı kontrol et
-const isStorybook = computed(() => {
-  return typeof window !== 'undefined' && (window.location.href.includes('storybook') || window.location.href.includes('iframe.html'));
-});
-
-// Storybook için sınırları güncelle
-const updateStorybookConstraints = () => {
-  if (!isStorybook.value || !popupRef.value) return;
-
-  // Pencere boyutu değiştiğinde sınırları güncelle
-  const maxX = window.innerWidth - (popupRef.value.offsetWidth || 300);
-  const maxY = window.innerHeight - (popupRef.value.offsetHeight || 400);
-
-  // Eğer mevcut pozisyon sınırların dışındaysa, düzelt
-  if (position.value.x > maxX) position.value.x = maxX;
-  if (position.value.y > maxY) position.value.y = maxY;
-};
 
 // Renk dönüşüm yardımcı fonksiyonları
 const colorUtils = {
@@ -712,27 +694,12 @@ useClickOutside([popupRef, buttonRef], () => {
   }
 });
 
-const {
-  style: draggableStyle,
-  isDragging,
-  position,
-} = useDraggable(popupRef, {
+const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
   initialValue: props.initialPosition,
   containerElement: bodyRef,
   handle: headerRef,
   preventDefault: true,
-  // Storybook için özel ayarlar
-  constraints: isStorybook.value
-    ? {
-        minX: 0,
-        minY: 0,
-        maxX: window.innerWidth - (popupRef.value?.offsetWidth || 300),
-        maxY: window.innerHeight - (popupRef.value?.offsetHeight || 400),
-      }
-    : undefined,
 });
-
-// Popup pozisyonu için computed style
 
 const updatePosition = () => {
   nextTick(() => {
@@ -802,11 +769,6 @@ onMounted(() => {
   window.addEventListener('resize', updatePosition);
   window.addEventListener('scroll', updatePosition, true);
 
-  // Storybook için pencere boyutu değişikliğini dinle
-  if (isStorybook.value) {
-    window.addEventListener('resize', updateStorybookConstraints);
-  }
-
   parseInitialColor();
 
   // EyeDropper API desteğini kontrol et
@@ -817,11 +779,6 @@ onUnmounted(() => {
   document.removeEventListener('mouseup', stopAllSelections);
   window.removeEventListener('resize', updatePosition);
   window.removeEventListener('scroll', updatePosition, true);
-
-  // Storybook için pencere boyutu değişikliği dinleyicisini kaldır
-  if (isStorybook.value) {
-    window.removeEventListener('resize', updateStorybookConstraints);
-  }
 
   stopAllSelections();
 });
