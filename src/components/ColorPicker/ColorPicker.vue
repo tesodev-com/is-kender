@@ -650,7 +650,11 @@ const outputColor = computed(() => {
   if (isInitiallyUndefined.value) return undefined;
   const { r, g, b } = colorState.rgb;
   const a = colorState.alpha / 100;
-  if (a === 0 && r === 0 && g === 0 && b === 0) return undefined;
+
+  // Transparent renk için özel durum
+  if (a === 0) return 'rgba(0, 0, 0, 0)';
+
+  // Normal renk durumu
   return a < 1 ? `rgba(${r}, ${g}, ${b}, ${a})` : colorState.hex;
 });
 
