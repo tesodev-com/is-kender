@@ -170,7 +170,7 @@ function slideNext() {
   } else if (props.loop) {
     slideTo(Helpers.getModulo(nextIndex, originalSlides.value.length));
   } else {
-    slideTo(Math.min(nextIndex, originalSlides.value.length - 1));
+    slideTo(Math.min(nextIndex, state.value.lastSlideIndex));
   }
 }
 function autoPlay(status: 'start' | 'stop') {
