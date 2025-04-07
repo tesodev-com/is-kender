@@ -53,10 +53,6 @@
       <span>{{ state.activeIndex }} / {{ state.lastSlideIndex }}</span>
     </div>
   </div>
-  <pre>
-    {{ effect }}
-    {{ state }}
-  </pre>
 </template>
 
 <script setup lang="ts">
