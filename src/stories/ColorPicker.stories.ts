@@ -8,7 +8,6 @@ const meta: Meta<typeof ColorPicker> = {
   argTypes: {
     pickerPosition: { control: 'select', options: ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'right', 'right-top', 'right-bottom', 'left', 'left-top', 'left-bottom'] },
     isDraggable: { control: 'boolean' },
-    autoPosition: { control: 'boolean' },
   },
 };
 
@@ -19,7 +18,6 @@ export const Default: Story = {
   args: {
     pickerPosition: 'bottom',
     isDraggable: true,
-    autoPosition: true,
   },
   render: args => ({
     components: { ColorPicker },
@@ -28,7 +26,7 @@ export const Default: Story = {
       return { args, modelValue };
     },
     template: `
-    <ColorPicker v-model="modelValue" :picker-position="args.pickerPosition" :is-draggable="args.isDraggable" :auto-position="args.autoPosition" />
+    <ColorPicker v-model="modelValue" :picker-position="args.pickerPosition" :is-draggable="args.isDraggable" />
     `,
   }),
 };

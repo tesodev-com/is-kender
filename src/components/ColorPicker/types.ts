@@ -14,13 +14,6 @@ export interface ColorPickerProps {
    * @default false
    */
   isDraggable?: boolean;
-
-  /**
-   * Whether to automatically position the picker to stay within viewport
-   * @default true
-   */
-  autoPosition?: boolean;
-
   /**
    * Initial position coordinates for the color picker popup
    * @default undefined

@@ -47,6 +47,7 @@
             ref="colorArea"
             class="color-area"
             @mousedown="startColorSelection"
+            @touchstart.prevent="startColorSelection"
           >
             <div
               class="color-saturation"
@@ -70,6 +71,7 @@
                   ref="hueSlider"
                   class="hue-slider"
                   @mousedown="startHueSelection"
+                  @touchstart.prevent="startHueSelection"
                 >
                   <div
                     class="hue-slider-thumb"
@@ -87,6 +89,7 @@
                     background: `linear-gradient(to right, transparent, ${getColorWithoutAlpha})`,
                   }"
                   @mousedown="startAlphaSelection"
+                  @touchstart.prevent="startAlphaSelection"
                 >
                   <div
                     class="alpha-slider-thumb"
@@ -304,7 +307,6 @@ const modelValue = defineModel<string | undefined>('modelValue', { default: unde
 // Define props without modelValue (it's handled by defineModel)
 const props = withDefaults(defineProps<Omit<ColorPickerProps, 'modelValue'>>(), {
   pickerPosition: 'right',
-  autoPosition: false,
   isDraggable: false,
   initialPosition: () => ({ x: 0, y: 100 }),
   suggestedColors: () => ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB'],
@@ -603,7 +605,6 @@ const handleAlphaBlur = (event: Event) => {
   emitColorChange();
 };
 
-// Renk değişimini emit et
 const emitColorChange = () => {
   modelValue.value = outputColor.value;
 };
@@ -748,7 +749,7 @@ const updatePosition = () => {
 };
 
 // Throttle fonksiyonu ekleyelim
-function throttle<T extends (...args: any[]) => void>(func: T, limit: number): T {
+const throttle = <T extends (...args: any[]) => void>(func: T, limit: number): T => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let lastRan = 0;
 
@@ -771,26 +772,19 @@ function throttle<T extends (...args: any[]) => void>(func: T, limit: number): T
       );
     }
   } as T;
-}
+};
 
 // Tüm seçim işlemlerini durdur
 const stopAllSelections = () => {
   if (isColorSelecting.value) {
     isColorSelecting.value = false;
-    document.removeEventListener('mousemove', handleColorSelection);
-    document.removeEventListener('mouseup', stopColorSelection);
   }
   if (isHueSelecting.value) {
     isHueSelecting.value = false;
-    document.removeEventListener('mousemove', handleHueSelection);
-    document.removeEventListener('mouseup', stopHueSelection);
   }
   if (isAlphaSelecting.value) {
     isAlphaSelecting.value = false;
-    document.removeEventListener('mousemove', handleAlphaSelection);
-    document.removeEventListener('mouseup', stopAlphaSelection);
   }
-  //emitColorChange()
 };
 
 // Mouse popup dışına çıktığında kontrol et
@@ -842,7 +836,7 @@ const togglePicker = () => {
 };
 
 // Renk seçim alanı için fare kontrolleri
-const startColorSelection = (event: MouseEvent) => {
+const startColorSelection = (event: MouseEvent | TouchEvent) => {
   if (!colorArea.value) return;
   isColorSelecting.value = true;
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
@@ -852,7 +846,7 @@ const startColorSelection = (event: MouseEvent) => {
   const throttledUpdate = throttle(emitColorChange, 30);
   let animationFrameId: number;
 
-  const handleColorUpdate = (e: MouseEvent) => {
+  const handleColorUpdate = (e: MouseEvent | TouchEvent) => {
     if (!isColorSelecting.value || !colorArea.value) return;
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
@@ -860,8 +854,10 @@ const startColorSelection = (event: MouseEvent) => {
 
     animationFrameId = requestAnimationFrame(() => {
       const rect = colorArea.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-      const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
 
       colorState.hsb.s = Math.round(x);
       colorState.hsb.b = Math.round(100 - y);
@@ -886,51 +882,20 @@ const startColorSelection = (event: MouseEvent) => {
     }
     document.removeEventListener('mousemove', handleColorUpdate);
     document.removeEventListener('mouseup', stopSelection);
+    document.removeEventListener('touchmove', handleColorUpdate);
+    document.removeEventListener('touchend', stopSelection);
     emitColorChange();
   };
 
   document.addEventListener('mousemove', handleColorUpdate);
   document.addEventListener('mouseup', stopSelection);
+  document.addEventListener('touchmove', handleColorUpdate);
+  document.addEventListener('touchend', stopSelection);
   handleColorUpdate(event);
 };
 
-const handleColorSelection = (() => {
-  const throttledUpdate = throttle(emitColorChange, 30);
-  let animationFrameId: number | null = null;
-
-  return (event: MouseEvent) => {
-    if (!isColorSelecting.value || !colorArea.value) return;
-
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-    }
-
-    animationFrameId = requestAnimationFrame(() => {
-      const rect = colorArea.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-      const y = Math.max(0, Math.min(event.clientY - rect.top, rect.height));
-
-      // HSB değerlerini güncelle
-      colorState.hsb = {
-        h: Math.round((x / rect.width) * 360),
-        s: Math.round((y / rect.height) * 100),
-        b: Math.round(100 - (y / rect.height) * 100),
-      };
-
-      throttledUpdate();
-    });
-  };
-})();
-
-const stopColorSelection = () => {
-  isColorSelecting.value = false;
-  document.removeEventListener('mousemove', handleColorSelection);
-  document.removeEventListener('mouseup', stopColorSelection);
-  emitColorChange(); // Son değeri kesin olarak güncelle
-};
-
 // Hue slider için fare kontrolleri
-const startHueSelection = (event: MouseEvent) => {
+const startHueSelection = (event: MouseEvent | TouchEvent) => {
   if (!hueSlider.value) return;
   isHueSelecting.value = true;
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
@@ -939,11 +904,12 @@ const startHueSelection = (event: MouseEvent) => {
   isInitiallyUndefined.value = false;
   const throttledUpdate = throttle(emitColorChange, 30);
 
-  const handleHueUpdate = (e: MouseEvent) => {
+  const handleHueUpdate = (e: MouseEvent | TouchEvent) => {
     if (!isHueSelecting.value) return;
     requestAnimationFrame(() => {
       const rect = hueSlider.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
       colorState.hsb.h = Math.round(x * 3.6);
 
       const rgb = colorUtils.hsbToRgb(colorState.hsb.h, colorState.hsb.s, colorState.hsb.b);
@@ -963,43 +929,20 @@ const startHueSelection = (event: MouseEvent) => {
     isHueSelecting.value = false;
     document.removeEventListener('mousemove', handleHueUpdate);
     document.removeEventListener('mouseup', stopSelection);
+    document.removeEventListener('touchmove', handleHueUpdate);
+    document.removeEventListener('touchend', stopSelection);
     emitColorChange();
   };
 
   document.addEventListener('mousemove', handleHueUpdate);
   document.addEventListener('mouseup', stopSelection);
+  document.addEventListener('touchmove', handleHueUpdate);
+  document.addEventListener('touchend', stopSelection);
   handleHueUpdate(event);
 };
 
-const handleHueSelection = (() => {
-  const throttledUpdate = throttle(emitColorChange, 30);
-  let animationFrameId: number | null = null;
-
-  return (event: MouseEvent) => {
-    if (!isHueSelecting.value || !hueSlider.value) return;
-
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-    }
-
-    animationFrameId = requestAnimationFrame(() => {
-      const rect = hueSlider.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-      colorState.hsb.h = Math.round((x / rect.width) * 360);
-      throttledUpdate();
-    });
-  };
-})();
-
-const stopHueSelection = () => {
-  isHueSelecting.value = false;
-  document.removeEventListener('mousemove', handleHueSelection);
-  document.removeEventListener('mouseup', stopHueSelection);
-  emitColorChange(); // Son değeri kesin olarak güncelle
-};
-
 // Alpha slider için fare kontrolleri
-const startAlphaSelection = (event: MouseEvent) => {
+const startAlphaSelection = (event: MouseEvent | TouchEvent) => {
   if (!alphaSlider.value) return;
   isAlphaSelecting.value = true;
   if (isInitiallyUndefined.value) {
@@ -1010,7 +953,7 @@ const startAlphaSelection = (event: MouseEvent) => {
   const throttledUpdate = throttle(emitColorChange, 30);
   let animationFrameId: number;
 
-  const handleAlphaUpdate = (e: MouseEvent) => {
+  const handleAlphaUpdate = (e: MouseEvent | TouchEvent) => {
     if (!isAlphaSelecting.value) return;
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
@@ -1018,7 +961,8 @@ const startAlphaSelection = (event: MouseEvent) => {
 
     animationFrameId = requestAnimationFrame(() => {
       const rect = alphaSlider.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
       colorState.alpha = Math.round(x);
       throttledUpdate();
     });
@@ -1031,39 +975,16 @@ const startAlphaSelection = (event: MouseEvent) => {
     }
     document.removeEventListener('mousemove', handleAlphaUpdate);
     document.removeEventListener('mouseup', stopSelection);
+    document.removeEventListener('touchmove', handleAlphaUpdate);
+    document.removeEventListener('touchend', stopSelection);
     emitColorChange();
   };
 
   document.addEventListener('mousemove', handleAlphaUpdate);
   document.addEventListener('mouseup', stopSelection);
+  document.addEventListener('touchmove', handleAlphaUpdate);
+  document.addEventListener('touchend', stopSelection);
   handleAlphaUpdate(event);
-};
-
-const handleAlphaSelection = (() => {
-  const throttledUpdate = throttle(emitColorChange, 30);
-  let animationFrameId: number | null = null;
-
-  return (event: MouseEvent) => {
-    if (!isAlphaSelecting.value || !alphaSlider.value) return;
-
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-    }
-
-    animationFrameId = requestAnimationFrame(() => {
-      const rect = alphaSlider.value!.getBoundingClientRect();
-      const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-      colorState.alpha = Math.round((x / rect.width) * 100);
-      throttledUpdate();
-    });
-  };
-})();
-
-const stopAlphaSelection = () => {
-  isAlphaSelecting.value = false;
-  document.removeEventListener('mousemove', handleAlphaSelection);
-  document.removeEventListener('mouseup', stopAlphaSelection);
-  emitColorChange(); // Son değeri kesin olarak güncelle
 };
 
 // Önerilen renkler
