@@ -118,14 +118,14 @@
 
           &:hover {
             .day-content {
-              background-color: $primary-100;
+              background-color: $gray-100;
             }
           }
 
           &.today {
             .day-content {
-              background-color: $gray-400;
-              color: white !important;
+              background-color: $gray-100;
+              color: $gray-700;
             }
           }
 
@@ -144,7 +144,7 @@
           &.range-start,
           &.in-range,
           &.range-end {
-            background-color: $primary-50;
+            background-color: $gray-100;
           }
 
           &.range-start,

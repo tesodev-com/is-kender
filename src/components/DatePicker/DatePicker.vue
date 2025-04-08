@@ -42,7 +42,7 @@
             variant="outline"
             size="sm"
             class="today-button"
-            @click="onRenderDate(new Date())"
+            @click="onUpdateVisibleDate(new Date())"
           >
             Bugün
           </Button>
@@ -98,10 +98,6 @@
       </div>
     </div>
   </div>
-  Start Date: {{ startDate ? Utils.formatDate(startDate) : 'null' }}
-  <br />
-  End Date: {{ endDate ? Utils.formatDate(endDate) : 'null' }}
-  <br />
 </template>
 
 <script setup lang="ts">
@@ -109,9 +105,9 @@
 import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { DAYS } from './constants';
-import type { CalendarEmits, CalendarProps, DayItem } from './types';
+import type { CalendarEmits, CalendarProps, DateModel, DayItem } from './types';
 import Utils from './utils';
 // constants
 // composable
@@ -128,7 +124,7 @@ const props = withDefaults(defineProps<CalendarProps>(), {
     clear: true,
   }),
 });
-const modelValue = defineModel<Date | Array<Date | null> | null | undefined>('modelValue');
+const modelValue = defineModel<DateModel>('modelValue');
 // defineEmits
 const emit = defineEmits<CalendarEmits>();
 // states (refs and reactives)
@@ -197,19 +193,13 @@ const footerVisible = computed(() => {
   return props.footer?.clear || props.footer?.apply;
 });
 // watchers
-watch(visibleDate, () => {
+watchEffect(() => {
+  if (!isRender.value && modelValue.value) {
+    onUpdateVisibleDate(new Date(model.value[0] ?? new Date()));
+    isRender.value = true;
+  }
   calendarDays.value = generateCalendar();
 });
-watch(
-  modelValue,
-  () => {
-    if (!isRender.value) {
-      onRenderDate(new Date(model.value[0] ?? new Date()));
-      isRender.value = true;
-    }
-  },
-  { immediate: true }
-);
 // lifecycles
 // methods
 function generateCalendar() {
@@ -303,7 +293,7 @@ function onPrev() {
 function onNext() {
   visibleDate.value = Utils.nextMonth(visibleDate.value);
 }
-function onRenderDate(date: Date) {
+function onUpdateVisibleDate(date: Date) {
   visibleDate.value = date;
 }
 function updateModelValue(newDates: Array<Date | null>) {

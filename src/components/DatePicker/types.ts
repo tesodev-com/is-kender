@@ -11,9 +11,9 @@ export interface CalendarProps {
     apply?: (value: Date | { startDate: Date | null | undefined; endDate: Date | null | undefined } | null) => void;
   };
 }
-export type SingleDateModel = Date | null;
-export type RangeDateModel = Array<Date | null> | null;
-export type DateModel = SingleDateModel | RangeDateModel;
+export type SingleDateModel = Date;
+export type RangeDateModel = Array<Date | null>;
+export type DateModel = SingleDateModel | RangeDateModel | null;
 export interface CalendarEmits {
   (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;
 }
