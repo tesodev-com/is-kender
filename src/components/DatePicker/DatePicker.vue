@@ -52,6 +52,32 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="footerVisible"
+        class="calendar-footer"
+      >
+        <div class="calendar-buttons">
+          <Button
+            v-if="props.bottonBar?.clear"
+            color="secondary"
+            variant="outline"
+            size="sm"
+            fluid
+            @click="onClear"
+          >
+            Temizle
+          </Button>
+          <Button
+            v-if="props.bottonBar?.apply"
+            color="primary"
+            size="sm"
+            fluid
+            @click="onApply"
+          >
+            Seç
+          </Button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -59,30 +85,13 @@
 <script setup lang="ts">
 // imports
 import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
+import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, ref, watch } from 'vue';
+import type { CalendarEmits, CalendarProps, DayItem } from './types';
 
 // interfaces & types
-interface CalendarProps {
-  firstDayOfWeek?: 'monday' | 'sunday';
-  selectMode?: 'single' | 'range';
-}
-interface CalendarEmits {
-  (event: 'update:modelValue', value: Date | { startDate: Date | null; endDate: Date | null } | null): void;
-}
-interface DayItem {
-  date: Date;
-  text: string;
-  isToday: boolean;
-  isSelected: boolean;
-  isDisabled: boolean;
-  isPassive: boolean;
-  isFirstDayOfWeek?: boolean;
-  isLastDayOfWeek?: boolean;
-  isRangeStart?: boolean;
-  isInRange?: boolean;
-  isRangeEnd?: boolean;
-}
+
 // constants
 const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
@@ -186,6 +195,9 @@ const calendarDays = computed(() => {
 
   return days;
 });
+const footerVisible = computed(() => {
+  return props.bottonBar?.clear || props.bottonBar?.apply;
+});
 // watchers
 watch(
   modelValue,
@@ -258,6 +270,18 @@ function onClickDay(day: DayItem) {
   calendarDays.value.forEach(item => {
     updateCalendar(item);
   });
+}
+function onClear() {
+  startDate.value = null;
+  endDate.value = null;
+}
+function onApply() {
+  if (typeof props.bottonBar?.apply === 'function') {
+    props.bottonBar?.apply({
+      startDate: startDate.value,
+      endDate: endDate.value,
+    });
+  }
 }
 function updateCalendar(item: DayItem) {
   const isModeRange = props.selectMode === 'range';

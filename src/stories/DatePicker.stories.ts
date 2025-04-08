@@ -14,6 +14,15 @@ const meta: Meta<typeof DatePicker> = {
       control: 'select',
       options: ['single', 'range'],
     },
+    bottonBar: {
+      control: 'object',
+      options: [
+        { clear: true, apply: true },
+        { clear: true, apply: false },
+        { clear: false, apply: true },
+        { clear: false, apply: false },
+      ],
+    },
   },
 };
 
