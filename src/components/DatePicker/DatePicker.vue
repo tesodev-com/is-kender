@@ -34,14 +34,14 @@
             :class="[
               {
                 today: day.isToday,
-                selected: day.isSelected,
+                selected: (startDate && compareDate(day.date, startDate)) || (endDate && compareDate(day.date, endDate)),
                 disabled: day.isDisabled,
                 passive: day.isPassive,
                 'first-day-of-week': day.isFirstDayOfWeek,
                 'last-day-of-week': day.isLastDayOfWeek,
-                'range-start': day.isRangeStart && startDate && endDate,
-                'in-range': day.isInRange && startDate && endDate,
-                'range-end': day.isRangeEnd && startDate && endDate,
+                'range-start': startDate && endDate && Boolean(compareDate(day.date, startDate)),
+                'in-range': startDate && endDate && Boolean(day.date > startDate && day.date < endDate),
+                'range-end': startDate && endDate && Boolean(compareDate(day.date, endDate)),
               },
             ]"
             @click="onClickDay(day)"
@@ -54,20 +54,21 @@
       </div>
     </div>
   </div>
-  {{ startDate }}
-  {{ endDate }}
 </template>
 
 <script setup lang="ts">
 // imports
 import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 // interfaces & types
 interface CalendarProps {
   firstDayOfWeek?: 'monday' | 'sunday';
   selectMode?: 'single' | 'range';
+}
+interface CalendarEmits {
+  (event: 'update:modelValue', value: Date | { startDate: Date | null; endDate: Date | null } | null): void;
 }
 interface DayItem {
   date: Date;
@@ -92,12 +93,13 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   firstDayOfWeek: 'sunday',
   selectMode: 'range',
 });
+const modelValue = defineModel<Date | { startDate: Date | null; endDate: Date | null } | null>('modelValue');
 // defineEmits
-
+const emit = defineEmits<CalendarEmits>();
 // states (refs and reactives)
 const visibleMonth = ref<Date>(new Date());
-const startDate = ref<Date | null>(null);
-const endDate = ref<Date | null>(null);
+const startDate = ref<Date | null>();
+const endDate = ref<Date | null>();
 // computed
 const weekDays = computed(() => {
   const weekDays = [];
@@ -184,9 +186,41 @@ const calendarDays = computed(() => {
 
   return days;
 });
-
 // watchers
-
+watch(
+  modelValue,
+  newValue => {
+    if (props.selectMode === 'single') {
+      if (newValue instanceof Date) {
+        startDate.value = newValue;
+        visibleMonth.value = newValue;
+        endDate.value = null;
+      } else {
+        startDate.value = null;
+      }
+    } else if (props.selectMode === 'range') {
+      const range = newValue as { startDate: Date | null; endDate: Date | null };
+      startDate.value = range?.startDate ?? null;
+      endDate.value = range?.endDate ?? null;
+      visibleMonth.value = range.endDate ?? range.startDate ?? visibleMonth.value;
+    }
+  },
+  { immediate: true }
+);
+watch([startDate, endDate], ([newStartDate, newEndDate]) => {
+  if (newStartDate || newEndDate) {
+    if (props.selectMode === 'single') {
+      emit('update:modelValue', newStartDate ? newStartDate : null);
+    } else if (props.selectMode === 'range') {
+      emit('update:modelValue', {
+        startDate: newStartDate ? newStartDate : null,
+        endDate: newEndDate ? newEndDate : null,
+      });
+    }
+  } else {
+    emit('update:modelValue', props.selectMode === 'single' ? null : { startDate: null, endDate: null });
+  }
+});
 // lifecycles
 
 // methods
@@ -222,14 +256,16 @@ function onClickDay(day: DayItem) {
     }
   }
   calendarDays.value.forEach(item => {
-    item.isSelected = Boolean(item.date.getTime() === startDate.value?.getTime() || item.date.getTime() === endDate.value?.getTime());
-    if (isModeRange) {
-      item.isRangeStart = Boolean(item.date.getTime() === startDate.value?.getTime());
-      item.isInRange = Boolean(startDate.value && endDate.value && item.date > startDate.value && item.date < endDate.value);
-      item.isRangeEnd = Boolean(item.date.getTime() === endDate.value?.getTime());
-      item.isPassive = Boolean(startDate.value && endDate.value && (item.date.getTime() < startDate.value?.getTime() || item.date.getTime() > endDate.value?.getTime()));
-    }
+    updateCalendar(item);
   });
+}
+function updateCalendar(item: DayItem) {
+  const isModeRange = props.selectMode === 'range';
+  item.isSelected = Boolean((startDate.value && compareDate(item.date, startDate.value)) || (endDate.value && compareDate(item.date, endDate.value)));
+  if (isModeRange) item.isPassive = Boolean(startDate.value && endDate.value && (item.date.getTime() < startDate.value?.getTime() || item.date.getTime() > endDate.value?.getTime()));
+}
+function compareDate(date1: Date, date2: Date) {
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 }
 defineExpose({ previousMonth, nextMonth });
 </script>
