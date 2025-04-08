@@ -2,10 +2,13 @@
   <div class="calendar">
     <div class="calendar-content">
       <div
-        v-if="headerVisible"
+        v-if="headerVisible.top || headerVisible.bottom"
         class="calendar-header"
       >
-        <div class="calendar-header-top">
+        <div
+          v-if="headerVisible.top"
+          class="calendar-header-top"
+        >
           <Svg
             v-if="props.header?.prev"
             :src="chevronLeftIcon"
@@ -27,17 +30,24 @@
             @click="onNext"
           ></Svg>
         </div>
-        <div class="calendar-header-bottom">
-          <span class="selected-date">
+        <div
+          v-if="headerVisible.bottom"
+          class="calendar-header-bottom"
+        >
+          <span
+            v-if="props.header?.view"
+            class="selected-date"
+          >
             {{ Utils.formatDate(startDate ?? new Date()) }}
           </span>
           <span
-            v-if="props.selectMode === 'range'"
+            v-if="props.header?.view && props.selectMode === 'range'"
             class="selected-date"
           >
             {{ Utils.formatDate(endDate ?? new Date()) }}
           </span>
           <Button
+            v-if="props.header?.today"
             color="secondary"
             variant="outline"
             size="sm"
@@ -116,12 +126,12 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   firstDayOfWeek: 'sunday',
   selectMode: 'range',
   header: () => ({
-    title: true,
-    prev: true,
-    next: true,
+    title: false,
+    prev: false,
+    next: false,
   }),
   footer: () => ({
-    clear: true,
+    clear: false,
   }),
 });
 const modelValue = defineModel<DateModel>('modelValue');
@@ -187,7 +197,10 @@ const activeCalendar = computed(() => {
   };
 });
 const headerVisible = computed(() => {
-  return props.header?.title || props.header?.next || props.header?.prev;
+  return {
+    top: props.header?.title || props.header?.next || props.header?.prev,
+    bottom: props.header?.view || props.header?.today,
+  };
 });
 const footerVisible = computed(() => {
   return props.footer?.clear || props.footer?.apply;

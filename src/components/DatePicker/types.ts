@@ -5,6 +5,8 @@ export interface CalendarProps {
     title?: boolean;
     prev?: boolean;
     next?: boolean;
+    view?: boolean;
+    today?: boolean;
   };
   footer?: {
     clear?: boolean;

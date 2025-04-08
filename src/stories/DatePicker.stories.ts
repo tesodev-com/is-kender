@@ -39,6 +39,7 @@ export const Default: Story = {
     },
     template: `
     <DatePicker v-bind="args" v-model="modelValue" />
+    <br />
     <div>Selected Date: {{ modelValue }}</div>`,
   }),
 };
