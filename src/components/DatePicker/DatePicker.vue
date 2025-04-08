@@ -54,7 +54,6 @@
       </div>
     </div>
   </div>
-  {{ (startDate, endDate) }}
 </template>
 
 <script setup lang="ts">
