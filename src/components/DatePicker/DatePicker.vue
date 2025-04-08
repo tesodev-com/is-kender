@@ -17,7 +17,7 @@
             v-if="props.header?.title"
             class="calendar-title"
           >
-            {{ visibleCalendar.monthText }} - {{ visibleCalendar.year }}
+            {{ activeCalendar.monthText }} - {{ activeCalendar.year }}
           </span>
           <Svg
             v-if="props.header?.next"
@@ -110,10 +110,10 @@ import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, ref, watch } from 'vue';
+import { DAYS } from './constants';
 import type { CalendarEmits, CalendarProps, DayItem } from './types';
 import Utils from './utils';
 // constants
-const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 // composable
 // props
 const props = withDefaults(defineProps<CalendarProps>(), {
@@ -134,14 +134,14 @@ const emit = defineEmits<CalendarEmits>();
 // states (refs and reactives)
 const isRender = ref(false);
 const calendarDays = ref<DayItem[]>([]);
-const visibleMonth = ref<Date>(new Date());
+const visibleDate = ref<Date>(new Date());
 // computed
 const weekDays = computed(() => {
   const weekDays = [];
   const firstDayOfWeek = props.firstDayOfWeek === 'monday' ? 0 : 6;
   for (let i = 0; i < 7; i++) {
     const dayIndex = (firstDayOfWeek + i) % 7;
-    weekDays.push(days[dayIndex]);
+    weekDays.push(DAYS[dayIndex]);
   }
   return weekDays;
 });
@@ -181,13 +181,13 @@ const endDate = computed({
     model.value = [start, val];
   },
 });
-const visibleCalendar = computed(() => {
+const activeCalendar = computed(() => {
   return {
-    year: visibleMonth.value.getFullYear(),
-    month: visibleMonth.value.getMonth(),
-    day: visibleMonth.value.getDate(),
-    dayText: new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(visibleMonth.value),
-    monthText: new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(visibleMonth.value),
+    year: visibleDate.value.getFullYear(),
+    month: visibleDate.value.getMonth(),
+    day: visibleDate.value.getDate(),
+    dayText: new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(visibleDate.value),
+    monthText: new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(visibleDate.value),
   };
 });
 const headerVisible = computed(() => {
@@ -197,7 +197,7 @@ const footerVisible = computed(() => {
   return props.footer?.clear || props.footer?.apply;
 });
 // watchers
-watch(visibleMonth, () => {
+watch(visibleDate, () => {
   calendarDays.value = generateCalendar();
 });
 watch(
@@ -214,8 +214,8 @@ watch(
 // methods
 function generateCalendar() {
   const days: DayItem[] = [];
-  const activeYear = visibleCalendar.value.year;
-  const activeMonth = visibleCalendar.value.month;
+  const activeYear = activeCalendar.value.year;
+  const activeMonth = activeCalendar.value.month;
   const isMondayStart = props.firstDayOfWeek === 'monday';
 
   const firstDayOfMonth = new Date(activeYear, activeMonth, 1);
@@ -298,13 +298,13 @@ function onApply() {
   }
 }
 function onPrev() {
-  visibleMonth.value = Utils.previousMonth(visibleMonth.value);
+  visibleDate.value = Utils.previousMonth(visibleDate.value);
 }
 function onNext() {
-  visibleMonth.value = Utils.nextMonth(visibleMonth.value);
+  visibleDate.value = Utils.nextMonth(visibleDate.value);
 }
 function onRenderDate(date: Date) {
-  visibleMonth.value = date;
+  visibleDate.value = date;
 }
 function updateModelValue(newDates: Array<Date | null>) {
   if (props.selectMode === 'range') {
