@@ -157,7 +157,11 @@
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./datepicker": {
+      "types": "./dist/components/DatePicker/index.d.ts",
+      "import": "./dist/components/DatePicker/index.js"
+    }
   },
   "scripts": {
     "dev": "vite",
