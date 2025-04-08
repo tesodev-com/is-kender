@@ -39,8 +39,12 @@
                 passive: day.isPassive,
                 'first-day-of-week': day.isFirstDayOfWeek,
                 'last-day-of-week': day.isLastDayOfWeek,
+                'range-start': day.isRangeStart,
+                'in-range': day.isInRange,
+                'range-end': day.isRangeEnd,
               },
             ]"
+            @click="onClickDay(day)"
           >
             <span class="day-content">
               {{ day.text }}
@@ -50,6 +54,7 @@
       </div>
     </div>
   </div>
+  {{ (startDate, endDate) }}
 </template>
 
 <script setup lang="ts">
@@ -71,6 +76,9 @@ interface DayItem {
   isPassive: boolean;
   isFirstDayOfWeek?: boolean;
   isLastDayOfWeek?: boolean;
+  isRangeStart?: boolean;
+  isInRange?: boolean;
+  isRangeEnd?: boolean;
 }
 // constants
 const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
@@ -84,7 +92,9 @@ const props = withDefaults(defineProps<CalendarProps>(), {
 // defineEmits
 
 // states (refs and reactives)
-const currentDate = ref(new Date('04.01.2025'));
+const visibleMonth = ref<Date>(new Date());
+const startDate = ref<Date | null>(null);
+const endDate = ref<Date | null>(null);
 // computed
 const weekDays = computed(() => {
   const weekDays = [];
@@ -97,11 +107,11 @@ const weekDays = computed(() => {
 });
 const activeDate = computed(() => {
   return {
-    year: currentDate.value.getFullYear(),
-    month: currentDate.value.getMonth(),
-    day: currentDate.value.getDate(),
-    dayText: new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(currentDate.value),
-    monthText: new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(currentDate.value),
+    year: visibleMonth.value.getFullYear(),
+    month: visibleMonth.value.getMonth(),
+    day: visibleMonth.value.getDate(),
+    dayText: new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(visibleMonth.value),
+    monthText: new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(visibleMonth.value),
   };
 });
 const calendarDays = computed(() => {
@@ -178,15 +188,36 @@ const calendarDays = computed(() => {
 
 // methods
 function previousMonth() {
-  const newDate = new Date(currentDate.value);
-  newDate.setMonth(currentDate.value.getMonth() - 1);
-  currentDate.value = newDate;
+  const newDate = new Date(visibleMonth.value);
+  newDate.setMonth(visibleMonth.value.getMonth() - 1);
+  visibleMonth.value = newDate;
 }
 function nextMonth() {
-  const newDate = new Date(currentDate.value);
-  newDate.setMonth(currentDate.value.getMonth() + 1);
-  currentDate.value = newDate;
+  const newDate = new Date(visibleMonth.value);
+  newDate.setMonth(visibleMonth.value.getMonth() + 1);
+  visibleMonth.value = newDate;
 }
+function onClickDay(day: DayItem) {
+  if (!startDate.value || (startDate.value && endDate.value)) {
+    startDate.value = day.date;
+    endDate.value = null;
+  } else if (startDate.value && !endDate.value) {
+    if (day.date < startDate.value) {
+      endDate.value = startDate.value;
+      startDate.value = day.date;
+    } else {
+      endDate.value = day.date;
+    }
+  }
+  calendarDays.value.forEach(item => {
+    item.isRangeStart = Boolean(item.date.getTime() === startDate.value?.getTime());
+    item.isInRange = Boolean(startDate.value && endDate.value && item.date > startDate.value && item.date < endDate.value);
+    item.isRangeEnd = Boolean(item.date.getTime() === endDate.value?.getTime());
+    item.isSelected = Boolean(item.date.getTime() === startDate.value?.getTime() || item.date.getTime() === endDate.value?.getTime());
+    item.isPassive = Boolean((startDate.value && item.date.getTime() < startDate.value?.getTime()) || (endDate.value && item.date.getTime() > endDate.value?.getTime()));
+  });
+}
+defineExpose({ previousMonth, nextMonth });
 </script>
 
 <style lang="scss" scoped src="./DatePicker.style.scss"></style>

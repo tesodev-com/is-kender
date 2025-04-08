@@ -38,12 +38,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: $spacing-xs;
 
       .week-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        color: $gray-700;
+        color: $gray-900;
 
         @include text-sm(500);
       }
@@ -63,10 +62,10 @@
         user-select: none;
 
         &.day {
-          border-radius: $rounded-full;
           cursor: pointer;
           transition: background-color 0.3s ease;
-          color: $gray-700;
+          color: $gray-900;
+          margin-top: $spacing-xs;
 
           .day-content {
             width: 100%;
@@ -78,23 +77,47 @@
           }
 
           &:hover {
-            background-color: $gray-100;
-          }
-
-          &.selected {
-            background-color: $blue-500;
-            color: white;
+            .day-content {
+              background-color: $primary-100;
+            }
           }
 
           &.today {
             .day-content {
               background-color: $primary-600;
+              color: white !important;
+            }
+          }
+
+          &.selected {
+            .day-content {
+              background-color: $primary-400;
               color: white;
             }
           }
 
           &.passive {
-            color: $gray-500;
+            .day-content {
+              color: $gray-500;
+            }
+          }
+
+          &.range-start,
+          &.in-range,
+          &.range-end {
+            background-color: $primary-50;
+          }
+
+          &.range-start,
+          &.first-day-of-week {
+            border-top-left-radius: $rounded-full;
+            border-bottom-left-radius: $rounded-full;
+          }
+
+          &.range-end,
+          &.last-day-of-week {
+            border-top-right-radius: $rounded-full;
+            border-bottom-right-radius: $rounded-full;
           }
         }
       }
