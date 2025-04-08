@@ -5,17 +5,12 @@ import * as ToastStories from "./Toast.stories";
 
 ## Message Props
 
+The ToastMessageProps interface defines the properties required for displaying toast messages via the event bus.
+
 ```typescript
 interface ToastMessageProps {
   variant?: "solid" | "outline";
-  color?:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "info"
-    | "warning"
-    | "danger"
-    | "dark";
+  color?: "primary" | "secondary" | "success" | "info" | "warning" | "danger" | "dark";
   title?: string;
   message?: string;
   life?: number;
