@@ -1,24 +1,29 @@
 export interface CalendarProps {
   firstDayOfWeek?: 'monday' | 'sunday';
   selectMode?: 'single' | 'range';
-  bottonBar?: {
+  header?: {
+    title?: boolean;
+    prev?: boolean;
+    next?: boolean;
+  };
+  footer?: {
     clear?: boolean;
     apply?: (value: Date | { startDate: Date | null | undefined; endDate: Date | null | undefined } | null) => void;
   };
 }
+export type SingleDateModel = Date | null;
+export type RangeDateModel = Array<Date | null> | null;
+export type DateModel = SingleDateModel | RangeDateModel;
 export interface CalendarEmits {
-  (event: 'update:modelValue', value: Date | { startDate: Date | null; endDate: Date | null } | null): void;
+  (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;
 }
 export interface DayItem {
   date: Date;
   text: string;
-  isToday: boolean;
-  isSelected: boolean;
-  isDisabled: boolean;
-  isPassive: boolean;
+  isSelected?: boolean;
+  isDisabled?: boolean;
+  isToday?: boolean;
   isFirstDayOfWeek?: boolean;
   isLastDayOfWeek?: boolean;
-  isRangeStart?: boolean;
-  isInRange?: boolean;
-  isRangeEnd?: boolean;
+  outOfMonth?: boolean;
 }

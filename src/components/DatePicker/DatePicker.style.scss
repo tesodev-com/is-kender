@@ -1,7 +1,6 @@
 .calendar {
   width: max-content;
   height: max-content;
-  padding: 1rem;
   border: 1px solid $gray-200;
   border-radius: $rounded-sm;
   box-shadow: $shadow-xl;
@@ -9,37 +8,76 @@
   .calendar-content {
     display: flex;
     flex-direction: column;
-    gap: $spacing-md;
+
+    .calendar-header,
+    .calendar-body,
+    .calendar-footer {
+      padding: 1rem;
+    }
 
     .calendar-header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid $gray-200;
+      flex-direction: column;
+      gap: $spacing-xl;
 
-      .calendar-title {
-        color: $gray-700;
+      &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-        @include text-sm(600);
+        .calendar-title {
+          color: $gray-700;
+
+          @include text-sm(600);
+        }
+
+        .calendar-navigation {
+          cursor: pointer;
+          transition: color 150ms ease;
+          color: $gray-400;
+
+          &:hover {
+            color: $primary-600;
+          }
+        }
       }
 
-      .calendar-navigation {
-        cursor: pointer;
-        transition: color 150ms ease;
-        color: $gray-400;
+      &-bottom {
+        display: flex;
+        align-items: stretch;
+        gap: $spacing-md;
 
-        &:hover {
-          color: $primary-600;
+        * {
+          flex: 1;
+        }
+
+        .selected-date {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid $gray-200;
+          border-radius: $rounded-sm;
+          padding: $spacing-xs;
+          cursor: default;
+          user-select: none;
+
+          @include text-sm(500);
+        }
+
+        .today-button {
+          flex: none;
+          width: max-content;
         }
       }
     }
 
-    .calendar-table {
+    .calendar-body {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      border-top: 1px solid $gray-200;
+      border-bottom: 1px solid $gray-200;
 
       .week-days {
         display: grid;
@@ -86,7 +124,7 @@
 
           &.today {
             .day-content {
-              background-color: $gray-500;
+              background-color: $gray-400;
               color: white !important;
             }
           }
@@ -98,10 +136,9 @@
             }
           }
 
-          &.passive {
-            .day-content {
-              color: $gray-500;
-            }
+          &.passive,
+          &.out-of-month {
+            color: $gray-500;
           }
 
           &.range-start,
@@ -127,16 +164,8 @@
 
     .calendar-footer {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: $spacing-sm;
-      padding-top: 0.5rem;
-      border-top: 1px solid $gray-200;
-
-      .calendar-buttons {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-      }
     }
   }
 }

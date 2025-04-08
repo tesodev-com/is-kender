@@ -1,22 +1,54 @@
 <template>
   <div class="calendar">
     <div class="calendar-content">
-      <div class="calendar-header">
-        <Svg
-          :src="chevronLeftIcon"
-          size="1.5rem"
-          class="calendar-navigation"
-          @click="previousMonth"
-        ></Svg>
-        <span class="calendar-title">{{ activeDate.monthText }} - {{ activeDate.year }}</span>
-        <Svg
-          :src="chevronRightIcon"
-          size="1.5rem"
-          class="calendar-navigation"
-          @click="nextMonth"
-        ></Svg>
+      <div
+        v-if="headerVisible"
+        class="calendar-header"
+      >
+        <div class="calendar-header-top">
+          <Svg
+            v-if="props.header?.prev"
+            :src="chevronLeftIcon"
+            size="1.5rem"
+            class="calendar-navigation"
+            @click="onPrev"
+          ></Svg>
+          <span
+            v-if="props.header?.title"
+            class="calendar-title"
+          >
+            {{ visibleCalendar.monthText }} - {{ visibleCalendar.year }}
+          </span>
+          <Svg
+            v-if="props.header?.next"
+            :src="chevronRightIcon"
+            size="1.5rem"
+            class="calendar-navigation"
+            @click="onNext"
+          ></Svg>
+        </div>
+        <div class="calendar-header-bottom">
+          <span class="selected-date">
+            {{ Utils.formatDate(startDate ?? new Date()) }}
+          </span>
+          <span
+            v-if="props.selectMode === 'range'"
+            class="selected-date"
+          >
+            {{ Utils.formatDate(endDate ?? new Date()) }}
+          </span>
+          <Button
+            color="secondary"
+            variant="outline"
+            size="sm"
+            class="today-button"
+            @click="onRenderDate(new Date())"
+          >
+            Bugün
+          </Button>
+        </div>
       </div>
-      <div class="calendar-table">
+      <div class="calendar-body">
         <div class="week-days">
           <span
             v-for="(day, index) in weekDays"
@@ -31,19 +63,7 @@
             v-for="(day, index) in calendarDays"
             :key="index"
             class="calendar-cell day"
-            :class="[
-              {
-                today: day.isToday,
-                selected: (startDate && compareDate(day.date, startDate)) || (endDate && compareDate(day.date, endDate)),
-                disabled: day.isDisabled,
-                passive: day.isPassive,
-                'first-day-of-week': day.isFirstDayOfWeek,
-                'last-day-of-week': day.isLastDayOfWeek,
-                'range-start': startDate && endDate && Boolean(compareDate(day.date, startDate)),
-                'in-range': startDate && endDate && Boolean(day.date > startDate && day.date < endDate),
-                'range-end': startDate && endDate && Boolean(compareDate(day.date, endDate)),
-              },
-            ]"
+            :class="getDayClasses(day)"
             @click="onClickDay(day)"
           >
             <span class="day-content">
@@ -56,30 +76,32 @@
         v-if="footerVisible"
         class="calendar-footer"
       >
-        <div class="calendar-buttons">
-          <Button
-            v-if="props.bottonBar?.clear"
-            color="secondary"
-            variant="outline"
-            size="sm"
-            fluid
-            @click="onClear"
-          >
-            Temizle
-          </Button>
-          <Button
-            v-if="props.bottonBar?.apply"
-            color="primary"
-            size="sm"
-            fluid
-            @click="onApply"
-          >
-            Seç
-          </Button>
-        </div>
+        <Button
+          v-if="props.footer?.clear"
+          color="secondary"
+          variant="outline"
+          size="sm"
+          fluid
+          @click="onClear"
+        >
+          Temizle
+        </Button>
+        <Button
+          v-if="props.footer?.apply"
+          color="primary"
+          size="sm"
+          fluid
+          @click="onApply"
+        >
+          Seç
+        </Button>
       </div>
     </div>
   </div>
+  Start Date: {{ startDate ? Utils.formatDate(startDate) : 'null' }}
+  <br />
+  End Date: {{ endDate ? Utils.formatDate(endDate) : 'null' }}
+  <br />
 </template>
 
 <script setup lang="ts">
@@ -89,26 +111,30 @@ import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, ref, watch } from 'vue';
 import type { CalendarEmits, CalendarProps, DayItem } from './types';
-
-// interfaces & types
-
+import Utils from './utils';
 // constants
 const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
-
 // composable
-
 // props
 const props = withDefaults(defineProps<CalendarProps>(), {
   firstDayOfWeek: 'sunday',
   selectMode: 'range',
+  header: () => ({
+    title: true,
+    prev: true,
+    next: true,
+  }),
+  footer: () => ({
+    clear: true,
+  }),
 });
-const modelValue = defineModel<Date | { startDate: Date | null; endDate: Date | null } | null>('modelValue');
+const modelValue = defineModel<Date | Array<Date | null> | null | undefined>('modelValue');
 // defineEmits
 const emit = defineEmits<CalendarEmits>();
 // states (refs and reactives)
+const isRender = ref(false);
+const calendarDays = ref<DayItem[]>([]);
 const visibleMonth = ref<Date>(new Date());
-const startDate = ref<Date | null>();
-const endDate = ref<Date | null>();
 // computed
 const weekDays = computed(() => {
   const weekDays = [];
@@ -119,7 +145,43 @@ const weekDays = computed(() => {
   }
   return weekDays;
 });
-const activeDate = computed(() => {
+const model = computed({
+  get() {
+    return Utils.normalizeModelValue(modelValue.value);
+  },
+  set(val: typeof modelValue.value) {
+    emit('update:modelValue', val);
+  },
+});
+const startDate = computed({
+  get() {
+    if (Array.isArray(model.value)) {
+      return model.value[0] ? new Date(model.value[0]) : null;
+    }
+    return model.value ? new Date(model.value) : null;
+  },
+  set(val: Date | null) {
+    if (props.selectMode === 'range') {
+      const end = endDate.value;
+      model.value = [val, end];
+    } else {
+      model.value = val;
+    }
+  },
+});
+const endDate = computed({
+  get() {
+    if (Array.isArray(model.value)) {
+      return model.value[1] ? new Date(model.value[1]) : null;
+    }
+    return null;
+  },
+  set(val: Date | null) {
+    const start = startDate.value;
+    model.value = [start, val];
+  },
+});
+const visibleCalendar = computed(() => {
   return {
     year: visibleMonth.value.getFullYear(),
     month: visibleMonth.value.getMonth(),
@@ -128,11 +190,32 @@ const activeDate = computed(() => {
     monthText: new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(visibleMonth.value),
   };
 });
-const calendarDays = computed(() => {
+const headerVisible = computed(() => {
+  return props.header?.title || props.header?.next || props.header?.prev;
+});
+const footerVisible = computed(() => {
+  return props.footer?.clear || props.footer?.apply;
+});
+// watchers
+watch(visibleMonth, () => {
+  calendarDays.value = generateCalendar();
+});
+watch(
+  modelValue,
+  () => {
+    if (!isRender.value) {
+      onRenderDate(new Date(model.value[0] ?? new Date()));
+      isRender.value = true;
+    }
+  },
+  { immediate: true }
+);
+// lifecycles
+// methods
+function generateCalendar() {
   const days: DayItem[] = [];
-  const today = new Date();
-  const activeYear = activeDate.value.year;
-  const activeMonth = activeDate.value.month;
+  const activeYear = visibleCalendar.value.year;
+  const activeMonth = visibleCalendar.value.month;
   const isMondayStart = props.firstDayOfWeek === 'monday';
 
   const firstDayOfMonth = new Date(activeYear, activeMonth, 1);
@@ -149,12 +232,9 @@ const calendarDays = computed(() => {
     days.push({
       date,
       text: date.getDate().toString(),
-      isToday: date.toDateString() === today.toDateString(),
-      isSelected: false,
-      isDisabled: false,
-      isPassive: true,
       isFirstDayOfWeek: weekDay === 0,
       isLastDayOfWeek: weekDay === 6,
+      outOfMonth: true,
     });
   }
 
@@ -165,10 +245,7 @@ const calendarDays = computed(() => {
     days.push({
       date,
       text: i.toString(),
-      isToday: date.toDateString() === today.toDateString(),
-      isSelected: false,
-      isDisabled: false,
-      isPassive: false,
+      isToday: Boolean(Utils.isSameDay(date, new Date())),
       isFirstDayOfWeek: weekDay === 0,
       isLastDayOfWeek: weekDay === 6,
     });
@@ -184,114 +261,78 @@ const calendarDays = computed(() => {
     days.push({
       date,
       text: i.toString(),
-      isToday: date.toDateString() === today.toDateString(),
-      isSelected: false,
-      isDisabled: false,
-      isPassive: true,
       isFirstDayOfWeek: weekDay === 0,
       isLastDayOfWeek: weekDay === 6,
+      outOfMonth: true,
     });
   }
 
   return days;
-});
-const footerVisible = computed(() => {
-  return props.bottonBar?.clear || props.bottonBar?.apply;
-});
-// watchers
-watch(
-  modelValue,
-  newValue => {
-    if (props.selectMode === 'single') {
-      if (newValue instanceof Date) {
-        startDate.value = newValue;
-        visibleMonth.value = newValue;
-        endDate.value = null;
-      } else {
-        startDate.value = null;
-      }
-    } else if (props.selectMode === 'range') {
-      const range = newValue as { startDate: Date | null; endDate: Date | null };
-      startDate.value = range?.startDate ?? null;
-      endDate.value = range?.endDate ?? null;
-      visibleMonth.value = range.endDate ?? range.startDate ?? visibleMonth.value;
-    }
-  },
-  { immediate: true }
-);
-watch([startDate, endDate], ([newStartDate, newEndDate]) => {
-  if (newStartDate || newEndDate) {
-    if (props.selectMode === 'single') {
-      emit('update:modelValue', newStartDate ? newStartDate : null);
-    } else if (props.selectMode === 'range') {
-      emit('update:modelValue', {
-        startDate: newStartDate ? newStartDate : null,
-        endDate: newEndDate ? newEndDate : null,
-      });
-    }
-  } else {
-    emit('update:modelValue', props.selectMode === 'single' ? null : { startDate: null, endDate: null });
-  }
-});
-// lifecycles
-
-// methods
-function previousMonth() {
-  const newDate = new Date(visibleMonth.value);
-  newDate.setMonth(visibleMonth.value.getMonth() - 1);
-  visibleMonth.value = newDate;
-}
-function nextMonth() {
-  const newDate = new Date(visibleMonth.value);
-  newDate.setMonth(visibleMonth.value.getMonth() + 1);
-  visibleMonth.value = newDate;
 }
 function onClickDay(day: DayItem) {
-  const isModeRange = props.selectMode === 'range';
-  if (isModeRange) {
-    if (!startDate.value || (startDate.value && endDate.value)) {
-      startDate.value = day.date;
-      endDate.value = null;
-    } else if (startDate.value && !endDate.value) {
-      if (day.date < startDate.value) {
-        endDate.value = startDate.value;
-        startDate.value = day.date;
+  const [sDate, eDate] = [...Utils.normalizeModelValue(model.value)];
+  if (props.selectMode === 'range') {
+    if (!sDate || (sDate && eDate)) {
+      updateModelValue([day.date, null]);
+    } else {
+      if (Utils.isBefore(day.date, sDate)) {
+        updateModelValue([day.date, sDate]);
       } else {
-        endDate.value = day.date;
+        updateModelValue([sDate, day.date]);
       }
     }
   } else {
-    if (startDate.value && startDate.value.getTime() === day.date.getTime()) {
-      startDate.value = null;
-    } else {
-      startDate.value = day.date;
-    }
+    const isSameDay = sDate && Utils.isSameDay(day.date, sDate);
+    updateModelValue([isSameDay ? null : day.date, null]);
   }
-  calendarDays.value.forEach(item => {
-    updateCalendar(item);
-  });
 }
 function onClear() {
-  startDate.value = null;
-  endDate.value = null;
+  model.value = [null, null];
 }
 function onApply() {
-  if (typeof props.bottonBar?.apply === 'function') {
-    props.bottonBar?.apply({
+  if (typeof props.footer?.apply === 'function') {
+    props.footer?.apply({
       startDate: startDate.value,
       endDate: endDate.value,
     });
   }
 }
-function updateCalendar(item: DayItem) {
-  const isModeRange = props.selectMode === 'range';
-  item.isSelected = Boolean((startDate.value && compareDate(item.date, startDate.value)) || (endDate.value && compareDate(item.date, endDate.value)));
-  if (isModeRange) item.isPassive = Boolean(startDate.value && endDate.value && (item.date.getTime() < startDate.value?.getTime() || item.date.getTime() > endDate.value?.getTime()));
+function onPrev() {
+  visibleMonth.value = Utils.previousMonth(visibleMonth.value);
 }
-function compareDate(date1: Date, date2: Date) {
-  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+function onNext() {
+  visibleMonth.value = Utils.nextMonth(visibleMonth.value);
 }
-defineExpose({ previousMonth, nextMonth });
+function onRenderDate(date: Date) {
+  visibleMonth.value = date;
+}
+function updateModelValue(newDates: Array<Date | null>) {
+  if (props.selectMode === 'range') {
+    modelValue.value = newDates;
+  } else {
+    modelValue.value = newDates[0];
+  }
+}
+function getDayClasses(day: DayItem) {
+  const classes = {
+    today: Boolean(day.isToday),
+    selected: Boolean((startDate.value && Utils.isSameDay(day.date, startDate.value)) || (endDate.value && Utils.isSameDay(day.date, endDate.value))),
+    disabled: Boolean(day.isDisabled),
+    'out-of-month': Boolean(day.outOfMonth),
+    'first-day-of-week': Boolean(day.isFirstDayOfWeek),
+    'last-day-of-week': Boolean(day.isLastDayOfWeek),
+  };
+  if (startDate.value && endDate.value) {
+    Object.assign(classes, {
+      passive: Boolean(props.selectMode === 'range' && !classes.selected && (Utils.isBefore(day.date, startDate.value) || Utils.isAfter(day.date, endDate.value))),
+      'range-start': Boolean(Utils.isSameDay(day.date, startDate.value)),
+      'in-range': Boolean(Utils.isBetween(day.date, startDate.value, endDate.value)),
+      'range-end': Boolean(Utils.isSameDay(day.date, endDate.value)),
+    });
+  }
+  return classes;
+}
+defineExpose({ onPrev, onNext });
 </script>
 
 <style lang="scss" scoped src="./DatePicker.style.scss"></style>

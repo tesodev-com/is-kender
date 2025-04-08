@@ -14,14 +14,11 @@ const meta: Meta<typeof DatePicker> = {
       control: 'select',
       options: ['single', 'range'],
     },
-    bottonBar: {
+    header: {
       control: 'object',
-      options: [
-        { clear: true, apply: true },
-        { clear: true, apply: false },
-        { clear: false, apply: true },
-        { clear: false, apply: false },
-      ],
+    },
+    footer: {
+      control: 'object',
     },
   },
 };
@@ -37,10 +34,7 @@ export const Default: Story = {
   render: args => ({
     components: { DatePicker },
     setup() {
-      const modelValue = ref({
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2023-01-10'),
-      });
+      const modelValue = ref([new Date('2025-04-01'), new Date('2025-04-10')]);
       return { args, modelValue };
     },
     template: `
