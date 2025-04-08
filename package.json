@@ -161,6 +161,10 @@
     "./colorpicker": {
       "types": "./dist/components/ColorPicker/index.d.ts",
       "import": "./dist/components/ColorPicker/index.js"
+    },
+    "./rangeslider": {
+      "types": "./dist/components/RangeSlider/index.d.ts",
+      "import": "./dist/components/RangeSlider/index.js"
     }
   },
   "scripts": {
