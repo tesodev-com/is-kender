@@ -2,9 +2,19 @@
   <div class="calendar">
     <div class="calendar-content">
       <div class="calendar-header">
-        <button @click="previousMonth">Pre</button>
-        <span>{{ activeDate.monthText }} - {{ activeDate.year }}</span>
-        <button @click="nextMonth">Next</button>
+        <Svg
+          :src="chevronLeftIcon"
+          size="1.5rem"
+          class="calendar-navigation"
+          @click="previousMonth"
+        ></Svg>
+        <span class="calendar-title">{{ activeDate.monthText }} - {{ activeDate.year }}</span>
+        <Svg
+          :src="chevronRightIcon"
+          size="1.5rem"
+          class="calendar-navigation"
+          @click="nextMonth"
+        ></Svg>
       </div>
       <div class="calendar-table">
         <div class="week-days">
@@ -43,9 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-
 // imports
+import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import { computed, ref } from 'vue';
 
 // interfaces & types
 interface CalendarProps {

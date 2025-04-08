@@ -15,6 +15,22 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      .calendar-title {
+        color: $gray-700;
+
+        @include text-sm(600);
+      }
+
+      .calendar-navigation {
+        cursor: pointer;
+        transition: color 0.3s ease;
+        color: $gray-400;
+
+        &:hover {
+          color: $primary-600;
+        }
+      }
     }
 
     .calendar-table {
@@ -27,9 +43,9 @@
       .week-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        font-size: $font-size-text-sm;
-        font-weight: bold;
         color: $gray-700;
+
+        @include text-sm(500);
       }
 
       .month-days {
@@ -50,6 +66,7 @@
           border-radius: $rounded-full;
           cursor: pointer;
           transition: background-color 0.3s ease;
+          color: $gray-700;
 
           .day-content {
             width: 100%;
@@ -61,7 +78,7 @@
           }
 
           &:hover {
-            background-color: $gray-200;
+            background-color: $gray-100;
           }
 
           &.selected {
