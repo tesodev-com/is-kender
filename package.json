@@ -157,7 +157,11 @@
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./colorpicker": {
+      "types": "./dist/components/ColorPicker/index.d.ts",
+      "import": "./dist/components/ColorPicker/index.js"
+    }
   },
   "scripts": {
     "dev": "vite",
