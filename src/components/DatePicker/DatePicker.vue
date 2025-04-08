@@ -39,9 +39,9 @@
                 passive: day.isPassive,
                 'first-day-of-week': day.isFirstDayOfWeek,
                 'last-day-of-week': day.isLastDayOfWeek,
-                'range-start': day.isRangeStart,
-                'in-range': day.isInRange,
-                'range-end': day.isRangeEnd,
+                'range-start': day.isRangeStart && startDate && endDate,
+                'in-range': day.isInRange && startDate && endDate,
+                'range-end': day.isRangeEnd && startDate && endDate,
               },
             ]"
             @click="onClickDay(day)"
@@ -54,6 +54,8 @@
       </div>
     </div>
   </div>
+  {{ startDate }}
+  {{ endDate }}
 </template>
 
 <script setup lang="ts">
@@ -65,6 +67,7 @@ import { computed, ref } from 'vue';
 // interfaces & types
 interface CalendarProps {
   firstDayOfWeek?: 'monday' | 'sunday';
+  selectMode?: 'single' | 'range';
 }
 interface DayItem {
   date: Date;
@@ -87,6 +90,7 @@ const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 // props
 const props = withDefaults(defineProps<CalendarProps>(), {
   firstDayOfWeek: 'sunday',
+  selectMode: 'range',
 });
 // defineEmits
 
@@ -197,23 +201,34 @@ function nextMonth() {
   visibleMonth.value = newDate;
 }
 function onClickDay(day: DayItem) {
-  if (!startDate.value || (startDate.value && endDate.value)) {
-    startDate.value = day.date;
-    endDate.value = null;
-  } else if (startDate.value && !endDate.value) {
-    if (day.date < startDate.value) {
-      endDate.value = startDate.value;
+  const isModeRange = props.selectMode === 'range';
+  if (isModeRange) {
+    if (!startDate.value || (startDate.value && endDate.value)) {
       startDate.value = day.date;
+      endDate.value = null;
+    } else if (startDate.value && !endDate.value) {
+      if (day.date < startDate.value) {
+        endDate.value = startDate.value;
+        startDate.value = day.date;
+      } else {
+        endDate.value = day.date;
+      }
+    }
+  } else {
+    if (startDate.value && startDate.value.getTime() === day.date.getTime()) {
+      startDate.value = null;
     } else {
-      endDate.value = day.date;
+      startDate.value = day.date;
     }
   }
   calendarDays.value.forEach(item => {
-    item.isRangeStart = Boolean(item.date.getTime() === startDate.value?.getTime());
-    item.isInRange = Boolean(startDate.value && endDate.value && item.date > startDate.value && item.date < endDate.value);
-    item.isRangeEnd = Boolean(item.date.getTime() === endDate.value?.getTime());
     item.isSelected = Boolean(item.date.getTime() === startDate.value?.getTime() || item.date.getTime() === endDate.value?.getTime());
-    item.isPassive = Boolean((startDate.value && item.date.getTime() < startDate.value?.getTime()) || (endDate.value && item.date.getTime() > endDate.value?.getTime()));
+    if (isModeRange) {
+      item.isRangeStart = Boolean(item.date.getTime() === startDate.value?.getTime());
+      item.isInRange = Boolean(startDate.value && endDate.value && item.date > startDate.value && item.date < endDate.value);
+      item.isRangeEnd = Boolean(item.date.getTime() === endDate.value?.getTime());
+      item.isPassive = Boolean(startDate.value && endDate.value && (item.date.getTime() < startDate.value?.getTime() || item.date.getTime() > endDate.value?.getTime()));
+    }
   });
 }
 defineExpose({ previousMonth, nextMonth });
