@@ -13,6 +13,7 @@ export interface FastAction {
   type: (typeof Consts.ACTIONS)[number]['type'];
   label: (typeof Consts.ACTIONS)[number]['label'];
   fnc: (date: Date) => Date[];
+  isActive?: boolean;
 }
 export interface DayItem {
   date: Date;

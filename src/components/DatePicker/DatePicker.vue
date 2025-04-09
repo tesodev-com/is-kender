@@ -6,6 +6,9 @@
           v-for="(action, index) in Consts.ACTIONS"
           :key="index"
           class="action-item"
+          :class="{
+            'action-item-active': activeFastAction === action.type,
+          }"
           @click="fastAction(action)"
         >
           {{ action.label }}
@@ -48,6 +51,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   selectMode: 'range',
 });
 const activeDate = ref(new Date());
+const activeFastAction = ref<(typeof Consts.ACTIONS)[number]['type'] | null>(null);
 const calendars = computed(() => {
   const commonProps: Partial<CalendarProps> = {
     firstDayOfWeek: props.firstDayOfWeek,
@@ -84,6 +88,13 @@ const model = computed({
     return Utils.normalizeModelValue(modelValue.value);
   },
   set(val: typeof modelValue.value) {
+    if (Array.isArray(val)) {
+      const start = val[0] ? new Date(val[0]) : null;
+      const end = val[1] ? new Date(val[1]) : null;
+      if (start && end) {
+        activeDate.value = new Date(end.getFullYear(), end.getMonth());
+      }
+    }
     emit('update:modelValue', val);
   },
 });
@@ -137,11 +148,13 @@ function onGo(date: Date) {
 }
 function onClear() {
   model.value = null;
+  activeFastAction.value = null;
 }
 function fastAction(action: FastAction) {
   const act = Consts.ACTIONS.find(a => a.type === action.type);
   if (!act) return;
   model.value = act.fnc();
+  activeFastAction.value = action.type;
 }
 defineExpose({
   prev: onPrev,
