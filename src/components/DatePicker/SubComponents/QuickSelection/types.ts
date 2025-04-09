@@ -3,7 +3,7 @@ export type QuickSelectionItemKey = 'today' | 'yesterday' | 'thisWeek' | 'lastWe
 export interface QuickSelectionItem {
   key: QuickSelectionItemKey;
   label: string;
-  func: () => [Date, Date];
+  func: () => Array<Date | string> | Date | string;
 }
 
 export interface QuickSelectionProps {
@@ -11,5 +11,5 @@ export interface QuickSelectionProps {
 }
 
 export interface QuickSelectionEmits {
-  (event: 'select', item: Array<Date>): void;
+  (event: 'onSelect', item: Array<Date | string> | Date | string): void;
 }

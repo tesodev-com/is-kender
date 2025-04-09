@@ -5,6 +5,22 @@ import { ref } from 'vue';
 const meta: Meta<typeof DatePicker> = {
   title: 'Forms&Inputs/DatePicker',
   component: DatePicker,
+  argTypes: {
+    selectionItems: {
+      control: 'multi-select',
+      options: ['today', 'yesterday', 'thisWeek', 'lastWeek', 'thisMonth', 'lastMonth', 'thisYear', 'lastYear'],
+    },
+    selectionMode: {
+      control: 'select',
+      options: ['single', 'multiple', 'range'],
+    },
+    multipleMonth: {
+      control: 'boolean',
+    },
+    actionBar: {
+      control: 'boolean',
+    },
+  },
 };
 
 export default meta;
@@ -12,7 +28,10 @@ export default meta;
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
   args: {
+    selectionItems: ['today', 'yesterday', 'thisWeek', 'lastWeek', 'thisMonth', 'lastMonth', 'thisYear', 'lastYear'],
     selectionMode: 'range',
+    multipleMonth: true,
+    actionBar: true,
   },
   render: args => ({
     components: { DatePicker },

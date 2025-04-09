@@ -5,7 +5,11 @@
       v-if="selectionItems.length"
       class="datepicker-sidebar"
     >
-      <QuickSelection :selectionItems="selectionItems" />
+      <QuickSelection
+        ref="quickSelectionRef"
+        :selectionItems="selectionItems"
+        @on-select="onQuickSelect"
+      />
     </div>
     <!-- Body -->
     <div class="datepicker-content">
@@ -63,7 +67,7 @@
 <script setup lang="ts">
 // imports
 import Button from 'library-components/Button';
-import { computed, ref } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import { Calendar, QuickSelection, type DateModel } from './SubComponents';
 import type { DatePickerProps } from './types';
 import Utils from './utils';
@@ -84,6 +88,7 @@ const modelValue = defineModel<DateModel>();
 
 // states (refs and reactives)
 const visibleDate = ref<Date>(new Date());
+const quickSelectionRef = useTemplateRef('quickSelectionRef');
 // computed
 const calendarVisibleDates = computed(() => {
   return {
@@ -104,6 +109,10 @@ function onNext() {
 }
 function onClear() {
   modelValue.value = null;
+  if (quickSelectionRef.value) quickSelectionRef.value.onClear();
+}
+function onQuickSelect(dates: Array<Date | string> | Date | string) {
+  modelValue.value = dates;
 }
 </script>
 

@@ -19,7 +19,7 @@ export interface CalendarProps {
 }
 
 export interface CalendarEmits {
-  (event: 'onPrev', date: Date): void;
-  (event: 'onNext', date: Date): void;
+  (event: 'onPrev'): void;
+  (event: 'onNext'): void;
   (event: 'onSelect', date: Date): void;
 }

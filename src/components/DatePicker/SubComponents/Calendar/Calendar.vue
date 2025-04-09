@@ -132,10 +132,10 @@ const monthText = computed(() => new Intl.DateTimeFormat('tr-TR', { month: 'long
 
 // methods
 function onPrev() {
-  emit('onPrev', Utils.addMonths(props.calendarDate, -1));
+  emit('onPrev');
 }
 function onNext() {
-  emit('onNext', Utils.addMonths(props.calendarDate, 1));
+  emit('onNext');
 }
 function onClick(selectedDay: Day) {
   let newModelValue;
@@ -192,7 +192,7 @@ function getDayCellClass(day: Day) {
 function checkIsActive(day: Day) {
   if (Array.isArray(modelValue.value)) {
     return modelValue.value.includes(Utils.getString(day.date));
-  } else if (typeof modelValue.value === 'string') {
+  } else if (typeof modelValue.value === 'string' || modelValue.value instanceof Date) {
     return Utils.isSameDay(day.date, modelValue.value);
   }
 }

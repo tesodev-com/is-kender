@@ -53,8 +53,14 @@ function mapItemClass(item: QuickSelectionItem) {
 }
 function onClickItem(quickItem: QuickSelectionItem) {
   activeItem.value = quickItem.key;
-  emit('select', quickItem.func());
+  emit('onSelect', quickItem.func());
 }
+function onClear() {
+  activeItem.value = null;
+}
+defineExpose({
+  onClear,
+});
 </script>
 
 <style lang="scss" scoped src="./QuickSelection.style.scss"></style>
