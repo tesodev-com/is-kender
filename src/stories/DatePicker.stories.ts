@@ -27,21 +27,13 @@ export default meta;
 
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
-  args: {
-    selectionItems: ['today', 'yesterday', 'thisWeek', 'lastWeek', 'thisMonth', 'lastMonth', 'thisYear', 'lastYear'],
-    selectionMode: 'range',
-    multipleMonth: true,
-    actionBar: true,
-  },
+  args: {},
   render: args => ({
     components: { DatePicker },
     setup() {
       const modelValue = ref();
       return { args, modelValue };
     },
-    template: `
-    <DatePicker v-bind="args" v-model="modelValue" />
-    <br />
-    <div>Selected Date: {{ modelValue }}</div>`,
+    template: '<DatePicker v-bind="args" v-model="modelValue" />',
   }),
 };

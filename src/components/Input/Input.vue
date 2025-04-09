@@ -43,6 +43,7 @@
         :class="inputClasses"
         :maxlength="maxlength"
         :minlength="minlength"
+        :readonly="readOnly"
       />
       <slot name="right" />
     </div>

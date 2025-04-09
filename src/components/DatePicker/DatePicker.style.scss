@@ -1,46 +1,57 @@
-.datepicker-container {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  border: 1px solid $gray-200;
-  border-radius: $rounded-sm;
-  box-shadow: $shadow-xl;
+.datepicker-wrapper {
   width: max-content;
+  min-width: 20.625rem;
 
-  .datepicker-sidebar {
-    width: 10rem;
-    padding: 0.75rem 1rem;
-    border-right: 1px solid $gray-200;
-  }
+  .datepicker-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    border: 1px solid $gray-200;
+    border-radius: $rounded-sm;
+    box-shadow: $shadow-xl;
+    width: max-content;
+    margin-top: $spacing-md;
 
-  .datepicker-content {
-    flex: 1;
-
-    .datepicker-body {
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-
-      .calendar-container:nth-of-type(2) {
-        border-left: 1px solid $gray-200;
-      }
+    .datepicker-sidebar {
+      width: 10rem;
+      padding: 0.75rem 1rem;
+      border-right: 1px solid $gray-200;
     }
 
-    .datepicker-footer {
-      padding: 0.75rem 1rem;
-      border-top: 1px solid $gray-200;
+    .datepicker-content {
+      flex: 1;
 
-      .datepicker-actions {
+      .datepicker-body {
         display: flex;
-        align-items: center;
-        gap: $spacing-md;
-        margin-left: auto;
-        width: max-content;
+        align-items: stretch;
+        justify-content: center;
 
-        &.fluid-actions {
-          width: 100%;
+        .calendar-container:nth-of-type(2) {
+          border-left: 1px solid $gray-200;
+        }
+      }
+
+      .datepicker-footer {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid $gray-200;
+
+        .datepicker-actions {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+          margin-left: auto;
+          width: max-content;
+
+          &.fluid-actions {
+            width: 100%;
+          }
         }
       }
     }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 100ms;
   }
 }

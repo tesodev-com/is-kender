@@ -66,12 +66,8 @@ export default {
   createDateInstance(date: Date | string) {
     return date instanceof Date ? date : new Date(date);
   },
-  formatDate(date: Date) {
-    return new Intl.DateTimeFormat('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(date);
+  formatDate(date: Date | string, format: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }) {
+    return new Intl.DateTimeFormat('tr-TR', format).format(this.createDateInstance(date));
   },
   normalizeModelValue(value: any) {
     if (value === null || value === undefined) {
