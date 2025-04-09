@@ -21,7 +21,7 @@
       align-items: stretch;
       justify-content: center;
 
-      .calendar-container:nth-last-of-type(1) {
+      .calendar-container:nth-of-type(2) {
         border-left: 1px solid $gray-200;
       }
     }

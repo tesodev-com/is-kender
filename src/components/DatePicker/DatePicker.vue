@@ -13,13 +13,16 @@
         <Calendar
           v-model="modelValue"
           showPrevIcon
+          :showNextIcon="!multipleMonth"
           :calendarDate="calendarVisibleDates.start"
           :selectionMode="selectionMode"
           @on-prev="onPrev"
           @on-next="onNext"
         />
         <Calendar
+          v-if="multipleMonth"
           v-model="modelValue"
+          :showPrevIcon="!multipleMonth"
           showNextIcon
           :calendarDate="calendarVisibleDates.end"
           :selectionMode="selectionMode"
