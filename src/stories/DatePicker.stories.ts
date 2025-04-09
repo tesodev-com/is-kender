@@ -10,7 +10,7 @@ const meta: Meta<typeof DatePicker> = {
       control: 'select',
       options: ['monday', 'sunday'],
     },
-    selectMode: {
+    selectionMode: {
       control: 'select',
       options: ['single', 'range'],
     },
@@ -23,7 +23,9 @@ type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
   args: {
     firstDayOfWeek: 'monday',
-    selectMode: 'range',
+    selectionMode: 'range',
+    showTime: true,
+    showActionBar: true,
   },
   render: args => ({
     components: { DatePicker },

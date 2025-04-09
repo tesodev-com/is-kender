@@ -9,6 +9,16 @@ export default {
     newDate.setMonth(date.getMonth() + 1);
     return newDate;
   },
+  addHours(date: Date, hour: number) {
+    const newDate = new Date(date);
+    newDate.setHours(date.getHours() + hour);
+    return newDate;
+  },
+  addMinutes(date: Date, minute: number) {
+    const newDate = new Date(date);
+    newDate.setMinutes(date.getMinutes() + minute);
+    return newDate;
+  },
   isSameDay(date1: Date, date2: Date) {
     return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
   },

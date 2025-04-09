@@ -10,7 +10,8 @@
     flex-direction: column;
 
     .calendar-header,
-    .calendar-body {
+    .calendar-body,
+    .calendar-footer {
       padding: 1rem;
     }
 
@@ -18,6 +19,7 @@
       display: flex;
       flex-direction: column;
       gap: $spacing-xl;
+      border-bottom: 1px solid $gray-200;
 
       &-top {
         display: flex;
@@ -167,9 +169,36 @@
       }
     }
 
-    &:has(.calendar-header) {
-      .calendar-body {
-        border-top: 1px solid $gray-200;
+    .calendar-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid $gray-200;
+
+      .calendar-time {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-md;
+        user-select: none;
+
+        @include text-lg(400);
+
+        .time {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: max-content;
+
+          .time-text {
+            width: 100%;
+          }
+
+          .time-icon {
+            cursor: pointer;
+          }
+        }
       }
     }
   }

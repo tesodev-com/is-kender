@@ -1,13 +1,18 @@
+import type { DateModel } from './Calendar';
 import type Consts from './constants';
 
 export interface DatePickerProps {
   firstDayOfWeek?: 'monday' | 'sunday';
-  selectMode?: 'single' | 'range';
+  selectionMode?: 'single' | 'range';
   fastActions?: Array<FastAction['type']>;
   multipleMonths?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
+  showActionBar?: boolean;
+  showTime?: boolean;
 }
 export interface DatePickerEmits {
-  (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;
+  (event: 'update:modelValue', value: DateModel | undefined): void;
   (event: 'onPrev', value: Date): void;
   (event: 'onNext', value: Date): void;
 }

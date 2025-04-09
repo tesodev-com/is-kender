@@ -1,4 +1,4 @@
-import { arrowDownIcon, emailIcon } from '@/assets/icons';
+import { emailIcon, keyboardArrowDownIcon } from '@/assets/icons';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import Select, { type SelectProps } from 'library-components/Select';
 import Svg from 'library-components/Svg';
@@ -145,7 +145,7 @@ export const Default: Story = {
     setup() {
       const selected = ref<string | null>(null);
       const search = ref<string>('');
-      return { args, selected, search, arrowDownIcon };
+      return { args, selected, search, keyboardArrowDownIcon };
     },
     template: `
          <div style="height:500px">
@@ -167,7 +167,7 @@ export const DefaultMultiple: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string[]>([]);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div style="height:500px">
@@ -191,7 +191,7 @@ export const WithLabel: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div>
@@ -216,7 +216,7 @@ export const WithLabelVirtualScroll: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div>
@@ -241,7 +241,7 @@ export const Required: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div>
@@ -267,7 +267,7 @@ export const NoOptions: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div>
@@ -291,7 +291,7 @@ export const NarrowContainer: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div style="width: 150px; border: 1px dashed #ccc; padding: 10px;">
@@ -315,7 +315,7 @@ export const BottomEdge: Story = {
     components: { Select, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
          <div style="height: 300px; display: flex; flex-direction: column; justify-content: flex-end;">

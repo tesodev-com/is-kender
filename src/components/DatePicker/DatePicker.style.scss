@@ -67,6 +67,9 @@
     .datepicker-actions {
       padding: 1rem;
       border-top: 1px solid $gray-200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

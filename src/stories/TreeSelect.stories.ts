@@ -1,7 +1,7 @@
+import { emailIcon, keyboardArrowDownIcon } from '@/assets/icons';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import TreeSelect, { type TreeSelectProps } from 'library-components/TreeSelect';
-import { arrowDownIcon, emailIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
+import TreeSelect, { type TreeSelectProps } from 'library-components/TreeSelect';
 import { ref } from 'vue';
 
 const meta: Meta<typeof TreeSelect> = {
@@ -193,7 +193,7 @@ export const Default: Story = {
     setup() {
       const selected = ref<string | null>(null);
       const search = ref<string>('');
-      return { args, selected, search, arrowDownIcon };
+      return { args, selected, search, keyboardArrowDownIcon };
     },
     template: `
       <div style="height: 500px">
@@ -215,7 +215,7 @@ export const DefaultMultiple: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string[]>([]);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div style="height: 500px">
@@ -238,7 +238,7 @@ export const MultipleWithSelectAllChild: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string[]>([]);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div style="height: 500px">
@@ -258,7 +258,7 @@ export const WithLabel: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div>
@@ -279,7 +279,7 @@ export const Required: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div>
@@ -301,7 +301,7 @@ export const NoOptions: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div>
@@ -321,7 +321,7 @@ export const NarrowContainer: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div style="width: 150px; border: 1px dashed #ccc; padding: 10px;">
@@ -341,7 +341,7 @@ export const BottomEdge: Story = {
     components: { TreeSelect, Svg },
     setup() {
       const selected = ref<string | null>(null);
-      return { args, selected, arrowDownIcon };
+      return { args, selected, keyboardArrowDownIcon };
     },
     template: `
       <div style="height: 300px; display: flex; flex-direction: column; justify-content: flex-end;">

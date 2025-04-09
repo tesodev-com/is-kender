@@ -16,9 +16,10 @@ export { default as expandLessIcon } from '@material-design-icons/svg/round/expa
 export { default as expandMoreIcon } from '@material-design-icons/svg/round/expand_more.svg?raw';
 export { default as homeIcon } from '@material-design-icons/svg/round/home.svg?raw';
 export { default as importExportIcon } from '@material-design-icons/svg/round/import_export.svg?raw';
-export { default as arrowDownIcon, default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
+export { default as keyboardArrowDownIcon } from '@material-design-icons/svg/round/keyboard_arrow_down.svg?raw';
 export { default as keyboardArrowLeftIcon } from '@material-design-icons/svg/round/keyboard_arrow_left.svg?raw';
 export { default as keyboardArrowRightIcon } from '@material-design-icons/svg/round/keyboard_arrow_right.svg?raw';
+export { default as keyboardArrowUpIcon } from '@material-design-icons/svg/round/keyboard_arrow_up.svg?raw';
 export { default as removeIcon } from '@material-design-icons/svg/round/remove.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';

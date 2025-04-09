@@ -29,12 +29,23 @@
         />
       </div>
       <div
-        v-if="false"
+        v-if="props.showActionBar"
         class="datepicker-actions"
       >
         <Button
           color="secondary"
           variant="outline"
+          size="sm"
+          class="today-button"
+          @click="onGo(new Date())"
+        >
+          Bugün
+        </Button>
+        <Button
+          color="secondary"
+          variant="outline"
+          class="clear-button"
+          size="sm"
           @click="onClear"
         >
           Temizle
@@ -61,6 +72,10 @@ const activeFastAction = ref<(typeof Consts.ACTIONS)[number]['type'] | null>(nul
 const calendars = computed(() => {
   const commonProps: { [key: string]: any } & Partial<CalendarProps> = {
     firstDayOfWeek: props.firstDayOfWeek,
+    selectionMode: props.selectionMode,
+    minDate: props.minDate,
+    maxDate: props.maxDate,
+    showTime: props.showTime,
     events: {
       onPrev: onPrev,
       onNext: onNext,
@@ -117,7 +132,7 @@ const startDate = computed({
     return model.value ? new Date(model.value) : null;
   },
   set(val: Date | null) {
-    if (props.selectMode === 'range') {
+    if (props.selectionMode === 'range') {
       const end = endDate.value;
       model.value = [val, end];
     } else {
@@ -153,8 +168,6 @@ function onPrev(date: Date = activeDate.value) {
 }
 function onNext(date: Date = activeDate.value) {
   const diff = Utils.getDateDiff(activeDate.value, date);
-  console.log(diff);
-
   if (date === activeDate.value) {
     activeDate.value = new Date(date.getFullYear(), date.getMonth() + 1);
   } else if (diff.months >= 1 && props.multipleMonths) {

@@ -41,7 +41,7 @@
             {{ Utils.formatDate(startDate ?? new Date()) }}
           </span>
           <span
-            v-if="props.header?.view && props.selectMode === 'range'"
+            v-if="props.header?.view && props.selectionMode === 'range'"
             class="selected-date"
           >
             {{ Utils.formatDate(endDate ?? new Date()) }}
@@ -82,13 +82,44 @@
           </div>
         </div>
       </div>
+      <div class="calendar-footer">
+        <div class="calendar-time">
+          <div class="time">
+            <Svg
+              :src="keyboardArrowUpIcon"
+              class="time-icon"
+              @click="onHourChange('up')"
+            ></Svg>
+            <span class="time-text">15</span>
+            <Svg
+              :src="keyboardArrowDownIcon"
+              class="time-icon"
+              @click="onHourChange('down')"
+            ></Svg>
+          </div>
+          <span>:</span>
+          <div class="time">
+            <Svg
+              :src="keyboardArrowUpIcon"
+              class="time-icon"
+              @click="onMinuteChange('up')"
+            ></Svg>
+            <span class="time-text">15</span>
+            <Svg
+              :src="keyboardArrowDownIcon"
+              class="time-icon"
+              @click="onMinuteChange('down')"
+            ></Svg>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
+import { chevronLeftIcon, chevronRightIcon, keyboardArrowDownIcon, keyboardArrowUpIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, ref, watchEffect } from 'vue';
@@ -100,7 +131,7 @@ import type { CalendarEmits, CalendarProps, DateModel, DayItem } from './types';
 // props
 const props = withDefaults(defineProps<CalendarProps>(), {
   firstDayOfWeek: 'sunday',
-  selectMode: 'range',
+  selectionMode: 'range',
   visibleDate: () => new Date(),
   header: () => ({
     title: false,
@@ -140,7 +171,7 @@ const startDate = computed({
     return model.value ? new Date(model.value) : null;
   },
   set(val: Date | null) {
-    if (props.selectMode === 'range') {
+    if (props.selectionMode === 'range') {
       const end = endDate.value;
       model.value = [val, end];
     } else {
@@ -240,8 +271,9 @@ function generateCalendar() {
   return days;
 }
 function onClickDay(day: DayItem) {
+  if (props.minDate && props.maxDate && (Utils.isBefore(day.date, props.minDate) || Utils.isAfter(day.date, props.maxDate))) return;
   const [sDate, eDate] = [...Utils.normalizeModelValue(model.value)];
-  if (props.selectMode === 'range') {
+  if (props.selectionMode === 'range') {
     if (!sDate || (sDate && eDate)) {
       updateModelValue([day.date, null]);
     } else {
@@ -264,11 +296,17 @@ function onNext() {
   calendarDate.value = Utils.nextMonth(calendarDate.value);
   emit('onNext', calendarDate.value);
 }
+function onHourChange(direction: 'up' | 'down') {
+  console.log('direction', direction);
+}
+function onMinuteChange(direction: 'up' | 'down') {
+  console.log('direction', direction);
+}
 function onUpdateCalendarDate(date: Date) {
   calendarDate.value = date;
 }
 function updateModelValue(newDates: Array<Date | null>) {
-  if (props.selectMode === 'range') {
+  if (props.selectionMode === 'range') {
     modelValue.value = newDates;
   } else {
     modelValue.value = newDates[0];
@@ -289,7 +327,7 @@ function getDayClasses(day: DayItem) {
   };
   if (startDate.value && endDate.value) {
     Object.assign(classes, {
-      passive: Boolean(props.selectMode === 'range' && !classes.selected && (Utils.isBefore(day.date, startDate.value) || Utils.isAfter(day.date, endDate.value))),
+      passive: Boolean(props.selectionMode === 'range' && !classes.selected && (Utils.isBefore(day.date, startDate.value) || Utils.isAfter(day.date, endDate.value))),
       'range-start': Boolean(Utils.isSameDay(day.date, startDate.value)),
       'in-range': Boolean(Utils.isBetween(day.date, startDate.value, endDate.value)),
       'range-end': Boolean(Utils.isSameDay(day.date, endDate.value)),

@@ -1,7 +1,10 @@
 export interface CalendarProps {
   firstDayOfWeek?: 'monday' | 'sunday';
-  selectMode?: 'single' | 'range';
+  selectionMode?: 'single' | 'range';
   visibleDate?: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  showTime?: boolean;
   header?: {
     title?: boolean;
     prev?: boolean;
