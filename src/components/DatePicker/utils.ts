@@ -24,17 +24,30 @@ export default {
     newDate.setHours(0, 0, 0, 0);
     return newDate;
   },
-  isSameDay(date1: Date, date2: Date) {
-    return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+  isSameDay(date1: Date | string, date2: Date | string) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
   },
-  isBefore(date1: Date, date2: Date) {
-    return date1.getTime() < date2.getTime();
+  isBefore(date1: Date | string, date2: Date | string) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return d1.getTime() < d2.getTime();
   },
-  isAfter(date1: Date, date2: Date) {
-    return date1.getTime() > date2.getTime();
+  isAfter(date1: Date | string, date2: Date | string) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return d1.getTime() > d2.getTime();
   },
-  isBetween(date: Date, startDate: Date, endDate: Date) {
-    return date.getTime() > startDate.getTime() && date.getTime() < endDate.getTime();
+  isBetween(date: Date | string, startDate: Date | string, endDate: Date | string) {
+    const d = new Date(date);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return d.getTime() > start.getTime() && d.getTime() < end.getTime();
+  },
+  getString(date: Date | string) {
+    const d = new Date(date);
+    return d.toString();
   },
   getDateDiff(startDate: Date, endDate: Date) {
     const start = new Date(startDate);

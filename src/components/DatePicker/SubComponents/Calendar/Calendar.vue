@@ -32,6 +32,7 @@
         :key="index"
         class="calendar-cell"
         :class="getDayCellClass(day)"
+        @click="onClick(day)"
       >
         <span class="calendar-cell-text">{{ day.text }}</span>
       </div>
@@ -46,7 +47,7 @@ import Svg from 'library-components/Svg';
 import { computed } from 'vue';
 import Utils from '../../utils';
 import { DAYS } from './constants';
-import type { CalendarEmits, CalendarProps, Day } from './types';
+import type { CalendarEmits, CalendarProps, DateModel, Day } from './types';
 
 // interfaces & types
 
@@ -59,6 +60,7 @@ const props = withDefaults(defineProps<CalendarProps>(), {
   calendarDate: () => new Date(),
   firstDayOfWeek: 'monday',
 });
+const modelValue = defineModel<DateModel>();
 // defineEmits
 const emit = defineEmits<CalendarEmits>();
 // states (refs and reactives)
@@ -135,16 +137,51 @@ function onPrev() {
 function onNext() {
   emit('onNext', Utils.addMonths(props.calendarDate, 1));
 }
+function onClick(selectedDay: Day) {
+  let newModelValue;
+  if (props.selectionMode === 'single') {
+    newModelValue = selectedDay.date;
+  } else if (props.selectionMode === 'range') {
+    const [sDate, eDate] = Utils.normalizeModelValue(modelValue.value);
+    if (!sDate || (sDate && eDate)) {
+      newModelValue = [Utils.getString(selectedDay.date), null];
+    } else {
+      if (Utils.isSameDay(sDate, selectedDay.date)) {
+        newModelValue = [null, null];
+      } else if (Utils.isBefore(sDate, selectedDay.date)) {
+        newModelValue = [Utils.getString(sDate), Utils.getString(selectedDay.date)];
+      } else {
+        newModelValue = [Utils.getString(selectedDay.date), Utils.getString(sDate)];
+      }
+    }
+  }
+  modelValue.value = newModelValue;
+}
 function getDayCellClass(day: Day) {
   const classes = {
     today: day.isToday,
-    active: day.isActive,
+    active: checkIsActive(day),
     'begin-of-week': day.beginOfWeek,
     'end-of-week': day.endOfWeek,
     'out-of-month': day.outOfMonth,
   };
 
+  if (props.selectionMode === 'range' && Array.isArray(modelValue.value) && modelValue.value.length === 2) {
+    Object.assign(classes, {
+      'range-start': Boolean(modelValue.value[0] && Utils.isSameDay(day.date, modelValue.value[0])),
+      range: Boolean(modelValue.value[0] && modelValue.value[1] && Utils.isBetween(day.date, modelValue.value[0], modelValue.value[1])),
+      'range-end': Boolean(modelValue.value[1] && Utils.isSameDay(day.date, modelValue.value[1])),
+    });
+  }
+
   return classes;
+}
+function checkIsActive(day: Day) {
+  if (Array.isArray(modelValue.value)) {
+    return modelValue.value.includes(Utils.getString(day.date));
+  } else if (typeof modelValue.value === 'string') {
+    return Utils.isSameDay(day.date, modelValue.value);
+  }
 }
 </script>
 

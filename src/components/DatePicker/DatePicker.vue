@@ -11,14 +11,18 @@
     <div class="datepicker-content">
       <div class="datepicker-body">
         <Calendar
-          :calendarDate="calendarVisibleDates.start"
+          v-model="modelValue"
           showPrevIcon
+          :calendarDate="calendarVisibleDates.start"
+          :selectionMode="selectionMode"
           @on-prev="onPrev"
           @on-next="onNext"
         />
         <Calendar
-          :calendarDate="calendarVisibleDates.end"
+          v-model="modelValue"
           showNextIcon
+          :calendarDate="calendarVisibleDates.end"
+          :selectionMode="selectionMode"
           @on-prev="onPrev"
           @on-next="onNext"
         />
@@ -30,7 +34,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Calendar, QuickSelection } from './SubComponents';
+import { Calendar, QuickSelection, type DateModel } from './SubComponents';
 import type { DatePickerProps } from './types';
 import Utils from './utils';
 // imports
@@ -44,7 +48,9 @@ import Utils from './utils';
 // props
 withDefaults(defineProps<DatePickerProps>(), {
   selectionItems: () => [],
+  selectionMode: 'single',
 });
+const modelValue = defineModel<DateModel>();
 // defineEmits
 
 // states (refs and reactives)

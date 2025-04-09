@@ -1,9 +1,8 @@
-export type DateModel = Date | Array<Date | null> | null;
+export type DateModel = Date | string | Array<Date | string | null> | null;
 
 export interface Day {
   date: Date;
   text: string;
-  isActive?: boolean;
   isDisabled?: boolean;
   isToday?: boolean;
   beginOfWeek?: boolean;
@@ -14,6 +13,7 @@ export interface Day {
 export interface CalendarProps {
   calendarDate: Date;
   firstDayOfWeek?: 'monday' | 'sunday';
+  selectionMode?: 'single' | 'range';
   showPrevIcon?: boolean;
   showNextIcon?: boolean;
 }
@@ -21,4 +21,5 @@ export interface CalendarProps {
 export interface CalendarEmits {
   (event: 'onPrev', date: Date): void;
   (event: 'onNext', date: Date): void;
+  (event: 'onSelect', date: Date): void;
 }

@@ -11,11 +11,13 @@ export default meta;
 
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
-  args: {},
+  args: {
+    selectionMode: 'range',
+  },
   render: args => ({
     components: { DatePicker },
     setup() {
-      const modelValue = ref([]);
+      const modelValue = ref();
       return { args, modelValue };
     },
     template: `

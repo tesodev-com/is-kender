@@ -42,6 +42,7 @@
   .calendar-month-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    row-gap: $spacing-xs;
 
     .calendar-cell {
       user-select: none;
@@ -64,8 +65,10 @@
       }
 
       &:hover {
-        border-radius: $rounded-full;
-        background-color: $gray-100;
+        .calendar-cell-text {
+          border-radius: $rounded-full;
+          background-color: $gray-100;
+        }
       }
 
       &:active {
@@ -84,28 +87,28 @@
         }
       }
 
-      &.active {
+      &.active:not(.out-of-month) {
         .calendar-cell-text {
           background-color: $primary-600;
           color: $gray-50;
         }
       }
 
-      &.range.begin-of-week,
-      &.range-start {
+      &.range.begin-of-week:not(.out-of-month),
+      &.range-start:not(.out-of-month) {
         border-top-left-radius: $rounded-full;
         border-bottom-left-radius: $rounded-full;
         background-color: $gray-100;
       }
 
-      &.range.end-of-week,
-      &.range-end {
+      &.range.end-of-week:not(.out-of-month),
+      &.range-end:not(.out-of-month) {
         border-top-right-radius: $rounded-full;
         border-bottom-right-radius: $rounded-full;
         background-color: $gray-100;
       }
 
-      &.range {
+      &.range:not(.out-of-month) {
         background-color: $gray-100;
       }
     }
