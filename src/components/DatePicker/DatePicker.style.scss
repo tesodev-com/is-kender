@@ -2,13 +2,13 @@
   display: flex;
   align-items: stretch;
   justify-content: center;
-  width: 800px;
   border: 1px solid $gray-200;
   border-radius: $rounded-sm;
   box-shadow: $shadow-xl;
+  width: max-content;
 
   .datepicker-sidebar {
-    width: 20%;
+    width: 10rem;
     padding: 0.75rem 1rem;
     border-right: 1px solid $gray-200;
   }
@@ -17,7 +17,13 @@
     flex: 1;
 
     .datepicker-body {
-      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+
+      .calendar-container:nth-last-of-type(1) {
+        border-left: 1px solid $gray-200;
+      }
     }
 
     .datepicker-footer {

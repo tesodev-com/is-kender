@@ -1,1 +1,113 @@
-// Styles
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding: 1.25rem 1.5rem;
+
+  .calendar-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: default;
+    user-select: none;
+  }
+
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .calendar-navigation-text {
+      width: 100%;
+      text-align: center;
+      user-select: none;
+    }
+
+    .calendar-navigation-icon {
+      cursor: pointer;
+    }
+  }
+
+  .calendar-week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    .calendar-cell {
+      @include text-sm(500);
+    }
+  }
+
+  .calendar-month-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    .calendar-cell {
+      user-select: none;
+      cursor: pointer;
+      transition: all 0.1s ease;
+
+      .calendar-cell-text {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $rounded-full;
+
+        @include text-sm(400);
+      }
+
+      &:not(.passive, .out-of-month) {
+        color: $gray-700;
+      }
+
+      &:hover {
+        border-radius: $rounded-full;
+        background-color: $gray-100;
+      }
+
+      &:active {
+        background-color: $gray-200;
+      }
+
+      &.passive,
+      &.out-of-month {
+        color: $gray-500;
+      }
+
+      &.today {
+        .calendar-cell-text {
+          background-color: $gray-100;
+          color: $gray-700;
+        }
+      }
+
+      &.active {
+        .calendar-cell-text {
+          background-color: $primary-600;
+          color: $gray-50;
+        }
+      }
+
+      &.range.begin-of-week,
+      &.range-start {
+        border-top-left-radius: $rounded-full;
+        border-bottom-left-radius: $rounded-full;
+        background-color: $gray-100;
+      }
+
+      &.range.end-of-week,
+      &.range-end {
+        border-top-right-radius: $rounded-full;
+        border-bottom-right-radius: $rounded-full;
+        background-color: $gray-100;
+      }
+
+      &.range {
+        background-color: $gray-100;
+      }
+    }
+  }
+}
