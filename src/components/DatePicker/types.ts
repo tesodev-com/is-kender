@@ -4,4 +4,5 @@ export interface DatePickerProps {
   selectionItems?: Array<QuickSelectionItemKey>;
   selectionMode?: 'single' | 'multiple' | 'range';
   multipleMonth?: boolean;
+  actionBar?: boolean;
 }

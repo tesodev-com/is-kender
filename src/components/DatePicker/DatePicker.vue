@@ -30,8 +30,15 @@
           @on-next="onNext"
         />
       </div>
-      <div class="datepicker-footer">
-        <div class="datepicker-actions">
+      <div
+        v-if="actionBar"
+        class="datepicker-footer"
+      >
+        <div
+          v-if="actionBar"
+          class="datepicker-actions"
+          :class="{ 'fluid-actions': !multipleMonth }"
+        >
           <Button
             color="secondary"
             variant="outline"
