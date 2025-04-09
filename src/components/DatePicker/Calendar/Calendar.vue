@@ -82,30 +82,6 @@
           </div>
         </div>
       </div>
-      <div
-        v-if="footerVisible"
-        class="calendar-footer"
-      >
-        <Button
-          v-if="props.footer?.clear"
-          color="secondary"
-          variant="outline"
-          size="sm"
-          fluid
-          @click="onClear"
-        >
-          Temizle
-        </Button>
-        <Button
-          v-if="props.footer?.apply"
-          color="primary"
-          size="sm"
-          fluid
-          @click="onApply"
-        >
-          Seç
-        </Button>
-      </div>
     </div>
   </div>
 </template>
@@ -130,9 +106,6 @@ const props = withDefaults(defineProps<CalendarProps>(), {
     title: false,
     prev: false,
     next: false,
-  }),
-  footer: () => ({
-    clear: false,
   }),
 });
 const modelValue = defineModel<DateModel>('modelValue');
@@ -201,9 +174,6 @@ const headerVisible = computed(() => {
     top: props.header?.title || props.header?.next || props.header?.prev,
     bottom: props.header?.view || props.header?.today,
   };
-});
-const footerVisible = computed(() => {
-  return props.footer?.clear || props.footer?.apply;
 });
 // watchers
 watchEffect(() => {
@@ -284,17 +254,6 @@ function onClickDay(day: DayItem) {
   } else {
     const isSameDay = sDate && Utils.isSameDay(day.date, sDate);
     updateModelValue([isSameDay ? null : day.date, null]);
-  }
-}
-function onClear() {
-  model.value = [null, null];
-}
-function onApply() {
-  if (typeof props.footer?.apply === 'function') {
-    props.footer?.apply({
-      startDate: startDate.value,
-      endDate: endDate.value,
-    });
   }
 }
 function onPrev() {

@@ -9,10 +9,6 @@ export interface CalendarProps {
     view?: boolean;
     today?: boolean;
   };
-  footer?: {
-    clear?: boolean;
-    apply?: (value: Date | { startDate: Date | null | undefined; endDate: Date | null | undefined } | null) => void;
-  };
 }
 export type SingleDateModel = Date;
 export type RangeDateModel = Array<Date | null>;

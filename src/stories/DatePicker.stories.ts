@@ -28,7 +28,7 @@ export const Default: Story = {
   render: args => ({
     components: { DatePicker },
     setup() {
-      const modelValue = ref();
+      const modelValue = ref([]);
       return { args, modelValue };
     },
     template: `

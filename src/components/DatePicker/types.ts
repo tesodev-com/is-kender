@@ -3,6 +3,8 @@ import type Consts from './constants';
 export interface DatePickerProps {
   firstDayOfWeek?: 'monday' | 'sunday';
   selectMode?: 'single' | 'range';
+  fastActions?: Array<FastAction['type']>;
+  multipleMonths?: boolean;
 }
 export interface DatePickerEmits {
   (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;

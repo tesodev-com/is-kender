@@ -10,8 +10,7 @@
     flex-direction: column;
 
     .calendar-header,
-    .calendar-body,
-    .calendar-footer {
+    .calendar-body {
       padding: 1rem;
     }
 
@@ -168,21 +167,9 @@
       }
     }
 
-    .calendar-footer {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-    }
-
     &:has(.calendar-header) {
       .calendar-body {
         border-top: 1px solid $gray-200;
-      }
-    }
-
-    &:has(.calendar-footer) {
-      .calendar-body {
-        border-bottom: 1px solid $gray-200;
       }
     }
   }

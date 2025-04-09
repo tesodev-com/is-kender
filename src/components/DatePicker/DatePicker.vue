@@ -1,9 +1,12 @@
 <template>
   <div class="datepicker-panel">
-    <div class="datepicker-aside">
+    <div
+      v-if="fastActions.length"
+      class="datepicker-aside"
+    >
       <div class="datepicker-aside-actions">
         <span
-          v-for="(action, index) in Consts.ACTIONS"
+          v-for="(action, index) in fastActions"
           :key="index"
           class="action-item"
           :class="{
@@ -25,7 +28,10 @@
           v-on="calendar.events"
         />
       </div>
-      <div class="datepicker-actions">
+      <div
+        v-if="false"
+        class="datepicker-actions"
+      >
         <Button
           color="secondary"
           variant="outline"
@@ -48,40 +54,45 @@ import Utils from './utils';
 const modelValue = defineModel<DateModel>();
 const emit = defineEmits<DatePickerEmits>();
 const props = withDefaults(defineProps<DatePickerProps>(), {
-  selectMode: 'range',
+  firstDayOfWeek: 'monday',
 });
 const activeDate = ref(new Date());
 const activeFastAction = ref<(typeof Consts.ACTIONS)[number]['type'] | null>(null);
 const calendars = computed(() => {
-  const commonProps: Partial<CalendarProps> = {
+  const commonProps: { [key: string]: any } & Partial<CalendarProps> = {
     firstDayOfWeek: props.firstDayOfWeek,
+    events: {
+      onPrev: onPrev,
+      onNext: onNext,
+    },
   };
-  return [
+  const calendars = [
     {
       id: 'start',
       visibleDate: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth()),
       header: {
         title: true,
         prev: true,
-      },
-      events: {
-        onPrev: onPrev,
-      },
-      ...commonProps,
-    },
-    {
-      id: 'end',
-      visibleDate: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth() + 1),
-      header: {
-        title: true,
-        next: true,
-      },
-      events: {
-        onNext: onNext,
+        next: props.multipleMonths ? false : true,
       },
       ...commonProps,
     },
   ] as ({ [key: string]: any } & CalendarProps)[];
+
+  if (props.multipleMonths) {
+    calendars.push({
+      id: 'end',
+      visibleDate: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth() + 1),
+      header: {
+        title: true,
+        prev: props.multipleMonths ? false : true,
+        next: true,
+      },
+      ...commonProps,
+    });
+  }
+
+  return calendars;
 });
 const model = computed({
   get() {
@@ -126,6 +137,13 @@ const endDate = computed({
     model.value = [start, val];
   },
 });
+const fastActions = computed(() => {
+  if (Array.isArray(props.fastActions) && props.fastActions.length) {
+    return Consts.ACTIONS.filter(action => props.fastActions?.includes(action.type));
+  } else {
+    return [];
+  }
+});
 function onPrev(date: Date = activeDate.value) {
   if (date === activeDate.value) {
     activeDate.value = new Date(date.getFullYear(), date.getMonth() - 1);
@@ -135,9 +153,11 @@ function onPrev(date: Date = activeDate.value) {
 }
 function onNext(date: Date = activeDate.value) {
   const diff = Utils.getDateDiff(activeDate.value, date);
+  console.log(diff);
+
   if (date === activeDate.value) {
     activeDate.value = new Date(date.getFullYear(), date.getMonth() + 1);
-  } else if (diff.months >= 1) {
+  } else if (diff.months >= 1 && props.multipleMonths) {
     activeDate.value = new Date(date.getFullYear(), date.getMonth() - 1);
   } else {
     activeDate.value = new Date(date.getFullYear(), date.getMonth());

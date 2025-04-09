@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-right: 1px solid $gray-200;
 
     .datepicker-aside-actions {
       width: 100%;
@@ -49,7 +50,6 @@
   .datepicker-body {
     display: flex;
     flex-direction: column;
-    border-left: 1px solid $gray-200;
     width: 100%;
 
     .datepicker-calendars {
@@ -57,20 +57,16 @@
       align-items: stretch;
       justify-content: center;
       width: max-content;
-      border-bottom: 1px solid $gray-200;
 
       .calendar {
         border: none;
         box-shadow: none;
-
-        &:first-of-type {
-          border-right: 1px solid $gray-200;
-        }
       }
     }
 
     .datepicker-actions {
       padding: 1rem;
+      border-top: 1px solid $gray-200;
     }
   }
 }
