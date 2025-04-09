@@ -154,6 +154,19 @@ function onClick(selectedDay: Day) {
         newModelValue = [Utils.getString(selectedDay.date), Utils.getString(sDate)];
       }
     }
+  } else if (props.selectionMode === 'multiple') {
+    if (Array.isArray(modelValue.value)) {
+      const index = modelValue.value.filter((date): date is string | Date => Boolean(date)).findIndex(date => Utils.isSameDay(date, selectedDay.date));
+      if (index > -1) {
+        newModelValue = modelValue.value.filter((_, i) => i !== index);
+      } else {
+        newModelValue = [...modelValue.value, Utils.getString(selectedDay.date)];
+      }
+    } else {
+      newModelValue = [Utils.getString(selectedDay.date)];
+    }
+  } else {
+    return;
   }
   modelValue.value = newModelValue;
 }

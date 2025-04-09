@@ -2,6 +2,6 @@ import type { QuickSelectionItemKey } from './SubComponents';
 
 export interface DatePickerProps {
   selectionItems?: Array<QuickSelectionItemKey>;
-  selectionMode?: 'single' | 'range';
+  selectionMode?: 'single' | 'multiple' | 'range';
   multipleMonth?: boolean;
 }

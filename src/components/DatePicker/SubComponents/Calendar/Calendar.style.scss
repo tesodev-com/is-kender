@@ -72,7 +72,9 @@
       }
 
       &:active {
-        background-color: $gray-200;
+        .calendar-cell-text {
+          background-color: $gray-200;
+        }
       }
 
       &.passive,

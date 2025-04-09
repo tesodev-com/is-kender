@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
   args: {
-    selectionMode: 'range',
+    selectionMode: 'multiple',
   },
   render: args => ({
     components: { DatePicker },

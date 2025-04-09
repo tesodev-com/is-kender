@@ -13,7 +13,7 @@ export interface Day {
 export interface CalendarProps {
   calendarDate: Date;
   firstDayOfWeek?: 'monday' | 'sunday';
-  selectionMode?: 'single' | 'range';
+  selectionMode?: 'single' | 'multiple' | 'range';
   showPrevIcon?: boolean;
   showNextIcon?: boolean;
 }
