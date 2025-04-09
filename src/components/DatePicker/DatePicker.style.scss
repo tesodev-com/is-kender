@@ -1,75 +1,28 @@
-.datepicker-panel {
+.datepicker-container {
   display: flex;
   align-items: stretch;
-  height: max-content;
+  justify-content: center;
+  width: 800px;
   border: 1px solid $gray-200;
   border-radius: $rounded-sm;
   box-shadow: $shadow-xl;
-  width: max-content;
 
-  .datepicker-aside {
-    width: 10rem;
-    padding: $spacing-lg $spacing-xl;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .datepicker-sidebar {
+    width: 20%;
+    padding: 0.75rem 1rem;
     border-right: 1px solid $gray-200;
-
-    .datepicker-aside-actions {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: $spacing-md;
-
-      .action-item {
-        padding: 0.5rem 0.75rem;
-        user-select: none;
-        cursor: pointer;
-        color: $gray-800;
-        border-radius: $rounded-sm;
-        transition: background-color 150ms ease;
-
-        @include text-sm(500);
-
-        &:hover {
-          background-color: $gray-50;
-        }
-
-        &:active {
-          background-color: $gray-100;
-        }
-
-        &-active {
-          background-color: $primary-100;
-          color: $primary-600;
-        }
-      }
-    }
   }
 
-  .datepicker-body {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  .datepicker-content {
+    flex: 1;
 
-    .datepicker-calendars {
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-      width: max-content;
-
-      .calendar {
-        border: none;
-        box-shadow: none;
-      }
+    .datepicker-body {
+      padding: 0.75rem 1rem;
     }
 
-    .datepicker-actions {
-      padding: 1rem;
+    .datepicker-footer {
+      padding: 0.75rem 1rem;
       border-top: 1px solid $gray-200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
   }
 }

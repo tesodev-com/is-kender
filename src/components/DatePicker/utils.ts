@@ -1,12 +1,12 @@
 export default {
-  previousMonth(date: Date) {
+  addYears(date: Date, year: number) {
     const newDate = new Date(date);
-    newDate.setMonth(date.getMonth() - 1);
+    newDate.setFullYear(date.getFullYear() + year);
     return newDate;
   },
-  nextMonth(date: Date) {
+  addMonths(date: Date, month: number) {
     const newDate = new Date(date);
-    newDate.setMonth(date.getMonth() + 1);
+    newDate.setMonth(date.getMonth() + month);
     return newDate;
   },
   addHours(date: Date, hour: number) {
@@ -17,6 +17,11 @@ export default {
   addMinutes(date: Date, minute: number) {
     const newDate = new Date(date);
     newDate.setMinutes(date.getMinutes() + minute);
+    return newDate;
+  },
+  setTimeZero(date: Date) {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
     return newDate;
   },
   isSameDay(date1: Date, date2: Date) {
@@ -51,11 +56,6 @@ export default {
       month: '2-digit',
       day: '2-digit',
     }).format(date);
-  },
-  setTimeZero(date: Date) {
-    const newDate = new Date(date);
-    newDate.setHours(0, 0, 0, 0);
-    return newDate;
   },
   normalizeModelValue(value: any) {
     if (value === null || value === undefined) {

@@ -5,28 +5,13 @@ import { ref } from 'vue';
 const meta: Meta<typeof DatePicker> = {
   title: 'Forms&Inputs/DatePicker',
   component: DatePicker,
-  argTypes: {
-    firstDayOfWeek: {
-      control: 'select',
-      options: ['monday', 'sunday'],
-    },
-    selectionMode: {
-      control: 'select',
-      options: ['single', 'range'],
-    },
-  },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
-  args: {
-    firstDayOfWeek: 'monday',
-    selectionMode: 'range',
-    showTime: true,
-    showActionBar: true,
-  },
+  args: {},
   render: args => ({
     components: { DatePicker },
     setup() {
