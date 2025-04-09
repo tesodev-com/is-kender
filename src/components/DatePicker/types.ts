@@ -1,6 +1,7 @@
 export interface CalendarProps {
   firstDayOfWeek?: 'monday' | 'sunday';
   selectMode?: 'single' | 'range';
+  visibleDate?: Date;
   header?: {
     title?: boolean;
     prev?: boolean;
@@ -18,6 +19,8 @@ export type RangeDateModel = Array<Date | null>;
 export type DateModel = SingleDateModel | RangeDateModel | null;
 export interface CalendarEmits {
   (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;
+  (event: 'onPrev', value: Date): void;
+  (event: 'onNext', value: Date): void;
 }
 export interface DayItem {
   date: Date;

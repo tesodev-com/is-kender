@@ -34,12 +34,10 @@ export const Default: Story = {
   render: args => ({
     components: { DatePicker },
     setup() {
-      const modelValue = ref([new Date('2025-04-01'), new Date('2025-04-10')]);
+      const modelValue = ref([]);
       return { args, modelValue };
     },
     template: `
-    <DatePicker v-bind="args" v-model="modelValue" />
-    <br />
-    <div>Selected Date: {{ modelValue }}</div>`,
+    <DatePicker v-bind="args" v-model="modelValue" />`,
   }),
 };

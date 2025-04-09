@@ -21,6 +21,20 @@ export default {
   isBetween(date: Date, startDate: Date, endDate: Date) {
     return date.getTime() > startDate.getTime() && date.getTime() < endDate.getTime();
   },
+  getDateDiff(startDate: Date, endDate: Date) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diff = end.getTime() - start.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+    const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+    return {
+      days,
+      months,
+      years,
+      total: diff,
+    };
+  },
   formatDate(date: Date) {
     return new Intl.DateTimeFormat('tr-TR', {
       year: 'numeric',
