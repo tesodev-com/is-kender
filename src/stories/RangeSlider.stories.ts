@@ -18,6 +18,12 @@ const meta: Meta<typeof RangeSlider> = {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'dark'],
     },
+    isRange: { control: 'boolean' },
+    thumbShape: {
+      control: 'inline-radio',
+      options: ['circle', 'square'],
+      defaultValue: 'circle',
+    },
   },
 };
 
@@ -33,24 +39,27 @@ export const Default: Story = {
     label: 'Value',
     alwaysReturnWithUnit: false,
     color: 'danger',
+    thumbShape: 'circle',
   },
   render: args => ({
     components: { RangeSlider },
     setup() {
-      const modelValue = ref(50);
+      const modelValue = ref<number>(50);
+
       return { args, modelValue };
     },
     template: `
-    <RangeSlider 
-      v-model="modelValue" 
-      :min="args.min" 
-      :max="args.max" 
-      :step="args.step" 
-      :unit="args.unit" 
-      :label="args.label" 
-      :always-return-with-unit="args.alwaysReturnWithUnit"
-      :color="args.color"
-    />
+        <RangeSlider 
+          v-model="modelValue" 
+          :min="args.min" 
+          :max="args.max" 
+          :step="args.step" 
+          :unit="args.unit" 
+          :label="args.label" 
+          :always-return-with-unit="args.alwaysReturnWithUnit"
+          :color="args.color"
+          :thumb-shape="args.thumbShape"
+        />
     `,
   }),
 };
@@ -64,24 +73,27 @@ export const WithUnit: Story = {
     label: 'Size',
     alwaysReturnWithUnit: true,
     color: 'primary',
+    thumbShape: 'circle',
   },
   render: args => ({
     components: { RangeSlider },
     setup() {
-      const modelValue = ref('50px');
+      const modelValue = ref<string>('50px');
+
       return { args, modelValue };
     },
     template: `
-    <RangeSlider 
-      v-model="modelValue" 
-      :min="args.min" 
-      :max="args.max" 
-      :step="args.step" 
-      :unit="args.unit" 
-      :label="args.label" 
-      :always-return-with-unit="args.alwaysReturnWithUnit"
-      :color="args.color"
-    />
+        <RangeSlider 
+          v-model="modelValue" 
+          :min="args.min" 
+          :max="args.max" 
+          :step="args.step" 
+          :unit="args.unit" 
+          :label="args.label" 
+          :always-return-with-unit="args.alwaysReturnWithUnit"
+          :color="args.color"
+          :thumb-shape="args.thumbShape"
+        />
     `,
   }),
 };
@@ -95,24 +107,62 @@ export const CustomRange: Story = {
     label: 'Weight',
     alwaysReturnWithUnit: true,
     color: 'primary',
+    thumbShape: 'circle',
   },
   render: args => ({
     components: { RangeSlider },
     setup() {
-      const modelValue = ref('100kg');
+      const modelValue = ref<string>('100kg');
       return { args, modelValue };
     },
     template: `
-    <RangeSlider 
-      v-model="modelValue" 
-      :min="args.min" 
-      :max="args.max" 
-      :step="args.step" 
-      :unit="args.unit" 
-      :label="args.label" 
-      :always-return-with-unit="args.alwaysReturnWithUnit"
-      :color="args.color"
-    />
+        <RangeSlider 
+          v-model="modelValue" 
+          :min="args.min" 
+          :max="args.max" 
+          :step="args.step" 
+          :unit="args.unit" 
+          :label="args.label" 
+          :always-return-with-unit="args.alwaysReturnWithUnit"
+          :color="args.color"
+          :thumb-shape="args.thumbShape"
+        />
+    `,
+  }),
+};
+
+export const RangeMode: Story = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: 'px',
+    label: 'Range',
+    alwaysReturnWithUnit: true,
+    color: 'dark',
+    isRange: true,
+    thumbShape: 'square',
+  },
+  render: args => ({
+    components: { RangeSlider },
+    setup() {
+      const modelValue = ref([30, 50]);
+
+      return { args, modelValue };
+    },
+    template: `
+        <RangeSlider 
+          v-model="modelValue" 
+          :min="args.min" 
+          :max="args.max" 
+          :step="args.step" 
+          :unit="args.unit" 
+          :label="args.label" 
+          :always-return-with-unit="args.alwaysReturnWithUnit"
+          :color="args.color"
+          :is-range="args.isRange"
+          :thumb-shape="args.thumbShape"
+        />
     `,
   }),
 };

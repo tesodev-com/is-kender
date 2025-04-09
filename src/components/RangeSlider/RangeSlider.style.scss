@@ -31,10 +31,55 @@ $colors: (
   ),
 );
 
-/* SCSS */
+
+.range-slider-wrapper.thumb-circle .range-input,
+.range-slider-wrapper.thumb-square .range-input {
+  &::-webkit-slider-thumb {
+    border-radius: 50% !important;
+  }
+
+  &::-moz-range-thumb {
+    border-radius: 50% !important;
+  }
+}
+
+.range-slider-wrapper.thumb-square .range-input {
+  &::-webkit-slider-thumb {
+    border-radius: 4px !important;
+  }
+
+  &::-moz-range-thumb {
+    border-radius: 4px !important;
+  }
+}
+
+.range-slider-wrapper.is-range {
+  .range-input {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+
+    &::-webkit-slider-thumb {
+      pointer-events: auto;
+    }
+
+    &::-moz-range-thumb {
+      pointer-events: auto;
+    }
+  }
+
+  .range-input-min {
+    z-index: 3;
+  }
+
+  .range-input-max {
+    z-index: 2;
+  }
+}
 
 .range-slider-wrapper {
   width: 100%;
+  padding: 8px 0;
 
   .range-header {
     margin-bottom: 12px;
@@ -49,26 +94,114 @@ $colors: (
   .range-controls {
     display: flex;
     flex-direction: column;
+    gap: 8px;
 
     .slider-container {
       position: relative;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 9px;
+
+      .range-track {
+        position: absolute;
+        left: 9px;
+        right: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 6px;
+        background: $gray-200;
+        border-radius: 3px;
+        pointer-events: none;
+
+        .range-progress {
+          position: absolute;
+          height: 100%;
+          border-radius: 3px;
+          transition: all 0.2s ease;
+        }
+      }
+
+      .range-input {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        height: 20px;
+        appearance: none;
+        background: transparent;
+        outline: none;
+        margin: 0;
+        padding: 0;
+
+        &::-webkit-slider-thumb {
+          appearance: none;
+          width: 18px;
+          height: 18px;
+          margin-top: -3px;
+          background: $white;
+          border: 2px solid;
+          cursor: pointer;
+          box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+          transition: all 0.2s ease;
+          position: relative;
+          z-index: 2;
+
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+
+        &::-moz-range-thumb {
+          width: 18px;
+          height: 18px;
+          margin-top: -3px;
+          background: $white;
+          border: 2px solid;
+          cursor: pointer;
+          box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+          transition: all 0.2s ease;
+          position: relative;
+          z-index: 2;
+
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+
+        &::-webkit-slider-runnable-track,
+        &::-moz-range-track {
+          appearance: none;
+          height: 6px;
+          background: transparent;
+          border: none;
+        }
+      }
 
       .current-value {
         position: absolute;
-        top: -8px;
-        background: $primary-600;
+        top: -32px;
+        transform: translateX(-50%);
         color: $white;
         padding: 4px 8px;
         border-radius: 4px;
         font-size: 12px;
         font-weight: 500;
         white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
         transition: all 0.2s ease;
         pointer-events: none;
         z-index: 1;
-        transform: translateX(-50%);
 
         &::before {
           content: "";
@@ -78,9 +211,7 @@ $colors: (
           transform: translateX(-50%);
           border-left: 4px solid transparent;
           border-right: 4px solid transparent;
-          border-top: 4px solid $primary-600;
-          width: 0;
-          height: 0;
+          border-top: 4px solid;
         }
       }
     }
@@ -88,88 +219,12 @@ $colors: (
     .range-limits {
       display: flex;
       justify-content: space-between;
+      padding: 0 9px;
+      margin-top: 4px;
 
       .range-limit {
         font-size: 12px;
         color: $gray-500;
-      }
-    }
-
-    .range-input {
-      width: 100%;
-      height: 6px;
-      appearance: none;
-      background: $gray-200;
-      border-radius: 3px;
-      outline: none;
-      background-image: linear-gradient($primary-600, $primary-600);
-      background-size: calc((100% - 18px) * var(--range-progress)) 100%;
-      background-repeat: no-repeat;
-
-      &:hover {
-        + .current-value {
-          opacity: 1;
-          visibility: visible;
-          top: -30px;
-        }
-      }
-
-      &::-webkit-slider-thumb {
-        appearance: none;
-        width: 18px;
-        height: 18px;
-        background: $white;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid $primary-600;
-        box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-        transition: all 0.2s ease;
-        margin-top: -6px;
-
-        &:hover {
-          transform: scale(1.1);
-          box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
-
-          + .current-value {
-            opacity: 1;
-            visibility: visible;
-            top: -30px;
-          }
-        }
-
-        &:active {
-          transform: scale(0.95);
-        }
-      }
-
-      &::-moz-range-thumb {
-        width: 18px;
-        height: 18px;
-        background: $white;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid $primary-600;
-        box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-        transition: all 0.2s ease;
-
-        &:hover {
-          transform: scale(1.1);
-          box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
-        }
-
-        &:active {
-          transform: scale(0.95);
-        }
-      }
-
-      &::-webkit-slider-runnable-track {
-        height: 6px;
-        border-radius: 3px;
-      }
-
-      &::-moz-range-track {
-        height: 6px;
-        border-radius: 3px;
       }
     }
   }
@@ -180,47 +235,36 @@ $colors: (
   $hover-bg: mixinMap.get($color-values, "hover-bg");
 
   .range-slider-#{$color-name} {
-    .range-controls .range-input {
-      background: $gray-200;
-      background-image: linear-gradient($color, $color);
-      background-size: calc((100% - 18px) * var(--range-progress)) 100%;
-      background-repeat: no-repeat;
+    .range-track {
+      .range-progress {
+        background-color: $color !important;
+      }
+    }
 
+    .range-input {
       &::-webkit-slider-thumb {
-        background: $white;
-        border: 2px solid $color;
+        border-color: $color !important;
+
+        &:hover {
+          border-color: $hover-bg !important;
+        }
       }
 
       &::-moz-range-thumb {
-        background: $white;
-        border: 2px solid $color;
+        border-color: $color !important;
+
+        &:hover {
+          border-color: $hover-bg !important;
+        }
       }
     }
-  }
 
-  .current-value-#{$color-name} {
-    background: $color !important;
+    .current-value {
+      background-color: $color !important;
 
-    &::before {
-      border-top-color: $color !important;
-    }
-  }
-
-  .range-slider-#{$color-name}
-    .range-controls
-    .range-input:hover
-    + .current-value,
-  .range-slider-#{$color-name}
-    .range-controls
-    .range-input::-webkit-slider-thumb:hover
-    + .current-value {
-    opacity: 1;
-    visibility: visible;
-    top: -30px;
-    background: $hover-bg !important;
-
-    &::before {
-      border-top-color: $hover-bg !important;
+      &::before {
+        border-top-color: $color !important;
+      }
     }
   }
 }
