@@ -1,48 +1,83 @@
 <template>
   <div class="datepicker-panel">
-    <div class="datepicker-aside">Filter</div>
+    <div class="datepicker-aside">
+      <div class="datepicker-aside-actions">
+        <span
+          v-for="(action, index) in Consts.ACTIONS"
+          :key="index"
+          class="action-item"
+          @click="fastAction(action)"
+        >
+          {{ action.label }}
+        </span>
+      </div>
+    </div>
     <div class="datepicker-body">
       <div class="datepicker-calendars">
         <Calendar
+          v-for="calendar in calendars"
+          :key="calendar.id"
           v-model="model"
-          :header="{
-            prev: true,
-            title: true,
-          }"
-          :visibleDate="visibleDates.start"
-          @on-prev="onPrev"
-        />
-        <Calendar
-          v-model="model"
-          :header="{
-            title: true,
-            next: true,
-          }"
-          :visibleDate="visibleDates.end"
-          @on-next="onNext"
+          v-bind="calendar"
+          v-on="calendar.events"
         />
       </div>
-      <div class="datepicker-actions">Actions</div>
+      <div class="datepicker-actions">
+        <Button
+          color="secondary"
+          variant="outline"
+          @click="onClear"
+        >
+          Temizle
+        </Button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Button from 'library-components/Button';
 import { computed, ref } from 'vue';
-import Calendar from './Calendar.vue';
-import type { CalendarEmits, CalendarProps, DateModel } from './types';
+import Calendar, { type CalendarProps, type DateModel } from './Calendar';
+import Consts from './constants';
+import type { DatePickerEmits, DatePickerProps, FastAction } from './types';
 import Utils from './utils';
 const modelValue = defineModel<DateModel>();
-const emit = defineEmits<CalendarEmits>();
-const props = withDefaults(defineProps<CalendarProps>(), {
+const emit = defineEmits<DatePickerEmits>();
+const props = withDefaults(defineProps<DatePickerProps>(), {
   selectMode: 'range',
 });
 const activeDate = ref(new Date());
-const visibleDates = computed(() => {
-  return {
-    start: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth()),
-    end: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth() + 1),
+const calendars = computed(() => {
+  const commonProps: Partial<CalendarProps> = {
+    firstDayOfWeek: props.firstDayOfWeek,
   };
+  return [
+    {
+      id: 'start',
+      visibleDate: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth()),
+      header: {
+        title: true,
+        prev: true,
+      },
+      events: {
+        onPrev: onPrev,
+      },
+      ...commonProps,
+    },
+    {
+      id: 'end',
+      visibleDate: new Date(activeDate.value.getFullYear(), activeDate.value.getMonth() + 1),
+      header: {
+        title: true,
+        next: true,
+      },
+      events: {
+        onNext: onNext,
+      },
+      ...commonProps,
+    },
+  ] as ({ [key: string]: any } & CalendarProps)[];
 });
 const model = computed({
   get() {
@@ -99,6 +134,14 @@ function onNext(date: Date = activeDate.value) {
 }
 function onGo(date: Date) {
   activeDate.value = new Date(date.getFullYear(), date.getMonth());
+}
+function onClear() {
+  model.value = null;
+}
+function fastAction(action: FastAction) {
+  const act = Consts.ACTIONS.find(a => a.type === action.type);
+  if (!act) return;
+  model.value = act.fnc();
 }
 defineExpose({
   prev: onPrev,

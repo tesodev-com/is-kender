@@ -42,6 +42,11 @@ export default {
       day: '2-digit',
     }).format(date);
   },
+  setTimeZero(date: Date) {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  },
   normalizeModelValue(value: any) {
     if (value === null || value === undefined) {
       return [null, null];

@@ -116,9 +116,9 @@ import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, ref, watchEffect } from 'vue';
-import { DAYS } from './constants';
+import Consts from '../constants';
+import Utils from '../utils';
 import type { CalendarEmits, CalendarProps, DateModel, DayItem } from './types';
-import Utils from './utils';
 // constants
 // composable
 // props
@@ -147,7 +147,7 @@ const weekDays = computed(() => {
   const firstDayOfWeek = props.firstDayOfWeek === 'monday' ? 0 : 6;
   for (let i = 0; i < 7; i++) {
     const dayIndex = (firstDayOfWeek + i) % 7;
-    weekDays.push(DAYS[dayIndex]);
+    weekDays.push(Consts.DAYS[dayIndex]);
   }
   return weekDays;
 });

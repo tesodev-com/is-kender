@@ -14,12 +14,6 @@ const meta: Meta<typeof DatePicker> = {
       control: 'select',
       options: ['single', 'range'],
     },
-    header: {
-      control: 'object',
-    },
-    footer: {
-      control: 'object',
-    },
   },
 };
 
@@ -34,10 +28,12 @@ export const Default: Story = {
   render: args => ({
     components: { DatePicker },
     setup() {
-      const modelValue = ref([]);
+      const modelValue = ref();
       return { args, modelValue };
     },
     template: `
-    <DatePicker v-bind="args" v-model="modelValue" />`,
+    <DatePicker v-bind="args" v-model="modelValue" />
+    <br />
+    <div>Selected Date: {{ modelValue }}</div>`,
   }),
 };

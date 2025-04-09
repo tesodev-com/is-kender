@@ -158,9 +158,9 @@
           &.passive,
           &.out-of-month {
             background-color: transparent;
-            color: $gray-500;
 
             .day-content {
+              color: $gray-500;
               background-color: transparent;
             }
           }

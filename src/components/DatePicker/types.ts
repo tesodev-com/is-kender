@@ -1,26 +1,18 @@
-export interface CalendarProps {
+import type Consts from './constants';
+
+export interface DatePickerProps {
   firstDayOfWeek?: 'monday' | 'sunday';
   selectMode?: 'single' | 'range';
-  visibleDate?: Date;
-  header?: {
-    title?: boolean;
-    prev?: boolean;
-    next?: boolean;
-    view?: boolean;
-    today?: boolean;
-  };
-  footer?: {
-    clear?: boolean;
-    apply?: (value: Date | { startDate: Date | null | undefined; endDate: Date | null | undefined } | null) => void;
-  };
 }
-export type SingleDateModel = Date;
-export type RangeDateModel = Array<Date | null>;
-export type DateModel = SingleDateModel | RangeDateModel | null;
-export interface CalendarEmits {
+export interface DatePickerEmits {
   (event: 'update:modelValue', value: Date | Array<Date | null> | null | undefined): void;
   (event: 'onPrev', value: Date): void;
   (event: 'onNext', value: Date): void;
+}
+export interface FastAction {
+  type: (typeof Consts.ACTIONS)[number]['type'];
+  label: (typeof Consts.ACTIONS)[number]['label'];
+  fnc: (date: Date) => Date[];
 }
 export interface DayItem {
   date: Date;
