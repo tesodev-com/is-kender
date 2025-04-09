@@ -30,17 +30,36 @@
           @on-next="onNext"
         />
       </div>
-      <div class="datepicker-footer">Footer</div>
+      <div class="datepicker-footer">
+        <div class="datepicker-actions">
+          <Button
+            color="secondary"
+            variant="outline"
+            :fluid="!multipleMonth"
+            @click="onClear"
+          >
+            Temizle
+          </Button>
+          <Button
+            color="primary"
+            variant="solid"
+            :fluid="!multipleMonth"
+          >
+            Uygula
+          </Button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+// imports
+import Button from 'library-components/Button';
 import { computed, ref } from 'vue';
 import { Calendar, QuickSelection, type DateModel } from './SubComponents';
 import type { DatePickerProps } from './types';
 import Utils from './utils';
-// imports
 
 // interfaces & types
 
@@ -75,6 +94,9 @@ function onPrev() {
 }
 function onNext() {
   visibleDate.value = Utils.addMonths(visibleDate.value, 1);
+}
+function onClear() {
+  modelValue.value = null;
 }
 </script>
 

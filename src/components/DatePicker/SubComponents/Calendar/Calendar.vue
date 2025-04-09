@@ -140,7 +140,7 @@ function onNext() {
 function onClick(selectedDay: Day) {
   let newModelValue;
   if (props.selectionMode === 'single') {
-    newModelValue = selectedDay.date;
+    newModelValue = Utils.getString(selectedDay.date);
   } else if (props.selectionMode === 'range') {
     const [sDate, eDate] = Utils.normalizeModelValue(modelValue.value);
     if (!sDate || (sDate && eDate)) {

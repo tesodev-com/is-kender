@@ -29,6 +29,12 @@
     .datepicker-footer {
       padding: 0.75rem 1rem;
       border-top: 1px solid $gray-200;
+
+      .datepicker-actions {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+      }
     }
   }
 }
