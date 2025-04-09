@@ -20,6 +20,9 @@ const meta: Meta<typeof DatePicker> = {
     actionBar: {
       control: 'boolean',
     },
+    inline: {
+      control: 'boolean',
+    },
   },
 };
 

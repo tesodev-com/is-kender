@@ -1,6 +1,7 @@
 <template>
   <div class="datepicker-wrapper">
     <Input
+      v-if="!inline"
       ref="datepickerInputRef"
       v-model="inputModelValue"
       readOnly
@@ -9,7 +10,7 @@
     />
     <transition name="fade">
       <div
-        v-if="isShowDatePicker"
+        v-if="isShowDatePicker || inline"
         ref="datepickerRef"
         class="datepicker-container"
       >
@@ -157,6 +158,7 @@ function onToggle() {
   isShowDatePicker.value = !isShowDatePicker.value;
 }
 function onClickOutside(event: MouseEvent) {
+  if (props.inline) return;
   const target = event.target as HTMLElement;
   const isDatePicker = datepickerRef.value?.contains(target);
   const isInput = (datepickerInputRef.value?.$el as HTMLDivElement).contains(target);

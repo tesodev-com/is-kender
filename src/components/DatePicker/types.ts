@@ -5,4 +5,5 @@ export interface DatePickerProps {
   selectionMode?: 'single' | 'multiple' | 'range';
   multipleMonth?: boolean;
   actionBar?: boolean;
+  inline?: boolean;
 }
