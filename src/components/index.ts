@@ -5,6 +5,7 @@ export { default as Breadcrumb } from 'library-components/Breadcrumb';
 export { default as Button } from 'library-components/Button';
 export { default as Checkbox } from 'library-components/Checkbox';
 export { default as Col } from 'library-components/Col';
+export { default as ColorPicker } from 'library-components/ColorPicker';
 export { default as Container } from 'library-components/Container';
 export { default as DatePicker } from 'library-components/DatePicker';
 export { default as Divider } from 'library-components/Divider';

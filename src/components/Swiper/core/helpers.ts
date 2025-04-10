@@ -13,4 +13,7 @@ export default {
   generateUUID() {
     return Math.random().toString(36).substring(2, 9);
   },
+  getSlideIndex(slide: HTMLElement | null) {
+    return parseInt(slide?.getAttribute('data-index') || '0') || 0;
+  },
 };

@@ -10,6 +10,7 @@ export { default as checkIcon } from '@material-design-icons/svg/round/check.svg
 export { default as chevronLeftIcon } from '@material-design-icons/svg/round/chevron_left.svg?raw';
 export { default as chevronRightIcon } from '@material-design-icons/svg/round/chevron_right.svg?raw';
 export { default as closeIcon } from '@material-design-icons/svg/round/close.svg?raw';
+export { default as colorizeIcon } from '@material-design-icons/svg/round/colorize.svg?raw';
 export { default as deleteIcon } from '@material-design-icons/svg/round/delete.svg?raw';
 export { default as editIcon } from '@material-design-icons/svg/round/edit.svg?raw';
 export { default as expandLessIcon } from '@material-design-icons/svg/round/expand_less.svg?raw';
@@ -24,3 +25,4 @@ export { default as removeIcon } from '@material-design-icons/svg/round/remove.s
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
+

@@ -161,6 +161,10 @@
     "./datepicker": {
       "types": "./dist/components/DatePicker/index.d.ts",
       "import": "./dist/components/DatePicker/index.js"
+    },
+    "./colorpicker": {
+      "types": "./dist/components/ColorPicker/index.d.ts",
+      "import": "./dist/components/ColorPicker/index.js"
     }
   },
   "scripts": {

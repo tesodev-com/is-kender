@@ -1,26 +1,28 @@
 import type { SwipeState } from '@/directives/vSwipe';
 import { computed, ref } from 'vue';
 import { Helpers } from '../core';
-import type { EffectOptions } from './types';
+import type { EffectOptions, SlideToOptions } from './types';
 
 interface EffectState {
   translateX: number;
+  fixX: number;
   lastTranslateX: number;
   totalSlidesWidth: number;
 }
 
 function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext }: EffectOptions) {
   const effectState = ref<EffectState>({
-    translateX: -slideElements.value[state.value.activeIndex].offsetLeft,
+    translateX: 0,
+    fixX: 0,
     lastTranslateX: 0,
     totalSlidesWidth: 0,
   });
   const currentTranslate = computed(() => {
-    return effectState.value.translateX + getLimitedDeltaX();
+    return effectState.value.translateX + getLimitedDeltaX() + effectState.value.fixX;
   });
   const nearestSlide = computed(() => {
-    if (!slideElements.value.length) return 0;
-    const { index } = slideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
+    if (!slideElements.value.length) return null;
+    const { slide } = slideElements.value.reduce<{ distance: number; slide: HTMLElement | null; index: number }>(
       (acc, el, index) => {
         const distance = Math.abs(el.offsetLeft - -currentTranslate.value);
         if (distance < acc.distance) {
@@ -30,17 +32,19 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
       },
       { distance: Infinity, slide: null, index: 0 }
     );
-    return index;
+    return slide;
   });
   function init() {
     if (!slideElements.value.length) return;
 
     const totalSlidesWidth = slideElements.value.reduce((acc, el) => acc + el.offsetWidth + (props.spaceBetween || 0), 0);
     effectState.value.totalSlidesWidth = totalSlidesWidth;
+    effectState.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || 0);
 
     if (!props.loop) {
-      effectState.value.lastTranslateX = totalSlidesWidth - state.value.containerWidth - (props.spaceBetween || 0);
       state.value.lastSlideIndex = slideElements.value.findIndex(el => el.offsetLeft >= effectState.value.lastTranslateX);
+    } else {
+      state.value.lastSlideIndex = slideElements.value.length - 1;
     }
 
     update();
@@ -60,22 +64,29 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
       if (event.direction === 'right') slidePrev();
       if (event.direction === 'left') slideNext();
     } else {
-      slideTo(nearestSlide.value);
+      slideTo({ slide: nearestSlide.value });
     }
   }
-  function slideTo(index: number, duration: number = props.animationDuration || 500) {
-    const safeIndex = Math.max(0, Math.min(index, state.value.lastSlideIndex));
-    const slideElement = slideElements.value[safeIndex];
-    if (!slideElement) return;
+  function slideTo({ slide, index, duration = props.animationDuration || 500 }: SlideToOptions) {
+    let slideElement = null;
+    if (slide) {
+      slideElement = slide;
+    } else if (typeof index === 'number' && !isNaN(index)) {
+      slideElement = slideElements.value[Helpers.getModulo(index, slideElements.value.length)];
+    } else {
+      slideElement = slideElements.value[Helpers.getModulo(state.value.activeIndex, slideElements.value.length)];
+    }
+    const slideIndex = Helpers.getSlideIndex(slideElement);
     Helpers.delayedExec(() => {
       state.value.deltaX = 0;
-      effectState.value.translateX = -Math.min(effectState.value.lastTranslateX, slideElement.offsetLeft);
+      effectState.value.translateX = -Math.min(effectState.value.lastTranslateX, slideElement?.offsetLeft);
       state.value.duration = duration;
       update();
     }, duration).then(() => {
       state.value.duration = 0;
-      if (safeIndex !== state.value.activeIndex) state.value.activeIndex = safeIndex;
+      if (slideIndex !== state.value.activeIndex) state.value.activeIndex = slideIndex;
       checkBoundaries();
+      update();
     });
   }
   function update() {
@@ -83,7 +94,7 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
       transform: `translateX(${currentTranslate.value}px)`,
       transitionDuration: `${state.value.duration}ms`,
     });
-    updateSlideClass(nearestSlide.value);
+    updateSlideClass(Helpers.getSlideIndex(nearestSlide.value));
   }
   function getLimitedDeltaX() {
     let limitedDeltaX = state.value.deltaX;
@@ -93,23 +104,15 @@ function useSlideEffect({ props, state, slideElements, setWrapperStyle, updateSl
     return limitedDeltaX;
   }
   function checkBoundaries() {
-    const offset = 5; // Prevents the slide from being stuck;
-    let isOverLeft = -currentTranslate.value <= 0;
-    let isOverRight = -currentTranslate.value >= effectState.value.lastTranslateX - offset;
-
-    if (props.loop) {
-      isOverLeft = false;
-      isOverRight = false;
-    }
-
-    state.value.isBeginning = isOverLeft;
-    state.value.isEnd = isOverRight;
+    state.value.isBeginning = -currentTranslate.value <= 0;
+    state.value.isEnd = -currentTranslate.value >= effectState.value.lastTranslateX;
   }
 
   return {
     init,
     onSwipe,
     slideTo,
+    effectState,
   };
 }
 
