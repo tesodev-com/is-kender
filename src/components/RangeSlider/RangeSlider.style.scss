@@ -31,7 +31,6 @@ $colors: (
   ),
 );
 
-
 .range-slider-wrapper.thumb-circle .range-input,
 .range-slider-wrapper.thumb-square .range-input {
   &::-webkit-slider-thumb {
@@ -89,6 +88,12 @@ $colors: (
       font-weight: 500;
       color: $gray-700;
     }
+
+    .range-unit {
+      font-size: 12px;
+      color: $gray-500;
+      font-weight: 500;
+    }
   }
 
   .range-controls {
@@ -113,12 +118,17 @@ $colors: (
         background: $gray-200;
         border-radius: 3px;
         pointer-events: none;
+        overflow: hidden;
 
         .range-progress {
           position: absolute;
           height: 100%;
           border-radius: 3px;
-          transition: all 0.2s ease;
+          will-change: left, width;
+          transition: none;
+          transform-origin: left center;
+          will-change: transform, width, left;
+          transition: width 0s linear, left 0s linear;
         }
       }
 
@@ -144,17 +154,15 @@ $colors: (
           border: 2px solid;
           cursor: pointer;
           box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-          transition: all 0.2s ease;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
           position: relative;
           z-index: 2;
+          will-change: transform;
 
-          &:hover {
+          &:hover,
+          &:active {
             transform: scale(1.1);
             box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
-          }
-
-          &:active {
-            transform: scale(0.95);
           }
         }
 
@@ -166,17 +174,29 @@ $colors: (
           border: 2px solid;
           cursor: pointer;
           box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-          transition: all 0.2s ease;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
           position: relative;
           z-index: 2;
+          will-change: transform;
 
-          &:hover {
+          &:hover,
+          &:active {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+        }
+
+        &:focus {
+          outline: none;
+
+          &::-webkit-slider-thumb {
             transform: scale(1.1);
             box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
           }
 
-          &:active {
-            transform: scale(0.95);
+          &::-moz-range-thumb {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
           }
         }
 
@@ -199,9 +219,12 @@ $colors: (
         font-size: 12px;
         font-weight: 500;
         white-space: nowrap;
-        transition: all 0.2s ease;
         pointer-events: none;
         z-index: 1;
+        opacity: 0;
+        visibility: hidden;
+        will-change: transform, opacity, left;
+        transition: opacity 0.15s ease, visibility 0.15s ease, left 0s linear;
 
         &::before {
           content: "";

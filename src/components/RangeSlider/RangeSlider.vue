@@ -4,10 +4,18 @@
     :class="[`range-slider-${color}`, `thumb-${thumbShape}`, { 'is-range': isRange }]"
     :style="cssVars"
   >
-    <div class="range-header">
+    <div
+      v-if="label"
+      class="range-header"
+    >
       <span class="range-label">
         {{ label }}
-        <span v-if="unit">{{ `(${unit})` }}</span>
+      </span>
+      <span
+        v-if="unit"
+        class="range-unit"
+      >
+        {{ `(${unit})` }}
       </span>
     </div>
 
@@ -42,6 +50,10 @@
             @input="handleRangeInput(0, $event)"
             @mouseenter="isThumbActive = true"
             @mouseleave="isThumbActive = false"
+            @touchstart="isThumbActive = true"
+            @touchend="isThumbActive = false"
+            @focus="isThumbActive = true"
+            @blur="isThumbActive = false"
           />
           <div
             class="current-value current-value-min"
@@ -66,6 +78,10 @@
             @input="handleRangeInput(1, $event)"
             @mouseenter="isThumbActive = true"
             @mouseleave="isThumbActive = false"
+            @touchstart="isThumbActive = true"
+            @touchend="isThumbActive = false"
+            @focus="isThumbActive = true"
+            @blur="isThumbActive = false"
           />
           <div
             class="current-value current-value-max"
@@ -92,6 +108,10 @@
             @input="handleInput"
             @mouseenter="isThumbActive = true"
             @mouseleave="isThumbActive = false"
+            @touchstart="isThumbActive = true"
+            @touchend="isThumbActive = false"
+            @focus="isThumbActive = true"
+            @blur="isThumbActive = false"
           />
           <div
             class="current-value"
@@ -117,8 +137,9 @@
 
 <script setup lang="ts">
 // imports
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import type { RangeSliderEmits, RangeSliderProps } from './types';
+import { clampValue, formatWithUnit, parseRangeValues, parseValue, roundToStep, scaleValue } from './utils';
 
 // interfaces & types
 
@@ -149,46 +170,9 @@ const rangeValues = ref<[number, number]>([props.min, props.max]);
 const isThumbActive = ref(false);
 
 // computed
-const parseValue = (value: string | number | undefined | null): number => {
-  if (value === undefined || value === null) return props.min;
-  if (typeof value === 'number') return value;
-  if (typeof value === 'string') {
-    return parseFloat(value.replace(props.unit, '')) || props.min;
-  }
-  return props.min;
-};
-
-const parseRangeValues = (value: unknown): [number, number] => {
-  if (Array.isArray(value) && value.length === 2) {
-    const [min, max] = value.map(v => parseValue(v));
-    return [min, max];
-  }
-  if (typeof value === 'number' || typeof value === 'string') {
-    const val = parseValue(value);
-    const midPoint = (props.max - props.min) / 2;
-    return [Math.max(val - midPoint / 2, props.min), Math.min(val + midPoint / 2, props.max)];
-  }
-  return [props.min, props.max];
-};
-
-const initializeRangeValues = () => {
-  if (!modelValue.value) {
-    rangeValues.value = [props.min, props.max];
-    return;
-  }
-
-  if (props.isRange) {
-    const [min, max] = parseRangeValues(modelValue.value);
-    rangeValues.value = [Math.min(Math.max(min, props.min), props.max), Math.min(Math.max(max, props.min), props.max)];
-  } else {
-    const val = parseValue(modelValue.value as number | string);
-    rangeValues.value = [props.min, val];
-  }
-};
-
 const currentValue = computed(() => {
-  const parsed = parseValue((modelValue.value as number | string) ?? props.min);
-  return Math.min(Math.max(parsed, props.min), props.max);
+  const parsed = parseValue(modelValue.value as number | string, props.unit, props.min);
+  return clampValue(parsed, props.min, props.max);
 });
 
 const progress = computed(() => {
@@ -209,11 +193,85 @@ const cssVars = computed(() => ({
   '--range-max-progress': maxProgress.value,
 }));
 
+// lifecycles
+onMounted(() => {
+  initializeRangeValues();
+});
+
+// methods
+const initializeRangeValues = () => {
+  if (!modelValue.value) {
+    rangeValues.value = [props.min, props.max];
+    return;
+  }
+
+  if (props.isRange) {
+    const [min, max] = parseRangeValues(modelValue.value, props.min, props.max, props.unit);
+    rangeValues.value = [clampValue(min, props.min, props.max), clampValue(max, props.min, props.max)];
+  }
+};
+
 // watchers
 watch(
+  () => props.step,
+  newStep => {
+    if (props.isRange && modelValue.value) {
+      const [currentMin, currentMax] = Array.isArray(modelValue.value) ? modelValue.value.map(v => parseValue(v, props.unit, props.min)) : [props.min, props.max];
+
+      rangeValues.value = [roundToStep(clampValue(currentMin, props.min, props.max), newStep), roundToStep(clampValue(currentMax, props.min, props.max), newStep)];
+
+      const finalValue = props.alwaysReturnWithUnit
+        ? ([formatWithUnit(rangeValues.value[0], props.unit), formatWithUnit(rangeValues.value[1], props.unit)] as [string, string])
+        : ([rangeValues.value[0], rangeValues.value[1]] as [number, number]);
+
+      modelValue.value = finalValue;
+      emit('update:modelValue', finalValue);
+    } else if (!props.isRange) {
+      const currentValue = parseValue(modelValue.value as number | string, props.unit, props.min);
+      const roundedValue = roundToStep(clampValue(currentValue, props.min, props.max), newStep);
+
+      const finalValue = props.alwaysReturnWithUnit ? formatWithUnit(roundedValue, props.unit) : roundedValue;
+
+      modelValue.value = finalValue;
+      emit('update:modelValue', finalValue);
+    }
+  }
+);
+
+watch([() => props.min, () => props.max], ([newMin, newMax], [oldMin, oldMax]) => {
+  if (props.isRange && modelValue.value) {
+    const [currentMin, currentMax] = Array.isArray(modelValue.value) ? modelValue.value.map(v => parseValue(v, props.unit, props.min)) : [props.min, props.max];
+
+    const scaledMin = scaleValue(currentMin, oldMin, oldMax, newMin, newMax, props.step);
+    const scaledMax = scaleValue(currentMax, oldMin, oldMax, newMin, newMax, props.step);
+
+    const clampedMin = clampValue(scaledMin, newMin, newMax);
+    const clampedMax = clampValue(scaledMax, newMin, newMax);
+
+    rangeValues.value = [roundToStep(Math.min(clampedMin, clampedMax), props.step), roundToStep(Math.min(clampedMax, newMax), props.step)];
+
+    const finalValue = props.alwaysReturnWithUnit
+      ? ([formatWithUnit(rangeValues.value[0], props.unit), formatWithUnit(rangeValues.value[1], props.unit)] as [string, string])
+      : ([rangeValues.value[0], rangeValues.value[1]] as [number, number]);
+
+    modelValue.value = finalValue;
+    emit('update:modelValue', finalValue);
+  } else if (!props.isRange) {
+    const currentValue = parseValue(modelValue.value as number | string, props.unit, props.min);
+    const scaledValue = scaleValue(currentValue, oldMin, oldMax, newMin, newMax, props.step);
+    const clampedValue = clampValue(scaledValue, newMin, newMax);
+
+    const finalValue = props.alwaysReturnWithUnit ? formatWithUnit(clampedValue, props.unit) : clampedValue;
+
+    modelValue.value = finalValue;
+    emit('update:modelValue', finalValue);
+  }
+});
+
+watch(
   () => modelValue.value,
-  () => {
-    if (props.isRange) {
+  newValue => {
+    if (props.isRange && newValue) {
       initializeRangeValues();
     }
   },
@@ -225,32 +283,33 @@ watch(
   newIsRange => {
     try {
       if (newIsRange) {
-        const currentVal = parseValue(modelValue.value as number | string);
-        const [newMin, newMax] = parseRangeValues(currentVal);
+        const currentVal = parseValue(modelValue.value as number | string, props.unit, props.min);
+        const [newMin, newMax] = parseRangeValues(currentVal, props.min, props.max, props.unit);
 
-        rangeValues.value = [newMin, newMax];
-        const finalValue = props.alwaysReturnWithUnit ? ([`${newMin}${props.unit}`, `${newMax}${props.unit}`] as [string, string]) : ([newMin, newMax] as [number, number]);
+        rangeValues.value = [Math.min(Math.max(newMin, props.min), props.max), Math.min(Math.max(newMax, props.min), props.max)];
+
+        const finalValue = props.alwaysReturnWithUnit
+          ? ([formatWithUnit(rangeValues.value[0], props.unit), formatWithUnit(rangeValues.value[1], props.unit)] as [string, string])
+          : ([rangeValues.value[0], rangeValues.value[1]] as [number, number]);
 
         modelValue.value = finalValue;
       } else {
-        const [min, max] = parseRangeValues(modelValue.value);
-        const newValue = (min + max) / 2;
+        const [min, max] = parseRangeValues(modelValue.value, props.min, props.max, props.unit);
+        const newValue = Math.min(Math.max((min + max) / 2, props.min), props.max);
 
-        const finalValue = props.alwaysReturnWithUnit ? `${newValue}${props.unit}` : newValue;
+        const finalValue = props.alwaysReturnWithUnit ? formatWithUnit(newValue, props.unit) : newValue;
 
         modelValue.value = finalValue;
       }
     } catch {
       if (newIsRange) {
-        modelValue.value = props.alwaysReturnWithUnit ? [`${props.min}${props.unit}`, `${props.max}${props.unit}`] : [props.min, props.max];
+        modelValue.value = props.alwaysReturnWithUnit ? [formatWithUnit(props.min, props.unit), formatWithUnit(props.max, props.unit)] : [props.min, props.max];
       } else {
-        modelValue.value = props.alwaysReturnWithUnit ? `${props.min}${props.unit}` : props.min;
+        modelValue.value = props.alwaysReturnWithUnit ? formatWithUnit(props.min, props.unit) : props.min;
       }
     }
   }
 );
-
-// lifecycles
 
 // methods
 const handleInput = (event: Event) => {
@@ -259,8 +318,8 @@ const handleInput = (event: Event) => {
 
   if (isNaN(value)) return;
 
-  const validatedValue = Math.min(Math.max(value, props.min), props.max);
-  const finalValue = props.alwaysReturnWithUnit ? `${validatedValue}${props.unit}` : validatedValue;
+  const validatedValue = roundToStep(clampValue(value, props.min, props.max), props.step);
+  const finalValue = props.alwaysReturnWithUnit ? formatWithUnit(validatedValue, props.unit) : validatedValue;
 
   modelValue.value = finalValue;
   emit('update:modelValue', finalValue);
@@ -272,18 +331,18 @@ const handleRangeInput = (index: number, event: Event) => {
 
   if (isNaN(value)) return;
 
-  const validatedValue = Math.min(Math.max(value, props.min), props.max);
+  const validatedValue = roundToStep(clampValue(value, props.min, props.max), props.step);
 
   if (index === 0 && validatedValue > rangeValues.value[1]) {
-    rangeValues.value[0] = rangeValues.value[1];
+    rangeValues.value[0] = roundToStep(rangeValues.value[1], props.step);
   } else if (index === 1 && validatedValue < rangeValues.value[0]) {
-    rangeValues.value[1] = rangeValues.value[0];
+    rangeValues.value[1] = roundToStep(rangeValues.value[0], props.step);
   } else {
     rangeValues.value[index] = validatedValue;
   }
 
   const finalValue = props.alwaysReturnWithUnit
-    ? ([`${rangeValues.value[0]}${props.unit}`, `${rangeValues.value[1]}${props.unit}`] as [string, string])
+    ? ([formatWithUnit(rangeValues.value[0], props.unit), formatWithUnit(rangeValues.value[1], props.unit)] as [string, string])
     : ([rangeValues.value[0], rangeValues.value[1]] as [number, number]);
 
   modelValue.value = finalValue;
