@@ -55,6 +55,7 @@
                 color="primary"
                 variant="solid"
                 :fluid="!multipleMonth"
+                @click="onApply"
               >
                 Uygula
               </Button>
@@ -72,7 +73,7 @@ import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
 import { Calendar, QuickSelection, type DateModel } from './SubComponents';
-import type { DatePickerProps } from './types';
+import type { DatePickerEmits, DatePickerProps } from './types';
 import Utils from './utils';
 // interfaces & types
 
@@ -87,7 +88,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 });
 const modelValue = defineModel<DateModel>();
 // defineEmits
-
+const emit = defineEmits<DatePickerEmits>();
 // states (refs and reactives)
 const isShowDatePicker = ref(false);
 const visibleDate = ref<Date>(new Date());
@@ -174,6 +175,10 @@ function onQuickSelect(dates: Array<Date | string> | Date | string) {
 }
 function onToggle() {
   isShowDatePicker.value = !isShowDatePicker.value;
+}
+function onApply() {
+  emit('onApply', modelValue.value);
+  onToggle();
 }
 function onClickOutside(event: MouseEvent) {
   if (props.inline) return;

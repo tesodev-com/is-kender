@@ -1,4 +1,4 @@
-import type { QuickSelectionItemKey } from './SubComponents';
+import type { DateModel, QuickSelectionItemKey } from './SubComponents';
 
 export interface DatePickerProps {
   selectionItems?: Array<QuickSelectionItemKey>;
@@ -9,4 +9,8 @@ export interface DatePickerProps {
   min?: Date | string;
   max?: Date | string;
   disabledDates?: Array<Date | string>;
+}
+
+export interface DatePickerEmits {
+  (event: 'onApply', date: DateModel | undefined): void;
 }
