@@ -32,16 +32,20 @@
               :showNextIcon="!multipleMonth"
               :calendarDate="calendarVisibleDates.start"
               :selectionMode="selectionMode"
+              :min="min"
+              :max="max"
               @on-prev="onPrev"
               @on-next="onNext"
             />
             <Calendar
               v-if="multipleMonth"
               v-model="modelValue"
-              :showPrevIcon="!multipleMonth"
               showNextIcon
+              :showPrevIcon="!multipleMonth"
               :calendarDate="calendarVisibleDates.end"
               :selectionMode="selectionMode"
+              :min="min"
+              :max="max"
               @on-prev="onPrev"
               @on-next="onNext"
             />

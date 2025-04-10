@@ -82,6 +82,14 @@
         color: $gray-500;
       }
 
+      &.disabled {
+        cursor: not-allowed;
+
+        .calendar-cell-text {
+          color: $gray-500;
+        }
+      }
+
       &.today {
         .calendar-cell-text {
           background-color: $gray-100;

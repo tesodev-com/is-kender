@@ -16,6 +16,8 @@ export interface CalendarProps {
   selectionMode?: 'single' | 'multiple' | 'range';
   showPrevIcon?: boolean;
   showNextIcon?: boolean;
+  min?: Date | string;
+  max?: Date | string;
 }
 
 export interface CalendarEmits {

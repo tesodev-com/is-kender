@@ -6,4 +6,6 @@ export interface DatePickerProps {
   multipleMonth?: boolean;
   actionBar?: boolean;
   inline?: boolean;
+  min?: Date | string;
+  max?: Date | string;
 }

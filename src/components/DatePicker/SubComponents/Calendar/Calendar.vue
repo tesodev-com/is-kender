@@ -91,6 +91,7 @@ const monthDays = computed(() => {
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
       outOfMonth: true,
+      isDisabled: checkIsDisabled(date),
     });
   }
 
@@ -104,6 +105,7 @@ const monthDays = computed(() => {
       isToday: Boolean(Utils.isSameDay(date, new Date())),
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
+      isDisabled: checkIsDisabled(date),
     });
   }
 
@@ -120,6 +122,7 @@ const monthDays = computed(() => {
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
       outOfMonth: true,
+      isDisabled: checkIsDisabled(date),
     });
   }
 
@@ -139,6 +142,7 @@ function onNext() {
 }
 function onClick(selectedDay: Day) {
   let newModelValue;
+  if (selectedDay.isDisabled) return;
   if (props.selectionMode === 'single') {
     newModelValue = Utils.getString(selectedDay.date);
   } else if (props.selectionMode === 'range') {
@@ -174,6 +178,7 @@ function getDayCellClass(day: Day) {
   const classes = {
     today: day.isToday,
     active: checkIsActive(day),
+    disabled: day.isDisabled,
     'begin-of-week': day.beginOfWeek,
     'end-of-week': day.endOfWeek,
     'out-of-month': day.outOfMonth,
@@ -195,6 +200,9 @@ function checkIsActive(day: Day) {
   } else if (typeof modelValue.value === 'string' || modelValue.value instanceof Date) {
     return Utils.isSameDay(day.date, modelValue.value);
   }
+}
+function checkIsDisabled(date: Date) {
+  return Boolean((props.min && Utils.isBefore(date, props.min)) || (props.max && Utils.isAfter(date, props.max)));
 }
 </script>
 
