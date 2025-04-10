@@ -215,29 +215,4 @@ describe('Calendar', () => {
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
     expect(weekDays[0].text()).toBe('Pzt'); // Since DAYS array is fixed to start with Monday
   });
-
-  it('debug: check calendar cells', () => {
-    const wrapper = mount(Calendar, {
-      props: defaultProps,
-    });
-
-    const allCells = wrapper.findAll('.calendar-cell');
-    console.log('Total cells:', allCells.length);
-
-    const outOfMonthCells = allCells.filter(cell => cell.classes('out-of-month'));
-    console.log('Out of month cells:', outOfMonthCells.length);
-
-    const monthCells = allCells.filter(cell => !cell.classes('out-of-month'));
-    console.log('Month cells:', monthCells.length);
-
-    // Log the text of each cell
-    allCells.forEach((cell, index) => {
-      const cellText = cell.find('.calendar-cell-text');
-      if (cellText.exists()) {
-        console.log(`Cell ${index}:`, cellText.text(), 'Out of month:', cell.classes('out-of-month'));
-      } else {
-        console.log(`Cell ${index}: No text found, Out of month:`, cell.classes('out-of-month'));
-      }
-    });
-  });
 });
