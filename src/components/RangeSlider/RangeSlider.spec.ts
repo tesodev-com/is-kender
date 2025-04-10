@@ -6,9 +6,12 @@ import type { RangeSliderProps } from './types';
 describe('RangeSlider.vue', () => {
   let wrapper: VueWrapper<any>;
 
-  function createWrapper(props: Partial<Omit<RangeSliderProps, 'modelValue'>> = {}) {
+  function createWrapper(props: Partial<RangeSliderProps> = {}) {
     return shallowMount(RangeSlider, {
-      props,
+      props: {
+        modelValue: props.isRange ? [0, 100] : 0,
+        ...props,
+      },
     });
   }
 
@@ -121,5 +124,109 @@ describe('RangeSlider.vue', () => {
 
     const lastEmittedValue = emittedEvents![emittedEvents!.length - 1][0];
     expect(lastEmittedValue).toBe(100);
+  });
+
+  describe('Range Mode', () => {
+    it('should render two inputs in range mode', () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      expect(wrapper.findAll('.range-input')).toHaveLength(2);
+      expect(wrapper.find('.range-input-min').exists()).toBe(true);
+      expect(wrapper.find('.range-input-max').exists()).toBe(true);
+    });
+
+    it('should add is-range class when in range mode', () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      expect(wrapper.classes()).toContain('is-range');
+    });
+
+    it('should update modelValue correctly when min input changes', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      const minInput = wrapper.find('.range-input-min');
+      await minInput.setValue(30);
+      await minInput.trigger('input');
+
+      expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([30, 80]);
+    });
+
+    it('should update modelValue correctly when max input changes', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      const maxInput = wrapper.find('.range-input-max');
+      await maxInput.setValue(70);
+      await maxInput.trigger('input');
+
+      expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([20, 70]);
+    });
+
+    it('should prevent min value from exceeding max value', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      const minInput = wrapper.find('.range-input-min');
+      await minInput.setValue(90);
+      await minInput.trigger('input');
+
+      expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([80, 80]);
+    });
+
+    it('should prevent max value from going below min value', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+      });
+
+      const maxInput = wrapper.find('.range-input-max');
+      await maxInput.setValue(10);
+      await maxInput.trigger('input');
+
+      expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([20, 20]);
+    });
+
+    it('should display both values with units in range mode', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [20, 80],
+        unit: 'px',
+      });
+
+      const currentValues = wrapper.findAll('.current-value');
+      expect(currentValues).toHaveLength(2);
+      expect(currentValues[0].text()).toBe('20px');
+      expect(currentValues[1].text()).toBe('80px');
+    });
+
+    it('should handle range mode with custom min/max values', async () => {
+      const wrapper = createWrapper({
+        isRange: true,
+        modelValue: [100, 500],
+        min: 0,
+        max: 1000,
+        step: 100,
+      });
+
+      expect(wrapper.find('.range-input-min').attributes('min')).toBe('0');
+      expect(wrapper.find('.range-input-min').attributes('max')).toBe('1000');
+      expect(wrapper.find('.range-input-min').attributes('step')).toBe('100');
+      expect(wrapper.find('.range-input-max').attributes('min')).toBe('0');
+      expect(wrapper.find('.range-input-max').attributes('max')).toBe('1000');
+      expect(wrapper.find('.range-input-max').attributes('step')).toBe('100');
+    });
   });
 });
