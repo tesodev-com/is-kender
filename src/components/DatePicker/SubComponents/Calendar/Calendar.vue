@@ -47,7 +47,7 @@ import Svg from 'library-components/Svg';
 import { computed } from 'vue';
 import Utils from '../../utils';
 import { DAYS } from './constants';
-import type { CalendarEmits, CalendarProps, DateModel, Day } from './types';
+import type { CalendarProps, DateModel, Day } from './types';
 
 // interfaces & types
 
@@ -62,7 +62,7 @@ const props = withDefaults(defineProps<CalendarProps>(), {
 });
 const modelValue = defineModel<DateModel>();
 // defineEmits
-const emit = defineEmits<CalendarEmits>();
+
 // states (refs and reactives)
 
 // computed
@@ -135,10 +135,10 @@ const monthText = computed(() => new Intl.DateTimeFormat('tr-TR', { month: 'long
 
 // methods
 function onPrev() {
-  emit('onPrev');
+  props.events.onPrev();
 }
 function onNext() {
-  emit('onNext');
+  props.events.onNext();
 }
 function onClick(selectedDay: Day) {
   let newModelValue;
@@ -202,7 +202,10 @@ function checkIsActive(day: Day) {
   }
 }
 function checkIsDisabled(date: Date) {
-  return Boolean((props.min && Utils.isBefore(date, props.min)) || (props.max && Utils.isAfter(date, props.max)));
+  const checkMin = props.min && Utils.isBefore(date, props.min);
+  const checkMax = props.max && Utils.isAfter(date, props.max);
+  const checkDisabled = props.disabledDates && props.disabledDates.some((disabledDate: Date | string) => Utils.isSameDay(date, disabledDate));
+  return Boolean(checkMin || checkMax || checkDisabled);
 }
 </script>
 

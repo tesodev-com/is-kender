@@ -27,27 +27,11 @@
         <div class="datepicker-content">
           <div class="datepicker-body">
             <Calendar
+              v-for="calendar in calendarList"
+              :key="calendar.id"
               v-model="modelValue"
-              showPrevIcon
-              :showNextIcon="!multipleMonth"
-              :calendarDate="calendarVisibleDates.start"
-              :selectionMode="selectionMode"
-              :min="min"
-              :max="max"
-              @on-prev="onPrev"
-              @on-next="onNext"
-            />
-            <Calendar
-              v-if="multipleMonth"
-              v-model="modelValue"
-              showNextIcon
-              :showPrevIcon="!multipleMonth"
-              :calendarDate="calendarVisibleDates.end"
-              :selectionMode="selectionMode"
-              :min="min"
-              :max="max"
-              @on-prev="onPrev"
-              @on-next="onNext"
+              v-bind="calendar"
+              v-on="calendar.events"
             />
           </div>
           <div
@@ -134,6 +118,36 @@ const inputModelValue = computed({
   set: value => {
     modelValue.value = value;
   },
+});
+const calendarList = computed(() => {
+  const commonProps = {
+    selectionMode: props.selectionMode,
+    min: props.min,
+    max: props.max,
+    disabledDates: props.disabledDates,
+    events: {
+      onPrev: onPrev,
+      onNext: onNext,
+    },
+  };
+  const calendars = [
+    {
+      id: 'start',
+      showPrevIcon: true,
+      showNextIcon: !props.multipleMonth,
+      calendarDate: calendarVisibleDates.value.start,
+      ...commonProps,
+    },
+    {
+      id: 'end',
+      showPrevIcon: !props.multipleMonth,
+      showNextIcon: true,
+      calendarDate: calendarVisibleDates.value.end,
+      ...commonProps,
+    },
+  ];
+  if (!props.multipleMonth) calendars.pop();
+  return calendars;
 });
 // watchers
 

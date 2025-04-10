@@ -8,4 +8,5 @@ export interface DatePickerProps {
   inline?: boolean;
   min?: Date | string;
   max?: Date | string;
+  disabledDates?: Array<Date | string>;
 }
