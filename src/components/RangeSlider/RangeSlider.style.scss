@@ -102,6 +102,7 @@ $colors: (
     gap: 8px;
 
     .slider-container {
+      --thumb-size: 18px;
       position: relative;
       height: 20px;
       display: flex;
@@ -147,9 +148,9 @@ $colors: (
 
         &::-webkit-slider-thumb {
           appearance: none;
-          width: 18px;
-          height: 18px;
-          margin-top: -3px;
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+          margin-top: calc(var(--thumb-size) / -3px);
           background: $white;
           border: 2px solid;
           cursor: pointer;
@@ -167,9 +168,9 @@ $colors: (
         }
 
         &::-moz-range-thumb {
-          width: 18px;
-          height: 18px;
-          margin-top: -3px;
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+          margin-top: calc(var(--thumb-size) / -3px);
           background: $white;
           border: 2px solid;
           cursor: pointer;
@@ -209,7 +210,9 @@ $colors: (
         }
       }
 
-      .current-value {
+      .current-value,
+      .current-value-min,
+      .current-value-max {
         position: absolute;
         top: -32px;
         transform: translateX(-50%);
@@ -223,8 +226,7 @@ $colors: (
         z-index: 1;
         opacity: 0;
         visibility: hidden;
-        will-change: transform, opacity, left;
-        transition: opacity 0.15s ease, visibility 0.15s ease, left 0s linear;
+        transition: opacity 0.15s ease, visibility 0.15s ease;
 
         &::before {
           content: "";
@@ -237,6 +239,7 @@ $colors: (
           border-top: 4px solid;
         }
       }
+
     }
 
     .range-limits {

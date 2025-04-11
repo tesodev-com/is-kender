@@ -20,7 +20,10 @@
     </div>
 
     <div class="range-controls">
-      <div class="slider-container">
+      <div
+        ref="sliderContainer"
+        class="slider-container"
+      >
         <div class="range-track">
           <div
             v-if="isRange"
@@ -59,10 +62,9 @@
             class="current-value current-value-min"
             :class="[`current-value-${color}`]"
             :style="{
-              left: `calc(${minProgress * 100}%)`,
+              left: tooltipPositions.min,
               opacity: isThumbActive ? 1 : 0,
               visibility: isThumbActive ? 'visible' : 'hidden',
-              zIndex: 4,
             }"
           >
             {{ rangeValues[0] }}{{ unit }}
@@ -87,10 +89,9 @@
             class="current-value current-value-max"
             :class="[`current-value-${color}`]"
             :style="{
-              left: `calc(${maxProgress * 100}%)`,
+              left: tooltipPositions.max,
               opacity: isThumbActive ? 1 : 0,
               visibility: isThumbActive ? 'visible' : 'hidden',
-              zIndex: 4,
             }"
           >
             {{ rangeValues[1] }}{{ unit }}
@@ -117,7 +118,7 @@
             class="current-value"
             :class="[`current-value-${color}`]"
             :style="{
-              left: `calc(${progress * 100}%)`,
+              left: tooltipPositions.single,
               opacity: isThumbActive ? 1 : 0,
               visibility: isThumbActive ? 'visible' : 'hidden',
             }"
@@ -137,13 +138,14 @@
 
 <script setup lang="ts">
 // imports
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { RangeSliderEmits, RangeSliderProps } from './types';
 import { clampValue, formatWithUnit, parseRangeValues, parseValue, roundToStep, scaleValue } from './utils';
 
 // interfaces & types
 
 // constants
+const SLIDER_PADDING = 9;
 
 // composable
 
@@ -168,6 +170,8 @@ const emit = defineEmits<RangeSliderEmits>();
 // states (refs and reactives)
 const rangeValues = ref<[number, number]>([props.min, props.max]);
 const isThumbActive = ref(false);
+const sliderContainer = ref<HTMLElement | null>(null);
+const containerWidth = ref(0);
 
 // computed
 const currentValue = computed(() => {
@@ -193,9 +197,29 @@ const cssVars = computed(() => ({
   '--range-max-progress': maxProgress.value,
 }));
 
+const tooltipPositions = computed(() => {
+  const availableWidth = containerWidth.value || 100;
+
+  const minTooltipLeft = SLIDER_PADDING + minProgress.value * availableWidth;
+  const maxTooltipLeft = SLIDER_PADDING + maxProgress.value * availableWidth;
+  const singleTooltipLeft = SLIDER_PADDING + progress.value * availableWidth;
+
+  return {
+    min: `${minTooltipLeft}px`,
+    max: `${maxTooltipLeft}px`,
+    single: `${singleTooltipLeft}px`,
+  };
+});
+
 // lifecycles
 onMounted(() => {
   initializeRangeValues();
+  updateContainerWidth();
+  window.addEventListener('resize', updateContainerWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateContainerWidth);
 });
 
 // methods
@@ -208,6 +232,12 @@ const initializeRangeValues = () => {
   if (props.isRange) {
     const [min, max] = parseRangeValues(modelValue.value, props.min, props.max, props.unit);
     rangeValues.value = [clampValue(min, props.min, props.max), clampValue(max, props.min, props.max)];
+  }
+};
+
+const updateContainerWidth = () => {
+  if (sliderContainer.value) {
+    containerWidth.value = sliderContainer.value.offsetWidth - SLIDER_PADDING * 2;
   }
 };
 
