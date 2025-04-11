@@ -7,6 +7,7 @@
         size="sm"
         rounded="full"
         iconOnly
+        :disabled="disabled"
         @click="onUploadClick"
       >
         <Svg

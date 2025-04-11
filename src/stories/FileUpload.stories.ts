@@ -14,6 +14,19 @@ const meta: Meta<typeof FileUpload> = {
     accept: {
       description: 'The file types that the input should accept',
     },
+    maxSize: {
+      description: 'The maximum file size in bytes',
+    },
+    maxFiles: {
+      description: 'The maximum number of files that can be uploaded',
+    },
+    preview: {
+      description: 'If true, the input will show a preview of the uploaded files',
+    },
+    template: {
+      description: 'The template to use for the input. Can be "col" or "row"',
+      options: ['col', 'row'],
+    },
     uploader: {
       description: 'The function that will be called when the user uploads a file and gets the File[] as a parameter',
     },
