@@ -17,6 +17,7 @@ export { default as OtpInput } from 'library-components/OtpInput';
 export { default as Pagination } from 'library-components/Pagination';
 export { default as ProgressBar } from 'library-components/ProgressBar';
 export { default as RadioButton } from 'library-components/RadioButton';
+export { default as RangeSlider } from 'library-components/RangeSlider';
 export { default as Row } from 'library-components/Row';
 export { default as Select } from 'library-components/Select';
 export { default as Sidebar } from 'library-components/Sidebar';

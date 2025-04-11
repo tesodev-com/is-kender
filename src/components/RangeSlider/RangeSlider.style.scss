@@ -1,0 +1,296 @@
+@use "sass:map" as mixinMap;
+
+$colors: (
+  primary: (
+    color: $primary-600,
+    hover-bg: $primary-600,
+  ),
+  secondary: (
+    color: $gray-600,
+    hover-bg: $gray-600,
+  ),
+  success: (
+    color: $success-600,
+    hover-bg: $success-600,
+  ),
+  info: (
+    color: $blue-light-600,
+    hover-bg: $blue-light-600,
+  ),
+  warning: (
+    color: $warning-600,
+    hover-bg: $warning-600,
+  ),
+  danger: (
+    color: $error-600,
+    hover-bg: $error-600,
+  ),
+  dark: (
+    color: $gray-900,
+    hover-bg: $gray-900,
+  ),
+);
+
+.range-slider-wrapper.thumb-circle .range-input,
+.range-slider-wrapper.thumb-square .range-input {
+  &::-webkit-slider-thumb {
+    border-radius: 50% !important;
+  }
+
+  &::-moz-range-thumb {
+    border-radius: 50% !important;
+  }
+}
+
+.range-slider-wrapper.thumb-square .range-input {
+  &::-webkit-slider-thumb {
+    border-radius: 4px !important;
+  }
+
+  &::-moz-range-thumb {
+    border-radius: 4px !important;
+  }
+}
+
+.range-slider-wrapper.is-range {
+  .range-input {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+
+    &::-webkit-slider-thumb {
+      pointer-events: auto;
+    }
+
+    &::-moz-range-thumb {
+      pointer-events: auto;
+    }
+  }
+
+  .range-input-min {
+    z-index: 3;
+  }
+
+  .range-input-max {
+    z-index: 2;
+  }
+}
+
+.range-slider-wrapper {
+  width: 100%;
+  padding: 8px 0;
+
+  .range-header {
+    margin-bottom: 12px;
+
+    .range-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: $gray-700;
+    }
+
+    .range-unit {
+      font-size: 12px;
+      color: $gray-500;
+      font-weight: 500;
+    }
+  }
+
+  .range-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .slider-container {
+      --thumb-size: 18px;
+      position: relative;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 9px;
+
+      .range-track {
+        position: absolute;
+        left: 9px;
+        right: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 6px;
+        background: $gray-200;
+        border-radius: 3px;
+        pointer-events: none;
+        overflow: hidden;
+
+        .range-progress {
+          position: absolute;
+          height: 100%;
+          border-radius: 3px;
+          will-change: left, width;
+          transition: none;
+          transform-origin: left center;
+          will-change: transform, width, left;
+          transition: width 0s linear, left 0s linear;
+        }
+      }
+
+      .range-input {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        height: 20px;
+        appearance: none;
+        background: transparent;
+        outline: none;
+        margin: 0;
+        padding: 0;
+
+        &::-webkit-slider-thumb {
+          appearance: none;
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+          margin-top: calc(var(--thumb-size) / -3px);
+          background: $white;
+          border: 2px solid;
+          cursor: pointer;
+          box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          position: relative;
+          z-index: 2;
+          will-change: transform;
+
+          &:hover,
+          &:active {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+        }
+
+        &::-moz-range-thumb {
+          width: var(--thumb-size);
+          height: var(--thumb-size);
+          margin-top: calc(var(--thumb-size) / -3px);
+          background: $white;
+          border: 2px solid;
+          cursor: pointer;
+          box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          position: relative;
+          z-index: 2;
+          will-change: transform;
+
+          &:hover,
+          &:active {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+        }
+
+        &:focus {
+          outline: none;
+
+          &::-webkit-slider-thumb {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+
+          &::-moz-range-thumb {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+          }
+        }
+
+        &::-webkit-slider-runnable-track,
+        &::-moz-range-track {
+          appearance: none;
+          height: 6px;
+          background: transparent;
+          border: none;
+        }
+      }
+
+      .current-value,
+      .current-value-min,
+      .current-value-max {
+        position: absolute;
+        top: -32px;
+        transform: translateX(-50%);
+        color: $white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.15s ease, visibility 0.15s ease;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 4px solid transparent;
+          border-right: 4px solid transparent;
+          border-top: 4px solid;
+        }
+      }
+
+    }
+
+    .range-limits {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 9px;
+      margin-top: 4px;
+
+      .range-limit {
+        font-size: 12px;
+        color: $gray-500;
+      }
+    }
+  }
+}
+
+@each $color-name, $color-values in $colors {
+  $color: mixinMap.get($color-values, "color");
+  $hover-bg: mixinMap.get($color-values, "hover-bg");
+
+  .range-slider-#{$color-name} {
+    .range-track {
+      .range-progress {
+        background-color: $color !important;
+      }
+    }
+
+    .range-input {
+      &::-webkit-slider-thumb {
+        border-color: $color !important;
+
+        &:hover {
+          border-color: $hover-bg !important;
+        }
+      }
+
+      &::-moz-range-thumb {
+        border-color: $color !important;
+
+        &:hover {
+          border-color: $hover-bg !important;
+        }
+      }
+    }
+
+    .current-value {
+      background-color: $color !important;
+
+      &::before {
+        border-top-color: $color !important;
+      }
+    }
+  }
+}
