@@ -4,6 +4,7 @@ export { default as cancelIconRoundedOutline } from '@material-design-icons/svg/
 export { default as checkIconRoundedOutline } from '@material-design-icons/svg/outlined/check_circle_outline.svg?raw';
 export { default as cloudUploadOutlineIcon } from '@material-design-icons/svg/outlined/cloud_upload.svg?raw';
 export { default as deleteForeverOutlineIcon } from '@material-design-icons/svg/outlined/delete_forever.svg?raw';
+export { default as diveFolderUploadOutlineIcon } from '@material-design-icons/svg/outlined/drive_folder_upload.svg?raw';
 export { default as infoIcon } from '@material-design-icons/svg/outlined/info.svg?raw';
 export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
 export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';

@@ -1,44 +1,52 @@
 <template>
-  <div
-    class="file-container"
-    :class="uploadState.class"
-  >
-    <div class="file">
-      <Svg
-        :name="fileIcon"
-        size="2.5rem"
-        preserveColor
-      ></Svg>
-      <div class="file-content">
-        <span class="file-name">{{ file.name }}</span>
-        <div class="file-specs">
-          <span class="file-specs-size">{{ formatFileSize(fileReadStatus.loadedSize) }} of {{ formatFileSize(file.raw.size) }}</span>
-          <Divider layout="vertical" />
-          <div class="file-specs-status">
-            <Svg
-              class="file-status-icon"
-              size="1.15rem"
-              :src="uploadState.icon"
-            ></Svg>
-            <span class="file-status-text">{{ uploadState.label }}</span>
-          </div>
-        </div>
-        <ProgressBar
-          v-if="['uploading', 'completed'].includes(fileReadStatus.loadingState)"
-          :maxValue="100"
-          :value="fileReadStatus.percent"
-          showPercentage
-        />
-        <Button
-          v-else
-          color="danger"
-          variant="ghost"
-          class="try-again-button"
-          @click="onTryAgain"
-        >
-          Yeniden dene
-        </Button>
+  <div :class="getFileClasses">
+    <img
+      v-if="preview && file.preview"
+      :src="file.preview"
+      alt="File Preview"
+      class="file-preview"
+    />
+    <Svg
+      v-else
+      :name="fileIcon"
+      :size="template === 'row' ? '5rem' : '2.5rem'"
+      class="file-preview"
+      preserveColor
+    ></Svg>
+    <div class="file-information">
+      <div
+        class="file-name"
+        :title="file.name"
+      >
+        {{ file.name }}
       </div>
+      <div class="file-specs">
+        <span class="file-specs-size">{{ formatFileSize(fileReadStatus.loadedSize) }} of {{ formatFileSize(file.raw.size) }}</span>
+        <Divider layout="vertical" />
+        <div class="file-specs-status">
+          <Svg
+            class="file-status-icon"
+            size="1.15rem"
+            :src="uploadState.icon"
+          ></Svg>
+          <span class="file-status-text">{{ uploadState.label }}</span>
+        </div>
+      </div>
+      <ProgressBar
+        v-if="['uploading', 'completed'].includes(fileReadStatus.loadingState)"
+        :maxValue="100"
+        :value="fileReadStatus.percent"
+        showPercentage
+      />
+      <Button
+        v-else
+        color="danger"
+        variant="ghost"
+        class="try-again-button"
+        @click="onTryAgain"
+      >
+        Yeniden dene
+      </Button>
       <Svg
         class="file-delete-icon"
         size="1.5rem"
@@ -121,6 +129,9 @@ const fileIcon = computed(() => {
   if (mime === 'application/javascript' || mime === 'application/json' || mime.startsWith('text/')) return fileIconMap.code;
 
   return fileIconMap.default;
+});
+const getFileClasses = computed(() => {
+  return ['file', `file-${props.template}`, uploadState.value.class];
 });
 // watchers
 

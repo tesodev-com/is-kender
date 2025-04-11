@@ -184,6 +184,9 @@ function preventDefault(event: DragEvent) {
   event.preventDefault();
   event.stopPropagation();
 }
+defineExpose({
+  onClick,
+});
 </script>
 
 <style lang="scss" scoped src="./Upload.style.scss"></style>

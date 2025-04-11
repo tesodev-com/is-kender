@@ -1,7 +1,9 @@
-import type { CustomFile } from '../../types';
+import type { CustomFile, FileUploadProps } from '../../types';
 
 export interface FileProps {
   file: CustomFile;
+  preview: boolean;
+  template?: FileUploadProps['template'];
 }
 
 export interface FileEmits {

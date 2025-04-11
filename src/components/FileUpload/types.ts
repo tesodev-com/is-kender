@@ -17,8 +17,10 @@ export interface FileUploadProps {
   disabled?: boolean;
   multiple?: boolean;
   accept?: string;
+  preview?: boolean;
+  template?: 'col' | 'row';
   uploader?: (file: File[]) => Promise<boolean>;
 }
 export interface FileUploadEvents {
-  (e: 'upload', file: File[]): void;
+  (e: 'onUpload', file: CustomFile[]): void;
 }

@@ -8,4 +8,25 @@
   position: relative;
   overflow: hidden;
   transition: height 0.4s ease;
+
+  .file-list {
+    display: flex;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+
+    &-row {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    &-col {
+      flex-direction: column;
+    }
+  }
+
+  .file-upload-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
 }
