@@ -138,6 +138,10 @@ $input-states: (
       &:focus {
         outline: none;
       }
+
+      &:read-only {
+        cursor: pointer;
+      }
     }
 
     @each $size, $properties in $sizes {

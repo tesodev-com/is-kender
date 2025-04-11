@@ -1,4 +1,4 @@
-export const indexFile = `export { default } from './Link.vue';
+export const indexFile = `export { default } from './$template.vue';
 export * from './types';
 `;
 export const vueFile = `<template>$template</template>

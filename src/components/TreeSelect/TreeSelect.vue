@@ -45,7 +45,7 @@
         {{ computePlaceholder }}
       </p>
       <Svg
-        :src="arrowDownIcon"
+        :src="keyboardArrowDownIcon"
         size="20"
         class="select-trigger-arrow"
         :class="[{ 'select-trigger-arrow-open': isOpen }]"
@@ -111,11 +111,11 @@
 </template>
 
 <script setup lang="ts">
-import Svg from 'library-components/Svg';
-import TreeNode from './TreeNode.vue';
-import { computed, ref, useId, useTemplateRef, nextTick, onMounted, onBeforeUnmount } from 'vue';
-import { arrowDownIcon } from '@/assets/icons';
+import { keyboardArrowDownIcon } from '@/assets/icons';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
+import Svg from 'library-components/Svg';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef } from 'vue';
+import TreeNode from './TreeNode.vue';
 import type { TreeSelectNode, TreeSelectProps } from './types';
 
 const props = withDefaults(defineProps<TreeSelectProps>(), {

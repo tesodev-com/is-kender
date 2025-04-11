@@ -14,4 +14,5 @@ export interface InputProps {
   hint?: string;
   required?: boolean;
   tooltip?: Tooltip;
+  readOnly?: boolean;
 }
