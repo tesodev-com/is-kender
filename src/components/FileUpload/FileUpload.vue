@@ -1,6 +1,9 @@
 <template>
   <div class="file-upload-container">
-    <div class="file-upload-actions">
+    <div
+      v-if="showActions"
+      class="file-upload-actions"
+    >
       <Button
         color="secondary"
         variant="outline"
@@ -51,6 +54,7 @@
       :accept="accept"
       :maxFiles="maxFiles"
       :maxSize="maxSize"
+      :description="description"
       @on-error="onError"
       @on-upload="onUpload"
     />

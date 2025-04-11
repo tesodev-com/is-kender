@@ -11,6 +11,7 @@ export interface UploadProps {
   accept?: string;
   maxSize?: number;
   maxFiles?: number;
+  description?: string;
 }
 
 export interface UploadEmits {

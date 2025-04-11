@@ -27,6 +27,12 @@ const meta: Meta<typeof FileUpload> = {
       description: 'The template to use for the input. Can be "col" or "row"',
       options: ['col', 'row'],
     },
+    showActions: {
+      description: 'If true, the input will show the actions buttons',
+    },
+    description: {
+      description: 'The description of the input',
+    },
     uploader: {
       description: 'The function that will be called when the user uploads a file and gets the File[] as a parameter',
     },

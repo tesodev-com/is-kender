@@ -64,7 +64,7 @@ const uploadContainerRef = useTemplateRef('uploadContainerRef');
 const uploadInputRef = useTemplateRef('uploadInputRef');
 // computed
 const getDescription = computed(() => {
-  return `${props.accept} ${props.maxSize ? ` (max. ${Utils.formatFileSize(props.maxSize)})` : ''}`;
+  return props.description || `${props.accept} ${props.maxSize ? ` (max. ${Utils.formatFileSize(props.maxSize)})` : ''}`;
 });
 // watchers
 
