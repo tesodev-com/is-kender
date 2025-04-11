@@ -29,10 +29,6 @@
           @include text-sm(400, $gray-600);
         }
 
-        .divider {
-          height: 0.75rem;
-        }
-
         &-status {
           display: flex;
           align-items: center;
@@ -43,18 +39,10 @@
           .file-status-text {
             @include text-sm(400);
           }
+        }
 
-          &.uploading {
-            color: $gray-400;
-          }
-
-          &.completed {
-            color: $success-600;
-          }
-
-          &.failed {
-            color: $error-600;
-          }
+        .divider {
+          height: 0.75rem;
         }
       }
 
@@ -70,6 +58,27 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
+    }
+  }
+
+  &.file-container.uploading {
+    .file-specs-status {
+      color: $gray-400;
+    }
+  }
+
+  &.file-container.completed {
+    .file-specs-status {
+      color: $success-600;
+    }
+  }
+
+  &.file-container.failed {
+    border-width: 2px;
+    border-color: $error-600;
+
+    .file-specs-status {
+      color: $error-600;
     }
   }
 }

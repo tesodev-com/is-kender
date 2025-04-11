@@ -1,5 +1,8 @@
 <template>
-  <div class="file-container">
+  <div
+    class="file-container"
+    :class="uploadState.class"
+  >
     <div class="file">
       <Svg
         :name="fileIcon"
@@ -11,12 +14,10 @@
         <div class="file-specs">
           <span class="file-specs-size">{{ formatFileSize(fileReadStatus.loadedSize) }} of {{ formatFileSize(file.raw.size) }}</span>
           <Divider layout="vertical" />
-          <div
-            class="file-specs-status"
-            :class="uploadState.class"
-          >
+          <div class="file-specs-status">
             <Svg
               class="file-status-icon"
+              size="1.15rem"
               :src="uploadState.icon"
             ></Svg>
             <span class="file-status-text">{{ uploadState.label }}</span>

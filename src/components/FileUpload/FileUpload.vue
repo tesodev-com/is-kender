@@ -6,14 +6,10 @@
       :accept="accept"
       @on-upload="onUpload"
     />
-    <transition-group
-      name="list"
-      tag="div"
-      class="file-list"
-    >
+    <transition-group name="list">
       <File
         v-for="file in files"
-        :key="file.name"
+        :key="file.id"
         :file="file"
         @on-delete="onDelete"
       />

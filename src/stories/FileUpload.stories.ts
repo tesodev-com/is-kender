@@ -25,6 +25,6 @@ type Story = StoryObj<typeof FileUpload>;
 
 export const Default: Story = {
   args: {
-    accept: 'pdf',
+    multiple: true,
   },
 };

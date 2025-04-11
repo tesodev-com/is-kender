@@ -5,10 +5,7 @@
   padding: 1rem;
   border: 1px solid $gray-200;
   border-radius: 1rem;
-
-  .file-list {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
-  }
+  position: relative;
+  overflow: hidden;
+  transition: height 0.4s ease;
 }
