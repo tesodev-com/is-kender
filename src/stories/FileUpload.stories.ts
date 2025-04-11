@@ -5,8 +5,11 @@ const meta: Meta<typeof FileUpload> = {
   title: 'Form/FileUpload',
   component: FileUpload,
   argTypes: {
-    maxSize: {
-      description: 'The maximum file size in bytes',
+    disabled: {
+      description: 'If true, the input will be disabled',
+    },
+    multiple: {
+      description: 'If true, the input will accept multiple files',
     },
     accept: {
       description: 'The file types that the input should accept',
@@ -20,4 +23,8 @@ const meta: Meta<typeof FileUpload> = {
 export default meta;
 type Story = StoryObj<typeof FileUpload>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    accept: 'pdf',
+  },
+};

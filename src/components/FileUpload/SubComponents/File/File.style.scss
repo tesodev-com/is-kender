@@ -1,0 +1,75 @@
+.file-container {
+  width: 100%;
+  border: 1px solid $gray-200;
+  border-radius: 1rem;
+
+  .file {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: $spacing-md;
+    position: relative;
+
+    &-content {
+      width: 100%;
+
+      .file-name {
+        @include text-sm(600, $gray-700);
+      }
+
+      .file-specs {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &-size {
+          @include text-sm(400, $gray-600);
+        }
+
+        .divider {
+          height: 0.75rem;
+        }
+
+        &-status {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+
+          @include text-sm(500, $gray-500);
+
+          .file-status-text {
+            @include text-sm(400);
+          }
+
+          &.uploading {
+            color: $gray-400;
+          }
+
+          &.completed {
+            color: $success-600;
+          }
+
+          &.failed {
+            color: $error-600;
+          }
+        }
+      }
+
+      .try-again-button {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    &-delete-icon {
+      color: $gray-400;
+      cursor: pointer;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+}

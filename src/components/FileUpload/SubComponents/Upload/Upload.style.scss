@@ -1,0 +1,57 @@
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md;
+  padding: 1rem;
+  border: 1px solid $gray-200;
+  border-radius: 1rem;
+  width: 100%;
+  cursor: pointer;
+
+  .upload-input {
+    display: none;
+  }
+
+  .upload-button {
+    box-shadow: $shadow-sm;
+  }
+
+  &.drag-enter {
+    border-width: 2px;
+    border-color: $primary-600;
+  }
+
+  &.upload-disabled {
+    cursor: not-allowed !important;
+    background-color: $gray-50;
+
+    .upload-button {
+      cursor: not-allowed;
+    }
+
+    .actions .bold-message {
+      color: $gray-500 !important;
+    }
+  }
+
+  .message-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+    color: $gray-600;
+
+    .actions {
+      @include text-sm(400);
+
+      .bold-message {
+        @include text-sm(600, $primary-700);
+      }
+    }
+
+    .description {
+      @include text-xs(400);
+    }
+  }
+}
