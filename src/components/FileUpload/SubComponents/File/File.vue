@@ -21,7 +21,7 @@
         {{ file.name }}
       </div>
       <div class="file-specs">
-        <span class="file-specs-size">{{ formatFileSize(fileReadStatus.loadedSize) }} of {{ formatFileSize(file.raw.size) }}</span>
+        <span class="file-specs-size">{{ Utils.formatFileSize(fileReadStatus.loadedSize) }} of {{ Utils.formatFileSize(file.raw.size) }}</span>
         <Divider layout="vertical" />
         <div class="file-specs-status">
           <Svg
@@ -66,6 +66,7 @@ import ProgressBar from 'library-components/ProgressBar';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref } from 'vue';
 import type { ReadProgress } from '../../types';
+import Utils from '../../utils';
 import type { FileEmits, FileProps } from './types';
 // interfaces & types
 
@@ -148,16 +149,6 @@ function onTryAgain() {
 }
 function onDelete() {
   emit('onDelete', props.file);
-}
-function formatFileSize(size: number): string {
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  let unitIndex = 0;
-
-  while (size >= 1000 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
 }
 </script>
 

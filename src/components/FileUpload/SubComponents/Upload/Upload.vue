@@ -30,10 +30,10 @@
     </Button>
     <div class="message-container">
       <div class="actions">
-        <span class="bold-message">Click to upload</span>
-        or drag and drop
+        <span class="bold-message">Yüklemek için tıkla</span>
+        veya sürükleyip bırak
       </div>
-      <span class="description">SVG, PNG, JPG or GIF (max. 800x400px)</span>
+      <span class="description">{{ getDescription }}</span>
     </div>
   </div>
 </template>
@@ -43,9 +43,11 @@
 import { cloudUploadOutlineIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
-import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
 import type { CustomFile, ReadProgress } from '../../types';
-import type { UploadEmits, UploadProps } from './types';
+import Utils from '../../utils';
+import { getErrorMessage } from './constants';
+import type { FileErrorMessage, UploadEmits, UploadProps } from './types';
 // interfaces & types
 
 // constants
@@ -57,10 +59,13 @@ const props = defineProps<UploadProps>();
 // defineEmits
 const emit = defineEmits<UploadEmits>();
 // states (refs and reactives)
+const errorList = ref<FileErrorMessage[]>([]);
 const uploadContainerRef = useTemplateRef('uploadContainerRef');
 const uploadInputRef = useTemplateRef('uploadInputRef');
 // computed
-
+const getDescription = computed(() => {
+  return `${props.accept} ${props.maxSize ? ` (max. ${Utils.formatFileSize(props.maxSize)})` : ''}`;
+});
 // watchers
 
 // lifecycles
@@ -89,8 +94,10 @@ function onClick() {
 function onUpload(event: Event | DragEvent) {
   const files = getFiles(event);
   emit('onUpload', files);
+  emit('onError', errorList.value || []);
   if (uploadInputRef.value) {
     uploadInputRef.value.value = '';
+    errorList.value = [];
   }
 }
 function onDragEnter() {
@@ -121,32 +128,58 @@ function getFiles(event: Event | DragEvent) {
     files = target.files || null;
   }
   let uploadedFiles = Array.from(files || []);
+  if (!uploadedFiles.length || (props.maxFiles && uploadedFiles.length > props.maxFiles)) {
+    errorList.value?.push({ message: getErrorMessage('FILE_COUNT', { maxFiles: props.maxFiles ?? 0 }) });
+    return [];
+  }
   if (props.accept) {
     uploadedFiles = uploadedFiles.filter(validateFile);
   }
-  uploadedFiles = uploadedFiles.map(file => {
-    return {
-      id: Math.random().toString(36).substring(2, 9),
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      raw: file,
-      lastModified: file.lastModified,
-      isImage: file.type.startsWith('image/'),
-      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
-      uploadedDate: new Date().getTime(),
-      readFile: onProgress => readFile(file, onProgress),
-      isReady: false,
-    };
-  }) as CustomFile[];
+  uploadedFiles = uploadedFiles
+    .map(file => {
+      const isValid = validateFile(file);
+      if (isValid) {
+        return {
+          id: Math.random().toString(36).substring(2, 9),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          raw: file,
+          lastModified: file.lastModified,
+          isImage: file.type.startsWith('image/'),
+          preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
+          uploadedDate: new Date().getTime(),
+          readFile: (onProgress: (state: ReadProgress) => void) => readFile(file, onProgress),
+          isReady: false,
+        };
+      }
+    })
+    .filter(Boolean) as CustomFile[];
   return uploadedFiles as CustomFile[];
 }
 function validateFile(file: File) {
+  return [validateType(file), validateSize(file)].every(Boolean);
+}
+function validateType(file: File) {
   const acceptTypes = (props.accept || '').split(',').map(type => type.trim());
   return acceptTypes.some(acceptType => {
     const regex = new RegExp(acceptType.replace(/\*/g, '.*'));
-    return regex.test(file.type);
+    const result = regex.test(file.type);
+    if (!result) {
+      errorList.value?.push({ file, message: getErrorMessage('FILE_TYPE', { name: file.name, type: acceptTypes.join(', ') }) });
+    }
+    return result;
   });
+}
+function validateSize(file: File) {
+  if (props.maxSize) {
+    const result = file.size <= props.maxSize;
+    if (!result) {
+      errorList.value?.push({ file, message: getErrorMessage('FILE_SIZE', { name: file.name, size: Utils.formatFileSize(props.maxSize) }) });
+    }
+    return result;
+  }
+  return true;
 }
 async function readFile(file: File, onProgress: (state: ReadProgress) => void) {
   return new Promise((resolve, reject) => {
@@ -184,8 +217,13 @@ function preventDefault(event: DragEvent) {
   event.preventDefault();
   event.stopPropagation();
 }
+function clearErrorList() {
+  errorList.value = [];
+  emit('onError', errorList.value);
+}
 defineExpose({
   onClick,
+  clearErrorList,
 });
 </script>
 

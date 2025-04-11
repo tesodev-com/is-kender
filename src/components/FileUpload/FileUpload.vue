@@ -34,7 +34,7 @@
         size="sm"
         rounded="full"
         iconOnly
-        :disabled="files.length === 0"
+        :disabled="files.length === 0 && errorList.length === 0"
         @click="onClear"
       >
         <Svg
@@ -48,8 +48,21 @@
       :disabled="disabled"
       :multiple="multiple"
       :accept="accept"
+      :maxFiles="maxFiles"
+      :maxSize="maxSize"
+      @on-error="onError"
       @on-upload="onUpload"
     />
+    <Alert
+      v-for="(error, index) in errorList"
+      :key="index"
+      color="danger"
+      fluid
+    >
+      <template #title>
+        {{ error.message }}
+      </template>
+    </Alert>
     <div
       v-if="files.length"
       class="file-list"
@@ -70,10 +83,11 @@
 <script setup lang="ts">
 // imports
 import { closeIcon, cloudUploadOutlineIcon, diveFolderUploadOutlineIcon } from '@/assets/icons';
+import Alert from 'library-components/Alert';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { ref, useTemplateRef } from 'vue';
-import { File, Upload } from './SubComponents';
+import { File, Upload, type FileErrorMessage } from './SubComponents';
 import type { CustomFile, FileUploadEvents, FileUploadProps } from './types';
 // interfaces & types
 
@@ -86,13 +100,16 @@ withDefaults(defineProps<FileUploadProps>(), {
   disabled: false,
   multiple: true,
   preview: true,
-  template: 'col',
+  maxSize: 1024 * 1024,
+  accept: 'image',
+  template: 'row',
 });
 // defineEmits
 const emit = defineEmits<FileUploadEvents>();
 // states (refs and reactives)
-const files = ref<CustomFile[]>([]);
 const uploadRef = useTemplateRef('uploadRef');
+const files = ref<CustomFile[]>([]);
+const errorList = ref<FileErrorMessage[]>([]);
 // computed
 
 // watchers
@@ -116,6 +133,10 @@ function onUploadClick() {
 }
 function onClear() {
   files.value = [];
+  uploadRef.value?.clearErrorList();
+}
+function onError(errors: FileErrorMessage[]) {
+  errorList.value = errors;
 }
 </script>
 

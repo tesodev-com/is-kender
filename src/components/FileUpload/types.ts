@@ -17,6 +17,8 @@ export interface FileUploadProps {
   disabled?: boolean;
   multiple?: boolean;
   accept?: string;
+  maxSize?: number;
+  maxFiles?: number;
   preview?: boolean;
   template?: 'col' | 'row';
   uploader?: (file: File[]) => Promise<boolean>;

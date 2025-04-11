@@ -50,6 +50,7 @@ import type { AlertEmits, AlertProps, AlertSlots } from './types';
 
 const props = withDefaults(defineProps<AlertProps>(), {
   color: 'primary',
+  variant: 'solid',
 });
 defineEmits<AlertEmits>();
 defineSlots<AlertSlots>();
