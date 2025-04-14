@@ -30,6 +30,7 @@
   #{$root}__preview-image {
     width: 20rem;
     height: 11.25rem;
+    object-fit: fill;
   }
 
   &__content {
