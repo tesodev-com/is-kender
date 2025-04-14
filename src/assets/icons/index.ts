@@ -1,5 +1,10 @@
 export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg?raw';
 export { default as telIcon } from '@material-design-icons/svg/outlined/call.svg?raw';
+export { default as cancelIconRoundedOutline } from '@material-design-icons/svg/outlined/cancel.svg?raw';
+export { default as checkIconRoundedOutline } from '@material-design-icons/svg/outlined/check_circle_outline.svg?raw';
+export { default as cloudUploadOutlineIcon } from '@material-design-icons/svg/outlined/cloud_upload.svg?raw';
+export { default as deleteForeverOutlineIcon } from '@material-design-icons/svg/outlined/delete_forever.svg?raw';
+export { default as diveFolderUploadOutlineIcon } from '@material-design-icons/svg/outlined/drive_folder_upload.svg?raw';
 export { default as infoIcon } from '@material-design-icons/svg/outlined/info.svg?raw';
 export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
 export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';
@@ -24,5 +29,13 @@ export { default as keyboardArrowUpIcon } from '@material-design-icons/svg/round
 export { default as removeIcon } from '@material-design-icons/svg/round/remove.svg?raw';
 export { default as removeCircleOutlineIcon } from '@material-design-icons/svg/round/remove_circle_outline.svg?raw';
 export { default as searchIcon } from '@material-design-icons/svg/round/search.svg?raw';
+export { default as audioIcon } from './audio.svg?raw';
+export { default as codeIcon } from './code.svg?raw';
+export { default as documentIcon } from './document.svg?raw';
+export { default as emptyIcon } from './empty.svg?raw';
+export { default as folderIcon } from './folder.svg?raw';
+export { default as imageIcon } from './image.svg?raw';
 export { default as loadingIcon } from './loading.svg?raw';
-
+export { default as pdfIcon } from './pdf.svg?raw';
+export { default as spreadsheetIcon } from './spreadsheet.svg?raw';
+export { default as videoIcon } from './video.svg?raw';

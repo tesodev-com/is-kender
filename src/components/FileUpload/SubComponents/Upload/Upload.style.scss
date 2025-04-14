@@ -1,0 +1,64 @@
+.file-uploader {
+  $root: &;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md;
+  padding: 1rem;
+  border: 1px solid $gray-200;
+  border-radius: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &__input {
+    display: none;
+  }
+
+  &__button {
+    box-shadow: $shadow-sm;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+    color: $gray-600;
+  }
+
+  &__actions {
+    @include text-sm(400);
+  }
+
+  &__primary-text {
+    @include text-sm(600, $primary-700);
+  }
+
+  &__secondary-text {
+    @include text-sm(400);
+  }
+
+  &__description {
+    @include text-xs(400);
+  }
+
+  &--drag-active {
+    border-width: 2px;
+    border-color: $primary-600;
+  }
+
+  &--disabled {
+    cursor: not-allowed !important;
+    background-color: $gray-50;
+
+    #{$root}__button {
+      cursor: not-allowed;
+    }
+
+    #{$root}__primary-text {
+      color: $gray-500 !important;
+    }
+  }
+}

@@ -9,6 +9,7 @@ export interface DatePickerProps {
   min?: Date | string;
   max?: Date | string;
   disabledDates?: Array<Date | string>;
+  weekStartDay?: 'monday' | 'sunday';
 }
 
 export interface DatePickerEmits {

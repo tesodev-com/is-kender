@@ -103,6 +103,7 @@ $colors: (
 
     .slider-container {
       --thumb-size: 18px;
+
       position: relative;
       height: 20px;
       display: flex;
@@ -125,11 +126,11 @@ $colors: (
           position: absolute;
           height: 100%;
           border-radius: 3px;
-          will-change: left, width;
-          transition: none;
           transform-origin: left center;
           will-change: transform, width, left;
-          transition: width 0s linear, left 0s linear;
+          transition:
+            width 0s linear,
+            left 0s linear;
         }
       }
 
@@ -155,7 +156,9 @@ $colors: (
           border: 2px solid;
           cursor: pointer;
           box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
           position: relative;
           z-index: 2;
           will-change: transform;
@@ -175,7 +178,9 @@ $colors: (
           border: 2px solid;
           cursor: pointer;
           box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
           position: relative;
           z-index: 2;
           will-change: transform;
@@ -226,7 +231,9 @@ $colors: (
         z-index: 1;
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.15s ease, visibility 0.15s ease;
+        transition:
+          opacity 0.15s ease,
+          visibility 0.15s ease;
 
         &::before {
           content: "";
@@ -239,7 +246,6 @@ $colors: (
           border-top: 4px solid;
         }
       }
-
     }
 
     .range-limits {

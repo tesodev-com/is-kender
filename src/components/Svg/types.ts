@@ -3,4 +3,5 @@ export interface SvgProps {
   name?: string;
   size?: string;
   style?: string;
+  preserveColor?: boolean;
 }

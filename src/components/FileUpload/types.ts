@@ -1,38 +1,30 @@
-export interface CustomFile {
-  name: string;
-  size: number;
-  type: string;
+export interface ReadProgress {
+  percent: number;
+  loadedSize: number;
+  loadingState: 'uploading' | 'completed' | 'failed';
+}
+
+export interface CustomFile extends File {
+  id: string;
+  raw: File;
+  isReady: boolean;
   isImage: boolean;
   preview: string | null;
-  raw: File;
-}
-export interface FileErrorMessage {
-  file?: CustomFile;
-  message: string;
+  uploadedDate: number;
+  readFile: (onProgress: (state: ReadProgress) => void) => Promise<any>;
 }
 export interface FileUploadProps {
   disabled?: boolean;
   multiple?: boolean;
   accept?: string;
   maxSize?: number;
-  texts?: {
-    empty?: string;
-    choose?: string;
-    upload?: string;
-    cancel?: string;
-  };
-  sizeErrorMessage?: string;
-  acceptErrorMessage?: string;
-  uploadErrorMessage?: string;
+  maxFiles?: number;
+  preview?: boolean;
+  template?: 'col' | 'row';
+  showActions?: boolean;
+  description?: string;
   uploader?: (file: File[]) => Promise<boolean>;
 }
-export interface FileUploadSlots {
-  file: {
-    file: CustomFile;
-    index: number;
-  };
-  empty: string;
-}
 export interface FileUploadEvents {
-  (e: 'upload', file: File[]): void;
+  (e: 'onUpload', file: CustomFile[]): void;
 }
