@@ -21,7 +21,7 @@
 
     <div class="range-controls">
       <div
-        ref="sliderContainer"
+        ref="sliderContainerRef"
         class="slider-container"
       >
         <div class="range-track">
@@ -51,12 +51,13 @@
             :value="rangeValues[0]"
             class="range-input range-input-min"
             @input="handleRangeInput(0, $event)"
-            @mouseenter="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseenter="handleThumbActive(true)"
+            @mouseover="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value current-value-min"
@@ -78,12 +79,13 @@
             :value="rangeValues[1]"
             class="range-input range-input-max"
             @input="handleRangeInput(1, $event)"
-            @mouseenter="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseover="handleThumbActive(true)"
+            @mouseenter="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value current-value-max"
@@ -107,12 +109,13 @@
             :value="currentValue"
             class="range-input"
             @input="handleInput"
-            @mouseenter="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseenter="handleThumbActive(true)"
+            @mouseover="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value"
@@ -138,9 +141,12 @@
 
 <script setup lang="ts">
 // imports
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { RangeSliderEmits, RangeSliderProps } from './types';
+
 import { clampValue, formatWithUnit, parseRangeValues, parseValue, roundToStep, scaleValue } from './utils';
+
+// composables
 
 // interfaces & types
 
@@ -169,9 +175,11 @@ const emit = defineEmits<RangeSliderEmits>();
 
 // states (refs and reactives)
 const rangeValues = ref<[number, number]>([props.min, props.max]);
-const isThumbActive = ref(false);
-const sliderContainer = ref<HTMLElement | null>(null);
+
+const sliderContainer = useTemplateRef<HTMLElement>('sliderContainerRef');
 const containerWidth = ref(0);
+const resizeObserver = ref<ResizeObserver | null>(null);
+const isThumbActive = ref<boolean>(false);
 
 // computed
 const currentValue = computed(() => {
@@ -212,17 +220,31 @@ const tooltipPositions = computed(() => {
 });
 
 // lifecycles
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   initializeRangeValues();
   updateContainerWidth();
-  window.addEventListener('resize', updateContainerWidth);
+
+  resizeObserver.value = new ResizeObserver(() => {
+    updateContainerWidth();
+  });
+
+  if (sliderContainer.value) {
+    resizeObserver.value.observe(sliderContainer.value);
+  }
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateContainerWidth);
+  if (resizeObserver.value) {
+    resizeObserver.value.disconnect();
+  }
 });
 
 // methods
+
+const handleThumbActive = (active: boolean) => {
+  isThumbActive.value = active;
+};
 const initializeRangeValues = () => {
   if (!modelValue.value) {
     rangeValues.value = [props.min, props.max];
@@ -242,6 +264,10 @@ const updateContainerWidth = () => {
 };
 
 // watchers
+watch([progress, minProgress, maxProgress], () => {
+  updateContainerWidth();
+});
+
 watch(
   () => props.step,
   newStep => {
@@ -297,16 +323,6 @@ watch([() => props.min, () => props.max], ([newMin, newMax], [oldMin, oldMax]) =
     emit('update:modelValue', finalValue);
   }
 });
-
-watch(
-  () => modelValue.value,
-  newValue => {
-    if (props.isRange && newValue) {
-      initializeRangeValues();
-    }
-  },
-  { immediate: true }
-);
 
 watch(
   () => props.isRange,
