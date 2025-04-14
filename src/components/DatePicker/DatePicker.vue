@@ -93,9 +93,9 @@ const emit = defineEmits<DatePickerEmits>();
 // states (refs and reactives)
 const isShowDatePicker = ref(false);
 const visibleDate = ref<Date>(new Date());
-const datepickerInputRef = useTemplateRef('datepickerInputRef');
-const datepickerRef = useTemplateRef('datepickerRef');
-const quickSelectionRef = useTemplateRef('quickSelectionRef');
+const datepickerInput = useTemplateRef('datepickerInputRef');
+const datepicker = useTemplateRef('datepickerRef');
+const quickSelection = useTemplateRef('quickSelectionRef');
 // computed
 const calendarVisibleDates = computed(() => {
   return {
@@ -178,7 +178,7 @@ function onRenderDate(id: CalendarProps['id'], date: Date) {
 }
 function onClear() {
   modelValue.value = null;
-  if (quickSelectionRef.value) quickSelectionRef.value.onClear();
+  if (quickSelection.value) quickSelection.value.onClear();
 }
 function onQuickSelect(dates: Array<Date | string> | Date | string) {
   modelValue.value = dates;
@@ -193,8 +193,8 @@ function onApply() {
 function onClickOutside(event: MouseEvent) {
   if (props.inline) return;
   const target = event.target as HTMLElement;
-  const isDatePicker = datepickerRef.value?.contains(target);
-  const isInput = (datepickerInputRef.value?.$el as HTMLDivElement).contains(target);
+  const isDatePicker = datepicker.value?.contains(target);
+  const isInput = (datepickerInput.value?.$el as HTMLDivElement).contains(target);
   if (!isDatePicker && !isInput) {
     isShowDatePicker.value = false;
   }

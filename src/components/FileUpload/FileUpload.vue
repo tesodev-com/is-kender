@@ -112,7 +112,7 @@ withDefaults(defineProps<FileUploadProps>(), {
 // defineEmits
 const emit = defineEmits<FileUploadEvents>();
 // states (refs and reactives)
-const uploadRef = useTemplateRef('uploadRef');
+const upload = useTemplateRef('uploadRef');
 const files = ref<CustomFile[]>([]);
 const errorList = ref<FileErrorMessage[]>([]);
 // computed
@@ -132,13 +132,13 @@ function onDelete(file: CustomFile) {
   files.value = files.value.filter(f => f.id !== file.id);
 }
 function onUploadClick() {
-  if (uploadRef.value) {
-    uploadRef.value.onClick();
+  if (upload.value) {
+    upload.value.onClick();
   }
 }
 function onClear() {
   files.value = [];
-  uploadRef.value?.clearErrorList();
+  upload.value?.clearErrorList();
 }
 function onError(errors: FileErrorMessage[]) {
   errorList.value = errors;

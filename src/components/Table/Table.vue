@@ -36,7 +36,7 @@
       </div>
     </div>
     <div
-      ref="scrollContainer"
+      ref="scrollContainerRef"
       class="table-data-container"
       @scroll="handleScroll"
     >
@@ -317,7 +317,7 @@ import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import Pagination from 'library-components/Pagination';
 import Svg from 'library-components/Svg';
-import { computed, ref, watch, onMounted, useTemplateRef } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { Row, TableEmits, TableProps, TableSlots } from './types';
 
 const props = withDefaults(defineProps<TableProps>(), {
@@ -340,7 +340,7 @@ const emit = defineEmits<TableEmits>();
 
 const slots = defineSlots<TableSlots>();
 
-const scrollContainer = useTemplateRef('scrollContainer');
+const scrollContainer = useTemplateRef('scrollContainerRef');
 const selectedItems = ref(new Set<Row>());
 const searchQuery = ref('');
 const sortKey = ref('');

@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="selectContainer"
+    ref="selectContainerRef"
     class="select-container"
   >
     <div
@@ -22,7 +22,7 @@
     </div>
     <div
       :id="selectId"
-      ref="selectTrigger"
+      ref="selectTriggerRef"
       class="select-trigger"
       :class="[{ 'select-trigger-open': isOpen, 'select-trigger-disabled': disabled }]"
       tabindex="0"
@@ -56,7 +56,7 @@
         <div
           v-if="isOpen"
           :id="`${selectId}-dropdown`"
-          ref="dropdown"
+          ref="dropdownRef"
           class="select-dropdown"
           :style="dropdownPosition"
           role="tree"
@@ -130,9 +130,9 @@ const selectId = useId();
 const model = defineModel<string | null>();
 const modelMultiple = defineModel<string[]>('multiple', { default: () => [] });
 const searchModel = defineModel<string>('search', { default: '' });
-const selectContainer = useTemplateRef('selectContainer');
-const selectTrigger = useTemplateRef('selectTrigger');
-const dropdown = useTemplateRef('dropdown');
+const selectContainer = useTemplateRef('selectContainerRef');
+const selectTrigger = useTemplateRef('selectTriggerRef');
+const dropdown = useTemplateRef('dropdownRef');
 const isOpen = ref<boolean>(false);
 const dropdownPosition = ref<PositionStyle>({ top: '0px', left: '0px', width: '0px' });
 const expandedNodes = ref<Set<string>>(new Set());
