@@ -1,4 +1,6 @@
 .file {
+  $root: &;
+
   border: 1px solid $gray-200;
   border-radius: 1rem;
   height: 100%;
@@ -7,93 +9,90 @@
   display: flex;
   gap: $spacing-md;
 
-  &.file-col {
+  &--col {
     width: 100%;
     flex-direction: row;
     align-items: stretch;
   }
 
-  &.file-row {
+  &--row {
     flex: 1;
     min-width: 15rem;
     flex-direction: column;
 
-    .file-preview {
+    #{$root}__preview-icon,
+    #{$root}__preview-image {
       width: 5rem;
       height: 5rem;
       margin-inline: auto;
     }
   }
 
-  &.uploading {
-    .file-specs-status {
-      color: $gray-400;
-    }
-  }
-
-  &.completed {
-    .file-specs-status {
-      color: $success-600;
-    }
-  }
-
-  &.failed {
-    border-width: 2px;
-    border-color: $error-600;
-
-    .file-specs-status {
-      color: $error-600;
-    }
-  }
-
-  .file-information {
+  &__content {
     width: 100%;
+  }
 
-    .file-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  &__name {
+    @include text-sm(600, $gray-700);
 
-      @include text-sm(600, $gray-700);
-    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    .file-specs {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-      &-size {
-        @include text-sm(400, $gray-600);
-      }
+  &__size {
+    @include text-sm(400, $gray-600);
+  }
 
-      &-status {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 
-        @include text-sm(500, $gray-500);
+    @include text-sm(500, $gray-500);
 
-        .file-status-text {
-          @include text-sm(400);
-        }
-      }
-
-      .divider {
-        height: 0.75rem;
-      }
-    }
-
-    .try-again-button {
-      padding-left: 0;
-      padding-right: 0;
+    &-text {
+      @include text-sm(400);
     }
   }
 
-  .file-delete-icon {
+  &__retry-btn {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__delete {
     color: $gray-400;
     cursor: pointer;
     position: absolute;
     top: 1rem;
     right: 1rem;
+  }
+
+  &--uploading {
+    #{$root}__status {
+      color: $gray-400;
+    }
+  }
+
+  &--completed {
+    #{$root}__status {
+      color: $success-600;
+    }
+  }
+
+  &--failed {
+    border-width: 2px;
+    border-color: $error-600;
+
+    #{$root}__status {
+      color: $error-600;
+    }
   }
 }

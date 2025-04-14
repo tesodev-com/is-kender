@@ -1,35 +1,35 @@
 <template>
-  <div :class="getFileClasses">
+  <div :class="fileContainerClasses">
     <img
       v-if="preview && file.preview"
       :src="file.preview"
       alt="File Preview"
-      class="file-preview"
+      class="file__preview-image"
     />
     <Svg
       v-else
       :name="fileIcon"
       :size="template === 'row' ? '5rem' : '2.5rem'"
-      class="file-preview"
+      class="file__preview-icon"
       preserveColor
     ></Svg>
-    <div class="file-information">
+    <div class="file__content">
       <div
-        class="file-name"
+        class="file__name"
         :title="file.name"
       >
         {{ file.name }}
       </div>
-      <div class="file-specs">
-        <span class="file-specs-size">{{ Utils.formatFileSize(fileReadStatus.loadedSize) }} of {{ Utils.formatFileSize(file.raw.size) }}</span>
+      <div class="file__meta">
+        <span class="file__size">{{ Utils.formatFileSize(fileReadStatus.loadedSize) }} of {{ Utils.formatFileSize(file.raw.size) }}</span>
         <Divider layout="vertical" />
-        <div class="file-specs-status">
+        <div class="file__status">
           <Svg
-            class="file-status-icon"
+            class="file__status-icon"
             size="1.15rem"
             :src="uploadState.icon"
           ></Svg>
-          <span class="file-status-text">{{ uploadState.label }}</span>
+          <span class="file__status-text">{{ uploadState.label }}</span>
         </div>
       </div>
       <ProgressBar
@@ -37,18 +37,19 @@
         :maxValue="100"
         :value="fileReadStatus.percent"
         showPercentage
+        class="file__progress"
       />
       <Button
         v-else
         color="danger"
         variant="ghost"
-        class="try-again-button"
+        class="file__retry-btn"
         @click="onTryAgain"
       >
         Yeniden dene
       </Button>
       <Svg
-        class="file-delete-icon"
+        class="file__delete"
         size="1.5rem"
         :src="deleteForeverOutlineIcon"
         @click="onDelete"
@@ -131,8 +132,8 @@ const fileIcon = computed(() => {
 
   return fileIconMap.default;
 });
-const getFileClasses = computed(() => {
-  return ['file', `file-${props.template}`, uploadState.value.class];
+const fileContainerClasses = computed(() => {
+  return ['file', `file--${props.template}`, `file--${uploadState.value.class}`];
 });
 // watchers
 

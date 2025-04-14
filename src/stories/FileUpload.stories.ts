@@ -6,35 +6,35 @@ const meta: Meta<typeof FileUpload> = {
   component: FileUpload,
   argTypes: {
     disabled: {
-      description: 'If true, the input will be disabled',
+      control: 'boolean',
     },
     multiple: {
-      description: 'If true, the input will accept multiple files',
+      control: 'boolean',
     },
     accept: {
-      description: 'The file types that the input should accept',
+      control: 'text',
     },
     maxSize: {
-      description: 'The maximum file size in bytes',
+      control: 'number',
     },
     maxFiles: {
-      description: 'The maximum number of files that can be uploaded',
+      control: 'number',
     },
     preview: {
-      description: 'If true, the input will show a preview of the uploaded files',
+      control: 'boolean',
     },
     template: {
-      description: 'The template to use for the input. Can be "col" or "row"',
+      control: 'select',
       options: ['col', 'row'],
     },
     showActions: {
-      description: 'If true, the input will show the actions buttons',
+      control: 'boolean',
     },
     description: {
-      description: 'The description of the input',
+      control: 'text',
     },
     uploader: {
-      description: 'The function that will be called when the user uploads a file and gets the File[] as a parameter',
+      control: 'object',
     },
   },
 };

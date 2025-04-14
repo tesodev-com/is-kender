@@ -106,8 +106,8 @@ withDefaults(defineProps<FileUploadProps>(), {
   multiple: true,
   preview: true,
   maxSize: 1024 * 1024,
-  accept: 'image',
   template: 'row',
+  description: 'En az 1 dosya yükleyin',
 });
 // defineEmits
 const emit = defineEmits<FileUploadEvents>();
