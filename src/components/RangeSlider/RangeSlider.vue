@@ -21,7 +21,7 @@
 
     <div class="range-controls">
       <div
-        ref="sliderContainer"
+        ref="sliderContainerRef"
         class="slider-container"
       >
         <div class="range-track">
@@ -52,6 +52,7 @@
             class="range-input range-input-min"
             @input="handleRangeInput(0, $event)"
             @mouseenter="isThumbActive = true"
+            @mouseover="isThumbActive = true"
             @mouseleave="isThumbActive = false"
             @touchstart="isThumbActive = true"
             @touchend="isThumbActive = false"
@@ -78,6 +79,7 @@
             :value="rangeValues[1]"
             class="range-input range-input-max"
             @input="handleRangeInput(1, $event)"
+            @mouseover="isThumbActive = true"
             @mouseenter="isThumbActive = true"
             @mouseleave="isThumbActive = false"
             @touchstart="isThumbActive = true"
@@ -108,6 +110,7 @@
             class="range-input"
             @input="handleInput"
             @mouseenter="isThumbActive = true"
+            @mouseover="isThumbActive = true"
             @mouseleave="isThumbActive = false"
             @touchstart="isThumbActive = true"
             @touchend="isThumbActive = false"
@@ -138,7 +141,7 @@
 
 <script setup lang="ts">
 // imports
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { RangeSliderEmits, RangeSliderProps } from './types';
 import { clampValue, formatWithUnit, parseRangeValues, parseValue, roundToStep, scaleValue } from './utils';
 
@@ -170,8 +173,10 @@ const emit = defineEmits<RangeSliderEmits>();
 // states (refs and reactives)
 const rangeValues = ref<[number, number]>([props.min, props.max]);
 const isThumbActive = ref(false);
-const sliderContainer = ref<HTMLElement | null>(null);
+const sliderContainer = useTemplateRef<HTMLElement>('sliderContainerRef');
 const containerWidth = ref(0);
+const isMounted = ref(false);
+const resizeObserver = ref<ResizeObserver | null>(null);
 
 // computed
 const currentValue = computed(() => {
@@ -198,6 +203,8 @@ const cssVars = computed(() => ({
 }));
 
 const tooltipPositions = computed(() => {
+  if (!isMounted.value) return { min: '0px', max: '0px', single: '0px' };
+
   const availableWidth = containerWidth.value || 100;
 
   const minTooltipLeft = SLIDER_PADDING + minProgress.value * availableWidth;
@@ -212,14 +219,25 @@ const tooltipPositions = computed(() => {
 });
 
 // lifecycles
-onMounted(() => {
+onMounted(async () => {
   initializeRangeValues();
+  await nextTick();
   updateContainerWidth();
-  window.addEventListener('resize', updateContainerWidth);
+  isMounted.value = true;
+
+  resizeObserver.value = new ResizeObserver(() => {
+    updateContainerWidth();
+  });
+
+  if (sliderContainer.value) {
+    resizeObserver.value.observe(sliderContainer.value);
+  }
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateContainerWidth);
+  if (resizeObserver.value) {
+    resizeObserver.value.disconnect();
+  }
 });
 
 // methods
@@ -242,6 +260,12 @@ const updateContainerWidth = () => {
 };
 
 // watchers
+watch([progress, minProgress, maxProgress], () => {
+  if (isMounted.value) {
+    updateContainerWidth();
+  }
+});
+
 watch(
   () => props.step,
   newStep => {
