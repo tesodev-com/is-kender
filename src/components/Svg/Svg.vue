@@ -20,13 +20,14 @@ if (import.meta.env.SSR) {
     await loadSvg();
   });
 }
-const props = withDefaults(defineProps<SvgProps>(), {
+const props = withDefaults(defineProps<SvgProps & { preserveColor?: boolean }>(), {
   size: '1em',
+  preserveColor: false,
 });
 const spanRef = useTemplateRef('icon');
 const svgEl = ref<string | null>(null);
 watch([() => props.src, () => props.name], loadSvg);
-watch([() => props.size], updateSvg);
+watch([() => props.size, () => props.preserveColor], updateSvg);
 async function loadSvg() {
   try {
     if (props.src) {
@@ -49,10 +50,11 @@ function updateSvg() {
 function parseSvg(svgData: string) {
   svgData = svgData.replace(/\bwidth\s*=\s*["'][^"']*["']/g, '');
   svgData = svgData.replace(/\bheight\s*=\s*["'][^"']*["']/g, '');
-  svgData = svgData.replace(/\bfill\s*=\s*["'][^"']*["']/g, '');
-
+  if (!props.preserveColor) {
+    svgData = svgData.replace(/\bfill\s*=\s*["'][^"']*["']/g, '');
+  }
   svgData = svgData.replace(/<svg\b([^>]*)>/, (_, attributes) => {
-    return `<svg ${attributes} width="${props.size}" height="${props.size}" fill="currentColor">`;
+    return props.preserveColor ? `<svg ${attributes} width="${props.size}" height="${props.size}">` : `<svg ${attributes} width="${props.size}" height="${props.size}" fill="currentColor">`;
   });
 
   return svgData;

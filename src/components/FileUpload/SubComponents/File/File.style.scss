@@ -1,0 +1,98 @@
+.file {
+  $root: &;
+
+  border: 1px solid $gray-200;
+  border-radius: 1rem;
+  height: 100%;
+  padding: 1rem;
+  position: relative;
+  display: flex;
+  gap: $spacing-md;
+
+  &--col {
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  &--row {
+    flex: 1;
+    min-width: 15rem;
+    flex-direction: column;
+
+    #{$root}__preview-icon,
+    #{$root}__preview-image {
+      width: 5rem;
+      height: 5rem;
+      margin-inline: auto;
+    }
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__name {
+    @include text-sm(600, $gray-700);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__size {
+    @include text-sm(400, $gray-600);
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    @include text-sm(500, $gray-500);
+
+    &-text {
+      @include text-sm(400);
+    }
+  }
+
+  &__retry-btn {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__delete {
+    color: $gray-400;
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &--uploading {
+    #{$root}__status {
+      color: $gray-400;
+    }
+  }
+
+  &--completed {
+    #{$root}__status {
+      color: $success-600;
+    }
+  }
+
+  &--failed {
+    border-width: 2px;
+    border-color: $error-600;
+
+    #{$root}__status {
+      color: $error-600;
+    }
+  }
+}
