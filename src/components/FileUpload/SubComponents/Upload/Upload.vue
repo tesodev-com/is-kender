@@ -124,7 +124,7 @@ function getFiles(event: Event | DragEvent) {
   }
   let uploadedFiles = Array.from(files || []);
   if (!uploadedFiles.length || (props.maxFiles && uploadedFiles.length > props.maxFiles)) {
-    errorList.value?.push({ message: getErrorMessage('FILE_COUNT', { maxFiles: props.maxFiles ?? 0 }) });
+    errorList.value?.push({ message: getErrorMessage('FILE_COUNT', { count: props.maxFiles ?? 0 }) });
     return [];
   }
   if (props.accept) {
