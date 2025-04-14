@@ -19,13 +19,15 @@
     flex: 1;
     min-width: 15rem;
     flex-direction: column;
+  }
 
-    #{$root}__preview-icon,
-    #{$root}__preview-image {
-      width: 5rem;
-      height: 5rem;
-      margin-inline: auto;
-    }
+  #{$root}__preview-icon,
+  #{$root}__preview-image {
+    max-width: 20rem;
+    width: 100%;
+    margin-inline: auto;
+    aspect-ratio: 16/9;
+    object-fit: fill;
   }
 
   &__content {
