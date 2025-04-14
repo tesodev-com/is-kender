@@ -30,7 +30,7 @@
     </Button>
     <div class="file-uploader__content">
       <div class="file-uploader__actions">
-        <span class="file-uploader__primary-text">Yüklemek için tıkla </span>
+        <span class="file-uploader__primary-text">Yüklemek için tıkla</span>
         <span class="file-uploader__secondary-text">veya sürükleyip bırak</span>
       </div>
       <span class="file-uploader__description">{{ getDescription }}</span>
