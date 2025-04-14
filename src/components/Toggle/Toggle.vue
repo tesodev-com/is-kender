@@ -1,36 +1,45 @@
 <template>
   <div class="toggle-wrapper">
-    <div
+    <button
+      type="button"
       class="toggle"
-      :class="{ 'toggle-checked': modelValue, 'toggle-disabled': disabled }"
-      tabindex="0"
+      :class="[
+        `toggle-${size}`,
+        `toggle-thumb-${thumbShape}`,
+        {
+          'toggle-checked': modelValue,
+          'toggle-disabled': disabled,
+        },
+      ]"
+      :disabled="disabled"
+      @click="modelValue = !modelValue"
     >
       <input
-        :id="generateId"
-        v-model="modelValue"
+        :id="id"
         type="checkbox"
         class="toggle-input"
+        :checked="modelValue"
         :disabled="disabled"
       />
-    </div>
-    <div
-      v-if="label"
+    </button>
+    <label
+      v-if="label || description"
+      :for="id"
       class="toggle-label"
     >
-      <label
+      <span
         v-if="label"
         class="toggle-label-text"
-        :for="generateId"
       >
         {{ label }}
-      </label>
-      <p
+      </span>
+      <span
         v-if="description"
         class="toggle-label-description"
       >
         {{ description }}
-      </p>
-    </div>
+      </span>
+    </label>
   </div>
 </template>
 
@@ -39,10 +48,15 @@ import { computed } from 'vue';
 import type { ToggleProps } from './types';
 
 const modelValue = defineModel<boolean>({ required: true });
-defineProps<ToggleProps>();
-const generateId = computed(() => {
-  return `toggle-${Math.random().toString(36).substring(7)}`;
+withDefaults(defineProps<ToggleProps>(), {
+  disabled: false,
+  size: 'md',
+  label: undefined,
+  description: undefined,
+  thumbShape: 'circle',
 });
+
+const id = computed(() => `toggle-${Math.random().toString(36).substring(7)}`);
 </script>
 
 <style lang="scss" scoped src="./Toggle.style.scss"></style>
