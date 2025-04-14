@@ -51,13 +51,13 @@
             :value="rangeValues[0]"
             class="range-input range-input-min"
             @input="handleRangeInput(0, $event)"
-            @mouseenter="isThumbActive = true"
-            @mouseover="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseenter="handleThumbActive(true)"
+            @mouseover="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value current-value-min"
@@ -79,13 +79,13 @@
             :value="rangeValues[1]"
             class="range-input range-input-max"
             @input="handleRangeInput(1, $event)"
-            @mouseover="isThumbActive = true"
-            @mouseenter="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseover="handleThumbActive(true)"
+            @mouseenter="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value current-value-max"
@@ -109,13 +109,13 @@
             :value="currentValue"
             class="range-input"
             @input="handleInput"
-            @mouseenter="isThumbActive = true"
-            @mouseover="isThumbActive = true"
-            @mouseleave="isThumbActive = false"
-            @touchstart="isThumbActive = true"
-            @touchend="isThumbActive = false"
-            @focus="isThumbActive = true"
-            @blur="isThumbActive = false"
+            @mouseenter="handleThumbActive(true)"
+            @mouseover="handleThumbActive(true)"
+            @mouseleave="handleThumbActive(false)"
+            @touchstart="handleThumbActive(true)"
+            @touchend="handleThumbActive(false)"
+            @focus="handleThumbActive(true)"
+            @blur="handleThumbActive(false)"
           />
           <div
             class="current-value"
@@ -143,7 +143,10 @@
 // imports
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { RangeSliderEmits, RangeSliderProps } from './types';
+
 import { clampValue, formatWithUnit, parseRangeValues, parseValue, roundToStep, scaleValue } from './utils';
+
+// composables
 
 // interfaces & types
 
@@ -172,11 +175,11 @@ const emit = defineEmits<RangeSliderEmits>();
 
 // states (refs and reactives)
 const rangeValues = ref<[number, number]>([props.min, props.max]);
-const isThumbActive = ref(false);
+
 const sliderContainer = useTemplateRef<HTMLElement>('sliderContainerRef');
 const containerWidth = ref(0);
-const isMounted = ref(false);
 const resizeObserver = ref<ResizeObserver | null>(null);
+const isThumbActive = ref<boolean>(false);
 
 // computed
 const currentValue = computed(() => {
@@ -203,8 +206,6 @@ const cssVars = computed(() => ({
 }));
 
 const tooltipPositions = computed(() => {
-  if (!isMounted.value) return { min: '0px', max: '0px', single: '0px' };
-
   const availableWidth = containerWidth.value || 100;
 
   const minTooltipLeft = SLIDER_PADDING + minProgress.value * availableWidth;
@@ -220,10 +221,9 @@ const tooltipPositions = computed(() => {
 
 // lifecycles
 onMounted(async () => {
-  initializeRangeValues();
   await nextTick();
+  initializeRangeValues();
   updateContainerWidth();
-  isMounted.value = true;
 
   resizeObserver.value = new ResizeObserver(() => {
     updateContainerWidth();
@@ -241,6 +241,10 @@ onBeforeUnmount(() => {
 });
 
 // methods
+
+const handleThumbActive = (active: boolean) => {
+  isThumbActive.value = active;
+};
 const initializeRangeValues = () => {
   if (!modelValue.value) {
     rangeValues.value = [props.min, props.max];
@@ -261,9 +265,7 @@ const updateContainerWidth = () => {
 
 // watchers
 watch([progress, minProgress, maxProgress], () => {
-  if (isMounted.value) {
-    updateContainerWidth();
-  }
+  updateContainerWidth();
 });
 
 watch(
@@ -321,16 +323,6 @@ watch([() => props.min, () => props.max], ([newMin, newMax], [oldMin, oldMax]) =
     emit('update:modelValue', finalValue);
   }
 });
-
-watch(
-  () => modelValue.value,
-  newValue => {
-    if (props.isRange && newValue) {
-      initializeRangeValues();
-    }
-  },
-  { immediate: true }
-);
 
 watch(
   () => props.isRange,
