@@ -1,6 +1,6 @@
 <template>
   <div class="color-picker-container">
-    <div ref="buttonRef">
+    <div ref="pickerButtonRef">
       <Button
         variant="outline"
         color="dark"
@@ -22,7 +22,7 @@
     <Teleport to="body">
       <div
         v-if="isOpen"
-        ref="popupRef"
+        ref="pickerPopupRef"
         class="color-picker-popup"
         :class="{ draggable: props.isDraggable, 'is-dragging': isDragging }"
         :style="props.isDraggable ? draggableStyle : positionStyles"
@@ -323,8 +323,8 @@ const hueSlider = ref<HTMLElement | null>(null);
 const alphaSlider = ref<HTMLElement | null>(null);
 const bodyRef = ref<HTMLElement | null>(null);
 const headerRef = ref<HTMLElement | null>(null);
-const buttonRef = useTemplateRef<HTMLElement | null>('buttonRef');
-const popupRef = useTemplateRef<HTMLElement | null>('popupRef');
+const buttonRef = useTemplateRef<HTMLElement | null>('pickerButtonRef');
+const popupRef = useTemplateRef<HTMLElement | null>('pickerPopupRef');
 
 // 📌 6. Composables
 const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
