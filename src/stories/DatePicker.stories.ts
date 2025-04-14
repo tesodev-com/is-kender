@@ -23,6 +23,16 @@ const meta: Meta<typeof DatePicker> = {
     inline: {
       control: 'boolean',
     },
+    min: {
+      control: 'date',
+    },
+    max: {
+      control: 'date',
+    },
+    weekStartDay: {
+      control: 'select',
+      options: ['monday', 'sunday'],
+    },
   },
 };
 
@@ -31,6 +41,23 @@ export default meta;
 type Story = StoryObj<typeof DatePicker>;
 export const Default: Story = {
   args: {},
+  render: args => ({
+    components: { DatePicker },
+    setup() {
+      const modelValue = ref();
+      return { args, modelValue };
+    },
+    template: '<DatePicker v-bind="args" v-model="modelValue" />',
+  }),
+};
+export const Inline: Story = {
+  args: {
+    inline: true,
+    actionBar: true,
+    selectionMode: 'range',
+    selectionItems: ['today', 'yesterday', 'thisWeek', 'lastWeek', 'thisMonth', 'lastMonth', 'thisYear', 'lastYear'],
+    multipleMonth: true,
+  },
   render: args => ({
     components: { DatePicker },
     setup() {

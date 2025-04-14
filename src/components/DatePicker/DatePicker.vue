@@ -72,7 +72,7 @@
 import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { Calendar, QuickSelection, type DateModel } from './SubComponents';
+import { Calendar, QuickSelection, type CalendarProps, type DateModel } from './SubComponents';
 import type { DatePickerEmits, DatePickerProps } from './types';
 import Utils from './utils';
 // interfaces & types
@@ -85,6 +85,7 @@ import Utils from './utils';
 const props = withDefaults(defineProps<DatePickerProps>(), {
   selectionItems: () => [],
   selectionMode: 'single',
+  weekStartDay: 'monday',
 });
 const modelValue = defineModel<DateModel>();
 // defineEmits
@@ -126,29 +127,31 @@ const calendarList = computed(() => {
     min: props.min,
     max: props.max,
     disabledDates: props.disabledDates,
+    weekStartDay: props.weekStartDay,
     events: {
-      onPrev: onPrev,
-      onNext: onNext,
+      onPrev,
+      onNext,
+      onRenderDate,
     },
-  };
+  } as Partial<CalendarProps>;
   const calendars = [
     {
       id: 'start',
       showPrevIcon: true,
       showNextIcon: !props.multipleMonth,
-      calendarDate: calendarVisibleDates.value.start,
+      initialDate: calendarVisibleDates.value.start,
       ...commonProps,
     },
     {
       id: 'end',
       showPrevIcon: !props.multipleMonth,
       showNextIcon: true,
-      calendarDate: calendarVisibleDates.value.end,
+      initialDate: calendarVisibleDates.value.end,
       ...commonProps,
     },
   ];
   if (!props.multipleMonth) calendars.pop();
-  return calendars;
+  return calendars as CalendarProps[];
 });
 // watchers
 
@@ -165,6 +168,13 @@ function onPrev() {
 }
 function onNext() {
   visibleDate.value = Utils.addMonths(visibleDate.value, 1);
+}
+function onRenderDate(id: CalendarProps['id'], date: Date) {
+  if (id === 'start') {
+    visibleDate.value = date;
+  } else {
+    visibleDate.value = Utils.addMonths(date, -1);
+  }
 }
 function onClear() {
   modelValue.value = null;

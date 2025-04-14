@@ -11,17 +11,18 @@ export interface Day {
 }
 
 export interface CalendarProps {
-  id?: string;
-  calendarDate: Date;
-  showPrevIcon?: boolean;
-  showNextIcon?: boolean;
-  events: {
-    onPrev: () => void;
-    onNext: () => void;
-  };
-  firstDayOfWeek?: 'monday' | 'sunday';
+  weekStartDay?: 'monday' | 'sunday';
   selectionMode?: 'single' | 'multiple' | 'range';
   min?: Date | string;
   max?: Date | string;
   disabledDates?: Array<Date | string>;
+  id: 'start' | 'end';
+  showPrevIcon?: boolean;
+  showNextIcon?: boolean;
+  initialDate: Date;
+  events: {
+    onPrev: () => void;
+    onNext: () => void;
+    onRenderDate: (id: 'start' | 'end', date: Date) => void;
+  };
 }
