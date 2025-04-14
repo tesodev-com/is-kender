@@ -1,40 +1,41 @@
-@use 'sass:map';
+@use "sass:map";
 
 $sizes: (
-  'sm': (
+  "sm": (
     width: 1.75rem,
     height: 1rem,
     handle-width: 0.75rem,
     handle-height: 0.75rem,
   ),
-  'md': (
+  "md": (
     width: 2rem,
     height: 1.25rem,
     handle-width: 1rem,
     handle-height: 1rem,
   ),
-  'lg': (
+  "lg": (
     width: 2.5rem,
     height: 1.5rem,
     handle-width: 1.25rem,
     handle-height: 1.25rem,
   ),
-  'xl': (
+  "xl": (
     width: 3rem,
     height: 1.75rem,
     handle-width: 1.5rem,
     handle-height: 1.5rem,
   ),
-  '2xl': (
+  "2xl": (
     width: 3.5rem,
     height: 2rem,
     handle-width: 1.75rem,
     handle-height: 1.75rem,
-  )
+  ),
 );
 
 @mixin toggle-size($size) {
   $sizeMap: map.get($sizes, $size);
+
   width: map.get($sizeMap, width);
   height: map.get($sizeMap, height);
 
@@ -44,7 +45,11 @@ $sizes: (
   }
 
   &.toggle-checked::after {
-    transform: translateX(calc(#{map.get($sizeMap, width)} - #{map.get($sizeMap, handle-width)} - 4px));
+    transform: translateX(
+      calc(
+        #{map.get($sizeMap, width)} - #{map.get($sizeMap, handle-width)} - 4px
+      )
+    );
   }
 }
 
@@ -99,7 +104,7 @@ $sizes: (
 
   &.toggle-thumb-square {
     border-radius: 6px;
-    
+
     &::after {
       border-radius: 4px;
     }
@@ -107,35 +112,56 @@ $sizes: (
 
   &.toggle-thumb-circle {
     border-radius: 999px;
-    
+
     &::after {
       border-radius: 50%;
     }
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px $white, 0 0 0 4px $primary-500;
+    box-shadow:
+      0 0 0 2px $white,
+      0 0 0 4px $primary-500;
   }
 
-  &.toggle-sm { 
-    @include toggle-size('sm');
-    + .toggle-label { @include toggle-text-size('sm'); }
+  &.toggle-sm {
+    @include toggle-size("sm");
+
+    + .toggle-label {
+      @include toggle-text-size("sm");
+    }
   }
-  &.toggle-md { 
-    @include toggle-size('md');
-    + .toggle-label { @include toggle-text-size('md'); }
+
+  &.toggle-md {
+    @include toggle-size("md");
+
+    + .toggle-label {
+      @include toggle-text-size("md");
+    }
   }
-  &.toggle-lg { 
-    @include toggle-size('lg');
-    + .toggle-label { @include toggle-text-size('lg'); }
+
+  &.toggle-lg {
+    @include toggle-size("lg");
+
+    + .toggle-label {
+      @include toggle-text-size("lg");
+    }
   }
-  &.toggle-xl { 
-    @include toggle-size('xl');
-    + .toggle-label { @include toggle-text-size('xl'); }
+
+  &.toggle-xl {
+    @include toggle-size("xl");
+
+    + .toggle-label {
+      @include toggle-text-size("xl");
+    }
   }
-  &.toggle-2xl { 
-    @include toggle-size('2xl');
-    + .toggle-label { @include toggle-text-size('2xl'); }
+
+  &.toggle-2xl {
+    @include toggle-size("2xl");
+
+    + .toggle-label {
+      @include toggle-text-size("2xl");
+    }
   }
 }
 
@@ -217,5 +243,4 @@ $sizes: (
 
 .toggle.toggle-disabled + .toggle-label {
   cursor: not-allowed;
-
 }
