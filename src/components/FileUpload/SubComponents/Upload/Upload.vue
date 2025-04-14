@@ -60,8 +60,8 @@ const props = defineProps<UploadProps>();
 const emit = defineEmits<UploadEmits>();
 // states (refs and reactives)
 const errorList = ref<FileErrorMessage[]>([]);
-const uploadContainerRef = useTemplateRef('uploadContainerRef');
-const uploadInputRef = useTemplateRef('uploadInputRef');
+const uploadContainer = useTemplateRef('uploadContainerRef');
+const uploadInput = useTemplateRef('uploadInputRef');
 const isDragActive = ref(false);
 // computed
 const getDescription = computed(() => {
@@ -71,33 +71,33 @@ const getDescription = computed(() => {
 
 // lifecycles
 onMounted(() => {
-  if (uploadContainerRef.value) {
-    uploadContainerRef.value.addEventListener('dragenter', preventDefault);
-    uploadContainerRef.value.addEventListener('dragover', preventDefault);
-    uploadContainerRef.value.addEventListener('dragleave', preventDefault);
-    uploadContainerRef.value.addEventListener('drop', preventDefault);
+  if (uploadContainer.value) {
+    uploadContainer.value.addEventListener('dragenter', preventDefault);
+    uploadContainer.value.addEventListener('dragover', preventDefault);
+    uploadContainer.value.addEventListener('dragleave', preventDefault);
+    uploadContainer.value.addEventListener('drop', preventDefault);
   }
 });
 onBeforeUnmount(() => {
-  if (uploadContainerRef.value) {
-    uploadContainerRef.value.removeEventListener('dragenter', preventDefault);
-    uploadContainerRef.value.removeEventListener('dragover', preventDefault);
-    uploadContainerRef.value.removeEventListener('dragleave', preventDefault);
-    uploadContainerRef.value.removeEventListener('drop', preventDefault);
+  if (uploadContainer.value) {
+    uploadContainer.value.removeEventListener('dragenter', preventDefault);
+    uploadContainer.value.removeEventListener('dragover', preventDefault);
+    uploadContainer.value.removeEventListener('dragleave', preventDefault);
+    uploadContainer.value.removeEventListener('drop', preventDefault);
   }
 });
 // methods
 function onClick() {
-  if (uploadInputRef.value) {
-    uploadInputRef.value.click();
+  if (uploadInput.value) {
+    uploadInput.value.click();
   }
 }
 function onUpload(event: Event | DragEvent) {
   const files = getFiles(event);
   emit('onUpload', files);
   emit('onError', errorList.value || []);
-  if (uploadInputRef.value) {
-    uploadInputRef.value.value = '';
+  if (uploadInput.value) {
+    uploadInput.value.value = '';
     errorList.value = [];
   }
 }

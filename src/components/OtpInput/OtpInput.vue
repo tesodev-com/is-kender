@@ -13,7 +13,7 @@
       </slot>
     </label>
     <div
-      ref="inputContainer"
+      ref="inputContainerRef"
       class="otp-inputs"
       @paste="handlePaste"
     >
@@ -76,7 +76,7 @@ const slots = defineSlots<OtpInputSlots>();
 const inputId = useId();
 
 const otp = defineModel<string>({ required: true });
-const inputContainer = useTemplateRef('inputContainer');
+const inputContainer = useTemplateRef('inputContainerRef');
 
 const inputType = computed(() => {
   return props.isPassword ? 'password' : 'text';
