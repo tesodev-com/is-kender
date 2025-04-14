@@ -85,6 +85,7 @@ import Utils from './utils';
 const props = withDefaults(defineProps<DatePickerProps>(), {
   selectionItems: () => [],
   selectionMode: 'single',
+  weekStartDay: 'monday',
 });
 const modelValue = defineModel<DateModel>();
 // defineEmits
@@ -126,25 +127,26 @@ const calendarList = computed(() => {
     min: props.min,
     max: props.max,
     disabledDates: props.disabledDates,
+    weekStartDay: props.weekStartDay,
     events: {
       onPrev,
       onNext,
       onRenderDate,
     },
-  };
+  } as Partial<CalendarProps>;
   const calendars = [
     {
       id: 'start',
       showPrevIcon: true,
       showNextIcon: !props.multipleMonth,
-      calendarDate: calendarVisibleDates.value.start,
+      initialDate: calendarVisibleDates.value.start,
       ...commonProps,
     },
     {
       id: 'end',
       showPrevIcon: !props.multipleMonth,
       showNextIcon: true,
-      calendarDate: calendarVisibleDates.value.end,
+      initialDate: calendarVisibleDates.value.end,
       ...commonProps,
     },
   ];

@@ -10,32 +10,32 @@
       ></Svg>
       <span class="calendar-navigation-text">
         <Button
-          v-if="renderCalendarType === 'date'"
+          v-if="calendarViewMode === 'date'"
           color="secondary"
           variant="ghost"
           size="sm"
-          @click="renderCalendarType = 'month'"
+          @click="calendarViewMode = 'month'"
         >
-          {{ visibleDateText.monthText }}
+          {{ displayDateText.monthText }}
         </Button>
         <Button
           color="secondary"
           variant="ghost"
           size="sm"
-          @click="renderCalendarType = 'year'"
+          @click="calendarViewMode = 'year'"
         >
-          {{ visibleDateText.yearText }}
+          {{ displayDateText.yearText }}
         </Button>
       </span>
       <Svg
-        v-if="showNextIcon || ['month', 'year'].includes(renderCalendarType)"
+        v-if="showNextIcon || ['month', 'year'].includes(calendarViewMode)"
         size="1.5rem"
         class="calendar-navigation-icon"
         :src="chevronRightIcon"
         @click="onNext"
       ></Svg>
     </div>
-    <template v-if="renderCalendarType === 'date'">
+    <template v-if="calendarViewMode === 'date'">
       <div class="calendar-week-days">
         <span
           v-for="(day, index) in weekDays"
@@ -50,17 +50,17 @@
           v-for="(day, index) in monthDays"
           :key="index"
           class="calendar-cell"
-          :class="getDayCellClass(day)"
+          :class="getDateCellClassNames(day)"
           @click="onClick(day)"
         >
           <span class="calendar-cell-text">{{ day.text }}</span>
         </div>
       </div>
     </template>
-    <template v-else-if="renderCalendarType === 'month'">
+    <template v-else-if="calendarViewMode === 'month'">
       <div class="calendar-months">
         <div
-          v-for="(month, index) in visibleMonths"
+          v-for="(month, index) in monthList"
           :key="index"
         >
           <Button
@@ -74,10 +74,10 @@
         </div>
       </div>
     </template>
-    <template v-else-if="renderCalendarType === 'year'">
+    <template v-else-if="calendarViewMode === 'year'">
       <div class="calendar-years">
         <div
-          v-for="(year, index) in visibleYears"
+          v-for="(year, index) in yearList"
           :key="index"
         >
           <Button
@@ -112,22 +112,33 @@ import type { CalendarProps, DateModel, Day } from './types';
 
 // props
 const props = withDefaults(defineProps<CalendarProps>(), {
-  calendarDate: () => new Date(),
-  firstDayOfWeek: 'monday',
+  initialDate: () => new Date(),
+  weekStartDay: 'monday',
 });
 const modelValue = defineModel<DateModel>();
 // defineEmits
 
 // states (refs and reactives)
-const visibleDate = ref<Date>(new Date());
-const renderCalendarType = ref<'date' | 'month' | 'year'>('date');
+const currentDisplayDate = ref<Date>(new Date());
+const calendarViewMode = ref<'date' | 'month' | 'year'>('date');
 // computed
-const weekDays = computed(() => DAYS);
+const weekDays = computed(() => {
+  const days: string[] = [];
+  const isMondayStart = props.weekStartDay === 'monday';
+  for (let i = 0; i < DAYS.length; i++) {
+    if (isMondayStart) {
+      days.push(DAYS[i]);
+    } else {
+      days.push(DAYS[(i + 6) % 7]);
+    }
+  }
+  return days;
+});
 const monthDays = computed(() => {
   const days: Day[] = [];
-  const activeMonth = visibleDate.value.getMonth();
-  const activeYear = visibleDate.value.getFullYear();
-  const isMondayStart = props.firstDayOfWeek === 'monday';
+  const activeMonth = currentDisplayDate.value.getMonth();
+  const activeYear = currentDisplayDate.value.getFullYear();
+  const isMondayStart = props.weekStartDay === 'monday';
 
   const firstDateOfMonth = new Date(activeYear, activeMonth, 1);
   let firstWeekDay = firstDateOfMonth.getDay();
@@ -147,7 +158,7 @@ const monthDays = computed(() => {
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
       outOfMonth: true,
-      isDisabled: checkIsDisabled(date),
+      isDisabled: isDateDisabled(date),
     });
   }
 
@@ -161,7 +172,7 @@ const monthDays = computed(() => {
       isToday: Boolean(Utils.isSameDay(date, new Date())),
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
-      isDisabled: checkIsDisabled(date),
+      isDisabled: isDateDisabled(date),
     });
   }
 
@@ -178,54 +189,54 @@ const monthDays = computed(() => {
       beginOfWeek: weekDay === 0,
       endOfWeek: weekDay === 6,
       outOfMonth: true,
-      isDisabled: checkIsDisabled(date),
+      isDisabled: isDateDisabled(date),
     });
   }
 
   return days;
 });
-const visibleMonths = computed(() => {
+const monthList = computed(() => {
   const months: Day[] = [];
-  const activeYear = visibleDate.value.getFullYear();
+  const activeYear = currentDisplayDate.value.getFullYear();
   for (let i = 0; i < MONTHS.length; i++) {
     const date = new Date(activeYear, i, 1);
     months.push({
       date,
       text: MONTHS[i],
-      isDisabled: checkIsDisabled(date),
+      isDisabled: isDateDisabled(date),
     });
   }
   return months;
 });
-const visibleYears = computed(() => {
+const yearList = computed(() => {
   const years: Day[] = [];
-  const activeYear = visibleDate.value.getFullYear();
+  const activeYear = currentDisplayDate.value.getFullYear();
   const startYear = Math.floor(activeYear / 10) * 10;
   for (let i = startYear; i < startYear + 10; i++) {
     const date = new Date(i, 0, 1);
     years.push({
       date,
       text: i.toString(),
-      isDisabled: checkIsDisabled(date),
+      isDisabled: isDateDisabled(date),
     });
   }
   return years;
 });
-const visibleDateText = computed(() => {
-  const dateTexts = Utils.formatDate(visibleDate.value, { month: 'long', year: 'numeric' }).split(' ');
-  const startYear = Math.floor(visibleDate.value.getFullYear() / 10) * 10;
+const displayDateText = computed(() => {
+  const dateTexts = Utils.formatDate(currentDisplayDate.value, { month: 'long', year: 'numeric' }).split(' ');
+  const startYear = Math.floor(currentDisplayDate.value.getFullYear() / 10) * 10;
   const endYear = startYear + 9;
   return {
     monthText: dateTexts[0],
-    yearText: renderCalendarType.value === 'year' ? `${startYear} - ${endYear}` : dateTexts[1],
+    yearText: calendarViewMode.value === 'year' ? `${startYear} - ${endYear}` : dateTexts[1],
   };
 });
 // watchers
 watch(
-  () => props.calendarDate,
+  () => props.initialDate,
   newVal => {
     if (newVal) {
-      visibleDate.value = new Date(newVal);
+      currentDisplayDate.value = new Date(newVal);
     }
   },
   { immediate: true }
@@ -234,38 +245,38 @@ watch(
 
 // methods
 function onPrev() {
-  if (renderCalendarType.value === 'month') {
-    visibleDate.value = Utils.addYears(visibleDate.value, -1);
-  } else if (renderCalendarType.value === 'year') {
-    const [startYear] = visibleDateText.value.yearText.split(' - ').map(Number);
+  if (calendarViewMode.value === 'month') {
+    currentDisplayDate.value = Utils.addYears(currentDisplayDate.value, -1);
+  } else if (calendarViewMode.value === 'year') {
+    const [startYear] = displayDateText.value.yearText.split(' - ').map(Number);
     const newStartYear = startYear - 10;
-    visibleDate.value = new Date(newStartYear, 0, 1);
+    currentDisplayDate.value = new Date(newStartYear, 0, 1);
   } else {
     props.events.onPrev();
   }
 }
 function onNext() {
-  if (renderCalendarType.value === 'month') {
-    visibleDate.value = Utils.addYears(visibleDate.value, 1);
-  } else if (renderCalendarType.value === 'year') {
-    const [startYear] = visibleDateText.value.yearText.split(' - ').map(Number);
+  if (calendarViewMode.value === 'month') {
+    currentDisplayDate.value = Utils.addYears(currentDisplayDate.value, 1);
+  } else if (calendarViewMode.value === 'year') {
+    const [startYear] = displayDateText.value.yearText.split(' - ').map(Number);
     const newStartYear = startYear + 10;
-    visibleDate.value = new Date(newStartYear, 0, 1);
+    currentDisplayDate.value = new Date(newStartYear, 0, 1);
   } else {
     props.events.onNext();
   }
 }
-function onRenderDate(type: typeof renderCalendarType.value, value: Date) {
+function onRenderDate(type: typeof calendarViewMode.value, value: Date) {
   if (type === 'month') {
-    renderCalendarType.value = 'date';
-    visibleDate.value = value;
+    calendarViewMode.value = 'date';
+    currentDisplayDate.value = value;
   } else if (type === 'year') {
-    renderCalendarType.value = 'month';
-    visibleDate.value = value;
+    calendarViewMode.value = 'month';
+    currentDisplayDate.value = value;
   } else {
-    visibleDate.value = value;
+    currentDisplayDate.value = value;
   }
-  props.events.onRenderDate(props.id, visibleDate.value);
+  props.events.onRenderDate(props.id, currentDisplayDate.value);
 }
 function onClick(selectedDay: Day) {
   let newModelValue;
@@ -301,10 +312,10 @@ function onClick(selectedDay: Day) {
   }
   modelValue.value = newModelValue;
 }
-function getDayCellClass(day: Day) {
+function getDateCellClassNames(day: Day) {
   const classes = {
     today: day.isToday,
-    active: checkIsActive(day),
+    active: isDateSelected(day),
     disabled: day.isDisabled,
     'begin-of-week': day.beginOfWeek,
     'end-of-week': day.endOfWeek,
@@ -321,14 +332,14 @@ function getDayCellClass(day: Day) {
 
   return classes;
 }
-function checkIsActive(day: Day) {
+function isDateSelected(day: Day) {
   if (Array.isArray(modelValue.value)) {
     return modelValue.value.includes(Utils.getString(day.date));
   } else if (typeof modelValue.value === 'string' || modelValue.value instanceof Date) {
     return Utils.isSameDay(day.date, modelValue.value);
   }
 }
-function checkIsDisabled(date: Date) {
+function isDateDisabled(date: Date) {
   const checkMin = props.min && Utils.isBefore(date, props.min);
   const checkMax = props.max && Utils.isAfter(date, props.max);
   const checkDisabled = props.disabledDates && props.disabledDates.some((disabledDate: Date | string) => Utils.isSameDay(date, disabledDate));

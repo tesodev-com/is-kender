@@ -42,7 +42,7 @@ vi.mock('../../utils', () => ({
 describe('Calendar', () => {
   const defaultProps: CalendarProps = {
     id: 'start',
-    calendarDate: new Date('2025-04-01'),
+    initialDate: new Date('2025-04-01'),
     events: {
       onPrev: vi.fn(),
       onNext: vi.fn(),
@@ -135,13 +135,13 @@ describe('Calendar', () => {
     });
 
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
-    expect(weekDays[0].text()).toBe('Pzt');
-    expect(weekDays[1].text()).toBe('Sal');
-    expect(weekDays[2].text()).toBe('Çar');
-    expect(weekDays[3].text()).toBe('Per');
-    expect(weekDays[4].text()).toBe('Cum');
-    expect(weekDays[5].text()).toBe('Cmt');
-    expect(weekDays[6].text()).toBe('Paz');
+    expect(weekDays[0].text()).toBe('Paz');
+    expect(weekDays[1].text()).toBe('Pzt');
+    expect(weekDays[2].text()).toBe('Sal');
+    expect(weekDays[3].text()).toBe('Çar');
+    expect(weekDays[4].text()).toBe('Per');
+    expect(weekDays[5].text()).toBe('Cum');
+    expect(weekDays[6].text()).toBe('Cmt');
   });
 
   it('renders month days correctly', () => {
@@ -217,7 +217,13 @@ describe('Calendar', () => {
     });
 
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
-    expect(weekDays[0].text()).toBe('Pzt');
+    expect(weekDays[0].text()).toBe('Paz');
+    expect(weekDays[1].text()).toBe('Pzt');
+    expect(weekDays[2].text()).toBe('Sal');
+    expect(weekDays[3].text()).toBe('Çar');
+    expect(weekDays[4].text()).toBe('Per');
+    expect(weekDays[5].text()).toBe('Cum');
+    expect(weekDays[6].text()).toBe('Cmt');
   });
 
   it('starts week on Sunday when firstDayOfWeek is sunday', () => {
@@ -229,6 +235,12 @@ describe('Calendar', () => {
     });
 
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
-    expect(weekDays[0].text()).toBe('Pzt'); // Since DAYS array is fixed to start with Monday
+    expect(weekDays[0].text()).toBe('Paz');
+    expect(weekDays[1].text()).toBe('Pzt');
+    expect(weekDays[2].text()).toBe('Sal');
+    expect(weekDays[3].text()).toBe('Çar');
+    expect(weekDays[4].text()).toBe('Per');
+    expect(weekDays[5].text()).toBe('Cum');
+    expect(weekDays[6].text()).toBe('Cmt');
   });
 });
