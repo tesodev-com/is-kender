@@ -1,8 +1,8 @@
 <template>
   <div
     ref="uploadContainerRef"
-    class="upload-container"
-    :class="{ 'upload-disabled': props.disabled }"
+    class="file-uploader"
+    :class="{ 'file-uploader--disabled': props.disabled, 'file-uploader--drag-active': isDragActive }"
     @click="onClick"
     @dragenter="onDragEnter"
     @dragleave="onDragLeave"
@@ -11,7 +11,7 @@
     <input
       ref="uploadInputRef"
       type="file"
-      class="upload-input"
+      class="file-uploader__input"
       :disabled="disabled"
       :multiple="multiple"
       :accept="accept"
@@ -21,19 +21,19 @@
       color="secondary"
       variant="outline"
       iconOnly
-      class="upload-button"
+      class="file-uploader__button"
     >
       <Svg
         :src="cloudUploadOutlineIcon"
         size="1.25rem"
       ></Svg>
     </Button>
-    <div class="message-container">
-      <div class="actions">
-        <span class="bold-message">Yüklemek için tıkla</span>
-        veya sürükleyip bırak
+    <div class="file-uploader__content">
+      <div class="file-uploader__actions">
+        <span class="file-uploader__primary-text">Yüklemek için tıkla </span>
+        <span class="file-uploader__secondary-text">veya sürükleyip bırak</span>
       </div>
-      <span class="description">{{ getDescription }}</span>
+      <span class="file-uploader__description">{{ getDescription }}</span>
     </div>
   </div>
 </template>
@@ -62,6 +62,7 @@ const emit = defineEmits<UploadEmits>();
 const errorList = ref<FileErrorMessage[]>([]);
 const uploadContainerRef = useTemplateRef('uploadContainerRef');
 const uploadInputRef = useTemplateRef('uploadInputRef');
+const isDragActive = ref(false);
 // computed
 const getDescription = computed(() => {
   return props.description || `${props.accept} ${props.maxSize ? ` (max. ${Utils.formatFileSize(props.maxSize)})` : ''}`;
@@ -102,21 +103,15 @@ function onUpload(event: Event | DragEvent) {
 }
 function onDragEnter() {
   if (props.disabled) return;
-  if (uploadContainerRef.value) {
-    uploadContainerRef.value.classList.add('drag-enter');
-  }
+  isDragActive.value = true;
 }
 function onDragLeave() {
   if (props.disabled) return;
-  if (uploadContainerRef.value) {
-    uploadContainerRef.value.classList.remove('drag-enter');
-  }
+  isDragActive.value = false;
 }
 function onDrop(event: DragEvent) {
   if (props.disabled) return;
-  if (uploadContainerRef.value) {
-    uploadContainerRef.value.classList.remove('drag-enter');
-  }
+  isDragActive.value = false;
   onUpload(event);
 }
 function getFiles(event: Event | DragEvent) {
