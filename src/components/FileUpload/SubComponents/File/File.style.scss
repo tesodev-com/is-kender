@@ -13,12 +13,6 @@
     width: 100%;
     flex-direction: row;
     align-items: stretch;
-
-    #{$root}__preview-icon,
-    #{$root}__preview-image {
-      width: 20rem;
-      height: 11.25rem;
-    }
   }
 
   &--row {
@@ -28,10 +22,14 @@
 
     #{$root}__preview-icon,
     #{$root}__preview-image {
-      width: 5rem;
-      height: 5rem;
       margin-inline: auto;
     }
+  }
+
+  #{$root}__preview-icon,
+  #{$root}__preview-image {
+    width: 20rem;
+    height: 11.25rem;
   }
 
   &__content {
