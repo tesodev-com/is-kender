@@ -8,45 +8,100 @@
         :src="chevronLeftIcon"
         @click="onPrev"
       ></Svg>
-      <span class="calendar-navigation-text">{{ monthText }} 2025</span>
+      <span class="calendar-navigation-text">
+        <Button
+          v-if="renderCalendarType === 'date'"
+          color="secondary"
+          variant="ghost"
+          size="sm"
+          @click="renderCalendarType = 'month'"
+        >
+          {{ visibleDateText.monthText }}
+        </Button>
+        <Button
+          color="secondary"
+          variant="ghost"
+          size="sm"
+          @click="renderCalendarType = 'year'"
+        >
+          {{ visibleDateText.yearText }}
+        </Button>
+      </span>
       <Svg
-        v-if="showNextIcon"
+        v-if="showNextIcon || ['month', 'year'].includes(renderCalendarType)"
         size="1.5rem"
         class="calendar-navigation-icon"
         :src="chevronRightIcon"
         @click="onNext"
       ></Svg>
     </div>
-    <div class="calendar-week-days">
-      <span
-        v-for="(day, index) in weekDays"
-        :key="index"
-        class="calendar-cell"
-      >
-        {{ day }}
-      </span>
-    </div>
-    <div class="calendar-month-days">
-      <div
-        v-for="(day, index) in monthDays"
-        :key="index"
-        class="calendar-cell"
-        :class="getDayCellClass(day)"
-        @click="onClick(day)"
-      >
-        <span class="calendar-cell-text">{{ day.text }}</span>
+    <template v-if="renderCalendarType === 'date'">
+      <div class="calendar-week-days">
+        <span
+          v-for="(day, index) in weekDays"
+          :key="index"
+          class="calendar-cell"
+        >
+          {{ day }}
+        </span>
       </div>
-    </div>
+      <div class="calendar-month-days">
+        <div
+          v-for="(day, index) in monthDays"
+          :key="index"
+          class="calendar-cell"
+          :class="getDayCellClass(day)"
+          @click="onClick(day)"
+        >
+          <span class="calendar-cell-text">{{ day.text }}</span>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="renderCalendarType === 'month'">
+      <div class="calendar-months">
+        <div
+          v-for="(month, index) in visibleMonths"
+          :key="index"
+        >
+          <Button
+            color="secondary"
+            variant="ghost"
+            fluid
+            @click="onRenderDate('month', month.date)"
+          >
+            {{ month.text }}
+          </Button>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="renderCalendarType === 'year'">
+      <div class="calendar-years">
+        <div
+          v-for="(year, index) in visibleYears"
+          :key="index"
+        >
+          <Button
+            color="secondary"
+            variant="ghost"
+            fluid
+            @click="onRenderDate('year', year.date)"
+          >
+            {{ year.text }}
+          </Button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
 import { chevronLeftIcon, chevronRightIcon } from '@/assets/icons';
+import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Utils from '../../utils';
-import { DAYS } from './constants';
+import { DAYS, MONTHS } from './constants';
 import type { CalendarProps, DateModel, Day } from './types';
 
 // interfaces & types
@@ -64,13 +119,14 @@ const modelValue = defineModel<DateModel>();
 // defineEmits
 
 // states (refs and reactives)
-
+const visibleDate = ref<Date>(new Date());
+const renderCalendarType = ref<'date' | 'month' | 'year'>('date');
 // computed
 const weekDays = computed(() => DAYS);
 const monthDays = computed(() => {
   const days: Day[] = [];
-  const activeMonth = props.calendarDate.getMonth();
-  const activeYear = props.calendarDate.getFullYear();
+  const activeMonth = visibleDate.value.getMonth();
+  const activeYear = visibleDate.value.getFullYear();
   const isMondayStart = props.firstDayOfWeek === 'monday';
 
   const firstDateOfMonth = new Date(activeYear, activeMonth, 1);
@@ -128,17 +184,88 @@ const monthDays = computed(() => {
 
   return days;
 });
-const monthText = computed(() => new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(props.calendarDate));
+const visibleMonths = computed(() => {
+  const months: Day[] = [];
+  const activeYear = visibleDate.value.getFullYear();
+  for (let i = 0; i < MONTHS.length; i++) {
+    const date = new Date(activeYear, i, 1);
+    months.push({
+      date,
+      text: MONTHS[i],
+      isDisabled: checkIsDisabled(date),
+    });
+  }
+  return months;
+});
+const visibleYears = computed(() => {
+  const years: Day[] = [];
+  const activeYear = visibleDate.value.getFullYear();
+  const startYear = Math.floor(activeYear / 10) * 10;
+  for (let i = startYear; i < startYear + 10; i++) {
+    const date = new Date(i, 0, 1);
+    years.push({
+      date,
+      text: i.toString(),
+      isDisabled: checkIsDisabled(date),
+    });
+  }
+  return years;
+});
+const visibleDateText = computed(() => {
+  const dateTexts = Utils.formatDate(visibleDate.value, { month: 'long', year: 'numeric' }).split(' ');
+  const startYear = Math.floor(visibleDate.value.getFullYear() / 10) * 10;
+  const endYear = startYear + 9;
+  return {
+    monthText: dateTexts[0],
+    yearText: renderCalendarType.value === 'year' ? `${startYear} - ${endYear}` : dateTexts[1],
+  };
+});
 // watchers
-
+watch(
+  () => props.calendarDate,
+  newVal => {
+    if (newVal) {
+      visibleDate.value = new Date(newVal);
+    }
+  },
+  { immediate: true }
+);
 // lifecycles
 
 // methods
 function onPrev() {
-  props.events.onPrev();
+  if (renderCalendarType.value === 'month') {
+    visibleDate.value = Utils.addYears(visibleDate.value, -1);
+  } else if (renderCalendarType.value === 'year') {
+    const [startYear] = visibleDateText.value.yearText.split(' - ').map(Number);
+    const newStartYear = startYear - 10;
+    visibleDate.value = new Date(newStartYear, 0, 1);
+  } else {
+    props.events.onPrev();
+  }
 }
 function onNext() {
-  props.events.onNext();
+  if (renderCalendarType.value === 'month') {
+    visibleDate.value = Utils.addYears(visibleDate.value, 1);
+  } else if (renderCalendarType.value === 'year') {
+    const [startYear] = visibleDateText.value.yearText.split(' - ').map(Number);
+    const newStartYear = startYear + 10;
+    visibleDate.value = new Date(newStartYear, 0, 1);
+  } else {
+    props.events.onNext();
+  }
+}
+function onRenderDate(type: typeof renderCalendarType.value, value: Date) {
+  if (type === 'month') {
+    renderCalendarType.value = 'date';
+    visibleDate.value = value;
+  } else if (type === 'year') {
+    renderCalendarType.value = 'month';
+    visibleDate.value = value;
+  } else {
+    visibleDate.value = value;
+  }
+  props.events.onRenderDate(props.id, visibleDate.value);
 }
 function onClick(selectedDay: Day) {
   let newModelValue;

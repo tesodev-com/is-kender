@@ -30,15 +30,23 @@ vi.mock('../../utils', () => ({
       }
       return [value, null];
     }),
+    formatDate: vi.fn(date => {
+      const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+      const month = monthNames[date.getMonth()];
+      const year = date.getFullYear();
+      return `${month} ${year}`;
+    }),
   },
 }));
 
 describe('Calendar', () => {
   const defaultProps: CalendarProps = {
-    calendarDate: new Date('2024-04-01'),
+    id: 'start',
+    calendarDate: new Date('2025-04-01'),
     events: {
       onPrev: vi.fn(),
       onNext: vi.fn(),
+      onRenderDate: vi.fn(),
     },
   };
 
@@ -58,7 +66,7 @@ describe('Calendar', () => {
       props: defaultProps,
     });
 
-    expect(wrapper.find('.calendar-navigation-text').text()).toBe('Nisan 2025');
+    expect(wrapper.find('.calendar-navigation-text').text()).toBe('Nisan2025');
   });
 
   it('shows navigation icons when showPrevIcon and showNextIcon are true', () => {
@@ -178,7 +186,7 @@ describe('Calendar', () => {
   });
 
   it('disables specific dates', () => {
-    const disabledDate = new Date('2024-04-15');
+    const disabledDate = new Date('2025-04-15');
 
     const wrapper = mount(Calendar, {
       props: {
@@ -187,9 +195,17 @@ describe('Calendar', () => {
       },
     });
 
-    // Find all disabled days
-    const disabledDays = wrapper.findAll('.calendar-cell').filter(cell => cell.classes('disabled'));
-    expect(disabledDays.length).toBeGreaterThan(0);
+    // Find all cells with text content '15'
+    const cells = wrapper.findAll('.calendar-cell');
+    const targetCell = cells.find(cell => {
+      const text = cell.text();
+      return text.includes('15');
+    });
+
+    expect(targetCell).toBeDefined();
+    if (targetCell) {
+      expect(targetCell.classes('disabled')).toBe(true);
+    }
   });
 
   it('starts week on Monday when firstDayOfWeek is monday', () => {

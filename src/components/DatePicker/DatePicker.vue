@@ -72,7 +72,7 @@
 import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { Calendar, QuickSelection, type DateModel } from './SubComponents';
+import { Calendar, QuickSelection, type CalendarProps, type DateModel } from './SubComponents';
 import type { DatePickerEmits, DatePickerProps } from './types';
 import Utils from './utils';
 // interfaces & types
@@ -127,8 +127,9 @@ const calendarList = computed(() => {
     max: props.max,
     disabledDates: props.disabledDates,
     events: {
-      onPrev: onPrev,
-      onNext: onNext,
+      onPrev,
+      onNext,
+      onRenderDate,
     },
   };
   const calendars = [
@@ -148,7 +149,7 @@ const calendarList = computed(() => {
     },
   ];
   if (!props.multipleMonth) calendars.pop();
-  return calendars;
+  return calendars as CalendarProps[];
 });
 // watchers
 
@@ -165,6 +166,13 @@ function onPrev() {
 }
 function onNext() {
   visibleDate.value = Utils.addMonths(visibleDate.value, 1);
+}
+function onRenderDate(id: CalendarProps['id'], date: Date) {
+  if (id === 'start') {
+    visibleDate.value = date;
+  } else {
+    visibleDate.value = Utils.addMonths(date, -1);
+  }
 }
 function onClear() {
   modelValue.value = null;

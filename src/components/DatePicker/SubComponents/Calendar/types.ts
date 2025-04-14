@@ -11,13 +11,14 @@ export interface Day {
 }
 
 export interface CalendarProps {
-  id?: string;
+  id: 'start' | 'end';
   calendarDate: Date;
   showPrevIcon?: boolean;
   showNextIcon?: boolean;
   events: {
     onPrev: () => void;
     onNext: () => void;
+    onRenderDate: (id: 'start' | 'end', date: Date) => void;
   };
   firstDayOfWeek?: 'monday' | 'sunday';
   selectionMode?: 'single' | 'multiple' | 'range';
