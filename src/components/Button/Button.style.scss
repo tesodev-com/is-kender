@@ -55,7 +55,7 @@ $solidColors: (
       box-shadow: get-ring($primary-100),
     ),
     disabled: (
-      background: transparent,
+      background: $primary-200,
     ),
   ),
   secondary: (
@@ -73,7 +73,7 @@ $solidColors: (
       box-shadow: get-ring($primary-100),
     ),
     disabled: (
-      background: transparent,
+      background: $primary-25,
       color: $primary-300,
     ),
   ),
@@ -92,7 +92,7 @@ $solidColors: (
       box-shadow: get-ring($success-100),
     ),
     disabled: (
-      background: transparent,
+      background: $success-200,
     ),
   ),
   info: (
@@ -110,7 +110,7 @@ $solidColors: (
       box-shadow: get-ring($blue-light-100),
     ),
     disabled: (
-      background: transparent,
+      background: $blue-light-200,
     ),
   ),
   warning: (
@@ -128,7 +128,7 @@ $solidColors: (
       box-shadow: get-ring($warning-100),
     ),
     disabled: (
-      background: transparent,
+      background: $warning-200,
     ),
   ),
   danger: (
@@ -146,7 +146,7 @@ $solidColors: (
       box-shadow: get-ring($error-100),
     ),
     disabled: (
-      background: transparent,
+      background: $error-200,
     ),
   ),
   dark: (
@@ -164,7 +164,7 @@ $solidColors: (
       box-shadow: get-ring($gray-100),
     ),
     disabled: (
-      background: transparent,
+      background: $gray-200,
     ),
   ),
 );
@@ -185,7 +185,7 @@ $outlineColors: (
       box-shadow: get-ring($primary-100),
     ),
     disabled: (
-      background: transparent,
+      background: $primary-200,
     ),
   ),
   secondary: (
@@ -223,7 +223,7 @@ $outlineColors: (
       box-shadow: get-ring($success-100),
     ),
     disabled: (
-      background: transparent,
+      background: $success-200,
     ),
   ),
   info: (
@@ -242,7 +242,7 @@ $outlineColors: (
       box-shadow: get-ring($blue-light-100),
     ),
     disabled: (
-      background: transparent,
+      background: $blue-light-200,
     ),
   ),
   warning: (
@@ -261,7 +261,7 @@ $outlineColors: (
       box-shadow: get-ring($warning-100),
     ),
     disabled: (
-      background: transparent,
+      background: $warning-200,
     ),
   ),
   danger: (
@@ -280,7 +280,7 @@ $outlineColors: (
       box-shadow: get-ring($error-100),
     ),
     disabled: (
-      background: transparent,
+      background: $error-200,
     ),
   ),
   dark: (
@@ -299,7 +299,7 @@ $outlineColors: (
       box-shadow: get-ring($gray-100),
     ),
     disabled: (
-      background: transparent,
+      background: $gray-200,
     ),
   ),
 );
@@ -482,7 +482,6 @@ $variants: (
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
   }
 
   &-fluid {
