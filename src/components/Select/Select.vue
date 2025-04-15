@@ -17,7 +17,7 @@
         v-if="required"
         class="select-label-required"
       >
-        *
+        {{ props.requiredIndicator || '*' }}
       </span>
     </div>
     <div
@@ -61,21 +61,24 @@
           :style="dropdownPosition"
           @click="handleDropdownClick"
         >
-          <template v-if="isSearch && options.length > 0">
-            <input
-              v-model="searchModel"
-              placeholder="Search..."
-              class="select-dropdown-search"
-              @keydown="handleSearchKeydown"
-            />
-          </template>
+          <input
+            v-if="isSearch && options.length > 0"
+            v-model="searchModel"
+            :placeholder="props.searchPlaceholder || 'Search...'"
+            class="select-dropdown-search"
+            @keydown="handleSearchKeydown"
+          />
           <template v-if="!searchFilterList.length">
             <li class="select-dropdown-no-content">
-              <p>No options available</p>
+              <p>{{ props.noOptionsText || 'No options available' }}</p>
             </li>
           </template>
-          <template v-if="props.virtualScroll && searchFilterList.length">
-            <ul
+          <div
+            v-else-if="props.virtualScroll"
+            class="select-dropdown-options-container"
+            @scroll="handleScroll"
+          >
+            <div
               class="virtual-list"
               role="listbox"
               tabindex="-1"
@@ -116,50 +119,49 @@
                   :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
                 ></Svg>
               </li>
-            </ul>
-          </template>
-          <template v-else-if="searchFilterList.length">
-            <ul
-              class="select-list"
-              role="listbox"
-              tabindex="-1"
+            </div>
+          </div>
+          <ul
+            v-else
+            class="select-list"
+            role="listbox"
+            tabindex="-1"
+          >
+            <li
+              v-for="(option, index) in searchFilterList"
+              :key="option.value"
+              class="select-dropdown-item"
+              :class="getItemClasses(option, index)"
+              role="option"
+              :aria-selected="isSelected(option.value)"
+              :aria-disabled="option.disabled"
+              @click="selectOption(option)"
+              @mouseover="handleMouseover(index)"
             >
-              <li
-                v-for="(option, index) in searchFilterList"
-                :key="option.value"
-                class="select-dropdown-item"
-                :class="getItemClasses(option, index)"
-                role="option"
-                :aria-selected="isSelected(option.value)"
-                :aria-disabled="option.disabled"
-                @click="selectOption(option)"
-                @mouseover="handleMouseover(index)"
+              <div
+                v-if="option.slotKey"
+                class="select-dropdown-item-label"
               >
-                <div
-                  v-if="option.slotKey"
-                  class="select-dropdown-item-label"
-                >
-                  <slot
-                    :name="option.slotKey"
-                    v-bind="option"
-                  />
-                </div>
-                <p
-                  v-else
-                  class="select-dropdown-item-label"
-                >
-                  {{ option.label }}
-                </p>
-                <Svg
-                  v-if="isSelected(option.value)"
-                  :src="checkIcon"
-                  size="20"
-                  class="select-dropdown-item-icon"
-                  :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
-                ></Svg>
-              </li>
-            </ul>
-          </template>
+                <slot
+                  :name="option.slotKey"
+                  v-bind="option"
+                />
+              </div>
+              <p
+                v-else
+                class="select-dropdown-item-label"
+              >
+                {{ option.label }}
+              </p>
+              <Svg
+                v-if="isSelected(option.value)"
+                :src="checkIcon"
+                size="20"
+                class="select-dropdown-item-icon"
+                :class="[{ 'select-dropdown-item-icon-disabled': option.disabled }]"
+              ></Svg>
+            </li>
+          </ul>
         </div>
       </transition>
     </Teleport>
@@ -192,6 +194,9 @@ const props = withDefaults(defineProps<SelectProps>(), {
   itemHeight: 40,
   virtualScroll: false,
   virtualScrollBuffer: 3,
+  requiredIndicator: '*',
+  noOptionsText: 'No options available',
+  searchPlaceholder: 'Search...',
 });
 
 const selectId = useId();
@@ -236,7 +241,8 @@ const searchFilterList = computed(() => {
 });
 
 const virtualListHeight = computed(() => {
-  return props.virtualScroll ? searchFilterList.value.length * props.itemHeight : 0;
+  if (!props.virtualScroll) return 0;
+  return searchFilterList.value.length * props.itemHeight;
 });
 
 const visibleOptions = computed(() => {
@@ -527,7 +533,8 @@ function updateVisibleCount() {
 
 function handleScroll(event: Event) {
   if (!props.virtualScroll) return;
-  const scrollTop = (event.target as HTMLElement).scrollTop;
+  const target = event.target as HTMLElement;
+  const scrollTop = target.scrollTop;
   const newStartIndex = Math.floor(scrollTop / props.itemHeight);
   startIndex.value = Math.max(0, newStartIndex - props.virtualScrollBuffer);
   updateVisibleCount();
@@ -539,7 +546,8 @@ function getItemStyle(index: number) {
   return {
     position: 'absolute',
     top: `${absoluteIndex * props.itemHeight}px`,
-    left: '0px',
+    left: '0',
+    right: '0',
     height: `${props.itemHeight}px`,
   } as CSSProperties;
 }
