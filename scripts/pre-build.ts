@@ -20,13 +20,14 @@ function setPackageExport() {
 
 function setComponentIndex() {
   const folders = getFolders('src/components');
-  const indexContent = folders
-    .map(folder => {
-      if (excludeFolders.includes(folder)) return;
-      return `export { default as ${folder} } from 'library-components/${folder}';`;
-    })
-    .filter(Boolean)
-    .join('\n');
+  const indexContent =
+    folders
+      .map(folder => {
+        if (excludeFolders.includes(folder)) return;
+        return `export { default as ${folder} } from 'library-components/${folder}';`;
+      })
+      .filter(Boolean)
+      .join('\n') + '\n';
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
