@@ -1,11 +1,11 @@
 import fs from 'node:fs';
-import { getFolders, readPackageJson } from './utils.js';
+import { getFolders, readPackageJson } from './utils';
 
 const packageJson = readPackageJson();
-const excludeFolders = [];
+const excludeFolders: string[] = [];
 
 function setPackageExport() {
-  const folders = getFolders('src/components');
+  const folders = getFolders('src/components') as string[];
   const exports = packageJson.exports || {};
   folders.forEach(folder => {
     if (excludeFolders.includes(folder)) return;
@@ -30,5 +30,12 @@ function setComponentIndex() {
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
-setPackageExport();
-setComponentIndex();
+export default function preBuild() {
+  return {
+    name: 'pre-build',
+    buildStart() {
+      setPackageExport();
+      setComponentIndex();
+    },
+  };
+}

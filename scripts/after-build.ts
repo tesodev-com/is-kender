@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { getFolders } from './utils.js';
+import { getFolders } from './utils';
 
 function globalDTs() {
   const template = `
@@ -18,4 +18,11 @@ $componentList
   fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
 }
 
-globalDTs();
+export default function afterBuild() {
+  return {
+    name: 'after-build',
+    closeBundle() {
+      globalDTs();
+    },
+  };
+}

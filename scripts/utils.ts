@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-export function getFolders(path) {
+export function getFolders(path: string) {
   return fs.readdirSync(path).filter(file => fs.statSync(`${path}/${file}`).isDirectory());
 }
 
