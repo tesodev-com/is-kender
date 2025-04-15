@@ -48,9 +48,9 @@ $sizes: (
 
       &.error {
         border-color: #ff4d4f;
-        
+
         &:focus {
-          box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+          box-shadow: 0 0 0 2px rgb(255 77 79 / 20%);
         }
       }
 

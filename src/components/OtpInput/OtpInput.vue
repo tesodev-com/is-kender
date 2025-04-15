@@ -33,10 +33,7 @@
           :value="otpArray[index]"
           :placeholder="placeholder"
           class="otp-input"
-          :class="[
-            `otp-input-${size}`,
-            { 'error': error }
-          ]"
+          :class="[`otp-input-${size}`, { error: error }]"
           maxlength="1"
           autocomplete="one-time-code"
           @input="handleInput($event, index)"
