@@ -18,7 +18,9 @@ $componentList
   });
   const globalComponentsString = globalComponents.join('\n');
   const replacedTemplate = template.replace('$componentList', globalComponentsString);
-  fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
+  if (!fs.existsSync('./dist/main.d.ts')) {
+    fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
+  }
 }
 
 function setPackageExport() {
@@ -32,7 +34,9 @@ function setPackageExport() {
     };
   });
   packageJson.exports = exports;
-  fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
+  if (fs.existsSync('package.json')) {
+    fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
+  }
 }
 
 function setComponentIndex() {
@@ -45,7 +49,9 @@ function setComponentIndex() {
       })
       .filter(Boolean)
       .join('\n') + '\n';
-  fs.writeFileSync('src/components/index.ts', indexContent);
+  if (!fs.existsSync('src/components/index.ts')) {
+    fs.writeFileSync('src/components/index.ts', indexContent);
+  }
 }
 
 export default function libPlugin() {
