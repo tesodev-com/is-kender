@@ -4,6 +4,23 @@ import { getFolders, readPackageJson } from './utils';
 const packageJson = readPackageJson();
 const excludeFolders: string[] = [];
 
+function globalDTs() {
+  const template = `
+declare module 'vue' {
+  export interface GlobalComponents {
+$componentList
+  }
+}`;
+  const components = getFolders('./src/components');
+  const globalComponents = components.map(component => {
+    const componentName = component.charAt(0).toUpperCase() + component.slice(1);
+    return `    Lib${componentName}: typeof import('./components/${component}')['default']`;
+  });
+  const globalComponentsString = globalComponents.join('\n');
+  const replacedTemplate = template.replace('$componentList', globalComponentsString);
+  fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
+}
+
 function setPackageExport() {
   const folders = getFolders('src/components') as string[];
   const exports = packageJson.exports || {};
@@ -31,12 +48,15 @@ function setComponentIndex() {
   fs.writeFileSync('src/components/index.ts', indexContent);
 }
 
-export default function preBuild() {
+export default function libPlugin() {
   return {
-    name: 'pre-build',
+    name: 'lib-plugin',
     buildStart() {
       setPackageExport();
       setComponentIndex();
+    },
+    closeBundle() {
+      globalDTs();
     },
   };
 }

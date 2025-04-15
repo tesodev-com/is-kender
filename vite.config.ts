@@ -5,14 +5,13 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
-import { afterBuild, preBuild } from './scripts';
+import libPlugin from './scripts/plugin';
 
 export default defineConfig({
   plugins: [
     vue(),
     libInjectCss(),
-    preBuild(),
-    afterBuild(),
+    libPlugin(),
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
       cleanVueFileName: true,
