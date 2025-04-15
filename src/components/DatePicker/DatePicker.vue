@@ -6,6 +6,8 @@
       v-model="inputModelValue"
       readOnly
       fluid
+      :label="label"
+      :placeholder="placeholder"
       @click="onToggle"
     />
     <transition name="fade">

@@ -33,6 +33,12 @@ const meta: Meta<typeof DatePicker> = {
       control: 'select',
       options: ['monday', 'sunday'],
     },
+    label: {
+      control: 'text',
+    },
+    placeholder: {
+      control: 'text',
+    },
   },
 };
 
