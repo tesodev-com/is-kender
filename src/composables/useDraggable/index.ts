@@ -147,13 +147,19 @@ export interface UseDraggableOptions {
   buttons?: MaybeRefOrGetter<number[]>;
 }
 
+export interface UseDraggableReturn {
+  isDragging: Ref<boolean>;
+  position: Ref<Position>;
+  style: Ref<string>;
+}
+
 /**
  * Make elements draggable.
  *
  * @param target
  * @param options
  */
-export default function useDraggable(target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
+export default function useDraggable(target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}): UseDraggableReturn {
   const {
     pointerTypes,
     preventDefault,
@@ -275,5 +281,3 @@ export default function useDraggable(target: MaybeRefOrGetter<HTMLElement | SVGE
     style: computed(() => `left:${position.value.x}px;top:${position.value.y}px;`),
   };
 }
-
-export type UseDraggableReturn = ReturnType<typeof useDraggable>;
