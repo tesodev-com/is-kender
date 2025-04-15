@@ -283,7 +283,7 @@
 </template>
 
 <script setup lang="ts">
-// 📌 1. Imports (Libraries, Components, Utils)
+// imports
 import { colorizeIcon } from '@/assets/icons';
 import { Button, Svg, Text } from '@/components/';
 import useClickOutside from '@/composables/useClickOutside';
@@ -293,16 +293,16 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateR
 import { colorUtils } from './colorUtils';
 import type { ColorPickerProps } from './types';
 
-// 📌 2. Types & Interfaces
-// Types are imported from './types'
+// interfaces & types
 
-// 📌 3. Constants
+// constants
 const MAX_HEX_LENGTH = 7;
 const MAX_ALPHA_LENGTH = 3;
 const MAX_RGB_VALUE = 255;
 const MAX_HSB_VALUES = { h: 360, s: 100, b: 100 };
+// composable
 
-// 📌 4. Props & Emits
+// props
 const modelValue = defineModel<string | undefined>('modelValue', { default: undefined });
 const props = withDefaults(defineProps<Omit<ColorPickerProps, 'modelValue'>>(), {
   pickerPosition: 'right',
@@ -317,7 +317,9 @@ const props = withDefaults(defineProps<Omit<ColorPickerProps, 'modelValue'>>(), 
   }),
 });
 
-// 📌 5. DOM References
+// defineEmits
+
+// states (refs and reactives)
 const colorArea = ref<HTMLElement | null>(null);
 const hueSlider = ref<HTMLElement | null>(null);
 const alphaSlider = ref<HTMLElement | null>(null);
@@ -325,23 +327,6 @@ const bodyRef = ref<HTMLElement | null>(null);
 const headerRef = ref<HTMLElement | null>(null);
 const buttonRef = useTemplateRef<HTMLElement | null>('pickerButtonRef');
 const popupRef = useTemplateRef<HTMLElement | null>('pickerPopupRef');
-
-// 📌 6. Composables
-const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
-  initialValue: props.initialPosition,
-  containerElement: bodyRef,
-  handle: headerRef,
-  preventDefault: true,
-});
-
-useClickOutside([popupRef, buttonRef], () => {
-  if (isOpen.value) {
-    isOpen.value = false;
-    stopAllSelections();
-  }
-});
-
-// 📌 7. Reactive State
 const isOpen = ref(false);
 const isInitiallyUndefined = ref(modelValue.value === undefined);
 const currentFormat = ref(props.colorFormats[0]);
@@ -349,7 +334,6 @@ const isColorSelecting = ref(false);
 const isHueSelecting = ref(false);
 const isAlphaSelecting = ref(false);
 const isEyeDropperSupported = ref(false);
-
 const colorState = reactive({
   hex: '#000000',
   rgb: { r: 0, g: 0, b: 0 },
@@ -371,8 +355,20 @@ const positionStyles = reactive({
   right: '',
   bottom: '',
 });
+// computed
+const { style: draggableStyle, isDragging } = useDraggable(popupRef, {
+  initialValue: props.initialPosition,
+  containerElement: bodyRef,
+  handle: headerRef,
+  preventDefault: true,
+});
 
-// 📌 8. Computed Properties
+useClickOutside([popupRef, buttonRef], () => {
+  if (isOpen.value) {
+    isOpen.value = false;
+    stopAllSelections();
+  }
+});
 const colorFormats = computed(() => props.colorFormats);
 const suggestedColors = computed(() => props.suggestedColors);
 
@@ -439,8 +435,7 @@ const parseInitialColor = () => {
     }
   }
 };
-
-// 📌 9. Watchers
+// watchers
 watch(
   () => modelValue.value,
   newValue => {
@@ -450,8 +445,7 @@ watch(
   },
   { immediate: true }
 );
-
-// 📌 10. Lifecycle Hooks
+// lifecycles
 onMounted(() => {
   if (window.frameElement && window.parent) {
     bodyRef.value = window.parent.document.body as HTMLElement;
@@ -472,10 +466,8 @@ onUnmounted(() => {
   window.removeEventListener('scroll', updatePosition, true);
   stopAllSelections();
 });
-
-// 📌 11. Methods
-// Utility Methods
-const throttle = <T extends (...args: any[]) => void>(func: T, limit: number): T => {
+// methods
+function throttle<T extends (...args: any[]) => void>(func: T, limit: number): T {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let lastRan = 0;
 
@@ -498,9 +490,9 @@ const throttle = <T extends (...args: any[]) => void>(func: T, limit: number): T
       );
     }
   } as T;
-};
+}
 
-const updatePosition = () => {
+function updatePosition() {
   nextTick(() => {
     if (!popupRef.value || !buttonRef.value || !isOpen.value) return;
     const newPositionStyles = calculatePosition({
@@ -511,25 +503,25 @@ const updatePosition = () => {
     });
     Object.assign(positionStyles, newPositionStyles);
   });
-};
+}
 
 // Event Handlers
-const togglePicker = () => {
+function togglePicker() {
   isOpen.value = !isOpen.value;
   if (!isOpen.value) {
     stopAllSelections();
   }
   updatePosition();
-};
+}
 
-const handleMouseLeave = (event: MouseEvent) => {
+function handleMouseLeave(event: MouseEvent) {
   const pickerElement = document.querySelector('.color-picker-popup');
   if (pickerElement && !pickerElement.contains(event.relatedTarget as Node)) {
     stopAllSelections();
   }
-};
+}
 
-const stopAllSelections = () => {
+function stopAllSelections() {
   if (isColorSelecting.value) {
     isColorSelecting.value = false;
   }
@@ -539,10 +531,10 @@ const stopAllSelections = () => {
   if (isAlphaSelecting.value) {
     isAlphaSelecting.value = false;
   }
-};
+}
 
 // Color Selection Methods
-const startColorSelection = (event: MouseEvent | TouchEvent) => {
+function startColorSelection(event: MouseEvent | TouchEvent) {
   if (!colorArea.value) return;
   isColorSelecting.value = true;
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
@@ -597,9 +589,9 @@ const startColorSelection = (event: MouseEvent | TouchEvent) => {
   document.addEventListener('touchmove', handleColorUpdate);
   document.addEventListener('touchend', stopSelection);
   handleColorUpdate(event);
-};
+}
 
-const startHueSelection = (event: MouseEvent | TouchEvent) => {
+function startHueSelection(event: MouseEvent | TouchEvent) {
   if (!hueSlider.value) return;
   isHueSelecting.value = true;
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
@@ -642,9 +634,9 @@ const startHueSelection = (event: MouseEvent | TouchEvent) => {
   document.addEventListener('touchmove', handleHueUpdate);
   document.addEventListener('touchend', stopSelection);
   handleHueUpdate(event);
-};
+}
 
-const startAlphaSelection = (event: MouseEvent | TouchEvent) => {
+function startAlphaSelection(event: MouseEvent | TouchEvent) {
   if (!alphaSlider.value) return;
   isAlphaSelecting.value = true;
   if (isInitiallyUndefined.value) {
@@ -687,10 +679,10 @@ const startAlphaSelection = (event: MouseEvent | TouchEvent) => {
   document.addEventListener('touchmove', handleAlphaUpdate);
   document.addEventListener('touchend', stopSelection);
   handleAlphaUpdate(event);
-};
+}
 
 // Input Handlers
-const handleHexInput = (event: Event) => {
+function handleHexInput(event: Event) {
   const input = event.target as HTMLInputElement;
   tempValues.hex = input.value;
 
@@ -702,9 +694,9 @@ const handleHexInput = (event: Event) => {
   if (input.value.length > MAX_HEX_LENGTH) {
     input.value = input.value.slice(0, MAX_HEX_LENGTH);
   }
-};
+}
 
-const handleHexBlur = (event: Event) => {
+function handleHexBlur(event: Event) {
   const input = event.target as HTMLInputElement;
   const newHex = colorUtils.completeHex(input.value);
 
@@ -723,15 +715,15 @@ const handleHexBlur = (event: Event) => {
   }
 
   input.value = colorState.hex.replace('#', '');
-};
+}
 
-const handleRgbInput = (channel: 'r' | 'g' | 'b', event: Event) => {
+function handleRgbInput(channel: 'r' | 'g' | 'b', event: Event) {
   const input = event.target as HTMLInputElement;
   const value = Math.min(MAX_RGB_VALUE, Math.max(0, parseInt(input.value) || 0));
   tempValues.rgb[channel] = value;
-};
+}
 
-const handleRgbBlur = () => {
+function handleRgbBlur() {
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
     colorState.alpha = 100;
   }
@@ -741,15 +733,15 @@ const handleRgbBlur = () => {
   colorState.hex = colorUtils.rgbToHex(r, g, b);
   colorState.hsb = colorUtils.rgbToHsb(r, g, b);
   emitColorChange();
-};
+}
 
-const handleHsbInput = (channel: 'h' | 's' | 'b', event: Event) => {
+function handleHsbInput(channel: 'h' | 's' | 'b', event: Event) {
   const input = event.target as HTMLInputElement;
   const value = Math.min(MAX_HSB_VALUES[channel], Math.max(0, parseInt(input.value) || 0));
   tempValues.hsb[channel] = value;
-};
+}
 
-const handleHsbBlur = () => {
+function handleHsbBlur() {
   if (isInitiallyUndefined.value || (colorState.rgb.r === 0 && colorState.rgb.g === 0 && colorState.rgb.b === 0 && colorState.alpha === 0)) {
     colorState.alpha = 100;
   }
@@ -760,16 +752,16 @@ const handleHsbBlur = () => {
   colorState.rgb = rgb;
   colorState.hex = colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b);
   emitColorChange();
-};
+}
 
-const handleAlphaInput = (event: Event) => {
+function handleAlphaInput(event: Event) {
   const input = event.target as HTMLInputElement;
   if (input.value.length > MAX_ALPHA_LENGTH) {
     input.value = input.value.slice(0, MAX_ALPHA_LENGTH);
   }
-};
+}
 
-const handleAlphaBlur = (event: Event) => {
+function handleAlphaBlur(event: Event) {
   const input = event.target as HTMLInputElement;
   const value = parseInt(input.value) || 0;
   const clampedValue = Math.min(100, Math.max(0, value));
@@ -780,14 +772,14 @@ const handleAlphaBlur = (event: Event) => {
 
   colorState.alpha = clampedValue;
   emitColorChange();
-};
+}
 
 // Color Management Methods
-const emitColorChange = () => {
+function emitColorChange() {
   modelValue.value = outputColor.value;
-};
+}
 
-const selectSuggestedColor = (color: string) => {
+function selectSuggestedColor(color: string) {
   if (isInitiallyUndefined.value && color !== 'transparent') {
     colorState.alpha = 100;
   }
@@ -816,9 +808,9 @@ const selectSuggestedColor = (color: string) => {
     }
   }
   emitColorChange();
-};
+}
 
-const activateEyeDropper = async () => {
+async function activateEyeDropper() {
   if (!isEyeDropperSupported.value) return;
   try {
     const eyeDropper = new window.EyeDropper();
@@ -843,7 +835,7 @@ const activateEyeDropper = async () => {
   } catch {
     // Silently handle the error since EyeDropper is an optional feature
   }
-};
+}
 </script>
 
 <style lang="scss" scoped src="./ColorPicker.style.scss"></style>
