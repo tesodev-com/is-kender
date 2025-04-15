@@ -33,7 +33,10 @@
           :value="otpArray[index]"
           :placeholder="placeholder"
           class="otp-input"
-          :class="[`otp-input-${size}`]"
+          :class="[
+            `otp-input-${size}`,
+            { 'error': error }
+          ]"
           maxlength="1"
           autocomplete="one-time-code"
           @input="handleInput($event, index)"
@@ -42,7 +45,7 @@
       </template>
     </div>
     <div
-      v-if="slots.hint || hint"
+      v-if="(slots.hint || hint) && !error"
       class="otp-hint"
     >
       <slot
@@ -51,6 +54,13 @@
       >
         {{ hint }}
       </slot>
+    </div>
+    <div
+      v-if="error && errorMessage"
+      class="otp-error"
+      role="alert"
+    >
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -67,6 +77,8 @@ const props = withDefaults(defineProps<OtpInputProps>(), {
   placeholder: '',
   focusOnMount: false,
   numericOnly: true,
+  error: false,
+  errorMessage: '',
 });
 
 const emit = defineEmits<OtpInputEmits>();

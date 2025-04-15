@@ -43,6 +43,14 @@ const meta: Meta<typeof OTPInput> = {
       control: 'boolean',
       description: 'Focuses the first input on component mount when set to `true`.',
     },
+    error: {
+      control: 'boolean',
+      description: 'Shows an error state when set to `true`.',
+    },
+    errorMessage: {
+      control: 'text',
+      description: 'Error message displayed when the error state is active.',
+    },
   },
 };
 
