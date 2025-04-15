@@ -18,7 +18,7 @@ $componentList
   });
   const globalComponentsString = globalComponents.join('\n');
   const replacedTemplate = template.replace('$componentList', globalComponentsString);
-  if (!fs.existsSync('./dist/main.d.ts')) {
+  if (fs.existsSync('./dist/main.d.ts')) {
     fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
   }
 }
@@ -49,7 +49,7 @@ function setComponentIndex() {
       })
       .filter(Boolean)
       .join('\n') + '\n';
-  if (!fs.existsSync('src/components/index.ts')) {
+  if (fs.existsSync('src/components/index.ts')) {
     fs.writeFileSync('src/components/index.ts', indexContent);
   }
 }
