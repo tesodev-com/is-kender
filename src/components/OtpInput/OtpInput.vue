@@ -36,7 +36,6 @@
           :class="[`otp-input-${size}`, { error: error }]"
           maxlength="1"
           autocomplete="one-time-code"
-          @input="handleInput($event, index)"
           @keydown="handleKeyDown($event, index)"
         />
       </template>
@@ -122,41 +121,43 @@ function focusInput(index: number) {
   }
 }
 
-function handleInput(event: Event, index: number) {
-  const target = event.target as HTMLInputElement;
-  let value = target.value.trim();
-
-  if (value.length > 1) {
-    value = value.slice(-1);
-    target.value = value;
-  }
-
-  if (props.numericOnly && value && !/^\d$/.test(value)) {
-    target.value = '';
-    value = '';
-  }
-
-  const newOtp = (otp.value || '').padEnd(props.digits, '').split('');
-  newOtp[index] = value;
-  otp.value = newOtp.join('');
-
-  if (value && index < props.digits - 1) {
-    focusInput(index + 1);
-  }
-
-  if (otp.value?.length === props.digits) {
-    emit('complete', otp.value);
-  }
-}
-
 function handleKeyDown(event: KeyboardEvent, index: number) {
   const target = event.target as HTMLInputElement;
 
-  if (event.key === 'Backspace' && !target.value && index > 0) {
-    const newOtp = otp.value.padEnd(props.digits, '').split('');
-    newOtp[index - 1] = '';
+  if (props.numericOnly && event.key && !/^\d$/.test(event.key)) {
+    if (!['Backspace', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+  }
+
+  if (event.key.length === 1) {
+    event.preventDefault();
+    const newOtp = (otp.value || '').padEnd(props.digits, '').split('');
+    newOtp[index] = event.key;
     otp.value = newOtp.join('');
-    focusInput(index - 1);
+
+    if (index < props.digits - 1) {
+      focusInput(index + 1);
+    }
+
+    if (otp.value.length === props.digits) {
+      emit('complete', otp.value);
+    }
+    return;
+  }
+
+  if (event.key === 'Backspace') {
+    if (!target.value && index > 0) {
+      const newOtp = otp.value.padEnd(props.digits, '').split('');
+      newOtp[index - 1] = '';
+      otp.value = newOtp.join('');
+      focusInput(index - 1);
+    } else {
+      const newOtp = otp.value.padEnd(props.digits, '').split('');
+      newOtp[index] = '';
+      otp.value = newOtp.join('');
+    }
   }
 
   if (event.key === 'ArrowLeft' && index > 0) {
