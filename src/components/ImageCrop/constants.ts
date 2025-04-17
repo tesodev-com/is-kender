@@ -1,65 +1,44 @@
-import { circleIcon, flipIcon, refreshIcon, rotateLeftIcon, rotateRightIcon, squareIcon, zoomInIcon, zoomOutIcon } from '@/assets/icons';
+import { circleIcon, downloadIcon, flipIcon, refreshIcon, rotateLeftIcon, rotateRightIcon, squareIcon, zoomInIcon, zoomOutIcon } from '@/assets/icons';
 
 export const actionList = [
   {
-    label: 'Rotation',
-    controls: [
-      {
-        id: 'rotateLeft',
-        icon: rotateLeftIcon,
-      },
-      {
-        id: 'rotateRight',
-        icon: rotateRightIcon,
-      },
-    ],
+    id: 'rotateLeft',
+    icon: rotateLeftIcon,
   },
   {
-    label: 'Flip',
-    controls: [
-      {
-        id: 'flipHorizontal',
-        icon: flipIcon,
-      },
-      {
-        id: 'flipVertical',
-        icon: flipIcon,
-      },
-    ],
+    id: 'rotateRight',
+    icon: rotateRightIcon,
   },
   {
-    label: 'Zoom',
-    controls: [
-      {
-        id: 'zoomIn',
-        icon: zoomInIcon,
-      },
-      {
-        id: 'zoomOut',
-        icon: zoomOutIcon,
-      },
-    ],
+    id: 'flipHorizontal',
+    icon: flipIcon,
   },
   {
-    label: 'Şablon',
-    controls: [
-      {
-        id: 'circle',
-        icon: circleIcon,
-      },
-      {
-        id: 'square',
-        icon: squareIcon,
-      },
-    ],
+    id: 'flipVertical',
+    icon: flipIcon,
   },
   {
-    label: 'İşlemler',
-    controls: [
-      {
-        id: 'reset',
-        icon: refreshIcon,
-      },
-    ],
+    id: 'zoomIn',
+    icon: zoomInIcon,
+  },
+  {
+    id: 'zoomOut',
+    icon: zoomOutIcon,
+  },
+  {
+    id: 'circle',
+    icon: circleIcon,
+  },
+  {
+    id: 'square',
+    icon: squareIcon,
+  },
+  {
+    id: 'reset',
+    icon: refreshIcon,
+  },
+  {
+    id: 'download',
+    icon: downloadIcon,
   },
 ] as const;

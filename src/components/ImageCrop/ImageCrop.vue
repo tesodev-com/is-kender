@@ -55,32 +55,25 @@
         ></div>
       </div>
     </div>
-    <div class="image-cropper__controls">
+    <div class="image-cropper__actions">
       <div
-        v-for="(group, index) in actionList"
-        :key="index"
-        class="image-cropper__control-group"
+        v-for="action in actionList"
+        :key="action.id"
+        class="image-action"
       >
-        <label class="image-cropper__control-label">
-          {{ group.label }}
-        </label>
-        <div class="image-cropper__controls">
-          <Button
-            v-for="control in group.controls"
-            :key="control.id"
-            v-bind="control"
-            color="primary"
-            variant="solid"
-            iconOnly
-            @click="handleActionClick(control.id)"
-          >
-            <Svg
-              size="1.5rem"
-              :src="control.icon"
-              :class="{ 'flip-vertical': control.id === 'flipVertical' }"
-            ></Svg>
-          </Button>
-        </div>
+        <Button
+          v-bind="action"
+          color="primary"
+          variant="solid"
+          iconOnly
+          @click="handleActionClick(action.id)"
+        >
+          <Svg
+            size="1.5rem"
+            :src="action.icon"
+            :class="{ 'flip-vertical': action.id === 'flipVertical' }"
+          ></Svg>
+        </Button>
       </div>
     </div>
   </div>
@@ -321,7 +314,7 @@ function zoomImageOut() {
   imageState.value.scaleX -= 0.1;
   imageState.value.scaleY -= 0.1;
 }
-function handleActionClick(action: (typeof actionList)[number]['controls'][number]['id']) {
+function handleActionClick(action: (typeof actionList)[number]['id']) {
   switch (action) {
     case 'rotateLeft':
       rotateImageLeft();

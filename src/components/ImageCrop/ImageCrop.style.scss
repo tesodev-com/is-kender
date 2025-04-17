@@ -111,31 +111,14 @@
     }
   }
 
-  &__controls {
+  &__actions {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: $spacing-lg;
+    gap: $spacing-md;
 
-    #{$root}__control-group {
-      flex-direction: column;
-      gap: $spacing-md;
-
-      @include flex-center;
-    }
-
-    #{$root}__control-label {
-      @include text-md(600);
-    }
-
-    #{$root}__controls {
-      gap: $spacing-md;
-
-      @include flex-center;
-
-      .flip-vertical {
-        transform: rotate(90deg);
-      }
+    .flip-vertical {
+      transform: rotate(90deg);
     }
   }
 }
