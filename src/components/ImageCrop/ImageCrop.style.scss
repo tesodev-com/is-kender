@@ -7,8 +7,7 @@
 .image-cropper {
   $root: &;
 
-  width: max-content;
-  min-width: 400px;
+  width: 520px;
   flex-direction: column;
   gap: $spacing-xl;
 
@@ -18,14 +17,14 @@
     width: 100%;
     height: 20rem;
     background-color: $blue-gray-300;
-    padding: $spacing-lg;
     position: relative;
     overflow: hidden;
 
     @include flex-center;
 
     #{$root}__image {
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
       transition: transform 0.2s ease-in-out;
       user-select: none;
       pointer-events: none;

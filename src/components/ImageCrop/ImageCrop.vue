@@ -86,6 +86,7 @@ import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { actionList } from './constants';
 import type { CropState, ImageCropperProps } from './types';
+import { createCroppedImage } from './utils';
 // interfaces & types
 
 // constants
@@ -95,8 +96,12 @@ import type { CropState, ImageCropperProps } from './types';
 // props
 const props = defineProps<ImageCropperProps>();
 // defineEmits
+const emit = defineEmits<{
+  (e: 'crop', croppedImage: string): void;
+}>();
 
 // states (refs and reactives)
+const originalImage = ref<string | File | null>(null);
 const previewRef = useTemplateRef('imagePreview');
 const frameRef = useTemplateRef('cropFrame');
 const imageState = ref({
@@ -122,13 +127,13 @@ const cropState = ref<CropState>({
 });
 // computed
 const getImage = computed(() => {
-  if (!props.image) {
+  if (!originalImage.value) {
     return new URL('../../assets/icons/empty.svg', import.meta.url).href;
   }
-  if (props.image instanceof File) {
-    return URL.createObjectURL(props.image);
+  if (originalImage.value instanceof File) {
+    return URL.createObjectURL(originalImage.value) as string;
   }
-  return props.image;
+  return originalImage.value as string;
 });
 const getImageStyles = computed(() => {
   return {
@@ -145,6 +150,7 @@ const getCropStyles = computed(() => {
   };
 });
 // Initialize states
+originalImage.value = props.image;
 onMounted(() => {
   resetImageState();
   resetCropState();
@@ -314,6 +320,35 @@ function zoomImageOut() {
   imageState.value.scaleX -= 0.1;
   imageState.value.scaleY -= 0.1;
 }
+function uploadImage() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = event => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        originalImage.value = reader.result as string;
+        resetImageState();
+        resetCropState();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  input.click();
+}
+async function applyImage() {
+  const imageElement = document.querySelector('.image-cropper__image') as HTMLImageElement;
+  if (!imageElement) return;
+
+  try {
+    const croppedImage = await createCroppedImage(imageElement, cropState.value, imageState.value);
+    emit('crop', croppedImage);
+  } catch (error) {
+    console.error('Error creating cropped image:', error);
+  }
+}
 function handleActionClick(action: (typeof actionList)[number]['id']) {
   switch (action) {
     case 'rotateLeft':
@@ -343,6 +378,12 @@ function handleActionClick(action: (typeof actionList)[number]['id']) {
     case 'reset':
       resetImageState();
       resetCropState();
+      break;
+    case 'upload':
+      uploadImage();
+      break;
+    case 'apply':
+      applyImage();
       break;
     default:
       break;

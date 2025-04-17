@@ -1,4 +1,4 @@
-import { circleIcon, downloadIcon, flipIcon, refreshIcon, rotateLeftIcon, rotateRightIcon, squareIcon, zoomInIcon, zoomOutIcon } from '@/assets/icons';
+import { checkIcon, circleIcon, cloudUploadOutlineIcon, flipIcon, refreshIcon, rotateLeftIcon, rotateRightIcon, squareIcon, zoomInIcon, zoomOutIcon } from '@/assets/icons';
 
 export const actionList = [
   {
@@ -38,7 +38,11 @@ export const actionList = [
     icon: refreshIcon,
   },
   {
-    id: 'download',
-    icon: downloadIcon,
+    id: 'upload',
+    icon: cloudUploadOutlineIcon,
+  },
+  {
+    id: 'apply',
+    icon: checkIcon,
   },
 ] as const;
