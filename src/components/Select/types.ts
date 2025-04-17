@@ -9,15 +9,18 @@ export interface SelectProps {
   options: SelectOption[];
   label?: string;
   placeholder?: string;
+  searchPlaceholder?: string;
+  noOptionsText?: string;
+  requiredIndicator?: string;
   leftIcon?: string;
   required?: boolean;
-  hint?: string;
+  disabled?: boolean;
   isMultiple?: boolean;
+  isSearch?: boolean;
+  virtualScroll?: boolean;
   optionsPosition?: 'top' | 'bottom' | 'left' | 'right';
   optionsOffset?: number;
-  isSearch?: boolean;
-  disabled?: boolean;
-  virtualScroll?: boolean;
   itemHeight?: number;
   virtualScrollBuffer?: number;
+  hint?: string;
 }
