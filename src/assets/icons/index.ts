@@ -47,4 +47,3 @@ export { default as loadingIcon } from './loading.svg?raw';
 export { default as pdfIcon } from './pdf.svg?raw';
 export { default as spreadsheetIcon } from './spreadsheet.svg?raw';
 export { default as videoIcon } from './video.svg?raw';
-

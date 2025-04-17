@@ -17,7 +17,16 @@
         class="image-cropper__crop-frame"
         :style="getCropStyles"
         @mousedown="startDragging"
-      ></div>
+      >
+        <div class="resize-handle resize-handle--tl"></div>
+        <div class="resize-handle resize-handle--t"></div>
+        <div class="resize-handle resize-handle--tr"></div>
+        <div class="resize-handle resize-handle--l"></div>
+        <div class="resize-handle resize-handle--r"></div>
+        <div class="resize-handle resize-handle--br"></div>
+        <div class="resize-handle resize-handle--b"></div>
+        <div class="resize-handle resize-handle--bl"></div>
+      </div>
     </div>
 
     <!-- Kontroller Section -->
@@ -143,6 +152,7 @@ const props = defineProps<ImageCropperProps>();
 const previewRef = useTemplateRef('imagePreview');
 const frameRef = useTemplateRef('cropFrame');
 const isDragging = ref(false);
+const dragOffset = ref({ x: 0, y: 0 });
 const imageState = ref({
   rotate: 0,
   scaleX: 1,
@@ -155,7 +165,6 @@ const cropState = ref<CropState>({
   width: '100px',
   height: '100px',
 });
-const dragOffset = ref({ x: 0, y: 0 });
 // computed
 const getImage = computed(() => {
   if (!props.image) {

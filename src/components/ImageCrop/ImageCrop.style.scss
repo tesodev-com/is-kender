@@ -39,6 +39,75 @@
       z-index: 2;
       user-select: none;
       pointer-events: auto;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border: 2px dashed white;
+        border-radius: 4px;
+      }
+
+      .resize-handle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        border: 1px solid #666;
+        border-radius: 50%;
+
+        &--tl {
+          top: -5px;
+          left: -5px;
+          cursor: nw-resize;
+        }
+
+        &--t {
+          top: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          cursor: n-resize;
+        }
+
+        &--tr {
+          top: -5px;
+          right: -5px;
+          cursor: ne-resize;
+        }
+
+        &--l {
+          top: 50%;
+          left: -5px;
+          transform: translateY(-50%);
+          cursor: w-resize;
+        }
+
+        &--r {
+          top: 50%;
+          right: -5px;
+          transform: translateY(-50%);
+          cursor: e-resize;
+        }
+
+        &--br {
+          bottom: -5px;
+          left: -5px;
+          cursor: sw-resize;
+        }
+
+        &--b {
+          bottom: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          cursor: s-resize;
+        }
+
+        &--bl {
+          bottom: -5px;
+          right: -5px;
+          cursor: se-resize;
+        }
+      }
     }
   }
 
