@@ -2,12 +2,20 @@ export { default as tickIcon } from '@material-design-icons/svg/filled/check.svg
 export { default as telIcon } from '@material-design-icons/svg/outlined/call.svg?raw';
 export { default as cancelIconRoundedOutline } from '@material-design-icons/svg/outlined/cancel.svg?raw';
 export { default as checkIconRoundedOutline } from '@material-design-icons/svg/outlined/check_circle_outline.svg?raw';
+export { default as circleIcon } from '@material-design-icons/svg/outlined/circle.svg?raw';
 export { default as cloudUploadOutlineIcon } from '@material-design-icons/svg/outlined/cloud_upload.svg?raw';
 export { default as deleteForeverOutlineIcon } from '@material-design-icons/svg/outlined/delete_forever.svg?raw';
 export { default as diveFolderUploadOutlineIcon } from '@material-design-icons/svg/outlined/drive_folder_upload.svg?raw';
+export { default as flipIcon } from '@material-design-icons/svg/outlined/flip.svg?raw';
 export { default as infoIcon } from '@material-design-icons/svg/outlined/info.svg?raw';
 export { default as passwordIcon } from '@material-design-icons/svg/outlined/key.svg?raw';
 export { default as emailIcon } from '@material-design-icons/svg/outlined/mail.svg?raw';
+export { default as refreshIcon } from '@material-design-icons/svg/outlined/refresh.svg?raw';
+export { default as rotateLeftIcon } from '@material-design-icons/svg/outlined/rotate_left.svg?raw';
+export { default as rotateRightIcon } from '@material-design-icons/svg/outlined/rotate_right.svg?raw';
+export { default as squareIcon } from '@material-design-icons/svg/outlined/square.svg?raw';
+export { default as zoomInIcon } from '@material-design-icons/svg/outlined/zoom_in.svg?raw';
+export { default as zoomOutIcon } from '@material-design-icons/svg/outlined/zoom_out.svg?raw';
 export { default as addCircleOutlineIcon } from '@material-design-icons/svg/round/add_circle_outline.svg?raw';
 export { default as arrowBackIcon } from '@material-design-icons/svg/round/arrow_back.svg?raw';
 export { default as arrowForwardIcon } from '@material-design-icons/svg/round/arrow_forward.svg?raw';
@@ -39,3 +47,4 @@ export { default as loadingIcon } from './loading.svg?raw';
 export { default as pdfIcon } from './pdf.svg?raw';
 export { default as spreadsheetIcon } from './spreadsheet.svg?raw';
 export { default as videoIcon } from './video.svg?raw';
+

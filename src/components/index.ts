@@ -11,6 +11,7 @@ export { default as DatePicker } from 'library-components/DatePicker';
 export { default as Divider } from 'library-components/Divider';
 export { default as Drawer } from 'library-components/Drawer';
 export { default as FileUpload } from 'library-components/FileUpload';
+export { default as ImageCrop } from 'library-components/ImageCrop';
 export { default as Input } from 'library-components/Input';
 export { default as Link } from 'library-components/Link';
 export { default as OtpInput } from 'library-components/OtpInput';
