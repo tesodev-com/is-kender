@@ -1,6 +1,9 @@
 <template>
-  <div class="image-cropper">
-    <!-- Preview Section -->
+  <div
+    class="image-cropper"
+    @mousemove="handleMouseMove"
+    @mouseup="handleMouseUp"
+  >
     <div
       ref="imagePreview"
       class="image-cropper__preview"
@@ -52,8 +55,6 @@
         ></div>
       </div>
     </div>
-
-    <!-- Kontroller Section -->
     <div class="image-cropper__controls">
       <div
         v-for="(group, index) in actionList"
@@ -89,7 +90,7 @@
 // imports
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { actionList } from './constants';
 import type { CropState, ImageCropperProps } from './types';
 // interfaces & types
@@ -150,18 +151,10 @@ const getCropStyles = computed(() => {
     borderRadius: cropState.value.shape === 'circle' ? '50%' : '0',
   };
 });
-// watchers
-
-// lifecycles
+// Initialize states
 onMounted(() => {
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
   resetImageState();
   resetCropState();
-});
-onUnmounted(() => {
-  window.removeEventListener('mousemove', handleMouseMove);
-  window.removeEventListener('mouseup', handleMouseUp);
 });
 // methods
 function resetImageState() {
