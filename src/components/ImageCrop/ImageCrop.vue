@@ -16,16 +16,40 @@
         ref="cropFrame"
         class="image-cropper__crop-frame"
         :style="getCropStyles"
-        @mousedown="startDragging"
+        @mousedown="handleFrameDragStart"
       >
-        <div class="resize-handle resize-handle--tl"></div>
-        <div class="resize-handle resize-handle--t"></div>
-        <div class="resize-handle resize-handle--tr"></div>
-        <div class="resize-handle resize-handle--l"></div>
-        <div class="resize-handle resize-handle--r"></div>
-        <div class="resize-handle resize-handle--br"></div>
-        <div class="resize-handle resize-handle--b"></div>
-        <div class="resize-handle resize-handle--bl"></div>
+        <div
+          class="resize-handle resize-handle--tl"
+          @mousedown.stop.prevent="handleFrameResizeStart('tl', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--t"
+          @mousedown.stop.prevent="handleFrameResizeStart('t', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--tr"
+          @mousedown.stop.prevent="handleFrameResizeStart('tr', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--l"
+          @mousedown.stop.prevent="handleFrameResizeStart('l', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--r"
+          @mousedown.stop.prevent="handleFrameResizeStart('r', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--br"
+          @mousedown.stop.prevent="handleFrameResizeStart('br', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--b"
+          @mousedown.stop.prevent="handleFrameResizeStart('b', $event)"
+        ></div>
+        <div
+          class="resize-handle resize-handle--bl"
+          @mousedown.stop.prevent="handleFrameResizeStart('bl', $event)"
+        ></div>
       </div>
     </div>
 
@@ -47,7 +71,7 @@
             color="primary"
             variant="solid"
             iconOnly
-            @click="onClickAction(control.id)"
+            @click="handleActionClick(control.id)"
           >
             <Svg
               size="1.5rem"
@@ -63,85 +87,15 @@
 
 <script setup lang="ts">
 // imports
-import { circleIcon, flipIcon, refreshIcon, rotateLeftIcon, rotateRightIcon, squareIcon, zoomInIcon, zoomOutIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
+import { actionList } from './constants';
+import type { CropState, ImageCropperProps } from './types';
 // interfaces & types
-interface CropState {
-  shape: 'circle' | 'square';
-  top: number | string;
-  left: number | string;
-  width: number | string;
-  height: number | string;
-}
-interface ImageCropperProps {
-  image: string | File;
-}
+
 // constants
-const actionList = [
-  {
-    label: 'Rotation',
-    controls: [
-      {
-        id: 'rotateLeft',
-        icon: rotateLeftIcon,
-      },
-      {
-        id: 'rotateRight',
-        icon: rotateRightIcon,
-      },
-    ],
-  },
-  {
-    label: 'Flip',
-    controls: [
-      {
-        id: 'flipHorizontal',
-        icon: flipIcon,
-      },
-      {
-        id: 'flipVertical',
-        icon: flipIcon,
-      },
-    ],
-  },
-  {
-    label: 'Zoom',
-    controls: [
-      {
-        id: 'zoomIn',
-        icon: zoomInIcon,
-      },
-      {
-        id: 'zoomOut',
-        icon: zoomOutIcon,
-      },
-    ],
-  },
-  {
-    label: 'Şablon',
-    controls: [
-      {
-        id: 'circle',
-        icon: circleIcon,
-      },
-      {
-        id: 'square',
-        icon: squareIcon,
-      },
-    ],
-  },
-  {
-    label: 'İşlemler',
-    controls: [
-      {
-        id: 'reset',
-        icon: refreshIcon,
-      },
-    ],
-  },
-] as const;
+
 // composable
 
 // props
@@ -151,8 +105,6 @@ const props = defineProps<ImageCropperProps>();
 // states (refs and reactives)
 const previewRef = useTemplateRef('imagePreview');
 const frameRef = useTemplateRef('cropFrame');
-const isDragging = ref(false);
-const dragOffset = ref({ x: 0, y: 0 });
 const imageState = ref({
   rotate: 0,
   scaleX: 1,
@@ -164,6 +116,15 @@ const cropState = ref<CropState>({
   left: '50%',
   width: '100px',
   height: '100px',
+  isResizing: false,
+  resizeDirection: '',
+  startX: 0,
+  startY: 0,
+  isDragging: false,
+  dragOffset: {
+    x: 0,
+    y: 0,
+  },
 });
 // computed
 const getImage = computed(() => {
@@ -193,106 +154,216 @@ const getCropStyles = computed(() => {
 
 // lifecycles
 onMounted(() => {
-  window.addEventListener('mousemove', moveCropFrame);
-  window.addEventListener('mouseup', stopDragging);
-  setInitialCropFrameState();
+  window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('mouseup', handleMouseUp);
+  resetImageState();
+  resetCropState();
 });
 onUnmounted(() => {
-  window.removeEventListener('mousemove', moveCropFrame);
-  window.removeEventListener('mouseup', stopDragging);
+  window.removeEventListener('mousemove', handleMouseMove);
+  window.removeEventListener('mouseup', handleMouseUp);
 });
 // methods
-function startDragging(event: MouseEvent) {
+function resetImageState() {
+  imageState.value.rotate = 0;
+  imageState.value.scaleX = 1;
+  imageState.value.scaleY = 1;
+}
+function resetCropState() {
+  if (!previewRef.value || !frameRef.value) return;
+
+  cropState.value.top = `${(previewRef.value?.clientHeight || 0) / 2 - (frameRef.value?.clientHeight || 0) / 2}px`;
+  cropState.value.left = `${(previewRef.value?.clientWidth || 0) / 2 - (frameRef.value?.clientWidth || 0) / 2}px`;
+  cropState.value.width = '100px';
+  cropState.value.height = '100px';
+  cropState.value.shape = 'circle';
+  cropState.value.isResizing = false;
+  cropState.value.resizeDirection = '';
+  cropState.value.startX = 0;
+  cropState.value.startY = 0;
+  cropState.value.isDragging = false;
+  cropState.value.dragOffset = {
+    x: 0,
+    y: 0,
+  };
+}
+function handleFrameDragStart(event: MouseEvent) {
   if (!frameRef.value) return;
 
-  isDragging.value = true;
+  event.preventDefault();
+  event.stopPropagation();
+  
+  cropState.value.isDragging = true;
   const rect = frameRef.value.getBoundingClientRect();
 
-  dragOffset.value = {
+  cropState.value.dragOffset = {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top,
   };
 }
-function moveCropFrame(event: MouseEvent) {
-  if (!isDragging.value || !previewRef.value || !frameRef.value) return;
+function handleFrameDragEnd() {
+  cropState.value.isDragging = false;
+}
+function handleFrameResizeStart(direction: string, event: MouseEvent) {
+  if (!event) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  cropState.value.isResizing = true;
+  cropState.value.resizeDirection = direction;
+  cropState.value.startX = event.clientX;
+  cropState.value.startY = event.clientY;
+}
+function handleFrameResizeEnd() {
+  cropState.value.isResizing = false;
+}
+function handleMouseMove(event: MouseEvent) {
+  if (cropState.value.isDragging) {
+    event.preventDefault();
+    event.stopPropagation();
+    updateFramePosition(event);
+  } else if (cropState.value.isResizing) {
+    event.preventDefault();
+    event.stopPropagation();
+    updateFrameSize(event);
+  }
+}
+function handleMouseUp(event: MouseEvent) {
+  if (cropState.value.isResizing) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  handleFrameDragEnd();
+  handleFrameResizeEnd();
+}
+function updateFramePosition(event: MouseEvent) {
+  if (!cropState.value.isDragging || !previewRef.value || !frameRef.value) return;
 
   const previewRect = previewRef.value.getBoundingClientRect();
 
-  let left = event.clientX - previewRect.left - dragOffset.value.x;
-  let top = event.clientY - previewRect.top - dragOffset.value.y;
+  let left = event.clientX - previewRect.left - cropState.value.dragOffset.x;
+  let top = event.clientY - previewRect.top - cropState.value.dragOffset.y;
 
   cropState.value.left = `${left}px`;
   cropState.value.top = `${top}px`;
 }
-function stopDragging() {
-  isDragging.value = false;
+function updateFrameSize(event: MouseEvent) {
+  if (!cropState.value.isResizing || !previewRef.value || !frameRef.value) return;
+
+  const deltaX = event.clientX - cropState.value.startX;
+  const deltaY = event.clientY - cropState.value.startY;
+
+  const currentWidth = parseInt(String(cropState.value.width));
+  const currentHeight = parseInt(String(cropState.value.height));
+  const currentLeft = parseInt(String(cropState.value.left));
+  const currentTop = parseInt(String(cropState.value.top));
+
+  let newWidth = currentWidth;
+  let newHeight = currentHeight;
+  let newLeft = currentLeft;
+  let newTop = currentTop;
+
+  switch (cropState.value.resizeDirection) {
+    case 'bl':
+      newWidth = Math.max(currentWidth + deltaX, 50);
+      newHeight = Math.max(currentHeight + deltaY, 50);
+      break;
+    case 'br':
+      newWidth = Math.max(currentWidth - deltaX, 50);
+      newLeft = currentLeft + deltaX;
+      newHeight = Math.max(currentHeight + deltaY, 50);
+      break;
+    case 'tr':
+      newWidth = Math.max(currentWidth + deltaX, 50);
+      newHeight = Math.max(currentHeight - deltaY, 50);
+      newTop = currentTop + deltaY;
+      break;
+    case 'tl':
+      newWidth = Math.max(currentWidth - deltaX, 50);
+      newHeight = Math.max(currentHeight - deltaY, 50);
+      newLeft = currentLeft + deltaX;
+      newTop = currentTop + deltaY;
+      break;
+    case 't':
+      newHeight = Math.max(currentHeight - deltaY, 50);
+      newTop = currentTop + deltaY;
+      break;
+    case 'b':
+      newHeight = Math.max(currentHeight + deltaY, 50);
+      break;
+    case 'r':
+      newWidth = Math.max(currentWidth + deltaX, 50);
+      break;
+    case 'l':
+      newWidth = Math.max(currentWidth - deltaX, 50);
+      newLeft = currentLeft + deltaX;
+      break;
+  }
+
+  cropState.value.width = `${newWidth}px`;
+  cropState.value.height = `${newHeight}px`;
+  cropState.value.left = `${newLeft}px`;
+  cropState.value.top = `${newTop}px`;
+
+  cropState.value.startX = event.clientX;
+  cropState.value.startY = event.clientY;
 }
-function onClickAction(action: (typeof actionList)[number]['controls'][number]['id']) {
+function rotateImageLeft() {
+  imageState.value.rotate -= 90;
+}
+function rotateImageRight() {
+  imageState.value.rotate += 90;
+}
+function flipImageHorizontal() {
+  imageState.value.scaleX *= -1;
+}
+function flipImageVertical() {
+  imageState.value.scaleY *= -1;
+}
+function zoomImageIn() {
+  imageState.value.scaleX += 0.1;
+  imageState.value.scaleY += 0.1;
+}
+function zoomImageOut() {
+  imageState.value.scaleX -= 0.1;
+  imageState.value.scaleY -= 0.1;
+}
+function handleActionClick(action: (typeof actionList)[number]['controls'][number]['id']) {
   switch (action) {
     case 'rotateLeft':
-      rotateLeft();
+      rotateImageLeft();
       break;
     case 'rotateRight':
-      rotateRight();
+      rotateImageRight();
       break;
     case 'flipHorizontal':
-      flipHorizontal();
+      flipImageHorizontal();
       break;
     case 'flipVertical':
-      flipVertical();
+      flipImageVertical();
       break;
     case 'zoomIn':
-      zoomIn();
+      zoomImageIn();
       break;
     case 'zoomOut':
-      zoomOut();
+      zoomImageOut();
       break;
     case 'circle':
-      updateShape('circle');
+      updateCropShape('circle');
       break;
     case 'square':
-      updateShape('square');
+      updateCropShape('square');
       break;
     case 'reset':
-      setInitialImageState();
-      setInitialCropFrameState();
+      resetImageState();
+      resetCropState();
       break;
     default:
       break;
   }
 }
-function rotateLeft() {
-  imageState.value.rotate -= 90;
-}
-function rotateRight() {
-  imageState.value.rotate += 90;
-}
-function flipHorizontal() {
-  imageState.value.scaleX *= -1;
-}
-function flipVertical() {
-  imageState.value.scaleY *= -1;
-}
-function updateShape(shape: CropState['shape']) {
+function updateCropShape(shape: CropState['shape']) {
   cropState.value.shape = shape;
-}
-function zoomIn() {
-  imageState.value.scaleX += 0.1;
-  imageState.value.scaleY += 0.1;
-}
-function zoomOut() {
-  imageState.value.scaleX -= 0.1;
-  imageState.value.scaleY -= 0.1;
-}
-function setInitialImageState() {
-  imageState.value.rotate = 0;
-  imageState.value.scaleX = 1;
-  imageState.value.scaleY = 1;
-}
-function setInitialCropFrameState() {
-  if (!previewRef.value || !frameRef.value) return;
-  cropState.value.top = `${(previewRef.value?.clientHeight || 0) / 2 - (frameRef.value?.clientHeight || 0) / 2}px`;
-  cropState.value.left = `${(previewRef.value?.clientWidth || 0) / 2 - (frameRef.value?.clientWidth || 0) / 2}px`;
 }
 </script>
 
