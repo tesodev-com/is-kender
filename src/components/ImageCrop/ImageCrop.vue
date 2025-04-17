@@ -392,6 +392,20 @@ function handleActionClick(action: (typeof actionList)[number]['id']) {
 function updateCropShape(shape: CropState['shape']) {
   cropState.value.shape = shape;
 }
+defineExpose({
+  cropState,
+  imageState,
+  updateCropShape,
+  rotateImageLeft,
+  rotateImageRight,
+  flipImageHorizontal,
+  flipImageVertical,
+  zoomImageIn,
+  zoomImageOut,
+  uploadImage,
+  applyImage,
+  resetImageState,
+});
 </script>
 
 <style lang="scss" scoped src="./ImageCrop.style.scss"></style>
