@@ -83,7 +83,7 @@
 // imports
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
-import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { actionList } from './constants';
 import type { CropState, ImageCropperEvents, ImageCropperProps } from './types';
 import { createCroppedImage } from './utils';
@@ -148,7 +148,14 @@ const getCropStyles = computed(() => {
   };
 });
 // watchers
-
+watch(
+  () => props.image,
+  newImage => {
+    originalImage.value = newImage;
+    resetImageState();
+    resetCropState();
+  }
+);
 // lifecycles
 originalImage.value = props.image;
 onMounted(() => {
