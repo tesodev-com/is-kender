@@ -3,7 +3,7 @@ import DatePicker from 'library-components/DatePicker';
 import { ref } from 'vue';
 
 const meta: Meta<typeof DatePicker> = {
-  title: 'Forms&Inputs/DatePicker',
+  title: 'Form/DatePicker',
   component: DatePicker,
   argTypes: {
     selectionItems: {

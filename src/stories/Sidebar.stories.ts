@@ -5,7 +5,7 @@ import Sidebar, { type SidebarProps } from 'library-components/Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
   component: Sidebar,
-  title: 'Navigation/Sidebar',
+  title: 'Layout/Sidebar',
   argTypes: {
     title: {
       control: 'text',

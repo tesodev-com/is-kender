@@ -3,7 +3,7 @@ import Pagination from 'library-components/Pagination';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Pagination> = {
-  title: 'DataDisplay/Pagination',
+  title: 'Navigation/Pagination',
   component: Pagination,
   tags: ['autodocs'],
   argTypes: {

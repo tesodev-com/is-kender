@@ -7,7 +7,7 @@ import Table, { type Row, type TableProps } from 'library-components/Table';
 
 const meta: Meta<typeof Table> = {
   component: Table,
-  title: 'DataDisplay/Table',
+  title: 'Data-Display/Table',
   argTypes: {
     title: {
       control: 'text',

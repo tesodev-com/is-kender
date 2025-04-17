@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from '@storybook/vue3';
 import ImageCrop from 'library-components/ImageCrop';
 
 const meta: Meta<typeof ImageCrop> = {
-  title: 'Form/ImageCrop',
+  title: 'Media/ImageCrop',
   component: ImageCrop,
   argTypes: {
     image: {

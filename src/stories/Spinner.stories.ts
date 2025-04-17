@@ -3,7 +3,7 @@ import Spinner from 'library-components/Spinner';
 
 const meta: Meta<typeof Spinner> = {
   component: Spinner,
-  title: 'Utility-Component/Spinner',
+  title: 'Feedback/Spinner',
   argTypes: {},
 };
 export default meta;

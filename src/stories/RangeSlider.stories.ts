@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof RangeSlider> = {
   component: RangeSlider,
-  title: 'Forms&Inputs/RangeSlider',
+  title: 'Form/RangeSlider',
   argTypes: {
     min: { control: 'number' },
     max: { control: 'number' },

@@ -3,7 +3,7 @@ import Accordion, { type AccordionItemProps } from 'library-components/Accordion
 
 const meta: Meta<typeof Accordion> = {
   component: Accordion,
-  title: 'DataDisplay/Accordion',
+  title: 'Data-Display/Accordion',
   argTypes: {
     items: {
       control: 'object',

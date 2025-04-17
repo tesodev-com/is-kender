@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof Select> = {
   component: Select,
-  title: 'Forms&Inputs/Select',
+  title: 'Form/Select',
   argTypes: {
     options: {
       control: 'object',

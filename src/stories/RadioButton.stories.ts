@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof RadioButton> = {
   component: RadioButton,
-  title: 'Forms&Inputs/RadioButton',
+  title: 'Form/RadioButton',
   argTypes: {
     value: { control: 'text' },
     modelValue: { control: 'text' },
