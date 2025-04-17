@@ -20,35 +20,35 @@
       >
         <div
           class="resize-handle resize-handle--tl"
-          @mousedown.stop.prevent="handleFrameResizeStart('tl', $event)"
+          @mousedown="handleFrameResizeStart('tl', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--t"
-          @mousedown.stop.prevent="handleFrameResizeStart('t', $event)"
+          @mousedown="handleFrameResizeStart('t', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--tr"
-          @mousedown.stop.prevent="handleFrameResizeStart('tr', $event)"
+          @mousedown="handleFrameResizeStart('tr', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--l"
-          @mousedown.stop.prevent="handleFrameResizeStart('l', $event)"
+          @mousedown="handleFrameResizeStart('l', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--r"
-          @mousedown.stop.prevent="handleFrameResizeStart('r', $event)"
+          @mousedown="handleFrameResizeStart('r', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--br"
-          @mousedown.stop.prevent="handleFrameResizeStart('br', $event)"
+          @mousedown="handleFrameResizeStart('br', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--b"
-          @mousedown.stop.prevent="handleFrameResizeStart('b', $event)"
+          @mousedown="handleFrameResizeStart('b', $event)"
         ></div>
         <div
           class="resize-handle resize-handle--bl"
-          @mousedown.stop.prevent="handleFrameResizeStart('bl', $event)"
+          @mousedown="handleFrameResizeStart('bl', $event)"
         ></div>
       </div>
     </div>
@@ -192,7 +192,7 @@ function handleFrameDragStart(event: MouseEvent) {
 
   event.preventDefault();
   event.stopPropagation();
-  
+
   cropState.value.isDragging = true;
   const rect = frameRef.value.getBoundingClientRect();
 
