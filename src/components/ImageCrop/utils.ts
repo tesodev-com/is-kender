@@ -1,11 +1,7 @@
 import type { CropState } from './types';
 
-export function createCroppedImage(
-  imageElement: HTMLImageElement,
-  cropState: CropState,
-  imageState: { rotate: number; scaleX: number; scaleY: number }
-): Promise<string> {
-  return new Promise((resolve) => {
+export function createCroppedImage(imageElement: HTMLImageElement, cropState: CropState, imageState: { rotate: number; scaleX: number; scaleY: number }): Promise<string> {
+  return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
@@ -31,8 +27,8 @@ export function createCroppedImage(
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    const imageX = (imageRect.left - previewRect.left);
-    const imageY = (imageRect.top - previewRect.top);
+    const imageX = imageRect.left - previewRect.left;
+    const imageY = imageRect.top - previewRect.top;
 
     const sourceX = (cropLeft - imageX) * imageScale;
     const sourceY = (cropTop - imageY) * imageScale;
@@ -45,17 +41,7 @@ export function createCroppedImage(
     ctx.scale(imageState.scaleX, imageState.scaleY);
     ctx.translate(-centerX, -centerY);
 
-    ctx.drawImage(
-      imageElement,
-      sourceX,
-      sourceY,
-      sourceWidth,
-      sourceHeight,
-      0,
-      0,
-      cropWidth,
-      cropHeight
-    );
+    ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, cropWidth, cropHeight);
 
     ctx.restore();
 
@@ -70,19 +56,15 @@ export function createCroppedImage(
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-
       ctx.beginPath();
-      ctx.arc(centerX, centerY, (Math.min(cropWidth, cropHeight) / 2) - 0.5, 0, Math.PI * 2);
+      ctx.ellipse(centerX, centerY, cropWidth / 2, cropHeight / 2, 0, 0, 2 * Math.PI);
       ctx.closePath();
 
-      ctx.save();
       ctx.clip();
+
       ctx.drawImage(tempCanvas, 0, 0);
-      ctx.restore();
     }
 
     resolve(canvas.toDataURL('image/png'));
   });
-} 
+}

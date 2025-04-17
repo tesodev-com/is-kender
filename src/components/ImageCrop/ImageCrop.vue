@@ -85,7 +85,7 @@ import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { actionList } from './constants';
-import type { CropState, ImageCropperProps } from './types';
+import type { CropState, ImageCropperEvents, ImageCropperProps } from './types';
 import { createCroppedImage } from './utils';
 // interfaces & types
 
@@ -96,9 +96,7 @@ import { createCroppedImage } from './utils';
 // props
 const props = defineProps<ImageCropperProps>();
 // defineEmits
-const emit = defineEmits<{
-  (e: 'crop', croppedImage: string): void;
-}>();
+const emit = defineEmits<ImageCropperEvents>();
 
 // states (refs and reactives)
 const originalImage = ref<string | File | null>(null);
@@ -149,7 +147,9 @@ const getCropStyles = computed(() => {
     borderRadius: cropState.value.shape === 'circle' ? '50%' : '0',
   };
 });
-// Initialize states
+// watchers
+
+// lifecycles
 originalImage.value = props.image;
 onMounted(() => {
   resetImageState();

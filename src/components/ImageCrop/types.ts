@@ -17,3 +17,7 @@ export interface CropState {
 export interface ImageCropperProps {
   image: string | File;
 }
+
+export interface ImageCropperEvents {
+  (e: 'crop', croppedImage: string): void;
+}
