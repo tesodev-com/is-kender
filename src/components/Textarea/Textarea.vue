@@ -54,20 +54,36 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { TextareaProps } from './types';
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<TextareaProps>(), {
   rows: 4,
   cols: 50,
   resize: 'both',
   id: '0',
 });
-
 const model = defineModel<string>();
+// defineEmits
 
+// states (refs and reactives)
+
+// computed
 const textareaStyle = computed(() => ({
   resize: props.resize,
 }));
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Textarea.style.scss" />

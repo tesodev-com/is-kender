@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Textarea> = {
-  title: 'Components/Textarea',
+  title: 'Form/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   argTypes: {
