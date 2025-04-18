@@ -32,6 +32,7 @@ export { default as TabPanel } from 'library-components/TabPanel';
 export { default as Table } from 'library-components/Table';
 export { default as Tabs } from 'library-components/Tabs';
 export { default as Text } from 'library-components/Text';
+export { default as Textarea } from 'library-components/Textarea';
 export { default as Toast } from 'library-components/Toast';
 export { default as Toggle } from 'library-components/Toggle';
 export { default as TreeSelect } from 'library-components/TreeSelect';

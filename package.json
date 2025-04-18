@@ -1,7 +1,7 @@
 {
   "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.15",
+  "version": "0.0.16",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -77,6 +77,10 @@
     "./fileupload": {
       "types": "./dist/components/FileUpload/index.d.ts",
       "import": "./dist/components/FileUpload/index.js"
+    },
+    "./imagecrop": {
+      "types": "./dist/components/ImageCrop/index.d.ts",
+      "import": "./dist/components/ImageCrop/index.js"
     },
     "./input": {
       "types": "./dist/components/Input/index.d.ts",
@@ -158,6 +162,10 @@
       "types": "./dist/components/Text/index.d.ts",
       "import": "./dist/components/Text/index.js"
     },
+    "./textarea": {
+      "types": "./dist/components/Textarea/index.d.ts",
+      "import": "./dist/components/Textarea/index.js"
+    },
     "./toast": {
       "types": "./dist/components/Toast/index.d.ts",
       "import": "./dist/components/Toast/index.js"
@@ -169,10 +177,6 @@
     "./treeselect": {
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
-    },
-    "./imagecrop": {
-      "types": "./dist/components/ImageCrop/index.d.ts",
-      "import": "./dist/components/ImageCrop/index.js"
     }
   },
   "scripts": {

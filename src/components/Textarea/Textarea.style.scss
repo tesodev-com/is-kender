@@ -1,0 +1,70 @@
+.textarea-wrapper {
+  width: fit-content;
+  position: relative;
+
+  .textarea-label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-weight: $font-weight-medium;
+    color: $gray-700;
+
+    .required-asterisk {
+      color: $error-500;
+      margin-left: $spacing-xs;
+    }
+  }
+
+  .textarea {
+    padding: $spacing-md;
+    border: 1px solid $gray-300;
+    border-radius: $rounded-sm;
+    font-size: $font-size-text-md;
+    color: $gray-700;
+    transition: border-color 0.2s;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-500;
+      box-shadow: $shadow-xs;
+    }
+
+    &:disabled {
+      background-color: $gray-100;
+      cursor: not-allowed;
+    }
+
+    &-error {
+      border-color: $error-500;
+
+      &:focus {
+        border-color: $error-500;
+        box-shadow: $shadow-xs;
+      }
+    }
+  }
+
+  .message-area {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .error-message {
+    color: $error-500;
+    font-size: $font-size-text-sm;
+    margin-top: $spacing-xs;
+  }
+
+  .hint-message {
+    color: $gray-500;
+    font-size: $font-size-text-sm;
+    margin-top: $spacing-xs;
+  }
+
+  .character-count {
+    text-align: right;
+    font-size: $font-size-text-sm;
+    color: $gray-500;
+    margin-top: $spacing-xs;
+  }
+}
