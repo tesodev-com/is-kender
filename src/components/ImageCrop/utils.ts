@@ -22,7 +22,7 @@ export function createCroppedImage(imageElement: HTMLImageElement, cropState: Cr
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const imageScale = imageElement.naturalWidth / imageRect.width;
+    const baseScale = imageElement.naturalWidth / imageRect.width;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
@@ -30,15 +30,15 @@ export function createCroppedImage(imageElement: HTMLImageElement, cropState: Cr
     const imageX = imageRect.left - previewRect.left;
     const imageY = imageRect.top - previewRect.top;
 
-    const sourceX = (cropLeft - imageX) * imageScale;
-    const sourceY = (cropTop - imageY) * imageScale;
-    const sourceWidth = cropWidth * imageScale;
-    const sourceHeight = cropHeight * imageScale;
+    const sourceX = (cropLeft - imageX) * baseScale;
+    const sourceY = (cropTop - imageY) * baseScale;
+    const sourceWidth = cropWidth * baseScale;
+    const sourceHeight = cropHeight * baseScale;
 
     ctx.save();
     ctx.translate(centerX, centerY);
     ctx.rotate((imageState.rotate * Math.PI) / 180);
-    ctx.scale(imageState.scaleX, imageState.scaleY);
+    ctx.scale(Math.sign(imageState.scaleX), Math.sign(imageState.scaleY));
     ctx.translate(-centerX, -centerY);
 
     ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, cropWidth, cropHeight);
