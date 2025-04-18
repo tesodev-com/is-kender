@@ -22,36 +22,11 @@
         @mousedown="handleFrameDragStart"
       >
         <div
-          class="resize-handle resize-handle--tl"
-          @mousedown="handleFrameResizeStart('tl', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--t"
-          @mousedown="handleFrameResizeStart('t', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--tr"
-          @mousedown="handleFrameResizeStart('tr', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--l"
-          @mousedown="handleFrameResizeStart('l', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--r"
-          @mousedown="handleFrameResizeStart('r', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--br"
-          @mousedown="handleFrameResizeStart('br', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--b"
-          @mousedown="handleFrameResizeStart('b', $event)"
-        ></div>
-        <div
-          class="resize-handle resize-handle--bl"
-          @mousedown="handleFrameResizeStart('bl', $event)"
+          v-for="resizePoint in resizePoints"
+          :key="resizePoint.id"
+          class="resize-handle"
+          :class="resizePoint.class"
+          @mousedown="handleFrameResizeStart(resizePoint.id, $event)"
         ></div>
       </div>
     </div>
@@ -84,7 +59,7 @@
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
-import { actionList } from './constants';
+import { actionList, resizePoints } from './constants';
 import type { CropState, ImageCropperEvents, ImageCropperProps, ImageState } from './types';
 import { createCroppedImage } from './utils';
 // interfaces & types

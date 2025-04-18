@@ -46,3 +46,38 @@ export const actionList = [
     icon: checkIcon,
   },
 ] as const;
+
+export const resizePoints = [
+  {
+    id: 'tl',
+    class: 'resize-handle--tl',
+  },
+  {
+    id: 'tr',
+    class: 'resize-handle--tr',
+  },
+  {
+    id: 'bl',
+    class: 'resize-handle--bl',
+  },
+  {
+    id: 'br',
+    class: 'resize-handle--br',
+  },
+  {
+    id: 't',
+    class: 'resize-handle--t',
+  },
+  {
+    id: 'l',
+    class: 'resize-handle--l',
+  },
+  {
+    id: 'r',
+    class: 'resize-handle--r',
+  },
+  {
+    id: 'b',
+    class: 'resize-handle--b',
+  },
+];
