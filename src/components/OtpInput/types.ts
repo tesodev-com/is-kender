@@ -10,6 +10,8 @@ export interface OtpInputProps {
   placeholder?: string;
   numericOnly?: boolean;
   focusOnMount?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 export interface OtpInputSlots {

@@ -5,14 +5,36 @@ const meta: Meta<typeof FileUpload> = {
   title: 'Form/FileUpload',
   component: FileUpload,
   argTypes: {
-    maxSize: {
-      description: 'The maximum file size in bytes',
+    disabled: {
+      control: 'boolean',
+    },
+    multiple: {
+      control: 'boolean',
     },
     accept: {
-      description: 'The file types that the input should accept',
+      control: 'text',
+    },
+    maxSize: {
+      control: 'number',
+    },
+    maxFiles: {
+      control: 'number',
+    },
+    preview: {
+      control: 'boolean',
+    },
+    template: {
+      control: 'select',
+      options: ['col', 'row'],
+    },
+    showActions: {
+      control: 'boolean',
+    },
+    description: {
+      control: 'text',
     },
     uploader: {
-      description: 'The function that will be called when the user uploads a file and gets the File[] as a parameter',
+      control: 'object',
     },
   },
 };
@@ -20,4 +42,8 @@ const meta: Meta<typeof FileUpload> = {
 export default meta;
 type Story = StoryObj<typeof FileUpload>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    multiple: true,
+  },
+};

@@ -46,6 +46,14 @@ $sizes: (
         outline: 1px solid $primary-500;
       }
 
+      &.error {
+        border-color: $error-500;
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgb(255 77 79 / 20%);
+        }
+      }
+
       @each $size, $value in $sizes {
         &-#{$size} {
           @each $property, $propertyValue in $value {
@@ -91,5 +99,16 @@ $sizes: (
     margin-top: 0.375rem;
 
     @include text-sm(400, $gray-600);
+
+    &.error {
+      color: $error-500;
+    }
+  }
+
+  .otp-error {
+    color: $error-500;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    line-height: 1.5;
   }
 }

@@ -5,7 +5,7 @@ import Tabs from 'library-components/Tabs';
 
 const meta: Meta<typeof Tabs> = {
   component: Tabs,
-  title: 'Data-Display/Tabs',
+  title: 'Navigation/Tabs',
   argTypes: {},
 };
 export default meta;

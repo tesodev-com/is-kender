@@ -1,0 +1,20 @@
+.quick-selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  &-item {
+    padding: $spacing-md $spacing-lg;
+    color: $gray-700;
+    transition: all 0.2s ease-in-out;
+    border-radius: $rounded-xs;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover,
+    &-active {
+      background-color: $gray-100;
+      color: $gray-800;
+    }
+  }
+}

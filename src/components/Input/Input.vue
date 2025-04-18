@@ -18,6 +18,7 @@
         </span>
       </div>
       <Svg
+        v-if="tooltip"
         v-tooltip="tooltip"
         :src="infoIcon"
       ></Svg>
@@ -42,6 +43,7 @@
         :class="inputClasses"
         :maxlength="maxlength"
         :minlength="minlength"
+        :readonly="readOnly"
       />
       <slot name="right" />
     </div>

@@ -1,7 +1,7 @@
 {
-  "name": "component-library",
+  "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.0.15",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -25,6 +25,7 @@
       "types": "./dist/directives/vSwipe/types.d.ts",
       "import": "./dist/directives/vSwipe/index.js"
     },
+    "./package.json": "./package.json",
     "./accordion": {
       "types": "./dist/components/Accordion/index.d.ts",
       "import": "./dist/components/Accordion/index.js"
@@ -53,9 +54,17 @@
       "types": "./dist/components/Col/index.d.ts",
       "import": "./dist/components/Col/index.js"
     },
+    "./colorpicker": {
+      "types": "./dist/components/ColorPicker/index.d.ts",
+      "import": "./dist/components/ColorPicker/index.js"
+    },
     "./container": {
       "types": "./dist/components/Container/index.d.ts",
       "import": "./dist/components/Container/index.js"
+    },
+    "./datepicker": {
+      "types": "./dist/components/DatePicker/index.d.ts",
+      "import": "./dist/components/DatePicker/index.js"
     },
     "./divider": {
       "types": "./dist/components/Divider/index.d.ts",
@@ -69,6 +78,10 @@
       "types": "./dist/components/FileUpload/index.d.ts",
       "import": "./dist/components/FileUpload/index.js"
     },
+    "./imagecrop": {
+      "types": "./dist/components/ImageCrop/index.d.ts",
+      "import": "./dist/components/ImageCrop/index.js"
+    },
     "./input": {
       "types": "./dist/components/Input/index.d.ts",
       "import": "./dist/components/Input/index.js"
@@ -77,6 +90,14 @@
       "types": "./dist/components/Link/index.d.ts",
       "import": "./dist/components/Link/index.js"
     },
+    "./otpinput": {
+      "types": "./dist/components/OtpInput/index.d.ts",
+      "import": "./dist/components/OtpInput/index.js"
+    },
+    "./pagination": {
+      "types": "./dist/components/Pagination/index.d.ts",
+      "import": "./dist/components/Pagination/index.js"
+    },
     "./progressbar": {
       "types": "./dist/components/ProgressBar/index.d.ts",
       "import": "./dist/components/ProgressBar/index.js"
@@ -84,6 +105,10 @@
     "./radiobutton": {
       "types": "./dist/components/RadioButton/index.d.ts",
       "import": "./dist/components/RadioButton/index.js"
+    },
+    "./rangeslider": {
+      "types": "./dist/components/RangeSlider/index.d.ts",
+      "import": "./dist/components/RangeSlider/index.js"
     },
     "./row": {
       "types": "./dist/components/Row/index.d.ts",
@@ -117,22 +142,6 @@
       "types": "./dist/components/SwiperSlide/index.d.ts",
       "import": "./dist/components/SwiperSlide/index.js"
     },
-    "./text": {
-      "types": "./dist/components/Text/index.d.ts",
-      "import": "./dist/components/Text/index.js"
-    },
-    "./toast": {
-      "types": "./dist/components/Toast/index.d.ts",
-      "import": "./dist/components/Toast/index.js"
-    },
-    "./toggle": {
-      "types": "./dist/components/Toggle/index.d.ts",
-      "import": "./dist/components/Toggle/index.js"
-    },
-    "./tabs": {
-      "types": "./dist/components/Tabs/index.d.ts",
-      "import": "./dist/components/Tabs/index.js"
-    },
     "./tab": {
       "types": "./dist/components/Tab/index.d.ts",
       "import": "./dist/components/Tab/index.js"
@@ -145,22 +154,34 @@
       "types": "./dist/components/Table/index.d.ts",
       "import": "./dist/components/Table/index.js"
     },
-    "./otpinput": {
-      "types": "./dist/components/OtpInput/index.d.ts",
-      "import": "./dist/components/OtpInput/index.js"
+    "./tabs": {
+      "types": "./dist/components/Tabs/index.d.ts",
+      "import": "./dist/components/Tabs/index.js"
     },
-    "./pagination": {
-      "types": "./dist/components/Pagination/index.d.ts",
-      "import": "./dist/components/Pagination/index.js"
+    "./text": {
+      "types": "./dist/components/Text/index.d.ts",
+      "import": "./dist/components/Text/index.js"
     },
     "./textarea": {
       "types": "./dist/components/Textarea/index.d.ts",
       "import": "./dist/components/Textarea/index.js"
+    },
+    "./toast": {
+      "types": "./dist/components/Toast/index.d.ts",
+      "import": "./dist/components/Toast/index.js"
+    },
+    "./toggle": {
+      "types": "./dist/components/Toggle/index.d.ts",
+      "import": "./dist/components/Toggle/index.js"
+    },
+    "./treeselect": {
+      "types": "./dist/components/TreeSelect/index.d.ts",
+      "import": "./dist/components/TreeSelect/index.js"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && node scripts/pre-build.js && vue-tsc -p tsconfig.lib.json && vite build && node scripts/after-build.js",
+    "build": "vue-tsc -p tsconfig.lib.json && vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "preview": "vite preview --port 3001",
     "lint:js": "eslint --fix",
@@ -174,6 +195,9 @@
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json",
     "prepare": "husky",
     "create-component": "node scripts/generator.js"
+  },
+  "publishConfig": {
+    "@tsd:registry": "https://gitlab.tesodev.com/api/v4/projects/16/packages/npm/"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
@@ -190,7 +214,6 @@
     "@storybook/addon-essentials": "^8.6.4",
     "@storybook/addon-interactions": "^8.6.4",
     "@storybook/addon-links": "^8.6.4",
-    "@storybook/addon-onboarding": "^8.6.7",
     "@storybook/blocks": "^8.6.7",
     "@storybook/manager-api": "^8.6.4",
     "@storybook/test": "^8.6.4",
@@ -219,7 +242,6 @@
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
     "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
     "sass": "^1.85.1",
     "storybook": "^8.6.4",
     "style-dictionary": "^4.3.3",

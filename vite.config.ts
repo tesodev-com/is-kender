@@ -5,17 +5,17 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import libPlugin from './scripts/plugin';
 
 export default defineConfig({
   plugins: [
     vue(),
+    libInjectCss(),
+    libPlugin(),
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
-      entryRoot: resolve(__dirname, 'src'),
-      exclude: ['src/**/*.stories.ts', 'src/**/*.spec.ts'],
       cleanVueFileName: true,
     }),
-    libInjectCss(),
   ],
   build: {
     copyPublicDir: false,

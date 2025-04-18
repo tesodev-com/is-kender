@@ -3,7 +3,7 @@ import Col from 'library-components/Col';
 import Row from 'library-components/Row';
 
 const meta: Meta<typeof Row> = {
-  title: 'Layout&Structures/Row',
+  title: 'Layout/Row',
   component: Row,
   argTypes: {
     align: {

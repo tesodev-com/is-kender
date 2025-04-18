@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
-  title: 'Forms&Inputs/Checkbox',
+  title: 'Form/Checkbox',
   argTypes: {
     value: { control: 'text' },
     disabled: { control: 'boolean' },

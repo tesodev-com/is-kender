@@ -13,7 +13,7 @@
       </slot>
     </label>
     <div
-      ref="inputContainer"
+      ref="inputContainerRef"
       class="otp-inputs"
       @paste="handlePaste"
     >
@@ -33,16 +33,15 @@
           :value="otpArray[index]"
           :placeholder="placeholder"
           class="otp-input"
-          :class="[`otp-input-${size}`]"
+          :class="[`otp-input-${size}`, { error: error }]"
           maxlength="1"
           autocomplete="one-time-code"
-          @input="handleInput($event, index)"
           @keydown="handleKeyDown($event, index)"
         />
       </template>
     </div>
     <div
-      v-if="slots.hint || hint"
+      v-if="(slots.hint || hint) && !error"
       class="otp-hint"
     >
       <slot
@@ -51,6 +50,13 @@
       >
         {{ hint }}
       </slot>
+    </div>
+    <div
+      v-if="error && errorMessage"
+      class="otp-error"
+      role="alert"
+    >
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -67,6 +73,8 @@ const props = withDefaults(defineProps<OtpInputProps>(), {
   placeholder: '',
   focusOnMount: false,
   numericOnly: true,
+  error: false,
+  errorMessage: '',
 });
 
 const emit = defineEmits<OtpInputEmits>();
@@ -76,7 +84,7 @@ const slots = defineSlots<OtpInputSlots>();
 const inputId = useId();
 
 const otp = defineModel<string>({ required: true });
-const inputContainer = useTemplateRef('inputContainer');
+const inputContainer = useTemplateRef('inputContainerRef');
 
 const inputType = computed(() => {
   return props.isPassword ? 'password' : 'text';
@@ -113,41 +121,43 @@ function focusInput(index: number) {
   }
 }
 
-function handleInput(event: Event, index: number) {
-  const target = event.target as HTMLInputElement;
-  let value = target.value.trim();
-
-  if (value.length > 1) {
-    value = value.slice(-1);
-    target.value = value;
-  }
-
-  if (props.numericOnly && value && !/^\d$/.test(value)) {
-    target.value = '';
-    value = '';
-  }
-
-  const newOtp = (otp.value || '').padEnd(props.digits, '').split('');
-  newOtp[index] = value;
-  otp.value = newOtp.join('');
-
-  if (value && index < props.digits - 1) {
-    focusInput(index + 1);
-  }
-
-  if (otp.value?.length === props.digits) {
-    emit('complete', otp.value);
-  }
-}
-
 function handleKeyDown(event: KeyboardEvent, index: number) {
   const target = event.target as HTMLInputElement;
 
-  if (event.key === 'Backspace' && !target.value && index > 0) {
-    const newOtp = otp.value.padEnd(props.digits, '').split('');
-    newOtp[index - 1] = '';
+  if (props.numericOnly && event.key && !/^\d$/.test(event.key)) {
+    if (!['Backspace', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+  }
+
+  if (event.key.length === 1) {
+    event.preventDefault();
+    const newOtp = (otp.value || '').padEnd(props.digits, '').split('');
+    newOtp[index] = event.key;
     otp.value = newOtp.join('');
-    focusInput(index - 1);
+
+    if (index < props.digits - 1) {
+      focusInput(index + 1);
+    }
+
+    if (otp.value.length === props.digits) {
+      emit('complete', otp.value);
+    }
+    return;
+  }
+
+  if (event.key === 'Backspace') {
+    if (!target.value && index > 0) {
+      const newOtp = otp.value.padEnd(props.digits, '').split('');
+      newOtp[index - 1] = '';
+      otp.value = newOtp.join('');
+      focusInput(index - 1);
+    } else {
+      const newOtp = otp.value.padEnd(props.digits, '').split('');
+      newOtp[index] = '';
+      otp.value = newOtp.join('');
+    }
   }
 
   if (event.key === 'ArrowLeft' && index > 0) {

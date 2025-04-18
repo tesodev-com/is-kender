@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof OTPInput> = {
   component: OTPInput,
-  title: 'Forms&Inputs/OTPInput',
+  title: 'Form/OtpInput',
   argTypes: {
     size: {
       control: 'select',
@@ -42,6 +42,14 @@ const meta: Meta<typeof OTPInput> = {
     focusOnMount: {
       control: 'boolean',
       description: 'Focuses the first input on component mount when set to `true`.',
+    },
+    error: {
+      control: 'boolean',
+      description: 'Shows an error state when set to `true`.',
+    },
+    errorMessage: {
+      control: 'text',
+      description: 'Error message displayed when the error state is active.',
     },
   },
 };
