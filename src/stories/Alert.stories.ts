@@ -3,7 +3,7 @@ import Alert from 'library-components/Alert';
 
 const meta: Meta<typeof Alert> = {
   component: Alert,
-  title: 'Messaging/Alert',
+  title: 'Feedback/Alert',
   argTypes: {
     variant: {
       control: 'select',

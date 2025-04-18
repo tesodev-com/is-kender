@@ -1,7 +1,7 @@
 {
   "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -169,6 +169,10 @@
     "./treeselect": {
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
+    },
+    "./imagecrop": {
+      "types": "./dist/components/ImageCrop/index.d.ts",
+      "import": "./dist/components/ImageCrop/index.js"
     }
   },
   "scripts": {
@@ -206,7 +210,6 @@
     "@storybook/addon-essentials": "^8.6.4",
     "@storybook/addon-interactions": "^8.6.4",
     "@storybook/addon-links": "^8.6.4",
-    "@storybook/addon-onboarding": "^8.6.7",
     "@storybook/blocks": "^8.6.7",
     "@storybook/manager-api": "^8.6.4",
     "@storybook/test": "^8.6.4",

@@ -3,7 +3,7 @@ import Divider from 'library-components/Divider';
 
 const meta: Meta<typeof Divider> = {
   component: Divider,
-  title: 'Layout&Structures/Divider',
+  title: 'Layout/Divider',
   argTypes: {
     is: {
       control: 'text',

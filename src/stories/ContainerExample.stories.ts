@@ -6,7 +6,7 @@ import Row from 'library-components/Row';
 const meta: Meta<typeof Container> = {
   component: Container,
   subcomponents: { Row, Col },
-  title: 'Layout&Structures/ContainerExample',
+  title: 'Layout/ContainerExample',
   argTypes: {
     fluid: {
       control: {

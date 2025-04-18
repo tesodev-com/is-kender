@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof TreeSelect> = {
   component: TreeSelect,
-  title: 'Forms&Inputs/TreeSelect',
+  title: 'Form/TreeSelect',
   argTypes: {
     treeOptions: {
       control: 'object',

@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof ColorPicker> = {
   component: ColorPicker,
-  title: 'Forms&Inputs/ColorPicker',
+  title: 'Form/ColorPicker',
   argTypes: {
     pickerPosition: { control: 'select', options: ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'right', 'right-top', 'right-bottom', 'left', 'left-top', 'left-bottom'] },
     isDraggable: { control: 'boolean' },

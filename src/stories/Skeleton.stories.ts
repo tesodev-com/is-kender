@@ -3,7 +3,7 @@ import Skeleton from 'library-components/Skeleton';
 
 const meta: Meta<typeof Skeleton> = {
   component: Skeleton,
-  title: 'Messaging/Skeleton',
+  title: 'Feedback/Skeleton',
   argTypes: {
     shape: {
       control: 'select',

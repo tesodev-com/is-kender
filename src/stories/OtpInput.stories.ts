@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 const meta: Meta<typeof OTPInput> = {
   component: OTPInput,
-  title: 'Forms&Inputs/OTPInput',
+  title: 'Form/OtpInput',
   argTypes: {
     size: {
       control: 'select',

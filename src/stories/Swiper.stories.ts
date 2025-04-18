@@ -4,7 +4,7 @@ import Swiper from 'library-components/Swiper';
 import SwiperSlide from 'library-components/SwiperSlide';
 
 const meta: Meta<typeof Swiper> = {
-  title: 'Utility-Components/Swiper',
+  title: 'Data-Display/Swiper',
   component: Swiper,
   argTypes: {
     slidesPerView: {

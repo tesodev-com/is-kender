@@ -3,7 +3,7 @@ import Badge from 'library-components/Badge';
 
 const meta: Meta<typeof Badge> = {
   component: Badge,
-  title: 'DataDisplay/Badge',
+  title: 'Feedback/Badge',
   argTypes: {
     color: {
       control: 'select',
