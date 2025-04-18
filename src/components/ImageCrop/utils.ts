@@ -1,6 +1,6 @@
-import type { CropState } from './types';
+import type { CropState, ImageState } from './types';
 
-export function createCroppedImage(imageElement: HTMLImageElement, cropState: CropState, imageState: { rotate: number; scaleX: number; scaleY: number }): Promise<string> {
+export function createCroppedImage(imageElement: HTMLImageElement, cropState: CropState, imageState: ImageState): Promise<string> {
   return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });

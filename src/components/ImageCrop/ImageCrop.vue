@@ -85,7 +85,7 @@ import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { actionList } from './constants';
-import type { CropState, ImageCropperEvents, ImageCropperProps } from './types';
+import type { CropState, ImageCropperEvents, ImageCropperProps, ImageState } from './types';
 import { createCroppedImage } from './utils';
 // interfaces & types
 
@@ -102,7 +102,7 @@ const emit = defineEmits<ImageCropperEvents>();
 const originalImage = ref<string | File | null>(null);
 const previewRef = useTemplateRef('imagePreview');
 const frameRef = useTemplateRef('cropFrame');
-const imageState = ref({
+const imageState = ref<ImageState>({
   rotate: 0,
   scaleX: 1,
   scaleY: 1,

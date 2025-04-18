@@ -1,3 +1,9 @@
+export interface ImageState {
+  rotate: number;
+  scaleX: number;
+  scaleY: number;
+}
+
 export interface CropState {
   shape: 'circle' | 'square';
   top: number | string;
