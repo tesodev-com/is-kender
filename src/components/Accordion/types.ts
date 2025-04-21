@@ -7,13 +7,31 @@ export interface AccordionItemProps {
 }
 
 export interface AccordionProps {
-  items: AccordionItemProps[];
+  items?: AccordionItemProps[];
   allowMultiple?: boolean;
   accordionIconPosition?: 'left' | 'right';
   separator?: boolean;
+  headerClass?: string;
+  contentClass?: string;
 }
 
 export interface AccordionEmits {
   (event: 'openedAccordion', item: AccordionItemProps, index: number): void;
   (event: 'closedAccordion', item: AccordionItemProps, index: number): void;
+}
+
+export interface AccordionItemComponentProps {
+  accordionIconPosition?: 'left' | 'right';
+  separator?: boolean;
+  headerClass?: string;
+  contentClass?: string;
+  disabled?: boolean;
+  modelValue?: boolean;
+  hideIcons?: boolean;
+}
+
+export interface AccordionItemEmits {
+  (e: 'update:modelValue', value: boolean): void;
+  (e: 'opened'): void;
+  (e: 'closed'): void;
 }
