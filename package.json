@@ -177,10 +177,6 @@
     "./treeselect": {
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
-    },
-    "./themeprovider": {
-      "types": "./dist/components/ThemeProvider/index.d.ts",
-      "import": "./dist/components/ThemeProvider/index.js"
     }
   },
   "scripts": {
