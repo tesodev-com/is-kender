@@ -4,6 +4,34 @@
 
 This is an open-source Vue 3 component library built with TypeScript, SCSS, and Vite. The library follows a strict structure to maintain consistency and scalability.
 
+## Table of Contents
+
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Install Dependencies](#install-dependencies)
+  - [Start Development Server](#start-development-server)
+  - [Run Storybook](#run-storybook)
+  - [Run Tests](#run-tests)
+- [Project Structure](#project-structure)
+  - [Folder Structure](#folder-structure)
+- [Development Guidelines](#development-guidelines)
+  - [Component Structure](#1-component-structure)
+  - [Storybook Stories](#2-storybook-stories)
+  - [Styling Rules](#3-styling-rules)
+  - [TypeScript & Code Quality](#4-typescript--code-quality)
+  - [Testing Guidelines](#5-testing-guidelines)
+- [Local Development & Testing](#local-development--testing)
+  - [Testing Package Locally with Yalc](#testing-package-locally-with-yalc)
+- [Publishing & Versioning](#publishing--versioning)
+  - [Contribution Guidelines](#contribution-guidelines)
+  - [Publishing Workflow](#publishing-workflow)
+- [Best Practices](#best-practices)
+  - [Steps for a Good Component Library](#steps-for-a-good-component-library)
+- [Code Examples](#code-examples)
+  - [Example Component Structure](#example-component-structure)
+  - [Example Storybook File](#example-storybook-file)
+- [License](#license)
+
 ## Tech Stack
 
 - **Vue 3** - Component-based framework
@@ -132,7 +160,7 @@ yalc push
 4. In your test project, add the package using Yalc:
 
 ```sh
-yalc add @your-scope/component-library
+yalc add @tsd/component-library
 ```
 
 5. When you make changes to your component library:
@@ -145,7 +173,7 @@ yalc push
 6. To remove the package from your test project:
 
 ```sh
-yalc remove @your-scope/component-library
+yalc remove @tsd/component-library
 ```
 
 This workflow allows you to test your component library in real projects before publishing to npm, ensuring everything works as expected.
