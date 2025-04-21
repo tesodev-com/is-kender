@@ -74,6 +74,7 @@ const props = withDefaults(defineProps<AccordionProps>(), {
   separator: false,
   headerClass: '',
   contentClass: '',
+  isOpen: false,
 });
 
 // defineEmits
@@ -87,7 +88,7 @@ const accordionItems = ref(
   }))
 );
 
-const isContentOpen = ref(false);
+const isContentOpen = ref(props?.isOpen ?? false);
 
 // computed
 

@@ -254,6 +254,7 @@ export const WithSlots: Story = {
     allowMultiple: false,
     accordionIconPosition: 'right',
     separator: false,
+    isOpen: true,
   } as AccordionProps,
   render: args => ({
     components: { Accordion },

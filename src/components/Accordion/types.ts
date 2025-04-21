@@ -13,6 +13,7 @@ export interface AccordionProps {
   separator?: boolean;
   headerClass?: string;
   contentClass?: string;
+  isOpen?: boolean;
 }
 
 export interface AccordionEmits {
