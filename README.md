@@ -12,7 +12,35 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
 - **Vitest** - Unit testing framework
 - **Storybook** - Component documentation and visualization
 
-## Folder Structure
+## Getting Started
+
+### Install Dependencies
+
+```sh
+yarn install
+```
+
+### Start Development Server
+
+```sh
+yarn dev
+```
+
+### Run Storybook
+
+```sh
+yarn storybook
+```
+
+### Run Tests
+
+```sh
+yarn test
+```
+
+## Project Structure
+
+### Folder Structure
 
 ```
 /src
@@ -41,12 +69,12 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
 /storybook
 ```
 
-## Development Rules
+## Development Guidelines
 
 ### 1. Component Structure
 
 - Each component must reside in its own folder inside `/components/`.
-- Component-related files (**.vue, .test.ts, index.ts**) must stay inside their respective component folders.
+- Component-related files (**.vue, .spec.ts, index.ts**) must stay inside their respective component folders.
 - Every component must export itself via `index.ts` inside its folder.
 
 ### 2. Storybook Stories
@@ -77,7 +105,54 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
   yarn test
   ```
 
-### 6. Contribution Guidelines
+## Local Development & Testing
+
+### Testing Package Locally with Yalc
+
+Before publishing your package, you can test it locally in your projects using Yalc. Yalc creates a local package store and simulates package installation, making it perfect for testing your component library in real projects.
+
+1. Install Yalc globally:
+
+```sh
+npm install -g yalc
+```
+
+2. Build your package:
+
+```sh
+yarn build
+```
+
+3. Publish to Yalc:
+
+```sh
+yalc push
+```
+
+4. In your test project, add the package using Yalc:
+
+```sh
+yalc add @your-scope/component-library
+```
+
+5. When you make changes to your component library:
+
+```sh
+yarn build
+yalc push
+```
+
+6. To remove the package from your test project:
+
+```sh
+yalc remove @your-scope/component-library
+```
+
+This workflow allows you to test your component library in real projects before publishing to npm, ensuring everything works as expected.
+
+## Publishing & Versioning
+
+### Contribution Guidelines
 
 1. Fork the repository.
 2. Create a new branch: `feature/<user-name>/<subject>`.
@@ -86,7 +161,7 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
 5. Open a **pull request** with a detailed description.
 6. Wait for review and approval.
 
-### 7. Publishing Workflow
+### Publishing Workflow
 
 1. Run `yarn build` to generate the production build.
 2. Ensure all tests pass.
@@ -105,7 +180,9 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
    Increases when you make backward-compatible bug fixes.
    Example: 1.2.3 → 1.2.4 (No new features, just fixes).
 
-## Steps for a Good Component Library
+## Best Practices
+
+### Steps for a Good Component Library
 
 1. **Modular Design**: Ensure each component is reusable and independent.
 2. **Scalability**: Plan for new components and extensions.
@@ -118,51 +195,53 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
 9. **CI/CD Setup**: Automate testing, building, and publishing workflows.
 10. **Community Engagement**: Encourage contributions and maintain transparency.
 
-## Example Component Structure
+## Code Examples
+
+### Example Component Structure
 
 ```vue
 <template>
   <div>Example</div>
 </template>
 <script setup lang="ts">
-// 📌 1. Imports (Libraries, Components, Utils)
+// 1. Imports (Libraries, Components, Utils)
 import { ref, computed, watch } from "vue";
 
-// 📌 2. Types & Interfaces (for TypeScript projects)
+// 2. Types & Interfaces (for TypeScript projects)
 interface ExampleProps {
   text: string;
 }
 
-// 📌 3. Constants (Static values, enums)
+// 3. Constants (Static values, enums)
 const MAX_LENGTH = 100;
 
-// 📌 4. Props & Emits (Props should come before state)
+// 4. Props & Emits (Props should come before state)
 defineProps<ExampleProps>();
 const emit = defineEmits<{
   (event: "update", value: string): void;
 }>();
 
-// 📌 5. Composables (Reusable logic)
+// 5. Composables (Reusable logic)
 const { someComposableState } = useSomeComposable();
 
-// 📌 6. Reactive State (refs, reactive objects)
+// 6. Reactive State (refs, reactive objects)
 const count = ref(0);
 const user = reactive({ name: "John", age: 30 });
 
-// 📌 7. Computed Properties (Derived state)
+// 7. Computed Properties (Derived state)
 const doubleCount = computed(() => count.value * 2);
 
-// 📌 8. Watchers (For reacting to state changes)
+// 8. Watchers (For reacting to state changes)
 watch(count, (newVal) => {
   console.log("Count changed:", newVal);
 });
 
-// 📌 9. Lifecycle Hooks (Mounting, cleanup, etc.)
+// 9. Lifecycle Hooks (Mounting, cleanup, etc.)
 onMounted(() => {
   console.log("Component Mounted");
 });
 
-// 📌 10. Methods (Event handlers, logic)
+// 10. Methods (Event handlers, logic)
 function increment() {
   console.log("Method Example");
 }
@@ -170,7 +249,7 @@ function increment() {
 <style lang="scss" scoped src="<filepath>"></style>
 ```
 
-## Example Storybook File
+### Example Storybook File
 
 ```ts
 // src/stories/Button.stories.ts
@@ -198,32 +277,6 @@ Primary.args = {
   label: "Click me",
   primary: true,
 };
-```
-
-## Getting Started
-
-### Install Dependencies
-
-```sh
-yarn install
-```
-
-### Start Development Server
-
-```sh
-yarn dev
-```
-
-### Run Storybook
-
-```sh
-yarn storybook
-```
-
-### Run Tests
-
-```sh
-yarn test
 ```
 
 ## License
