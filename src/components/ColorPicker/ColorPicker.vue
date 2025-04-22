@@ -286,8 +286,8 @@
 // imports
 import { colorizeIcon } from '@/assets/icons';
 import { Button, Svg, Text } from '@/components/';
-import useClickOutside from '@/composables/useClickOutside';
-import useDraggable from '@/composables/useDraggable';
+import { useClickOutside } from '@/composables/useClickOutside';
+import { useDraggable } from '@/composables/useDraggable';
 import { calculatePosition } from '@/utils/position';
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
 import { colorUtils } from './colorUtils';

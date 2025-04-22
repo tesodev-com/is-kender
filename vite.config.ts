@@ -30,7 +30,7 @@ export default defineConfig({
       input: Object.fromEntries(
         glob
           .sync('src/**/*.{ts,js,vue}', {
-            ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/components/**/index.ts', 'src/components/**/types.ts'],
+            ignore: ['src/**/*.d.ts', 'src/**/*.stories.ts', 'src/**/*.spec.ts', 'src/{components,composables}/**/index.ts', 'src/**/types.ts'],
           })
           .map(file => [relative('src', file.slice(0, file.length - extname(file).length)), fileURLToPath(new URL(file, import.meta.url))])
       ),

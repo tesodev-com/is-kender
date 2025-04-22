@@ -1,6 +1,6 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const useClickOutside = (elementRefs: any, callback?: () => void) => {
+export function useClickOutside(elementRefs: any, callback?: () => void) {
   const isOutside = ref(false);
 
   const handleClick = (event: Event) => {
@@ -28,6 +28,4 @@ const useClickOutside = (elementRefs: any, callback?: () => void) => {
   });
 
   return isOutside;
-};
-
-export default useClickOutside;
+}

@@ -1,7 +1,7 @@
 {
   "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.27",
+  "version": "0.0.28",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -177,6 +177,58 @@
     "./treeselect": {
       "types": "./dist/components/TreeSelect/index.d.ts",
       "import": "./dist/components/TreeSelect/index.js"
+    },
+    "./useClickOutside": {
+      "types": "./dist/composables/useClickOutside/index.d.ts",
+      "import": "./dist/composables/useClickOutside/index.js"
+    },
+    "./useCopyClipboard": {
+      "types": "./dist/composables/useCopyClipboard/index.d.ts",
+      "import": "./dist/composables/useCopyClipboard/index.js"
+    },
+    "./useDebounce": {
+      "types": "./dist/composables/useDebounce/index.d.ts",
+      "import": "./dist/composables/useDebounce/index.js"
+    },
+    "./useDraggable": {
+      "types": "./dist/composables/useDraggable/index.d.ts",
+      "import": "./dist/composables/useDraggable/index.js"
+    },
+    "./useEventBus": {
+      "types": "./dist/composables/useEventBus/index.d.ts",
+      "import": "./dist/composables/useEventBus/index.js"
+    },
+    "./useFormValidation": {
+      "types": "./dist/composables/useFormValidation/index.d.ts",
+      "import": "./dist/composables/useFormValidation/index.js"
+    },
+    "./useIntersectionObserver": {
+      "types": "./dist/composables/useIntersectionObserver/index.d.ts",
+      "import": "./dist/composables/useIntersectionObserver/index.js"
+    },
+    "./useIsMobile": {
+      "types": "./dist/composables/useIsMobile/index.d.ts",
+      "import": "./dist/composables/useIsMobile/index.js"
+    },
+    "./useLocalStorage": {
+      "types": "./dist/composables/useLocalStorage/index.d.ts",
+      "import": "./dist/composables/useLocalStorage/index.js"
+    },
+    "./useResizeObserver": {
+      "types": "./dist/composables/useResizeObserver/index.d.ts",
+      "import": "./dist/composables/useResizeObserver/index.js"
+    },
+    "./useSidebar": {
+      "types": "./dist/composables/useSidebar/index.d.ts",
+      "import": "./dist/composables/useSidebar/index.js"
+    },
+    "./useTheme": {
+      "types": "./dist/composables/useTheme/index.d.ts",
+      "import": "./dist/composables/useTheme/index.js"
+    },
+    "./useToast": {
+      "types": "./dist/composables/useToast/index.d.ts",
+      "import": "./dist/composables/useToast/index.js"
     }
   },
   "scripts": {

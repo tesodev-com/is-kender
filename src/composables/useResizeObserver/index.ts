@@ -1,27 +1,5 @@
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import type { Ref } from 'vue';
-
-interface IResizeObserverOptions {
-  box?: 'content-box' | 'border-box' | 'device-pixel-content-box';
-}
-
-interface IUseResizeObserverProperties {
-  elementRef?: Ref<Element | null>;
-  element?: Element | null;
-  options?: IResizeObserverOptions;
-  callback?: (entries: ResizeObserverEntry[]) => void;
-}
-
-interface IObserverRect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  top: number;
-  left: number;
-  bottom: number;
-  right: number;
-}
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import type { IObserverRect, IUseResizeObserverProperties } from './types';
 
 const defaultState: IObserverRect = {
   x: 0,

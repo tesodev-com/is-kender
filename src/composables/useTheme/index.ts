@@ -1,6 +1,6 @@
 import { onMounted, ref } from 'vue';
+import type { Theme } from './types';
 
-export type Theme = 'light' | 'dark' | 'system';
 const currentTheme = ref<Theme>('system');
 
 export function useTheme() {
