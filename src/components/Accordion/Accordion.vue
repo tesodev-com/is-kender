@@ -37,6 +37,8 @@
         :headerClass="headerClass"
         :contentClass="contentClass"
         :hideIcons="!!$slots.header"
+        @opened="handleOpened({ isOpen: true }, 0)"
+        @closed="handleClosed({ isOpen: false }, 0)"
       >
         <template #header="slotProps">
           <slot
