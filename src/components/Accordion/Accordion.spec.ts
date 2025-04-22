@@ -1,14 +1,10 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import Accordion from './Accordion.vue';
+import { AccordionItem } from './SubComponents';
+import type { AccordionItemProps } from './types';
 
-interface AccordionItem {
-  title: string;
-  content?: string;
-  isOpen?: boolean;
-}
-
-const items: AccordionItem[] = [
+const items: AccordionItemProps[] = [
   { title: 'Item 1', content: 'Content 1', isOpen: false },
   { title: 'Item 2', content: 'Content 2', isOpen: false },
   { title: 'Item 3', content: 'Content 3', isOpen: false },
@@ -25,69 +21,99 @@ describe('Accordion.vue', () => {
         accordionIconPosition: 'right',
         separator: true,
       },
+      global: {
+        components: {
+          AccordionItem,
+        },
+      },
     });
   });
 
   it('renders the correct number of items', () => {
-    const items = wrapper.findAll('.accordion-item');
+    const items = wrapper.findAllComponents(AccordionItem);
     expect(items.length).toBe(3);
   });
 
   it('applies the correct classes based on props', () => {
-    expect(wrapper.find('.accordion-item').classes()).toContain('accordion-item-separator');
-    expect(wrapper.find('.accordion-header').classes()).toContain('accordion-header-right');
+    const accordionItem = wrapper.findComponent(AccordionItem);
+    expect(accordionItem.props('separator')).toBe(true);
+    expect(accordionItem.props('accordionIconPosition')).toBe('right');
   });
 
   it('toggles an item open/close on click', async () => {
     const headers = wrapper.findAll('.accordion-header');
     await headers[0].trigger('click');
+    await wrapper.vm.$nextTick();
     expect(wrapper.vm.accordionItems[0].isOpen).toBe(true);
+
     await headers[0].trigger('click');
+    await wrapper.vm.$nextTick();
     expect(wrapper.vm.accordionItems[0].isOpen).toBe(false);
   });
 
   it('closes other items when allowMultiple is false', async () => {
     const headers = wrapper.findAll('.accordion-header');
     await headers[0].trigger('click');
+    await wrapper.vm.$nextTick();
     await headers[1].trigger('click');
+    await wrapper.vm.$nextTick();
+
     expect(wrapper.vm.accordionItems[0].isOpen).toBe(false);
     expect(wrapper.vm.accordionItems[1].isOpen).toBe(true);
   });
 
   it('allows multiple open items when allowMultiple is true', async () => {
-    wrapper.setProps({ allowMultiple: true });
-    await wrapper.vm.$nextTick();
-
+    await wrapper.setProps({ allowMultiple: true });
     const headers = wrapper.findAll('.accordion-header');
+
     await headers[0].trigger('click');
+    await wrapper.vm.$nextTick();
     await headers[1].trigger('click');
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.accordionItems[0].isOpen).toBe(true);
     expect(wrapper.vm.accordionItems[1].isOpen).toBe(true);
   });
 
-  it('renders slots correctly', () => {
+  it('renders slots correctly', async () => {
     const slotWrapper = mount(Accordion, {
-      props: { items },
-      slots: { title: '<span class="custom-title">Custom Title</span>' },
+      props: {
+        allowMultiple: false,
+        accordionIconPosition: 'right',
+      },
+      slots: {
+        header: '<span class="custom-title">Custom Title</span>',
+        content: '<div class="custom-content">Custom Content</div>',
+      },
+      global: {
+        components: {
+          AccordionItem,
+        },
+      },
     });
+
     expect(slotWrapper.find('.custom-title').exists()).toBe(true);
+    expect(slotWrapper.find('.custom-content').exists()).toBe(false);
+
+    const header = slotWrapper.find('.accordion-header');
+    await header.trigger('click');
+    await slotWrapper.vm.$nextTick();
+
+    expect(slotWrapper.find('.custom-content').exists()).toBe(true);
   });
 
-  it('applies transition hooks correctly', async () => {
-    const el = document.createElement('div');
-    Object.defineProperty(el, 'scrollHeight', { value: 100 });
+  it('emits events when items are opened/closed', async () => {
+    const accordionItem = wrapper.findComponent(AccordionItem);
+    await accordionItem.vm.$emit('opened');
+    await wrapper.vm.$nextTick();
 
-    wrapper.vm.beforeEnter(el);
-    expect(el.style.height).toBe('0px');
+    expect(wrapper.emitted('openedAccordion')).toBeTruthy();
+    expect(wrapper.emitted('openedAccordion')?.[0]).toEqual([items[0], 0]);
 
-    wrapper.vm.enter(el);
-    expect(el.style.height).toBe('100px');
+    await accordionItem.vm.$emit('closed');
+    await wrapper.vm.$nextTick();
 
-    wrapper.vm.beforeLeave(el);
-    expect(el.style.height).toBe('100px');
-
-    wrapper.vm.leave(el);
-    expect(el.style.height).toBe('0px');
+    expect(wrapper.emitted('closedAccordion')).toBeTruthy();
+    expect(wrapper.emitted('closedAccordion')?.[0]).toEqual([items[0], 0]);
   });
 });

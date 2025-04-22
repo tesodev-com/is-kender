@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import Accordion, { type AccordionItemProps } from 'library-components/Accordion';
+import Accordion from 'library-components/Accordion';
+import type { AccordionItemProps, AccordionProps } from 'library-components/Accordion/types';
 
 const meta: Meta<typeof Accordion> = {
   component: Accordion,
@@ -22,6 +23,14 @@ const meta: Meta<typeof Accordion> = {
       control: 'boolean',
       description: 'If true, adds a separator between accordion items.',
     },
+    headerClass: {
+      control: 'text',
+      description: 'Custom class for the header of the accordion.',
+    },
+    contentClass: {
+      control: 'text',
+      description: 'Custom class for the content of the accordion.',
+    },
   },
 };
 
@@ -29,7 +38,7 @@ export default meta;
 
 type Story = StoryObj<typeof Accordion>;
 
-const commonArgs: Partial<Story['args']> = {
+const commonArgs: Partial<AccordionProps> = {
   items: [
     { title: 'Item 1', content: 'This is plain text content for item 1.' },
     { title: 'Item 2', content: '<strong>This is HTML content for item 2.</strong>' },
@@ -169,7 +178,7 @@ export const NoContentWithSlotKey: Story = {
     allowMultiple: false,
     accordionIconPosition: 'right',
     separator: false,
-  },
+  } as AccordionProps,
   render: args => ({
     components: { Accordion },
     setup() {
@@ -204,7 +213,7 @@ export const EmitsEvent: Story = {
     allowMultiple: false,
     accordionIconPosition: 'right',
     separator: false,
-  },
+  } as AccordionProps,
   render: args => ({
     components: { Accordion },
     setup() {
@@ -236,6 +245,118 @@ export const EmitsEvent: Story = {
           </div>
         </template>
       </Accordion>
+    `,
+  }),
+};
+
+export const WithSlots: Story = {
+  args: {
+    allowMultiple: false,
+    accordionIconPosition: 'right',
+    separator: false,
+    isOpen: true,
+  } as AccordionProps,
+  render: args => ({
+    components: { Accordion },
+    setup() {
+      return { args };
+    },
+    template: `
+      <Accordion v-bind="args">
+        <template #header="{ isOpen, accordionIconPosition }">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>{{ accordionIconPosition === 'left' ? '⬅️' : '➡️' }}</span>
+            <span>Custom Header</span>
+            <span>{{ isOpen ? '🔼' : '🔽' }}</span>
+          </div>
+        </template>
+        <template #content="{ isOpen }">
+          <div>
+            <h3>Content Title</h3>
+            <p>This content is rendered using slots.</p>
+            <p>Current state: {{ isOpen ? 'Open' : 'Closed' }}</p>
+          </div>
+        </template>
+      </Accordion>
+    `,
+  }),
+};
+
+export const MixedUsage: Story = {
+  args: {
+    allowMultiple: true,
+    accordionIconPosition: 'right',
+    separator: true,
+  } as AccordionProps,
+  render: args => ({
+    components: { Accordion },
+    setup() {
+      const items: AccordionItemProps[] = [
+        { title: 'Array Item 1', content: 'Content from array items' },
+        { title: 'Array Item 2', content: 'Another content from array items' },
+      ];
+      return { args, items };
+    },
+    template: `
+      <Accordion v-bind="args" :items="items">
+        <template #header-0>
+          Component Item 1
+        </template>
+        <template #content-0>
+          <div>
+            <h3>Component Item 1 Content</h3>
+            <p>This content is rendered using slots.</p>
+          </div>
+        </template>
+
+        <template #header-1>
+          Component Item 2
+        </template>
+        <template #content-1>
+          <div>
+            <h3>Component Item 2 Content</h3>
+            <p>This content is rendered using slots.</p>
+          </div>
+        </template>
+      </Accordion>
+    `,
+  }),
+};
+
+export const MultipleAccordions: Story = {
+  args: {
+    allowMultiple: false,
+    accordionIconPosition: 'right',
+    separator: true,
+  } as AccordionProps,
+  render: args => ({
+    components: { Accordion },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div class="space-y-4">
+        <Accordion v-bind="args">
+          <template #header="{ isOpen }">
+            First Accordion Header {{ isOpen ? '🔼' : '🔽' }}
+          </template>
+          <template #content>First Accordion Content</template>
+        </Accordion>
+
+        <Accordion v-bind="args">
+          <template #header="{ isOpen }">
+            Second Accordion Header {{ isOpen ? '🔼' : '🔽' }}
+          </template>
+          <template #content>Second Accordion Content</template>
+        </Accordion>
+
+        <Accordion v-bind="args">
+          <template #header="{ isOpen }">
+            Third Accordion Header {{ isOpen ? '🔼' : '🔽' }}
+          </template>
+          <template #content>Third Accordion Content</template>
+        </Accordion>
+      </div>
     `,
   }),
 };

@@ -1,96 +1,88 @@
 <template>
   <div class="accordion">
-    <div
-      v-for="(item, index) in accordionItems"
-      :key="index"
-      :class="accordionItemClasses"
-    >
-      <div
-        :class="[accordionHeaderClasses, { 'accordion-header-disabled': item.disabled }]"
-        @click="toggleAccordion(index)"
+    <template v-if="items">
+      <AccordionItem
+        v-for="(item, index) in accordionItems"
+        :key="index"
+        v-model="item.isOpen"
+        :accordionIconPosition="accordionIconPosition"
+        :separator="separator"
+        :headerClass="headerClass"
+        :contentClass="contentClass"
+        :disabled="item.disabled"
+        @opened="handleOpened(item, index)"
+        @closed="handleClosed(item, index)"
       >
-        <template v-if="accordionIconPosition === 'left'">
-          <Svg
-            v-if="item.isOpen"
-            :src="removeCircleOutlineIcon"
-            size="24"
-            class="accordion-arrow"
-          ></Svg>
-          <Svg
-            v-else
-            :src="addCircleOutlineIcon"
-            size="24"
-            class="accordion-arrow"
-          ></Svg>
-        </template>
-        <slot
-          v-if="!!$slots.title"
-          name="title"
-          v-bind="item"
-        />
-        <template v-else>
+        <template #header>
           {{ item.title }}
         </template>
-        <template v-if="accordionIconPosition === 'right'">
-          <Svg
-            v-if="item.isOpen"
-            :src="removeCircleOutlineIcon"
-            size="24"
-            class="accordion-arrow"
-          ></Svg>
-          <Svg
-            v-else
-            :src="addCircleOutlineIcon"
-            size="24"
-            class="accordion-arrow"
-          ></Svg>
-        </template>
-      </div>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="enter"
-        @before-leave="beforeLeave"
-        @leave="leave"
-      >
-        <div
-          v-if="item.isOpen"
-          class="accordion-content-container"
-        >
+        <template #content>
           <div
             v-if="item.content && !item.slotKey"
-            :class="accordionContentClasses"
             v-html="item.content"
           />
-          <div
-            v-if="item.slotKey"
-            :class="accordionContentClasses"
-          >
-            <slot
-              :name="item.slotKey"
-              v-bind="item"
-            ></slot>
-          </div>
-        </div>
-      </transition>
-    </div>
+          <slot
+            v-else-if="item.slotKey"
+            :name="item.slotKey"
+            v-bind="item"
+          />
+        </template>
+      </AccordionItem>
+    </template>
+    <template v-else>
+      <AccordionItem
+        v-model="isContentOpen"
+        :accordionIconPosition="accordionIconPosition"
+        :separator="separator"
+        :headerClass="headerClass"
+        :contentClass="contentClass"
+        :hideIcons="!!$slots.header"
+        @opened="handleOpened({ isOpen: true }, 0)"
+        @closed="handleClosed({ isOpen: false }, 0)"
+      >
+        <template #header="slotProps">
+          <slot
+            name="header"
+            v-bind="slotProps"
+          />
+        </template>
+        <template #content="slotProps">
+          <slot
+            name="content"
+            v-bind="slotProps"
+          />
+        </template>
+      </AccordionItem>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { addCircleOutlineIcon, removeCircleOutlineIcon } from '@/assets/icons';
-import Svg from 'library-components/Svg';
-import { computed, ref } from 'vue';
+// imports
+import { ref, watch } from 'vue';
+import { AccordionItem } from './SubComponents';
 import type { AccordionEmits, AccordionProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<AccordionProps>(), {
   allowMultiple: false,
   accordionIconPosition: 'right',
   separator: false,
+  headerClass: '',
+  contentClass: '',
+  isOpen: false,
 });
 
+// defineEmits
 const emit = defineEmits<AccordionEmits>();
 
+// states (refs and reactives)
 const accordionItems = ref(
   props.items?.map(item => ({
     ...item,
@@ -98,59 +90,38 @@ const accordionItems = ref(
   }))
 );
 
-const accordionItemClasses = computed(() => {
-  return [
-    'accordion-item',
-    {
-      'accordion-item-separator': props.separator,
-    },
-  ];
-});
+const isContentOpen = ref(props?.isOpen ?? false);
 
-const accordionHeaderClasses = computed(() => {
-  return ['accordion-header', `accordion-header-${props.accordionIconPosition}`];
-});
+// computed
 
-const accordionContentClasses = computed(() => {
-  return ['accordion-content', `accordion-content-${props.accordionIconPosition}`];
-});
+// watchers
+watch(
+  () => accordionItems.value?.map(item => item.isOpen),
+  (newVal, oldVal) => {
+    if (!props.allowMultiple && accordionItems.value && newVal) {
+      const openedIndex = newVal.findIndex((isOpen, index) => isOpen && !oldVal?.[index]);
+      if (openedIndex !== -1) {
+        accordionItems.value.forEach((item, index) => {
+          if (index !== openedIndex && item.isOpen) {
+            item.isOpen = false;
+            emit('closedAccordion', item, index);
+          }
+        });
+      }
+    }
+  },
+  { deep: true }
+);
 
-function toggleAccordion(index: number) {
-  const item = accordionItems.value[index];
+// lifecycles
 
-  if (item.disabled) return;
-
-  if (!props.allowMultiple) {
-    accordionItems.value.forEach((item, i) => {
-      if (i !== index) item.isOpen = false;
-    });
-  }
-
-  if (!item.isOpen) {
-    emit('openedAccordion', item, index);
-  }
-
-  item.isOpen = !item.isOpen;
-
-  if (!item.isOpen) {
-    emit('closedAccordion', item, index);
-  }
+// methods
+function handleOpened(item: any, index: number) {
+  emit('openedAccordion', item, index);
 }
 
-function beforeEnter(el: any) {
-  el.style.height = '0';
-}
-
-function enter(el: any) {
-  el.style.height = el.scrollHeight + 'px';
-}
-
-function beforeLeave(el: any) {
-  el.style.height = el.scrollHeight + 'px';
-}
-
-function leave(el: any) {
-  el.style.height = '0';
+function handleClosed(item: any, index: number) {
+  emit('closedAccordion', item, index);
 }
 </script>
 

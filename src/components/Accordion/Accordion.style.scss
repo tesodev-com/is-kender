@@ -34,16 +34,19 @@
 
     .accordion-content-container {
       overflow: hidden;
-      transition: all 0.2s ease-in-out;
+      will-change: height;
+      transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-      .accordion-content {
-        padding-top: 0.5rem;
+    .accordion-content {
+      padding-top: 0.5rem;
+      height: auto;
+      overflow: hidden;
 
-        @include text-md(400, $gray-600);
+      @include text-md(400, $gray-600);
 
-        &-left {
-          padding-left: 3rem;
-        }
+      &-left {
+        padding-left: 3rem;
       }
     }
   }
