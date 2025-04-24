@@ -14,7 +14,7 @@
           color="secondary"
           variant="ghost"
           size="sm"
-          @click="calendarViewMode = 'month'"
+          @click.stop="calendarViewMode = 'month'"
         >
           {{ displayDateText.monthText }}
         </Button>
@@ -22,7 +22,7 @@
           color="secondary"
           variant="ghost"
           size="sm"
-          @click="calendarViewMode = 'year'"
+          @click.stop="calendarViewMode = 'year'"
         >
           {{ displayDateText.yearText }}
         </Button>
@@ -67,7 +67,7 @@
             color="secondary"
             variant="ghost"
             fluid
-            @click="onRenderDate('month', month.date)"
+            @click.stop="onRenderDate('month', month.date)"
           >
             {{ month.text }}
           </Button>
@@ -84,7 +84,7 @@
             color="secondary"
             variant="ghost"
             fluid
-            @click="onRenderDate('year', year.date)"
+            @click.stop="onRenderDate('year', year.date)"
           >
             {{ year.text }}
           </Button>
