@@ -73,7 +73,7 @@
 // imports
 import Button from 'library-components/Button';
 import Input from 'library-components/Input';
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 import { Calendar, QuickSelection, type CalendarProps, type DateModel } from './SubComponents';
 import type { DatePickerEmits, DatePickerProps } from './types';
 import Utils from './utils';
@@ -161,7 +161,7 @@ const calendarList = computed(() => {
 onMounted(() => {
   document.addEventListener('click', onClickOutside);
 });
-onBeforeUnmount(() => {
+onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
 });
 // methods
@@ -195,8 +195,8 @@ function onApply() {
 function onClickOutside(event: MouseEvent) {
   if (props.inline) return;
   const target = event.target as HTMLElement;
-  const isDatePicker = datepicker.value?.contains(target);
-  const isInput = (datepickerInput.value?.$el as HTMLDivElement).contains(target);
+  const isDatePicker = Boolean(datepicker.value?.contains(target));
+  const isInput = Boolean((datepickerInput.value?.$el as HTMLDivElement).contains(target));
   if (!isDatePicker && !isInput) {
     isShowDatePicker.value = false;
   }
