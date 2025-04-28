@@ -1,3 +1,8 @@
+export * from './FileReaderManager';
+export { default as FileReaderManager } from './FileReaderManager';
+export * from './UploadQueue';
+export { default as UploadQueue } from './UploadQueue';
+
 export default {
   formatFileSize(size: number): string {
     const units = ['B', 'KB', 'MB', 'GB', 'TB'];

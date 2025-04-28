@@ -1,4 +1,5 @@
 import type { CustomFile } from '../../types';
+import type { QueueStatus } from '../../utils';
 
 export interface FileErrorMessage {
   file?: File;
@@ -12,6 +13,8 @@ export interface UploadProps {
   maxSize?: number;
   maxFiles?: number;
   description?: string;
+  loading?: boolean;
+  uploadQueueStatus?: QueueStatus;
 }
 
 export interface UploadEmits {

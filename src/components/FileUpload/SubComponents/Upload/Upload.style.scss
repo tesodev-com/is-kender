@@ -1,4 +1,4 @@
-.file-uploader {
+.upload {
   $root: &;
 
   display: flex;
@@ -10,7 +10,36 @@
   border-radius: 1rem;
   width: 100%;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $gray-50;
+  }
+
+  &:active {
+    background-color: $gray-100;
+  }
+
+  &:has(.upload__loading) {
+    cursor: default;
+    background-color: inherit;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255 255 255 / 60%);
+  }
+
+  &__spinner {
+    color: $blue-500;
+  }
 
   &__input {
     display: none;
@@ -33,18 +62,53 @@
   }
 
   &__primary-text {
+    user-select: none;
+
     @include text-sm(600, $primary-700);
   }
 
   &__secondary-text {
+    user-select: none;
+
     @include text-sm(400);
   }
 
   &__description {
+    user-select: none;
+
     @include text-xs(400);
   }
 
+  &__status {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+
+    @include text-xs(400);
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+
+      &--uploading {
+        color: $gray-600;
+      }
+
+      &--completed {
+        color: $success-600;
+      }
+
+      &--failed {
+        color: $error-600;
+      }
+    }
+  }
+
   &--drag-active {
+    border-style: dashed;
     border-width: 2px;
     border-color: $primary-600;
   }

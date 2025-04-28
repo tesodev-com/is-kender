@@ -1,51 +1,78 @@
 <template>
   <div
     ref="uploadContainerRef"
-    class="file-uploader"
-    :class="{ 'file-uploader--disabled': props.disabled, 'file-uploader--drag-active': isDragActive }"
-    @click="onClick"
-    @dragenter="onDragEnter"
-    @dragleave="onDragLeave"
-    @drop="onDrop"
+    class="upload"
+    :class="{ 'upload--disabled': props.disabled, 'upload--drag-active': isDragActive }"
+    @click="handleClick"
+    @dragenter="handleDragEnter"
+    @dragleave="handleDragLeave"
+    @drop="handleDrop"
   >
+    <div
+      v-if="props.loading"
+      class="upload__loading"
+    >
+      <Spinner
+        class="upload__spinner"
+        size="1.5rem"
+      ></Spinner>
+    </div>
     <input
       ref="uploadInputRef"
       type="file"
-      class="file-uploader__input"
-      :disabled="disabled"
+      class="upload__input"
+      :disabled="disabled || loading"
       :multiple="multiple"
       :accept="accept"
-      @change="onUpload"
+      @change="handleUpload"
     />
     <Button
       color="secondary"
       variant="outline"
       iconOnly
-      class="file-uploader__button"
+      class="upload__button"
     >
       <Svg
         :src="cloudUploadOutlineIcon"
         size="1.25rem"
       ></Svg>
     </Button>
-    <div class="file-uploader__content">
-      <div class="file-uploader__actions">
-        <span class="file-uploader__primary-text">Yüklemek için tıkla</span>
-        <span class="file-uploader__secondary-text">veya sürükleyip bırak</span>
+    <div class="upload__content">
+      <div class="upload__actions">
+        <span class="upload__primary-text">Yüklemek için tıkla&#32;</span>
+        <span class="upload__secondary-text">veya sürükleyip bırak</span>
       </div>
-      <span class="file-uploader__description">{{ getDescription }}</span>
+      <span class="upload__description">{{ descriptionText }}</span>
+      <div
+        v-if="uploadQueueStatus.total"
+        class="upload__status"
+      >
+        <span
+          v-for="status in uploadStatusList"
+          :key="status.class"
+          class="upload__status-text"
+          :class="`upload__status-text--${status.class}`"
+        >
+          <Svg
+            size="1.25rem"
+            :src="status.icon"
+          ></Svg>
+          <strong>{{ status.label }}</strong>
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { cloudUploadOutlineIcon } from '@/assets/icons';
+import { cancelIconRoundedOutline, checkIconRoundedOutline, cloudUploadOutlineIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
+import Spinner from 'library-components/Spinner';
 import Svg from 'library-components/Svg';
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import type { CustomFile, ReadProgress } from '../../types';
-import Utils from '../../utils';
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
+import type { CustomFile } from '../../types';
+import Utils, { type QueueStatus } from '../../utils';
 import { getErrorMessage } from './constants';
 import type { FileErrorMessage, UploadEmits, UploadProps } from './types';
 // interfaces & types
@@ -63,12 +90,45 @@ const errorList = ref<FileErrorMessage[]>([]);
 const uploadContainer = useTemplateRef('uploadContainerRef');
 const uploadInput = useTemplateRef('uploadInputRef');
 const isDragActive = ref(false);
+const uploadQueueStatus = ref<QueueStatus>({
+  total: 0,
+  completed: 0,
+  waiting: 0,
+  failed: 0,
+});
 // computed
-const getDescription = computed(() => {
+const descriptionText = computed(() => {
   return props.description || `${props.accept} ${props.maxSize ? ` (max. ${Utils.formatFileSize(props.maxSize)})` : ''}`;
 });
+const uploadStatusList = computed(() => {
+  return [
+    {
+      class: 'uploading',
+      icon: cloudUploadOutlineIcon,
+      label: uploadQueueStatus.value.waiting,
+    },
+    {
+      class: 'failed',
+      icon: cancelIconRoundedOutline,
+      label: uploadQueueStatus.value.failed,
+    },
+    {
+      class: 'completed',
+      icon: checkIconRoundedOutline,
+      label: uploadQueueStatus.value.completed,
+    },
+  ];
+});
 // watchers
-
+watch(
+  () => props.uploadQueueStatus,
+  () => {
+    if (props.uploadQueueStatus) {
+      uploadQueueStatus.value = props.uploadQueueStatus;
+    }
+  },
+  { deep: true }
+);
 // lifecycles
 onMounted(() => {
   if (uploadContainer.value) {
@@ -87,12 +147,12 @@ onBeforeUnmount(() => {
   }
 });
 // methods
-function onClick() {
+function handleClick() {
   if (uploadInput.value) {
     uploadInput.value.click();
   }
 }
-function onUpload(event: Event | DragEvent) {
+function handleUpload(event: Event | DragEvent) {
   const files = getFiles(event);
   emit('onUpload', files);
   emit('onError', errorList.value || []);
@@ -101,18 +161,18 @@ function onUpload(event: Event | DragEvent) {
     errorList.value = [];
   }
 }
-function onDragEnter() {
-  if (props.disabled) return;
+function handleDragEnter() {
+  if (props.disabled || props.loading) return;
   isDragActive.value = true;
 }
-function onDragLeave() {
-  if (props.disabled) return;
+function handleDragLeave() {
+  if (props.disabled || props.loading) return;
   isDragActive.value = false;
 }
-function onDrop(event: DragEvent) {
-  if (props.disabled) return;
+function handleDrop(event: DragEvent) {
+  if (props.disabled || props.loading) return;
   isDragActive.value = false;
-  onUpload(event);
+  handleUpload(event);
 }
 function getFiles(event: Event | DragEvent) {
   let files: FileList | null = null;
@@ -140,12 +200,9 @@ function getFiles(event: Event | DragEvent) {
           size: file.size,
           type: file.type,
           raw: file,
-          lastModified: file.lastModified,
           isImage: file.type.startsWith('image/'),
           preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
           uploadedDate: new Date().getTime(),
-          readFile: (onProgress: (state: ReadProgress) => void) => readFile(file, onProgress),
-          isReady: false,
         };
       }
     })
@@ -176,38 +233,6 @@ function validateSize(file: File) {
   }
   return true;
 }
-async function readFile(file: File, onProgress: (state: ReadProgress) => void) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onprogress = e => {
-      if (e.lengthComputable) {
-        const percent = Math.round((e.loaded / e.total) * 100);
-        onProgress({ percent, loadedSize: e.loaded, loadingState: 'uploading' });
-      }
-    };
-
-    reader.onload = () => {
-      onProgress({
-        percent: 100,
-        loadedSize: file.size,
-        loadingState: 'completed',
-      });
-      resolve(reader.result);
-    };
-
-    reader.onerror = e => {
-      onProgress({
-        percent: 0,
-        loadedSize: 0,
-        loadingState: 'failed',
-      });
-      reject(e);
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
 function preventDefault(event: DragEvent) {
   event.preventDefault();
   event.stopPropagation();
@@ -217,7 +242,7 @@ function clearErrorList() {
   emit('onError', errorList.value);
 }
 defineExpose({
-  onClick,
+  onClick: handleClick,
   clearErrorList,
 });
 </script>

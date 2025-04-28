@@ -135,13 +135,13 @@ describe('Calendar', () => {
     });
 
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
-    expect(weekDays[0].text()).toBe('Paz');
-    expect(weekDays[1].text()).toBe('Pzt');
-    expect(weekDays[2].text()).toBe('Sal');
-    expect(weekDays[3].text()).toBe('Çar');
-    expect(weekDays[4].text()).toBe('Per');
-    expect(weekDays[5].text()).toBe('Cum');
-    expect(weekDays[6].text()).toBe('Cmt');
+    expect(weekDays[0].text()).toBe('Pzt');
+    expect(weekDays[1].text()).toBe('Sal');
+    expect(weekDays[2].text()).toBe('Çar');
+    expect(weekDays[3].text()).toBe('Per');
+    expect(weekDays[4].text()).toBe('Cum');
+    expect(weekDays[5].text()).toBe('Cmt');
+    expect(weekDays[6].text()).toBe('Paz');
   });
 
   it('renders month days correctly', () => {
@@ -212,25 +212,25 @@ describe('Calendar', () => {
     const wrapper = mount(Calendar, {
       props: {
         ...defaultProps,
-        firstDayOfWeek: 'monday',
+        weekStartDay: 'monday',
       },
     });
 
     const weekDays = wrapper.findAll('.calendar-cell').slice(0, 7);
-    expect(weekDays[0].text()).toBe('Paz');
-    expect(weekDays[1].text()).toBe('Pzt');
-    expect(weekDays[2].text()).toBe('Sal');
-    expect(weekDays[3].text()).toBe('Çar');
-    expect(weekDays[4].text()).toBe('Per');
-    expect(weekDays[5].text()).toBe('Cum');
-    expect(weekDays[6].text()).toBe('Cmt');
+    expect(weekDays[0].text()).toBe('Pzt');
+    expect(weekDays[1].text()).toBe('Sal');
+    expect(weekDays[2].text()).toBe('Çar');
+    expect(weekDays[3].text()).toBe('Per');
+    expect(weekDays[4].text()).toBe('Cum');
+    expect(weekDays[5].text()).toBe('Cmt');
+    expect(weekDays[6].text()).toBe('Paz');
   });
 
   it('starts week on Sunday when firstDayOfWeek is sunday', () => {
     const wrapper = mount(Calendar, {
       props: {
         ...defaultProps,
-        firstDayOfWeek: 'sunday',
+        weekStartDay: 'sunday',
       },
     });
 

@@ -53,7 +53,7 @@ describe('Upload', () => {
   });
 
   it('shows correct description', () => {
-    expect(wrapper.find('.description').text()).toBe('Test description');
+    expect(wrapper.find('.upload__description').text()).toBe('Test description');
   });
 
   it('handles file upload through input change', async () => {
@@ -66,7 +66,7 @@ describe('Upload', () => {
       },
     } as unknown as Event;
 
-    await (wrapper.vm as any).onUpload(event);
+    await (wrapper.vm as any).handleUpload(event);
     expect(wrapper.emitted('onUpload')).toBeTruthy();
   });
 
@@ -77,7 +77,7 @@ describe('Upload', () => {
       dataTransfer,
     });
 
-    await (wrapper.vm as any).onDrop(dragEvent);
+    await (wrapper.vm as any).handleDrop(dragEvent);
     expect(wrapper.emitted('onUpload')).toBeTruthy();
   });
 
@@ -89,7 +89,7 @@ describe('Upload', () => {
       },
     } as unknown as Event;
 
-    await (wrapper.vm as any).onUpload(event);
+    await (wrapper.vm as any).handleUpload(event);
     expect(wrapper.emitted('onError')).toBeTruthy();
   });
 
@@ -101,7 +101,7 @@ describe('Upload', () => {
       },
     } as unknown as Event;
 
-    await (wrapper.vm as any).onUpload(event);
+    await (wrapper.vm as any).handleUpload(event);
     expect(wrapper.emitted('onError')).toBeTruthy();
   });
 
@@ -115,7 +115,7 @@ describe('Upload', () => {
       },
     } as unknown as Event;
 
-    await (wrapper.vm as any).onUpload(event);
+    await (wrapper.vm as any).handleUpload(event);
     expect(wrapper.emitted('onError')).toBeTruthy();
   });
 

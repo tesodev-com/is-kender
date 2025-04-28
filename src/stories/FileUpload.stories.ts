@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import FileUpload from 'library-components/FileUpload';
+import FileUpload, { type CustomFile } from 'library-components/FileUpload';
 
 const meta: Meta<typeof FileUpload> = {
   title: 'Form/FileUpload',
@@ -33,6 +33,9 @@ const meta: Meta<typeof FileUpload> = {
     description: {
       control: 'text',
     },
+    maxConcurrentUploads: {
+      control: 'number',
+    },
     uploader: {
       control: 'object',
     },
@@ -46,4 +49,15 @@ export const Default: Story = {
   args: {
     multiple: true,
   },
+  render: args => ({
+    components: { FileUpload },
+    setup() {
+      function onUpload(files: CustomFile[]) {
+        console.log(files);
+      }
+
+      return { args, onUpload };
+    },
+    template: '<FileUpload v-bind="args" @onUpload="onUpload" />',
+  }),
 };

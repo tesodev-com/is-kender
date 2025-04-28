@@ -6,23 +6,27 @@ export interface ReadProgress {
 
 export interface CustomFile extends File {
   id: string;
-  raw: File;
-  isReady: boolean;
   isImage: boolean;
   preview: string | null;
   uploadedDate: number;
-  readFile: (onProgress: (state: ReadProgress) => void) => Promise<any>;
+  raw: File;
+  status: ReadProgress;
 }
+
 export interface FileUploadProps {
   disabled?: boolean;
   multiple?: boolean;
   accept?: string;
   maxSize?: number;
   maxFiles?: number;
+  showUploadedFiles?: boolean;
+  showErrorMessages?: boolean;
   preview?: boolean;
+  loading?: boolean;
   template?: 'col' | 'row';
   showActions?: boolean;
   description?: string;
+  maxConcurrentUploads?: number;
   uploader?: (file: File[]) => Promise<boolean>;
 }
 export interface FileUploadEvents {
