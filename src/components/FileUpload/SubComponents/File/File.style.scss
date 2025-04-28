@@ -1,4 +1,4 @@
-.file {
+.file-item {
   $root: &;
 
   border: 1px solid $gray-200;
@@ -28,6 +28,7 @@
     margin-inline: auto;
     aspect-ratio: 16/9;
     object-fit: fill;
+    user-select: none;
   }
 
   &__content {
@@ -46,6 +47,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    @include text-sm(400, $gray-600);
   }
 
   &__size {

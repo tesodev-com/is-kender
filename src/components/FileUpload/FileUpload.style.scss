@@ -1,15 +1,12 @@
-.file-upload-container {
+.file-upload {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
-  padding: 1rem;
-  border: 1px solid $gray-200;
-  border-radius: 1rem;
   position: relative;
   overflow: hidden;
   transition: height 0.4s ease;
 
-  .file-list {
+  .file-upload__list {
     display: flex;
     gap: $spacing-md;
     flex-wrap: wrap;
@@ -24,9 +21,15 @@
     }
   }
 
-  .file-upload-actions {
+  .file-upload__actions {
     display: flex;
     align-items: center;
     gap: $spacing-sm;
+  }
+
+  &:has(.file-upload__actions, .file-upload__list) {
+    padding: 1rem;
+    border: 1px solid $gray-200;
+    border-radius: 1rem;
   }
 }

@@ -1,50 +1,16 @@
 <template>
-  <div class="file-upload-container">
+  <div class="file-upload">
     <div
       v-if="showActions"
-      class="file-upload-actions"
+      class="file-upload__actions"
     >
       <Button
-        color="secondary"
-        variant="outline"
-        size="sm"
-        rounded="full"
-        iconOnly
-        :disabled="disabled"
-        @click="onUploadClick"
+        v-for="action in actionButtons"
+        :key="action.id"
+        v-bind="action.buttonProps"
+        @click="handleActionClick(action.id)"
       >
-        <Svg
-          size="1.1rem"
-          :src="diveFolderUploadOutlineIcon"
-        ></Svg>
-      </Button>
-      <Button
-        v-if="uploader"
-        color="success"
-        variant="outline"
-        size="sm"
-        rounded="full"
-        iconOnly
-        :disabled="files.length === 0"
-      >
-        <Svg
-          size="1.1rem"
-          :src="cloudUploadOutlineIcon"
-        ></Svg>
-      </Button>
-      <Button
-        color="danger"
-        variant="outline"
-        size="sm"
-        rounded="full"
-        iconOnly
-        :disabled="files.length === 0 && errorList.length === 0"
-        @click="onClear"
-      >
-        <Svg
-          size="1.1rem"
-          :src="closeIcon"
-        ></Svg>
+        <Svg v-bind="action.svgProps"></Svg>
       </Button>
     </div>
     <Upload
@@ -55,8 +21,10 @@
       :maxFiles="maxFiles"
       :maxSize="maxSize"
       :description="description"
-      @on-error="onError"
-      @on-upload="onUpload"
+      :uploadQueueStatus="uploadQueueStatus"
+      :loading="loading"
+      @on-error="handleError"
+      @on-upload="handleFileUpload"
     />
     <Alert
       v-for="(error, index) in errorList"
@@ -69,9 +37,9 @@
       </template>
     </Alert>
     <div
-      v-if="files.length"
-      class="file-list"
-      :class="[`file-list-${template}`]"
+      v-if="files.length && showUploadedFiles"
+      class="file-upload__list"
+      :class="[`file-upload__list--${template}`]"
     >
       <File
         v-for="file in files"
@@ -79,7 +47,7 @@
         :file="file"
         :template="template"
         :preview="preview"
-        @on-delete="onDelete"
+        @on-delete="handleFileDelete"
       />
     </div>
   </div>
@@ -89,11 +57,12 @@
 // imports
 import { closeIcon, cloudUploadOutlineIcon, diveFolderUploadOutlineIcon } from '@/assets/icons';
 import Alert from 'library-components/Alert';
-import Button from 'library-components/Button';
-import Svg from 'library-components/Svg';
-import { ref, useTemplateRef } from 'vue';
+import Button, { type ButtonProps } from 'library-components/Button';
+import Svg, { type SvgProps } from 'library-components/Svg';
+import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue';
 import { File, Upload, type FileErrorMessage } from './SubComponents';
 import type { CustomFile, FileUploadEvents, FileUploadProps } from './types';
+import { UploadQueue, type QueueStatus } from './utils';
 // interfaces & types
 
 // constants
@@ -101,11 +70,12 @@ import type { CustomFile, FileUploadEvents, FileUploadProps } from './types';
 // composable
 
 // props
-withDefaults(defineProps<FileUploadProps>(), {
+const props = withDefaults(defineProps<FileUploadProps>(), {
   disabled: false,
   multiple: true,
   preview: true,
   maxSize: 1024 * 1024,
+  maxConcurrentUploads: 5,
   template: 'row',
   description: 'En az 1 dosya yükleyin',
 });
@@ -115,33 +85,121 @@ const emit = defineEmits<FileUploadEvents>();
 const upload = useTemplateRef('uploadRef');
 const files = ref<CustomFile[]>([]);
 const errorList = ref<FileErrorMessage[]>([]);
+const uploadQueueStatus = ref<QueueStatus>({
+  total: 0,
+  waiting: 0,
+  completed: 0,
+  failed: 0,
+});
+const uploadQueue = new UploadQueue({ maxConcurrentUploads: props.maxConcurrentUploads, emit: () => emit('onUpload', files.value), onProgress: status => (uploadQueueStatus.value = status) });
 // computed
+const actionButtons = computed(() => {
+  const commonButtonProps = {
+    variant: 'outline',
+    size: 'sm',
+    rounded: 'full',
+    iconOnly: true,
+  };
+  const commonSvgProps = {
+    size: '1.1rem',
+  };
+  const actions = [
+    {
+      id: 'upload',
+      buttonProps: {
+        ...commonButtonProps,
+        color: 'secondary',
+        disabled: props.disabled,
+      },
+      svgProps: {
+        ...commonSvgProps,
+        src: diveFolderUploadOutlineIcon,
+      },
+    },
+    {
+      id: 'push',
+      buttonProps: {
+        ...commonButtonProps,
+        color: 'success',
+        disabled: files.value.length === 0,
+        style: {
+          opacity: files.value.length === 0 ? 0.3 : 1,
+        },
+      },
+      svgProps: {
+        ...commonSvgProps,
+        src: cloudUploadOutlineIcon,
+      },
+    },
+    {
+      id: 'clear',
+      buttonProps: {
+        ...commonButtonProps,
+        color: 'danger',
+        disabled: Boolean(files.value.length === 0 && errorList.value.length === 0),
+        style: {
+          opacity: files.value.length === 0 && errorList.value.length === 0 ? 0.3 : 1,
+        },
+      },
+      svgProps: {
+        ...commonSvgProps,
+        src: closeIcon,
+      },
+    },
+  ] as { id: string; buttonProps: ButtonProps; svgProps: SvgProps }[];
 
+  if (!props.uploader) {
+    actions.splice(1, 1);
+  }
+
+  return actions;
+});
 // watchers
 
 // lifecycles
-
+onBeforeUnmount(() => {
+  uploadQueue.abortAll();
+});
 // methods
-function onUpload(uploadedFiles: CustomFile[]) {
+function handleFileUpload(uploadedFiles: CustomFile[]) {
   const tmpFiles = [...files.value, ...uploadedFiles];
   tmpFiles.sort((a, b) => b.uploadedDate - a.uploadedDate);
   files.value = tmpFiles;
-  emit('onUpload', files.value);
+  files.value.forEach(file => {
+    uploadQueue.addToQueue(file);
+  });
 }
-function onDelete(file: CustomFile) {
+function handleFileDelete(file: CustomFile) {
   files.value = files.value.filter(f => f.id !== file.id);
 }
-function onUploadClick() {
+function handleUploadClick() {
   if (upload.value) {
     upload.value.onClick();
   }
 }
-function onClear() {
+function handleClear() {
   files.value = [];
-  upload.value?.clearErrorList();
+  errorList.value = [];
+  uploadQueueStatus.value = {
+    total: 0,
+    waiting: 0,
+    completed: 0,
+    failed: 0,
+  };
+  uploadQueue.abortAll();
 }
-function onError(errors: FileErrorMessage[]) {
+function handleError(errors: FileErrorMessage[]) {
+  if (!props.showErrorMessages) return;
   errorList.value = errors;
+}
+function handleActionClick(actionId: string) {
+  if (actionId === 'upload') {
+    handleUploadClick();
+  } else if (actionId === 'push') {
+    props.uploader?.(files.value.map(f => f.raw));
+  } else if (actionId === 'clear') {
+    handleClear();
+  }
 }
 </script>
 

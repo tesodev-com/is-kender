@@ -1,35 +1,35 @@
 <template>
-  <div :class="fileContainerClasses">
+  <div :class="containerClasses">
     <img
       v-if="preview && file.preview"
       :src="file.preview"
       alt="File Preview"
-      class="file__preview-image"
+      class="file-item__preview-image"
     />
     <Svg
       v-else
-      :name="fileIcon"
+      :name="fileTypeIcon"
       :size="template === 'row' ? '5rem' : '2.5rem'"
-      class="file__preview-icon"
+      class="file-item__preview-icon"
       preserveColor
     ></Svg>
-    <div class="file__content">
+    <div class="file-item__content">
       <div
-        class="file__name"
+        class="file-item__name"
         :title="file.name"
       >
         {{ file.name }}
       </div>
-      <div class="file__meta">
-        <span class="file__size">{{ Utils.formatFileSize(fileReadStatus.loadedSize) }} of {{ Utils.formatFileSize(file.raw.size) }}</span>
+      <div class="file-item__meta">
+        <span class="file-item__size">{{ Utils.formatFileSize(fileReadStatus.loadedSize) }} of {{ Utils.formatFileSize(file.raw.size) }}</span>
         <Divider layout="vertical" />
-        <div class="file__status">
+        <div class="file-item__status">
           <Svg
-            class="file__status-icon"
+            class="file-item__status-icon"
             size="1.15rem"
             :src="uploadState.icon"
           ></Svg>
-          <span class="file__status-text">{{ uploadState.label }}</span>
+          <span class="file-item__status-text">{{ uploadState.label }}</span>
         </div>
       </div>
       <ProgressBar
@@ -37,22 +37,13 @@
         :maxValue="100"
         :value="fileReadStatus.percent"
         showPercentage
-        class="file__progress"
+        class="file-item__progress"
       />
-      <Button
-        v-else
-        color="danger"
-        variant="ghost"
-        class="file__retry-btn"
-        @click="onTryAgain"
-      >
-        Yeniden dene
-      </Button>
       <Svg
-        class="file__delete"
+        class="file-item__delete"
         size="1.5rem"
         :src="deleteForeverOutlineIcon"
-        @click="onDelete"
+        @click="handleDelete"
       ></Svg>
     </div>
   </div>
@@ -61,11 +52,10 @@
 <script setup lang="ts">
 // imports
 import { cancelIconRoundedOutline, checkIconRoundedOutline, cloudUploadOutlineIcon, deleteForeverOutlineIcon } from '@/assets/icons';
-import Button from 'library-components/Button';
 import Divider from 'library-components/Divider';
 import ProgressBar from 'library-components/ProgressBar';
 import Svg from 'library-components/Svg';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import type { ReadProgress } from '../../types';
 import Utils from '../../utils';
 import type { FileEmits, FileProps } from './types';
@@ -115,7 +105,7 @@ const fileReadStatus = ref<ReadProgress>({ percent: 0, loadedSize: 0, loadingSta
 const uploadState = computed(() => {
   return uploadStates[fileReadStatus.value.loadingState];
 });
-const fileIcon = computed(() => {
+const fileTypeIcon = computed(() => {
   const mime = props.file.raw.type;
   if (!mime) return fileIconMap.empty;
 
@@ -132,23 +122,22 @@ const fileIcon = computed(() => {
 
   return fileIconMap.default;
 });
-const fileContainerClasses = computed(() => {
-  return ['file', `file--${props.template}`, `file--${uploadState.value.class}`];
+const containerClasses = computed(() => {
+  return ['file-item', `file-item--${props.template}`, `file-item--${uploadState.value.class}`];
 });
 // watchers
-
+watch(
+  () => props.file.status,
+  status => {
+    fileReadStatus.value = status;
+  }
+);
 // lifecycles
-onMounted(() => {
-  props.file.readFile(onReadFile);
+onUnmounted(() => {
+  if (props.file.preview) URL.revokeObjectURL(props.file.preview);
 });
 // methods
-function onReadFile(state: ReadProgress) {
-  fileReadStatus.value = state;
-}
-function onTryAgain() {
-  props.file.readFile(onReadFile);
-}
-function onDelete() {
+function handleDelete() {
   emit('onDelete', props.file);
 }
 </script>

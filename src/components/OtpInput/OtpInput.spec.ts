@@ -1,4 +1,4 @@
-import { shallowMount, type VueWrapper } from '@vue/test-utils';
+import { mount, type VueWrapper } from '@vue/test-utils';
 import OTPInput from 'library-components/OtpInput';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { ref } from 'vue';
@@ -9,7 +9,7 @@ describe('OTPInput.vue', () => {
 
   function createWrapper(props = {}) {
     const otp = ref('');
-    return shallowMount(OTPInput, {
+    return mount(OTPInput, {
       props: {
         modelValue: otp.value,
         'onUpdate:modelValue': (value: string) => (otp.value = value),
@@ -72,8 +72,7 @@ describe('OTPInput.vue', () => {
   it('should update otp model on input', async () => {
     wrapper = createWrapper();
     const input = wrapper.find('.otp-input');
-    await input.setValue('1');
-    await input.trigger('input');
+    await input.trigger('keydown', { key: '1' });
     expect(wrapper.emitted('update:modelValue')).toBeTruthy();
     expect(wrapper.emitted('update:modelValue')![0]).toEqual(['1']);
   });
@@ -81,8 +80,8 @@ describe('OTPInput.vue', () => {
   it('should allow non-numeric when numericOnly is false', async () => {
     wrapper = createWrapper({ numericOnly: false });
     const input = wrapper.find('.otp-input');
-    await input.setValue('a');
-    await input.trigger('input');
+    await input.trigger('keydown', { key: 'a' });
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy();
     expect(wrapper.emitted('update:modelValue')![0]).toEqual(['a']);
   });
 

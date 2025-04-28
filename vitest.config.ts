@@ -18,6 +18,7 @@ export default mergeConfig(
         include: ['src/**'],
         exclude: ['**/*.stories.ts', '**/*.d.ts', '**/main.ts', '**/index.ts'],
       },
+      setupFiles: ['./vitest.setup.ts'],
     },
   })
 );

@@ -1,4 +1,5 @@
 export interface ButtonProps {
+  [key: string]: any;
   el?: 'button' | 'a' | any;
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';

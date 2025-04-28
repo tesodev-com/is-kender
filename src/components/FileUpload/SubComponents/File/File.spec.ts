@@ -8,14 +8,12 @@ class MockFile {
   name: string;
   size: number;
   type: string;
-  lastModified: number;
   webkitRelativePath: string;
 
   constructor(bits: any[], name: string, options?: any) {
     this.name = name;
     this.size = bits.join('').length;
     this.type = options?.type || '';
-    this.lastModified = Date.now();
     this.webkitRelativePath = '';
   }
 
@@ -55,6 +53,14 @@ vi.mock('../../utils', () => ({
   },
 }));
 
+// Mock icons
+vi.mock('@/assets/icons', () => ({
+  cancelIconRoundedOutline: 'cancel-icon',
+  checkIconRoundedOutline: 'check-icon',
+  cloudUploadOutlineIcon: 'upload-icon',
+  deleteForeverOutlineIcon: 'delete-icon',
+}));
+
 describe('File', () => {
   let wrapper: ReturnType<typeof mount<typeof FileComponent>>;
   const mockFile = {
@@ -63,15 +69,15 @@ describe('File', () => {
     size: 1024,
     type: 'image/jpeg',
     raw: new File(['test'], 'test.jpg', { type: 'image/jpeg' }),
-    isReady: false,
     isImage: true,
     preview: 'test-preview',
     uploadedDate: Date.now(),
-    readFile: vi.fn().mockImplementation(callback => {
-      callback({ percent: 0, loadedSize: 0, loadingState: 'uploading' });
-      return Promise.resolve('data');
-    }),
-  } as unknown as CustomFile;
+    status: {
+      percent: 0,
+      loadedSize: 0,
+      loadingState: 'uploading' as const,
+    },
+  } as CustomFile;
 
   beforeEach(() => {
     wrapper = mount(FileComponent, {
@@ -79,6 +85,19 @@ describe('File', () => {
         file: mockFile,
         template: 'row',
         preview: true,
+      },
+      global: {
+        stubs: {
+          Svg: {
+            template: '<span class="svg-icon"></span>',
+          },
+          Divider: {
+            template: '<span class="divider">|</span>',
+          },
+          ProgressBar: {
+            template: '<div class="progress-bar"></div>',
+          },
+        },
       },
     });
   });
@@ -88,15 +107,15 @@ describe('File', () => {
   });
 
   it('displays file name', () => {
-    expect(wrapper.find('.file-name').text()).toBe('test.jpg');
+    expect(wrapper.find('.file-item__name').text()).toBe('test.jpg');
   });
 
   it('displays file size', () => {
-    expect(wrapper.find('.file-specs-size').text()).toContain('0.00 B of 4.00 B');
+    expect(wrapper.find('.file-item__size').text()).toContain('0.00 B of 4.00 B');
   });
 
   it('shows preview for image files', () => {
-    const img = wrapper.find('img');
+    const img = wrapper.find('.file-item__preview-image');
     expect(img.exists()).toBe(true);
     expect(img.attributes('src')).toBe('test-preview');
   });
@@ -109,11 +128,12 @@ describe('File', () => {
       type: 'application/pdf',
     };
     await wrapper.setProps({ file: nonImageFile });
-    expect(wrapper.find('img').exists()).toBe(false);
+    expect(wrapper.find('.file-item__preview-image').exists()).toBe(false);
+    expect(wrapper.find('.file-item__preview-icon').exists()).toBe(true);
   });
 
   it('emits onDelete event when delete button is clicked', async () => {
-    await wrapper.find('.file-delete-icon').trigger('click');
+    await wrapper.find('.file-item__delete').trigger('click');
     expect(wrapper.emitted('onDelete')).toBeTruthy();
     expect(wrapper.emitted('onDelete')![0][0]).toEqual(mockFile);
   });
@@ -121,84 +141,43 @@ describe('File', () => {
   it('shows try again button when upload fails', async () => {
     const failedFile = {
       ...mockFile,
-      readFile: vi.fn().mockImplementation(callback => {
-        callback({ percent: 0, loadedSize: 0, loadingState: 'failed' });
-        return Promise.resolve('data');
-      }),
+      status: {
+        percent: 0,
+        loadedSize: 0,
+        loadingState: 'failed' as const,
+      },
     };
 
-    // Önce bileşeni failedFile ile yeniden oluştur
-    wrapper = mount(FileComponent, {
-      props: {
-        file: failedFile,
-        template: 'row',
-        preview: true,
-      },
-    });
-
-    // Bileşenin yeniden render edilmesini bekle
-    await wrapper.vm.$nextTick();
-
-    // readFile fonksiyonunun çağrıldığını doğrula
-    expect(failedFile.readFile).toHaveBeenCalled();
-
-    // Try again butonunun görünür olduğunu kontrol et
-    expect(wrapper.find('.try-again-button').exists()).toBe(true);
+    await wrapper.setProps({ file: failedFile });
+    expect(wrapper.find('.file-item__status-text').text()).toBe('Başarısız');
   });
 
   it('shows progress bar during upload', async () => {
     const uploadingFile = {
       ...mockFile,
-      readFile: vi.fn().mockImplementation(callback => {
-        callback({ percent: 50, loadedSize: 512, loadingState: 'uploading' });
-        return Promise.resolve('data');
-      }),
+      status: {
+        percent: 50,
+        loadedSize: 512,
+        loadingState: 'uploading' as const,
+      },
     };
 
-    // Önce bileşeni uploadingFile ile yeniden oluştur
-    wrapper = mount(FileComponent, {
-      props: {
-        file: uploadingFile,
-        template: 'row',
-        preview: true,
-      },
-    });
-
-    // Bileşenin yeniden render edilmesini bekle
-    await wrapper.vm.$nextTick();
-
-    // readFile fonksiyonunun çağrıldığını doğrula
-    expect(uploadingFile.readFile).toHaveBeenCalled();
-
-    // Progress bar'ın görünür olduğunu kontrol et
-    expect(wrapper.find('.progress-bar').exists()).toBe(true);
+    await wrapper.setProps({ file: uploadingFile });
+    expect(wrapper.find('.file-item__progress').exists()).toBe(true);
+    expect(wrapper.find('.file-item__status-text').text()).toBe('Yükleniyor');
   });
 
   it('shows completed state when upload is done', async () => {
     const completedFile = {
       ...mockFile,
-      readFile: vi.fn().mockImplementation(callback => {
-        callback({ percent: 100, loadedSize: 1024, loadingState: 'completed' });
-        return Promise.resolve('data');
-      }),
+      status: {
+        percent: 100,
+        loadedSize: 1024,
+        loadingState: 'completed' as const,
+      },
     };
 
-    // Önce bileşeni completedFile ile yeniden oluştur
-    wrapper = mount(FileComponent, {
-      props: {
-        file: completedFile,
-        template: 'row',
-        preview: true,
-      },
-    });
-
-    // Bileşenin yeniden render edilmesini bekle
-    await wrapper.vm.$nextTick();
-
-    // readFile fonksiyonunun çağrıldığını doğrula
-    expect(completedFile.readFile).toHaveBeenCalled();
-
-    // Durumun "Tamamlandı" olduğunu kontrol et
-    expect(wrapper.find('.file-status-text').text()).toBe('Tamamlandı');
+    await wrapper.setProps({ file: completedFile });
+    expect(wrapper.find('.file-item__status-text').text()).toBe('Tamamlandı');
   });
 });
