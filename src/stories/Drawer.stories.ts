@@ -1,5 +1,5 @@
-import Drawer from '@/components/Drawer/Drawer.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Drawer from 'library-components/Drawer';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Drawer> = {

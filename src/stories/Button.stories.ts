@@ -4,6 +4,7 @@ import Button from 'library-components/Button';
 const meta: Meta<typeof Button> = {
   title: 'Form/Button',
   component: Button,
+  tags: ['autodocs'],
   argTypes: {
     el: {
       control: 'text',

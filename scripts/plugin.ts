@@ -4,25 +4,6 @@ import { getFolders, readPackageJson } from './utils';
 const packageJson = readPackageJson();
 const excludeFolders: string[] = [];
 
-function globalDTs() {
-  const template = `
-declare module 'vue' {
-  export interface GlobalComponents {
-$componentList
-  }
-}`;
-  const components = getFolders('./src/components');
-  const globalComponents = components.map(component => {
-    const componentName = component.charAt(0).toUpperCase() + component.slice(1);
-    return `    Lib${componentName}: typeof import('./components/${component}')['default']`;
-  });
-  const globalComponentsString = globalComponents.join('\n');
-  const replacedTemplate = template.replace('$componentList', globalComponentsString);
-  if (fs.existsSync('./dist/main.d.ts')) {
-    fs.appendFileSync('./dist/main.d.ts', replacedTemplate);
-  }
-}
-
 function setPackageExport() {
   const componentFolders = getFolders('src/components') as string[];
   const composableFolders = getFolders('src/composables') as string[];
@@ -84,9 +65,6 @@ export default function libPlugin() {
       setPackageExport();
       setComponentIndex();
       setComposableIndex();
-    },
-    closeBundle() {
-      globalDTs();
     },
   };
 }

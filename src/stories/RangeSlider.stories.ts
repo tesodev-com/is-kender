@@ -5,8 +5,9 @@ import RangeSlider from 'library-components/RangeSlider';
 import { ref } from 'vue';
 
 const meta: Meta<typeof RangeSlider> = {
-  component: RangeSlider,
   title: 'Form/RangeSlider',
+  component: RangeSlider,
+  tags: ['autodocs'],
   argTypes: {
     min: { control: 'number' },
     max: { control: 'number' },

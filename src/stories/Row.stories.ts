@@ -5,6 +5,7 @@ import Row from 'library-components/Row';
 const meta: Meta<typeof Row> = {
   title: 'Layout/Row',
   component: Row,
+  tags: ['autodocs'],
   argTypes: {
     align: {
       control: 'select',

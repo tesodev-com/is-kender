@@ -1,10 +1,11 @@
-import RadioButton from '@/components/RadioButton/RadioButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import RadioButton from 'library-components/RadioButton';
 import { ref } from 'vue';
 
 const meta: Meta<typeof RadioButton> = {
-  component: RadioButton,
   title: 'Form/RadioButton',
+  component: RadioButton,
+  tags: ['autodocs'],
   argTypes: {
     value: { control: 'text' },
     modelValue: { control: 'text' },

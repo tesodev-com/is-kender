@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import Badge from 'library-components/Badge';
 
 const meta: Meta<typeof Badge> = {
-  component: Badge,
   title: 'Feedback/Badge',
+  component: Badge,
+  tags: ['autodocs'],
   argTypes: {
     color: {
       control: 'select',

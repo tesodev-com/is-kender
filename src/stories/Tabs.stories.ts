@@ -4,8 +4,9 @@ import TabPanel from 'library-components/TabPanel';
 import Tabs from 'library-components/Tabs';
 
 const meta: Meta<typeof Tabs> = {
-  component: Tabs,
   title: 'Navigation/Tabs',
+  component: Tabs,
+  tags: ['autodocs'],
   argTypes: {},
 };
 export default meta;

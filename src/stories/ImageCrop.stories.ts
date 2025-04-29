@@ -4,6 +4,7 @@ import ImageCrop from 'library-components/ImageCrop';
 const meta: Meta<typeof ImageCrop> = {
   title: 'Media/ImageCrop',
   component: ImageCrop,
+  tags: ['autodocs'],
   argTypes: {
     image: {
       control: {

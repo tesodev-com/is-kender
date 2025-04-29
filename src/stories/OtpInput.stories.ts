@@ -3,8 +3,9 @@ import OTPInput from 'library-components/OtpInput';
 import { ref } from 'vue';
 
 const meta: Meta<typeof OTPInput> = {
-  component: OTPInput,
   title: 'Form/OtpInput',
+  component: OTPInput,
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',

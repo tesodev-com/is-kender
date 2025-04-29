@@ -10,6 +10,7 @@ This is an open-source Vue 3 component library built with TypeScript, SCSS, and 
 - [Getting Started](#getting-started)
   - [Install Dependencies](#install-dependencies)
   - [Start Development Server](#start-development-server)
+  - [Create New Component](#create-new-component)
   - [Run Storybook](#run-storybook)
   - [Run Tests](#run-tests)
 - [Project Structure](#project-structure)
@@ -53,6 +54,16 @@ yarn install
 ```sh
 yarn dev
 ```
+
+### Create New Component
+
+You can quickly scaffold a new component using the create-component script:
+
+```sh
+yarn create:component ComponentName
+```
+
+This will create a new component folder with all the necessary files following the project's structure guidelines.
 
 ### Run Storybook
 

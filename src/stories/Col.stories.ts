@@ -4,6 +4,7 @@ import Col from 'library-components/Col';
 const meta: Meta<typeof Col> = {
   title: 'Layout/Col',
   component: Col,
+  tags: ['autodocs'],
   args: {
     cols: 12,
   },

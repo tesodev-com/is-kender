@@ -4,6 +4,7 @@ import Container from 'library-components/Container';
 const meta: Meta<typeof Container> = {
   title: 'Layout/Container',
   component: Container,
+  tags: ['autodocs'],
   args: {
     fluid: false,
     maxWidth: '75rem',

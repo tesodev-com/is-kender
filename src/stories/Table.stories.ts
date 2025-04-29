@@ -6,8 +6,9 @@ import Svg from 'library-components/Svg';
 import Table, { type Row, type TableProps } from 'library-components/Table';
 
 const meta: Meta<typeof Table> = {
-  component: Table,
   title: 'Data-Display/Table',
+  component: Table,
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

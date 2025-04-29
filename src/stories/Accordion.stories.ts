@@ -3,8 +3,9 @@ import Accordion from 'library-components/Accordion';
 import type { AccordionItemProps, AccordionProps } from 'library-components/Accordion/types';
 
 const meta: Meta<typeof Accordion> = {
-  component: Accordion,
   title: 'Data-Display/Accordion',
+  component: Accordion,
+  tags: ['autodocs'],
   argTypes: {
     items: {
       control: 'object',
