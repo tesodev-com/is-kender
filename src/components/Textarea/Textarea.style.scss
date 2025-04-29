@@ -1,10 +1,11 @@
 .textarea-wrapper {
-  width: fit-content;
-  position: relative;
+  width: 100%;
+  max-width: fit-content;
+  font-family: inherit;
 
   .textarea-label {
     display: block;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-md;
     font-weight: $font-weight-medium;
     color: $gray-700;
 
@@ -14,19 +15,28 @@
     }
   }
 
+  .textarea-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
   .textarea {
-    padding: $spacing-md;
+    padding: $spacing-lg;
     border: 1px solid $gray-300;
-    border-radius: $rounded-sm;
+    border-radius: $spacing-sm;
     font-size: $font-size-text-md;
     color: $gray-700;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+    line-height: 1.5;
+    overflow-y: auto;
+    min-height: calc($spacing-3xl * 4 + $spacing-3xl);
     width: 100%;
 
     &:focus {
       outline: none;
-      border-color: $primary-500;
-      box-shadow: $shadow-xs;
+      border-color: $blue-500;
+      box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
     }
 
     &:disabled {
@@ -34,37 +44,69 @@
       cursor: not-allowed;
     }
 
-    &-error {
+    &.textarea-error {
       border-color: $error-500;
 
       &:focus {
-        border-color: $error-500;
-        box-shadow: $shadow-xs;
+        box-shadow: 0 0 0 3px rgb(239 68 68 / 10%);
       }
+    }
+
+    &.no-resize {
+      resize: none;
+    }
+
+    &.fixed-size {
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+
+  .char-counter {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: $font-size-text-xs;
+    color: $gray-500;
+    background-color: rgb(255 255 255 / 70%);
+    padding: 0 4px;
+    border-radius: 3px;
+    
+    &.limit-exceeded {
+      color: $error-500;
+      font-weight: bold;
     }
   }
 
   .message-area {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+    margin-top: $spacing-md;
+    width: 100%;
+  }
+
+  .message-content {
+    flex: 1 1 70%;
   }
 
   .error-message {
     color: $error-500;
     font-size: $font-size-text-sm;
-    margin-top: $spacing-xs;
+    line-height: $spacing-2xl;
   }
 
   .hint-message {
     color: $gray-500;
     font-size: $font-size-text-sm;
-    margin-top: $spacing-xs;
+    line-height: $spacing-2xl;
   }
 
-  .character-count {
-    text-align: right;
-    font-size: $font-size-text-sm;
-    color: $gray-500;
-    margin-top: $spacing-xs;
+  .error-message,
+  .hint-message {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 }

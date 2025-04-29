@@ -1,7 +1,8 @@
+
 // Do not edit directly, this file was auto-generated.
 
-$white: #fff;
-$black: #000;
+$white: #ffffff;
+$black: #000000;
 $gray-25: #fdfdfd;
 $gray-50: #fafafa;
 $gray-100: #f5f5f5;
@@ -146,6 +147,10 @@ $orange-700: #c4320a;
 $orange-800: #9c2a10;
 $orange-900: #7e2410;
 $bg-transparent: transparent;
+$gray-700: #374151;
+$gray-300: #d1d5db;
+$blue-500: #3b82f6;
+$gray-100: #f3f4f6;
 $rounded-none: 0;
 $rounded-xs: 0.25rem;
 $rounded-sm: 0.5rem;
@@ -154,26 +159,12 @@ $rounded-lg: 0.1rem;
 $rounded-xl: 2.5rem;
 $rounded-full: 100%;
 $shadow-xs: 0px 1px 2px 0px rgb(10 13 18 / 5%);
-$shadow-sm:
-  0px 1px 2px -1px rgb(10 13 18 / 10%),
-  0px 1px 3px 0px rgb(10 13 18 / 10%);
-$shadow-md:
-  0px 2px 4px -2px rgb(10 13 18 / 6%),
-  0px 4px 6px -1px rgb(10 13 18 / 10%);
-$shadow-lg:
-  0px 2px 2px -1px rgb(10 13 18 / 4%),
-  0px 4px 6px -2px rgb(10 13 18 / 3%),
-  0px 12px 16px -4px rgb(10 13 18 / 8%);
-$shadow-xl:
-  0px 3px 3px -1.5px rgb(10 13 18 / 4%),
-  0px 8px 8px -4px rgb(10 13 18 / 3%),
-  0px 20px 24px -4px rgb(10 13 18 / 8%);
-$shadow-2xl:
-  0px 4px 4px -2px rgb(10 13 18 / 4%),
-  0px 24px 48px -12px rgb(10 13 18 / 18%);
-$shadow-3xl:
-  0px 5px 5px -2.5px rgb(10 13 18 / 4%),
-  0px 32px 64px -12px rgb(10 13 18 / 14%);
+$shadow-sm: 0px 1px 2px -1px rgb(10 13 18 / 10%), 0px 1px 3px 0px rgb(10 13 18 / 10%);
+$shadow-md: 0px 2px 4px -2px rgb(10 13 18 / 6%), 0px 4px 6px -1px rgb(10 13 18 / 10%);
+$shadow-lg: 0px 2px 2px -1px rgb(10 13 18 / 4%), 0px 4px 6px -2px rgb(10 13 18 / 3%), 0px 12px 16px -4px rgb(10 13 18 / 8%);
+$shadow-xl: 0px 3px 3px -1.5px rgb(10 13 18 / 4%), 0px 8px 8px -4px rgb(10 13 18 / 3%), 0px 20px 24px -4px rgb(10 13 18 / 8%);
+$shadow-2xl: 0px 4px 4px -2px rgb(10 13 18 / 4%), 0px 24px 48px -12px rgb(10 13 18 / 18%);
+$shadow-3xl: 0px 5px 5px -2.5px rgb(10 13 18 / 4%), 0px 32px 64px -12px rgb(10 13 18 / 14%);
 $spacing-none: 0;
 $spacing-xxs: 0.125rem;
 $spacing-xs: 0.25rem;

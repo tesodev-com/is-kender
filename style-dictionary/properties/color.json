@@ -900,5 +900,29 @@
     "type": "opacity",
     "value": "transparent",
     "blendMode": "normal"
-  }
+  },
+  "gray-700": {
+    "description": "",
+    "type": "color",
+    "value": "#374151ff",
+    "blendMode": "normal"
+ },
+"gray-300": {
+  "description": "",
+  "type": "color",
+  "value": "#d1d5dbff",
+  "blendMode": "normal"
+},
+"blue-500": {
+  "description": "",
+  "type": "color",
+  "value": "#3b82f6ff",
+  "blendMode": "normal"
+},
+"gray-100": {
+  "description": "",
+  "type": "color",
+  "value": "#f3f4f6ff",
+  "blendMode": "normal"
+}
 }

@@ -12,4 +12,6 @@ export interface TextareaProps {
   label?: string;
   maxLength?: number;
   modelValue?: string;
+  autoResize?: boolean;
+  hideResize?: boolean;
 }
