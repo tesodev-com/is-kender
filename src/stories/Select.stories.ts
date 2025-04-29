@@ -5,8 +5,9 @@ import Svg from 'library-components/Svg';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Select> = {
-  component: Select,
   title: 'Form/Select',
+  component: Select,
+  tags: ['autodocs'],
   argTypes: {
     options: {
       control: 'object',

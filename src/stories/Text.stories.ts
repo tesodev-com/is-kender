@@ -4,6 +4,7 @@ import Text from 'library-components/Text';
 const meta: Meta<typeof Text> = {
   title: 'Data-Display/Text',
   component: Text,
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',

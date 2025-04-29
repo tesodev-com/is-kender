@@ -1,3 +1,5 @@
+import type { DefineComponent } from '@/@types/core';
+
 export type ContainerSize = number | string;
 
 export interface ContainerProps {
@@ -21,4 +23,10 @@ export interface ContainerProps {
    * @default undefined
    */
   tag?: 'main' | 'section' | 'article' | 'div';
+}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    LibContainer: DefineComponent<ContainerProps>;
+  }
 }

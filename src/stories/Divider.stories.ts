@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import Divider from 'library-components/Divider';
 
 const meta: Meta<typeof Divider> = {
-  component: Divider,
   title: 'Layout/Divider',
+  component: Divider,
+  tags: ['autodocs'],
   argTypes: {
     is: {
       control: 'text',

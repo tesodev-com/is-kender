@@ -1,3 +1,5 @@
+import type { DefineComponent } from '@/@types/core';
+
 export type ColSize = number | string;
 
 export interface ColProps {
@@ -31,4 +33,10 @@ export interface ColProps {
    * @default ''
    */
   xxl?: ColSize;
+}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    LibCol: DefineComponent<ColProps>;
+  }
 }

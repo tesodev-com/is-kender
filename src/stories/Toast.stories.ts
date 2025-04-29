@@ -1,10 +1,11 @@
-import { useToast } from '@/composables';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import Toast from 'library-components/Toast';
+import { useToast } from 'library-composables/useToast';
 
 const meta: Meta<typeof Toast> = {
   title: 'Messaging/Toast',
   component: Toast,
+  tags: ['autodocs'],
   argTypes: {
     position: {
       control: 'select',

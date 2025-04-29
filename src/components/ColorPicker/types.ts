@@ -1,3 +1,5 @@
+import type { DefineComponent } from '@/@types/core';
+
 declare global {
   interface Window {
     EyeDropper: {
@@ -51,4 +53,10 @@ export interface ColorPickerProps {
     colorPicker: string;
     suggestedColors: string;
   };
+}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    LibColorPicker: DefineComponent<ColorPickerProps>;
+  }
 }

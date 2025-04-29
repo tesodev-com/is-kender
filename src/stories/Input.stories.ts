@@ -4,6 +4,7 @@ import Input from 'library-components/Input';
 const meta: Meta<typeof Input> = {
   title: 'Form/Input',
   component: Input,
+  tags: ['autodocs'],
   args: {
     placeholder: 'Placeholder',
     type: 'text',

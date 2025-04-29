@@ -1,11 +1,12 @@
 import { homeIcon } from '@/assets/icons';
-import { useSidebar } from '@/composables/useSidebar';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import Sidebar, { type SidebarProps } from 'library-components/Sidebar';
+import { useSidebar } from 'library-composables/useSidebar';
 
 const meta: Meta<typeof Sidebar> = {
-  component: Sidebar,
   title: 'Layout/Sidebar',
+  component: Sidebar,
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

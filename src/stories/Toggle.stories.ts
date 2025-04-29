@@ -1,11 +1,11 @@
-import Toggle from '@/components/Toggle/Toggle.vue';
-import type { ToggleSize } from '@/components/Toggle/types';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Toggle, { type ToggleSize } from 'library-components/Toggle';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Toggle> = {
   title: 'Form/Toggle',
   component: Toggle,
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',

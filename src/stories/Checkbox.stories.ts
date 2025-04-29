@@ -3,8 +3,9 @@ import Checkbox from 'library-components/Checkbox';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Checkbox> = {
-  component: Checkbox,
   title: 'Form/Checkbox',
+  component: Checkbox,
+  tags: ['autodocs'],
   argTypes: {
     value: { control: 'text' },
     disabled: { control: 'boolean' },

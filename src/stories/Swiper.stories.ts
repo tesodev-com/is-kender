@@ -6,6 +6,7 @@ import SwiperSlide from 'library-components/SwiperSlide';
 const meta: Meta<typeof Swiper> = {
   title: 'Data-Display/Swiper',
   component: Swiper,
+  tags: ['autodocs'],
   argTypes: {
     slidesPerView: {
       control: { type: 'number' },

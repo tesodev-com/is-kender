@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import Skeleton from 'library-components/Skeleton';
 
 const meta: Meta<typeof Skeleton> = {
-  component: Skeleton,
   title: 'Feedback/Skeleton',
+  component: Skeleton,
+  tags: ['autodocs'],
   argTypes: {
     shape: {
       control: 'select',

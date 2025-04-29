@@ -1,7 +1,7 @@
 {
   "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.29",
+  "version": "0.0.30",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -246,7 +246,7 @@
     "build-storybook": "storybook build",
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json",
     "prepare": "husky",
-    "create-component": "node scripts/generator.js"
+    "create:component": "vite-node scripts/create-component.ts"
   },
   "publishConfig": {
     "@tsd:registry": "https://gitlab.tesodev.com/api/v4/projects/16/packages/npm/"
@@ -307,6 +307,7 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0",
     "vite": "^6.2.1",
+    "vite-node": "^3.1.2",
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-lib-inject-css": "^2.2.1",
     "vitest": "^3.0.8",

@@ -1,5 +1,5 @@
-import Textarea from '@/components/Textarea/Textarea.vue';
 import { mount } from '@vue/test-utils';
+import Textarea from 'library-components/Textarea';
 import { describe, expect, it } from 'vitest';
 
 describe('Textarea.vue', () => {

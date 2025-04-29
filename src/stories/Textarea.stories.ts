@@ -1,5 +1,5 @@
-import Textarea from '@/components/Textarea/Textarea.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import Textarea from 'library-components/Textarea';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Textarea> = {
