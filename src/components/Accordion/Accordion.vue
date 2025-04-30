@@ -1,67 +1,80 @@
 <template>
   <div class="accordion">
-    <template v-if="items">
-      <AccordionItem
-        v-for="(item, index) in accordionItems"
-        :key="index"
-        v-model="item.isOpen"
-        :accordionIconPosition="accordionIconPosition"
-        :separator="separator"
-        :headerClass="headerClass"
-        :contentClass="contentClass"
-        :disabled="item.disabled"
-        @opened="handleOpened(item, index)"
-        @closed="handleClosed(item, index)"
+    <div :class="accordionItemClasses">
+      <div
+        :class="[accordionHeaderClasses, headerClass]"
+        @click="toggle"
       >
-        <template #header>
-          {{ item.title }}
+        <template v-if="accordionIconPosition === 'left' && (!hideIcons || !$slots.header)">
+          <Svg
+            v-if="isOpen"
+            :src="closeIcon || removeCircleOutlineIcon"
+            size="24"
+            class="accordion__icon"
+          ></Svg>
+          <Svg
+            v-else
+            :src="openIcon || addCircleOutlineIcon"
+            size="24"
+            class="accordion__icon"
+          ></Svg>
         </template>
-        <template #content>
-          <div
-            v-if="item.content && !item.slotKey"
-            v-html="item.content"
-          />
-          <slot
-            v-else-if="item.slotKey"
-            :name="item.slotKey"
-            v-bind="item"
-          />
+        <slot
+          name="header"
+          :isOpen="isOpen"
+          :toggle="toggle"
+          :accordionIconPosition="accordionIconPosition"
+        >
+          <span v-html="header"></span>
+        </slot>
+        <template v-if="accordionIconPosition === 'right' && (!hideIcons || !$slots.header)">
+          <Svg
+            v-if="isOpen"
+            :src="closeIcon || removeCircleOutlineIcon"
+            size="24"
+            class="accordion__icon"
+          ></Svg>
+          <Svg
+            v-else
+            :src="openIcon || addCircleOutlineIcon"
+            size="24"
+            class="accordion__icon"
+          ></Svg>
         </template>
-      </AccordionItem>
-    </template>
-    <template v-else>
-      <AccordionItem
-        v-model="isContentOpen"
-        :accordionIconPosition="accordionIconPosition"
-        :separator="separator"
-        :headerClass="headerClass"
-        :contentClass="contentClass"
-        :hideIcons="!!$slots.header"
-        @opened="handleOpened({ isOpen: true }, 0)"
-        @closed="handleClosed({ isOpen: false }, 0)"
+      </div>
+      <transition
+        appear
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @before-leave="beforeLeave"
+        @leave="leave"
       >
-        <template #header="slotProps">
-          <slot
-            name="header"
-            v-bind="slotProps"
-          />
-        </template>
-        <template #content="slotProps">
-          <slot
-            name="content"
-            v-bind="slotProps"
-          />
-        </template>
-      </AccordionItem>
-    </template>
+        <div
+          v-if="isOpen"
+          class="accordion__content-container"
+        >
+          <div :class="[accordionContentClasses, contentClass]">
+            <slot
+              name="content"
+              :isOpen="isOpen"
+              :toggle="toggle"
+              :accordionIconPosition="accordionIconPosition"
+            >
+              <div v-html="content"></div>
+            </slot>
+          </div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { ref, watch } from 'vue';
-import { AccordionItem } from './SubComponents';
-import type { AccordionEmits, AccordionProps } from './types';
+import { computed } from 'vue';
+import { addCircleOutlineIcon, removeCircleOutlineIcon } from '@/assets/icons';
+import Svg from 'library-components/Svg';
+import type { AccordionProps, AccordionEmits } from './types';
 
 // interfaces & types
 
@@ -71,57 +84,88 @@ import type { AccordionEmits, AccordionProps } from './types';
 
 // props
 const props = withDefaults(defineProps<AccordionProps>(), {
-  allowMultiple: false,
   accordionIconPosition: 'right',
-  separator: false,
   headerClass: '',
   contentClass: '',
-  isOpen: false,
+  disabled: false,
+  header: '',
+  content: '',
+  hideIcons: false,
+  openIcon: '',
+  closeIcon: '',
 });
 
 // defineEmits
 const emit = defineEmits<AccordionEmits>();
 
-// states (refs and reactives)
-const accordionItems = ref(
-  props.items?.map(item => ({
-    ...item,
-    isOpen: item?.isOpen ?? false,
-  }))
-);
-
-const isContentOpen = ref(props?.isOpen ?? false);
+// model
+const isOpen = defineModel<boolean>('isOpen', { default: false });
 
 // computed
+const accordionItemClasses = computed(() => {
+  return ['accordion__item'];
+});
 
-// watchers
-watch(
-  () => accordionItems.value?.map(item => item.isOpen),
-  (newVal, oldVal) => {
-    if (!props.allowMultiple && accordionItems.value && newVal) {
-      const openedIndex = newVal.findIndex((isOpen, index) => isOpen && !oldVal?.[index]);
-      if (openedIndex !== -1) {
-        accordionItems.value.forEach((item, index) => {
-          if (index !== openedIndex && item.isOpen) {
-            item.isOpen = false;
-            emit('closedAccordion', item, index);
-          }
-        });
-      }
-    }
-  },
-  { deep: true }
-);
+const accordionHeaderClasses = computed(() => {
+  return ['accordion__header', `accordion__header--${props.accordionIconPosition}`, { 'accordion__header--disabled': props.disabled }];
+});
 
-// lifecycles
+const accordionContentClasses = computed(() => {
+  return ['accordion__content', `accordion__content--${props.accordionIconPosition}`];
+});
 
 // methods
-function handleOpened(item: any, index: number) {
-  emit('openedAccordion', item, index);
+function toggle() {
+  if (props.disabled) return;
+
+  isOpen.value = !isOpen.value;
+
+  if (isOpen.value) {
+    emit('close');
+  } else {
+    emit('open');
+  }
 }
 
-function handleClosed(item: any, index: number) {
-  emit('closedAccordion', item, index);
+function beforeEnter(el: Element) {
+  const content = el.querySelector('.accordion__content') as HTMLElement;
+  const container = el as HTMLElement;
+  if (content) {
+    container.style.height = '0';
+  }
+}
+
+function enter(el: Element) {
+  const content = el.querySelector('.accordion__content') as HTMLElement;
+  const container = el as HTMLElement;
+  if (content) {
+    const height = content.getBoundingClientRect().height;
+    container.style.height = `${height}px`;
+
+    const handleTransitionEnd = () => {
+      container.style.height = 'auto';
+      container.removeEventListener('transitionend', handleTransitionEnd);
+    };
+    container.addEventListener('transitionend', handleTransitionEnd);
+  }
+}
+
+function beforeLeave(el: Element) {
+  const content = el.querySelector('.accordion__content') as HTMLElement;
+  const container = el as HTMLElement;
+  if (content) {
+    const height = content.getBoundingClientRect().height;
+    container.style.height = `${height}px`;
+    void content.offsetHeight;
+  }
+}
+
+function leave(el: Element) {
+  const content = el.querySelector('.accordion__content') as HTMLElement;
+  const container = el as HTMLElement;
+  if (content) {
+    container.style.height = '0';
+  }
 }
 </script>
 

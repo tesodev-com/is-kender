@@ -1,64 +1,53 @@
 .accordion {
   width: 100%;
 
-  .accordion-item {
+  &__item {
     &:not(:last-child) {
       padding-bottom: 1rem;
     }
+  }
 
-    .accordion-header {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+  &__header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-      @include text-lg(500, $gray-900);
+    @include text-lg(500, $gray-900);
 
-      &-left {
-        gap: 1.5rem;
-      }
-
-      &-right {
-        justify-content: space-between;
-      }
+    &--left {
+      gap: 1.5rem;
     }
 
-    .accordion-header-disabled {
+    &--right {
+      justify-content: space-between;
+    }
+
+    &--disabled {
       opacity: 0.5;
       cursor: not-allowed;
       user-select: none;
     }
-
-    .accordion-arrow {
-      color: $gray-400;
-    }
-
-    .accordion-content-container {
-      overflow: hidden;
-      will-change: height;
-      transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .accordion-content {
-      padding-top: 0.5rem;
-      height: auto;
-      overflow: hidden;
-
-      @include text-md(400, $gray-600);
-
-      &-left {
-        padding-left: 3rem;
-      }
-    }
   }
 
-  .accordion-item-separator {
-    &:not(:first-child) {
-      padding-top: 1rem;
-    }
+  &__icon {
+    color: $gray-400;
+  }
 
-    &:not(:last-child) {
-      padding-bottom: 1rem;
-      border-bottom: 1px solid $gray-200;
+  &__content-container {
+    overflow: hidden;
+    will-change: height;
+    transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__content {
+    padding-top: 0.5rem;
+    height: auto;
+    overflow: hidden;
+
+    @include text-md(400, $gray-600);
+
+    &--left {
+      padding-left: 3rem;
     }
   }
 }

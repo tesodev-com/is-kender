@@ -1,117 +1,62 @@
 import type { DefineComponent } from '@/@types/core';
 
-/**
- * Represents a single item in an accordion.
- */
-export interface AccordionItemProps {
-  /** The title of the accordion item. */
-  title: string;
-
-  /** The content of the accordion item. Optional. */
-  content?: string;
-
-  /** A unique key for identifying the slot. Optional. */
-  slotKey?: string;
-
-  /** Whether the item is open by default. Optional. */
-  isOpen?: boolean;
-
-  /** Whether the item is disabled. Optional. */
-  disabled?: boolean;
-}
-
-/**
- * Props for the Accordion component.
- */
 export interface AccordionProps {
-  /** List of accordion items. Optional. */
-  items?: AccordionItemProps[];
-
-  /** Whether multiple items can be open at the same time. Optional. */
-  allowMultiple?: boolean;
-
-  /** Position of the accordion icon, either left or right. Optional. */
-  accordionIconPosition?: 'left' | 'right';
-
-  /** Whether to show a separator between items. Optional. */
-  separator?: boolean;
-
-  /** Custom class for the header section. Optional. */
-  headerClass?: string;
-
-  /** Custom class for the content section. Optional. */
-  contentClass?: string;
-
-  /** Whether the entire accordion is open by default. Optional. */
-  isOpen?: boolean;
-}
-
-/**
- * Events emitted by the Accordion component.
- */
-export interface AccordionEmits {
   /**
-   * Emitted when an accordion item is opened.
-   * @param event - Event name.
-   * @param item - The opened accordion item.
-   * @param index - Index of the opened item.
+   * Position of the accordion icon
+   * @default 'right'
    */
-  (event: 'openedAccordion', item: AccordionItemProps, index: number): void;
-
-  /**
-   * Emitted when an accordion item is closed.
-   * @param event - Event name.
-   * @param item - The closed accordion item.
-   * @param index - Index of the closed item.
-   */
-  (event: 'closedAccordion', item: AccordionItemProps, index: number): void;
-}
-
-/**
- * Props for a single AccordionItem component.
- */
-export interface AccordionItemComponentProps {
-  /** Position of the accordion icon, either left or right. Optional. */
   accordionIconPosition?: 'left' | 'right';
-
-  /** Whether to show a separator below the item. Optional. */
-  separator?: boolean;
-
-  /** Custom class for the header section. Optional. */
+  /**
+   * Custom class for the header of the accordion
+   * @default ''
+   */
   headerClass?: string;
-
-  /** Custom class for the content section. Optional. */
+  /**
+   * Custom class for the content of the accordion
+   * @default ''
+   */
   contentClass?: string;
-
-  /** Whether the item is disabled. Optional. */
+  /**
+   * Header text content
+   * @default ''
+   */
+  header?: string;
+  /**
+   * Content text or HTML content
+   * @default ''
+   */
+  content?: string;
+  /**
+   * If true, the accordion cannot be toggled
+   * @default false
+   */
   disabled?: boolean;
-
-  /** Whether the item is currently open. Used with v-model. Optional. */
-  modelValue?: boolean;
-
-  /** Whether to hide the expand/collapse icons. Optional. */
+  /**
+   * Custom icon for the open state
+   * @default ''
+   */
+  openIcon?: string;
+  /**
+   * Custom icon for the close state
+   * @default ''
+   */
+  closeIcon?: string;
+  /**
+   * If true, hides the toggle icons
+   * @default false
+   */
   hideIcons?: boolean;
 }
 
-/**
- * Events emitted by the AccordionItem component.
- */
-export interface AccordionItemEmits {
+export interface AccordionEmits {
   /**
-   * Emitted when the modelValue is updated (open or close).
-   * @param value - New value of model (true for open, false for closed).
+   * Emitted when the accordion is opened
    */
-  (e: 'update:modelValue', value: boolean): void;
-
+  (event: 'open'): void;
   /**
-   * Emitted when the item is opened.
+   * Emitted when the accordion is closed
    */
-  (e: 'opened'): void;
-
-  /**
-   * Emitted when the item is closed.
-   */
-  (e: 'closed'): void;
+  (event: 'close'): void;
 }
 
 declare module 'vue' {
