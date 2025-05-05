@@ -156,6 +156,7 @@
               class="row-cell-container"
               :class="[{ 'row-cell-container-striped': stripedRows && (virtualStartIndex + rowIndex) % 2 === 0, 'row-cell-container-border': rowsBorder }]"
               :style="{ height: `${rowHeight}px` }"
+              @click="emit('rowClick', row)"
             >
               <td
                 v-if="selectable"
@@ -214,8 +215,19 @@
                     </div>
                   </template>
                   <template v-else>
-                    <div>
+                    <div class="cell-content">
                       {{ row[column.key] }}
+                      <Button
+                        v-if="column.copyable"
+                        variant="ghost"
+                        iconOnly
+                        @click.stop="copyToClipboard(row[column.key])"
+                      >
+                        <Svg
+                          :src="copyIcon"
+                          size="16"
+                        ></Svg>
+                      </Button>
                     </div>
                   </template>
                 </slot>
@@ -229,6 +241,7 @@
               :key="row.key || rowIndex"
               class="row-cell-container"
               :class="[{ 'row-cell-container-striped': stripedRows, 'row-cell-container-border': rowsBorder }]"
+              @click="emit('rowClick', row)"
             >
               <td
                 v-if="selectable"
@@ -285,8 +298,19 @@
                     </div>
                   </template>
                   <template v-else>
-                    <div>
+                    <div class="cell-content">
                       {{ row[column.key] }}
+                      <Button
+                        v-if="column.copyable"
+                        variant="ghost"
+                        iconOnly
+                        @click.stop="copyToClipboard(row[column.key])"
+                      >
+                        <Svg
+                          :src="copyIcon"
+                          size="16"
+                        ></Svg>
+                      </Button>
                     </div>
                   </template>
                 </slot>
@@ -308,14 +332,24 @@
         outlineButtons
       />
     </div>
+    <div
+      v-if="loading"
+      class="table-loading"
+    >
+      <Spinner
+        size="2rem"
+        color="white"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { checkIcon, deleteIcon, editIcon, expandLessIcon, expandMoreIcon, importExportIcon, searchIcon } from '@/assets/icons';
+import { checkIcon, copyIcon, deleteIcon, editIcon, expandLessIcon, expandMoreIcon, importExportIcon, searchIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Input from 'library-components/Input';
 import Pagination from 'library-components/Pagination';
+import Spinner from 'library-components/Spinner';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { Row, TableEmits, TableProps, TableSlots } from './types';
@@ -334,6 +368,7 @@ const props = withDefaults(defineProps<TableProps>(), {
   rowHeight: 72,
   virtualScrollBuffer: 5,
   selectOnlyVisibleRows: false,
+  loading: false,
 });
 
 const emit = defineEmits<TableEmits>();
@@ -509,6 +544,11 @@ function handleScroll() {
 
   virtualStartIndex.value = Math.max(0, startIndex - Math.floor(props.virtualScrollBuffer / 2));
   visibleRowCount.value = Math.min(visibleCount, filteredRows.value.length - virtualStartIndex.value);
+}
+
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+  emit('copyButtonClick', text);
 }
 </script>
 
