@@ -7,7 +7,7 @@
     display: block;
     margin-bottom: $spacing-md;
     font-weight: $font-weight-medium;
-    color: $gray-700;
+    color: $gray-750;
 
     .required-asterisk {
       color: $error-500;
@@ -23,11 +23,11 @@
 
   .textarea {
     padding: $spacing-lg;
-    border: 1px solid $gray-300;
+    border: 1px solid $gray-350;
     border-radius: $spacing-sm;
     font-size: $font-size-text-md;
-    color: $gray-700;
-    transition: all 0.2s ease;
+    color: $gray-750;
+    transition: border-color 0.2s ease;
     line-height: 1.5;
     overflow-y: auto;
     min-height: calc($spacing-3xl * 4 + $spacing-3xl);
@@ -35,12 +35,12 @@
 
     &:focus {
       outline: none;
-      border-color: $blue-500;
+      border-color: $blue-550;
       box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
     }
 
     &:disabled {
-      background-color: $gray-100;
+      background-color: $gray-150;
       cursor: not-allowed;
     }
 

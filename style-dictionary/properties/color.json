@@ -30,6 +30,12 @@
       "value": "#f5f5f5ff",
       "blendMode": "normal"
     },
+    "150": {
+      "description": "",
+      "type": "color",
+      "value": "#f3f4f6ff",
+      "blendMode": "normal"
+    },
     "200": {
       "description": "",
       "type": "color",
@@ -40,6 +46,12 @@
       "description": "",
       "type": "color",
       "value": "#d5d7daff",
+      "blendMode": "normal"
+    },
+    "350": {
+      "description": "",
+      "type": "color",
+      "value": "#d1d5dbff",
       "blendMode": "normal"
     },
     "400": {
@@ -64,6 +76,12 @@
       "description": "",
       "type": "color",
       "value": "#414651ff",
+      "blendMode": "normal"
+    },
+    "750": {
+      "description": "",
+      "type": "color",
+      "value": "#374151ff",
       "blendMode": "normal"
     },
     "800": {
@@ -530,6 +548,12 @@
       "value": "#2e90faff",
       "blendMode": "normal"
     },
+    "550": {
+      "description": "",
+      "type": "color",
+      "value": "#3b82f6ff",
+      "blendMode": "normal"
+    },
     "600": {
       "description": "",
       "type": "color",
@@ -900,29 +924,5 @@
     "type": "opacity",
     "value": "transparent",
     "blendMode": "normal"
-  },
-  "gray-700": {
-    "description": "",
-    "type": "color",
-    "value": "#374151ff",
-    "blendMode": "normal"
- },
-"gray-300": {
-  "description": "",
-  "type": "color",
-  "value": "#d1d5dbff",
-  "blendMode": "normal"
-},
-"blue-500": {
-  "description": "",
-  "type": "color",
-  "value": "#3b82f6ff",
-  "blendMode": "normal"
-},
-"gray-100": {
-  "description": "",
-  "type": "color",
-  "value": "#f3f4f6ff",
-  "blendMode": "normal"
-}
+  }
 }

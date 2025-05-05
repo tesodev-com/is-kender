@@ -44,7 +44,7 @@
     >
       <div
         class="message-content"
-        :style="`max-width:${messageContentWidth}`"
+        :style="`max-width:${contentWidth}`"
       >
         <div
           v-if="error && errorMessage"
@@ -87,7 +87,6 @@ const props = withDefaults(defineProps<TextareaProps>(), {
 });
 // defineEmits
 const emit = defineEmits(['update:modelValue']);
-
 // states (refs and reactives)
 
 // computed
@@ -101,15 +100,13 @@ const computedRows = computed(() => {
   return props.autoResize ? 1 : props.rows;
 });
 
+const contentWidth = computed(() => `${props.cols * 8}px`);
+
 const textareaStyle = computed(() => ({
   resize: props.hideResize || props.autoResize ? 'none' : props.resize,
-  width: getTextareaWidth(),
+  width: props.hideResize ? contentWidth.value : '100%',
   height: props.hideResize ? `${props.rows * lineHeight + 16}px` : 'auto',
 }));
-
-const messageContentWidth = computed(() => {
-  return `${props.cols * 8}px`;
-});
 
 const modelValueLength = computed(() => modelValue.value.length);
 const hasMessages = computed(() => (props.error && props.errorMessage) || props.hintMessage);
@@ -118,7 +115,6 @@ const hasMessages = computed(() => (props.error && props.errorMessage) || props.
 // lifecycles
 
 // methods
-const getTextareaWidth = () => (props.hideResize ? `${props.cols * 8}px` : '100%');
 </script>
 
 <style lang="scss" scoped src="./Textarea.style.scss" />
