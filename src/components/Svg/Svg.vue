@@ -20,7 +20,7 @@ if (import.meta.env.SSR) {
     await loadSvg();
   });
 }
-const props = withDefaults(defineProps<SvgProps & { preserveColor?: boolean }>(), {
+const props = withDefaults(defineProps<SvgProps>(), {
   size: '1em',
   preserveColor: false,
 });

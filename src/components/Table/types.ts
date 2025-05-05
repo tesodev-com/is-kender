@@ -24,6 +24,11 @@ export interface Column {
    * Inline styles applied to the column.
    */
   style?: string;
+
+  /**
+   * Whether the column content can be copied to clipboard.
+   */
+  copyable?: boolean;
 }
 
 /**
@@ -66,6 +71,18 @@ export interface TableEmits {
    * @param row The row related to the edit action.
    */
   (e: 'editButtonClick', row: Row): void;
+
+  /**
+   * Triggered when a row is clicked.
+   * @param row The clicked row.
+   */
+  (e: 'rowClick', row: Row): void;
+
+  /**
+   * Triggered when a row is copied to clipboard.
+   * @param row The row related to the copy action.
+   */
+  (e: 'copyButtonClick', text: string): void;
 }
 
 /**
@@ -196,6 +213,11 @@ export interface TableProps {
    * Whether to select only visible rows when selecting all.
    */
   selectOnlyVisibleRows?: boolean;
+
+  /**
+   * Whether to show a loading state.
+   */
+  loading?: boolean;
 }
 
 declare module 'vue' {

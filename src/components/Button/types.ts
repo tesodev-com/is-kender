@@ -33,6 +33,12 @@ export interface ButtonProps {
 
   /** Whether the button contains only an icon. Optional. */
   iconOnly?: boolean;
+
+  /** Icon to display on the right side of the button text. Optional. */
+  rightIcon?: string;
+
+  /** Icon to display on the left side of the button text. Optional. */
+  leftIcon?: string;
 }
 
 declare module 'vue' {

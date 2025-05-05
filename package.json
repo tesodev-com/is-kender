@@ -1,7 +1,7 @@
 {
   "name": "@tsd/component-library",
   "private": false,
-  "version": "0.0.31",
+  "version": "0.0.32",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -13,19 +13,11 @@
     "**/*.css"
   ],
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/main.d.ts",
       "import": "./dist/main.js"
     },
-    "./form-validator": {
-      "types": "./dist/utils/formValidation/index.d.ts",
-      "import": "./dist/utils/formValidation/index.js"
-    },
-    "./v-swipe": {
-      "types": "./dist/directives/vSwipe/types.d.ts",
-      "import": "./dist/directives/vSwipe/index.js"
-    },
-    "./package.json": "./package.json",
     "./accordion": {
       "types": "./dist/components/Accordion/index.d.ts",
       "import": "./dist/components/Accordion/index.js"

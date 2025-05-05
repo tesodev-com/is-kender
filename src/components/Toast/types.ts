@@ -5,27 +5,29 @@ import type { DefineComponent } from '@/@types/core';
  */
 export interface ToastMessageProps {
   /**
-   * Style variant of the toast message.
+   * Visual style of the toast component
+   * @default "solid"
    */
   variant?: 'solid' | 'outline';
 
   /**
-   * Color theme of the toast message.
+   * Color scheme of the toast
+   * @default "primary"
    */
   color?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'dark';
 
   /**
-   * Title text displayed in the toast.
+   * Title text displayed at the top of the toast
    */
   title?: string;
 
   /**
-   * Body message text displayed in the toast.
+   * Main message content of the toast
    */
   message?: string;
 
   /**
-   * Lifetime of the toast message in milliseconds.
+   * Duration in milliseconds before the toast automatically dismisses
    */
   life?: number;
 }
