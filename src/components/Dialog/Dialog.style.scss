@@ -1,0 +1,89 @@
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($black, 0.32);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.dialog-container {
+  background: $white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba($black, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid $gray-300;
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  font-size: $font-size-display-xs;
+  cursor: pointer;
+  color: $gray-500;
+
+  &:hover {
+    color: $gray-700;
+  }
+}
+
+.dialog-body {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 60vh;
+  min-height: 50px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px;
+  border-top: 1px solid $gray-300;
+  gap: 8px;
+}
+
+.dialog-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: $font-size-text-sm;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &--primary {
+    background-color: $primary-600;
+    color: $white;
+  }
+
+  &--secondary {
+    background-color: $success-500;
+    color: $white;
+  }
+
+  &--danger {
+    background-color: $error-600;
+    color: $white;
+  }
+
+  &--text {
+    background: transparent;
+    color: $black;
+  }
+}

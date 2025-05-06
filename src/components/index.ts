@@ -8,6 +8,7 @@ export { default as Col } from 'library-components/Col';
 export { default as ColorPicker } from 'library-components/ColorPicker';
 export { default as Container } from 'library-components/Container';
 export { default as DatePicker } from 'library-components/DatePicker';
+export { default as Dialog } from 'library-components/Dialog';
 export { default as Divider } from 'library-components/Divider';
 export { default as Drawer } from 'library-components/Drawer';
 export { default as FileUpload } from 'library-components/FileUpload';
