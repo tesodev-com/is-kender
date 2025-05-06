@@ -62,9 +62,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed, onMounted, useId, useTemplateRef } from 'vue';
 import type { OtpInputEmits, OtpInputProps, OtpInputSlots } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<OtpInputProps>(), {
   size: 'md',
   digits: 4,
@@ -77,15 +85,18 @@ const props = withDefaults(defineProps<OtpInputProps>(), {
   errorMessage: '',
 });
 
+// defineEmits
 const emit = defineEmits<OtpInputEmits>();
 
+// defineSlots
 const slots = defineSlots<OtpInputSlots>();
 
+// states (refs and reactives)
 const inputId = useId();
-
 const otp = defineModel<string>({ required: true });
 const inputContainer = useTemplateRef('inputContainerRef');
 
+// computed
 const inputType = computed(() => {
   return props.isPassword ? 'password' : 'text';
 });
@@ -102,12 +113,16 @@ const otpArray = computed(() => {
   return otp.value.padEnd(props.digits, '').split('');
 });
 
+// watchers
+
+// lifecycles
 onMounted(() => {
   if (props.focusOnMount) {
     focusInput(0);
   }
 });
 
+// methods
 function getInputAtIndex(index: number): HTMLInputElement | null {
   return inputContainer.value?.querySelector(`#otp-input-${inputId}-${index}`) || null;
 }

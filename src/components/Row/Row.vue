@@ -8,14 +8,30 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { RowProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<RowProps>(), {
   align: 'top',
   justify: 'start',
   gutter: 0,
 });
+
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const computedClass = computed(() => {
   return {
     [`row--align-${props.align}`]: props.align,
@@ -24,6 +40,12 @@ const computedClass = computed(() => {
     [`row--direction-${props.direction}`]: props.direction,
   };
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Row.style.scss"></style>

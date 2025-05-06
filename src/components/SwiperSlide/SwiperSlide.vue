@@ -14,15 +14,20 @@
 interface SwiperSlideProps {
   slideIndex?: number;
 }
+
 // constants
 
 // composable
 defineOptions({
   name: 'SwiperSlide',
 });
+
 // props
 defineProps<SwiperSlideProps>();
+
 // defineEmits
+
+// defineSlots
 
 // states (refs and reactives)
 

@@ -28,16 +28,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { tickIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
 import type { CheckboxProps } from './types';
-// imports
 
 // interfaces & types
 
 // constants
 const modelValue = defineModel<string[]>({ required: true });
+
 // composable
 
 // props
@@ -45,7 +46,10 @@ const props = withDefaults(defineProps<CheckboxProps>(), {
   disabled: false,
   size: 'md',
 });
+
 // defineEmits
+
+// defineSlots
 
 // states (refs and reactives)
 

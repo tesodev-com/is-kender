@@ -22,13 +22,35 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import BreadcrumbItem from './BreadcrumbItem.vue';
 import type { BreadcrumbProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 withDefaults(defineProps<BreadcrumbProps>(), {
   useRouter: true,
   separator: '/',
 });
+
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Breadcrumb.style.scss"></style>

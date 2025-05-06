@@ -8,9 +8,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { TextProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<TextProps>(), {
   size: 'p',
   fontSize: 'sm',
@@ -18,6 +26,13 @@ const props = withDefaults(defineProps<TextProps>(), {
   fontColor: 'black',
 });
 
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const textClasses = computed(() => {
   return [
     'text',
@@ -29,6 +44,12 @@ const textClasses = computed(() => {
     },
   ];
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Text.style.scss"></style>

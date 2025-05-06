@@ -3,14 +3,13 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import type { TabPanelProps } from './types';
+
+// interfaces & types
 defineOptions({
   name: 'TabPanel',
 });
-
-// imports
-// inject
-// interfaces & types
 
 // constants
 
@@ -20,6 +19,8 @@ defineOptions({
 defineProps<TabPanelProps>();
 
 // defineEmits
+
+// defineSlots
 
 // states (refs and reactives)
 

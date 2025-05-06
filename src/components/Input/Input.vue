@@ -69,35 +69,54 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { emailIcon, infoIcon, passwordIcon, telIcon } from '@/assets/icons';
 import { vTooltip } from '@/directives/vTooltip';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
 import type { InputProps } from './types';
+
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<InputProps>(), {
   fluid: false,
   size: 'sm',
   type: 'text',
 });
+
+// defineEmits
 const emit = defineEmits<{
   'update:modelValue': [value: any];
   clickInput: [e: Event];
 }>();
 
+// defineSlots
+// states (refs and reactives)
+
+// computed
 const inputValue = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),
 });
+
 const inputClasses = computed(() => ({}));
+
 const inputWrapperClasses = computed(() => ({
   'input-wrapper--fluid': props.fluid,
   'input-wrapper--error': props.errorList?.length,
   'input-wrapper--disabled': props.disabled,
   [`input-wrapper--${props.size}`]: true,
 }));
+
 const inputContainerClasses = computed(() => ({
   'input-container--fluid': props.fluid,
 }));
+
 const defaultLeftIcon = computed(() => {
   const defaultIconList = ['email', 'password', 'tel'];
   const typeObj: Record<(typeof defaultIconList)[number], string> = {
@@ -107,6 +126,12 @@ const defaultLeftIcon = computed(() => {
   };
   return { state: defaultIconList.includes(props.type), icon: typeObj[props.type] };
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Input.style.scss"></style>

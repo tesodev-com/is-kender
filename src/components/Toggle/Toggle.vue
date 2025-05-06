@@ -44,10 +44,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { ToggleProps } from './types';
 
-const modelValue = defineModel<boolean>({ required: true });
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 withDefaults(defineProps<ToggleProps>(), {
   disabled: false,
   size: 'md',
@@ -56,7 +63,23 @@ withDefaults(defineProps<ToggleProps>(), {
   thumbShape: 'circle',
 });
 
+// defineEmits
+
+// defineSlots
+
+// defineModel
+const modelValue = defineModel<boolean>({ required: true });
+
+// states (refs and reactives)
+
+// computed
 const id = computed(() => `toggle-${Math.random().toString(36).substring(7)}`);
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Toggle.style.scss"></style>

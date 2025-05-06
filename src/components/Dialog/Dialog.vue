@@ -79,19 +79,20 @@ import type { DialogAction, DialogProps } from './types';
 
 // interfaces & types
 
-// inject
-
 // constants
 const instance = getCurrentInstance();
 const hasHeaderSlot = !!instance?.slots.header;
 const hasFooterSlot = !!instance?.slots.footer;
+
 // composable
 
 // props
-
 const model = defineModel<boolean>({ default: false });
 const props = defineProps<DialogProps>();
+
 // defineEmits
+
+// defineSlots
 
 // states (refs and reactives)
 
@@ -100,6 +101,7 @@ const isOpen = computed(() => model.value);
 const labelledId = computed(() => (props.title ? 'dialog-title' : ''));
 const describedId = computed(() => (props.message ? 'dialog-desc' : ''));
 const width = computed(() => props.width || '500px');
+
 // watchers
 watch(model, updateBodyOverflow);
 
@@ -110,22 +112,26 @@ onBeforeUnmount(() => updateBodyOverflow(false));
 function close() {
   model.value = false;
 }
+
 function onBackdropClick() {
   if (!props.persistent) {
     close();
   }
 }
+
 function handleActionClick(action: DialogAction) {
   action.onClick?.();
   if (action.key.toLowerCase() === 'close') {
     close();
   }
 }
+
 function beforeEnter(el: Element) {
   const element = el as HTMLElement;
   element.style.opacity = '0';
   element.style.transform = 'scale(0.95) translateY(20px)';
 }
+
 function enter(el: Element, done: () => void) {
   const element = el as HTMLElement;
   element.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -135,12 +141,14 @@ function enter(el: Element, done: () => void) {
     element.addEventListener('transitionend', done, { once: true });
   });
 }
+
 function beforeLeave(el: Element) {
   const element = el as HTMLElement;
   element.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
   element.style.opacity = '1';
   element.style.transform = 'scale(1) translateY(0)';
 }
+
 function leave(el: Element, done: () => void) {
   const element = el as HTMLElement;
   requestAnimationFrame(() => {
@@ -149,6 +157,7 @@ function leave(el: Element, done: () => void) {
     element.addEventListener('transitionend', done, { once: true });
   });
 }
+
 function updateBodyOverflow(isOpen: boolean) {
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }

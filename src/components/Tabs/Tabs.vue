@@ -43,8 +43,6 @@ import Tab from 'library-components/Tab';
 import { computed, provide, ref, type VNode } from 'vue';
 import type { TabsContext, TabsProps } from './types';
 
-// injects
-
 // interfaces & types
 
 // constants
@@ -54,11 +52,15 @@ const slots = defineSlots<{
   default?: () => any;
   tabList?: () => any;
 }>();
+
 // composable
 
 // props
 defineProps<TabsProps>();
+
 // defineEmits
+
+// defineSlots
 
 // states (refs and reactives)
 
@@ -78,10 +80,10 @@ const tabList = computed(() => {
 // lifecycles
 
 // methods
-
 function setActiveTab(index: number) {
   activeTab.value = index;
 }
+
 function getObjectAndSymbolNodes(slotNodeList: VNode[]): VNode[] {
   return slotNodeList?.flatMap((vnode: VNode) => {
     if (typeof vnode.type === 'object') {
@@ -93,6 +95,7 @@ function getObjectAndSymbolNodes(slotNodeList: VNode[]): VNode[] {
     return [];
   });
 }
+
 function filterChildNodesName<T = { tabIndex: number; tabName: string; component: VNode; disabled: boolean }>(subElement: string, nodeList: VNode[]): T[] {
   return nodeList?.flatMap((vnode: VNode, index: number) => {
     const props = vnode.props;
@@ -107,6 +110,7 @@ function filterChildNodesName<T = { tabIndex: number; tabName: string; component
     return [];
   });
 }
+
 provide<TabsContext>('tabsContext', {
   activeTab,
   setActiveTab,
