@@ -28,10 +28,12 @@
 // imports
 import { computed } from 'vue';
 import type { RadioButtonProps } from './types';
+
 // interfaces & types
 
 // constants
 const modelValue = defineModel<string>();
+
 // composable
 
 // props
@@ -40,9 +42,10 @@ const props = withDefaults(defineProps<RadioButtonProps>(), {
   size: 'md',
   disabled: false,
 });
+
 // defineEmits
 
-// data
+// defineSlots
 
 // states (refs and reactives)
 

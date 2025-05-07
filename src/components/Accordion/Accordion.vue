@@ -71,10 +71,10 @@
 
 <script setup lang="ts">
 // imports
-import { computed } from 'vue';
 import { addCircleOutlineIcon, removeCircleOutlineIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
-import type { AccordionProps, AccordionEmits } from './types';
+import { computed } from 'vue';
+import type { AccordionEmits, AccordionProps } from './types';
 
 // interfaces & types
 
@@ -98,8 +98,12 @@ const props = withDefaults(defineProps<AccordionProps>(), {
 // defineEmits
 const emit = defineEmits<AccordionEmits>();
 
-// model
+// defineSlots
+
+// defineModel
 const isOpen = defineModel<boolean>('isOpen', { default: false });
+
+// states (refs and reactives)
 
 // computed
 const accordionItemClasses = computed(() => {
@@ -113,6 +117,10 @@ const accordionHeaderClasses = computed(() => {
 const accordionContentClasses = computed(() => {
   return ['accordion__content', `accordion__content--${props.accordionIconPosition}`];
 });
+
+// watchers
+
+// lifecycles
 
 // methods
 function toggle() {

@@ -77,6 +77,7 @@ import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 import { Calendar, QuickSelection, type CalendarProps, type DateModel } from './SubComponents';
 import type { DatePickerEmits, DatePickerProps } from './types';
 import Utils from './utils';
+
 // interfaces & types
 
 // constants
@@ -90,14 +91,18 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   weekStartDay: 'monday',
 });
 const modelValue = defineModel<DateModel>();
+
 // defineEmits
 const emit = defineEmits<DatePickerEmits>();
+
+// defineSlots
 // states (refs and reactives)
 const isShowDatePicker = ref(false);
 const visibleDate = ref<Date>(new Date());
 const datepickerInput = useTemplateRef('datepickerInputRef');
 const datepicker = useTemplateRef('datepickerRef');
 const quickSelection = useTemplateRef('quickSelectionRef');
+
 // computed
 const calendarVisibleDates = computed(() => {
   return {
@@ -105,6 +110,7 @@ const calendarVisibleDates = computed(() => {
     end: new Date(visibleDate.value.getFullYear(), visibleDate.value.getMonth() + 1),
   };
 });
+
 const inputModelValue = computed({
   get: () => {
     if (!modelValue.value) return '';
@@ -123,6 +129,7 @@ const inputModelValue = computed({
     modelValue.value = value;
   },
 });
+
 const calendarList = computed(() => {
   const commonProps = {
     selectionMode: props.selectionMode,
@@ -155,22 +162,27 @@ const calendarList = computed(() => {
   if (!props.multipleMonth) calendars.pop();
   return calendars as CalendarProps[];
 });
+
 // watchers
 
 // lifecycles
 onMounted(() => {
   document.addEventListener('click', onClickOutside);
 });
+
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
 });
+
 // methods
 function onPrev() {
   visibleDate.value = Utils.addMonths(visibleDate.value, -1);
 }
+
 function onNext() {
   visibleDate.value = Utils.addMonths(visibleDate.value, 1);
 }
+
 function onRenderDate(id: CalendarProps['id'], date: Date) {
   if (id === 'start') {
     visibleDate.value = date;
@@ -178,20 +190,25 @@ function onRenderDate(id: CalendarProps['id'], date: Date) {
     visibleDate.value = Utils.addMonths(date, -1);
   }
 }
+
 function onClear() {
   modelValue.value = null;
   if (quickSelection.value) quickSelection.value.onClear();
 }
+
 function onQuickSelect(dates: Array<Date | string> | Date | string) {
   modelValue.value = dates;
 }
+
 function onToggle() {
   isShowDatePicker.value = !isShowDatePicker.value;
 }
+
 function onApply() {
   emit('onApply', modelValue.value);
   onToggle();
 }
+
 function onClickOutside(event: MouseEvent) {
   if (props.inline) return;
   const target = event.target as HTMLElement;

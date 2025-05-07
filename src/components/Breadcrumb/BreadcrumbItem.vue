@@ -22,11 +22,27 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import Link from 'library-components/Link';
 import { computed } from 'vue';
 import type { BreadcrumbItemProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = defineProps<BreadcrumbItemProps>();
+
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const slotProps = computed(() => {
   return {
     text: props.text,
@@ -34,4 +50,10 @@ const slotProps = computed(() => {
     icon: props.icon,
   };
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>

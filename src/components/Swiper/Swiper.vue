@@ -65,7 +65,9 @@ import { computed, onMounted, onUnmounted, ref, useSlots, useTemplateRef, type V
 import { Helpers } from './core';
 import type { EffectOptions, EffectReturnType } from './effect/types';
 import type { SwiperProps, SwiperSlots, SwiperState } from './types';
+
 // interfaces & types
+
 // constants
 let effect: EffectReturnType;
 const effects = {
@@ -73,8 +75,10 @@ const effects = {
   fade: () => import('./effect/useFadeEffect'),
 };
 let interval: ReturnType<typeof setTimeout> | undefined;
+
 // composable
 const slots = useSlots();
+
 // props
 defineSlots<SwiperSlots>();
 const props = withDefaults(defineProps<SwiperProps>(), {
@@ -94,7 +98,11 @@ const props = withDefaults(defineProps<SwiperProps>(), {
   rewind: false,
   allowTouchMove: true,
 });
+
 // defineEmits
+
+// defineSlots
+
 // states (refs and reactives)
 const wrapperRef = useTemplateRef('swiperWrapperRef');
 const state = ref<SwiperState>({
@@ -107,18 +115,22 @@ const state = ref<SwiperState>({
   containerWidth: 0,
   lastSlideIndex: 0,
 });
+
 // computed
 const swiperStyles = computed(() => ({
   '--slides-per-view': props.slidesPerView === 'auto' ? '1' : props.slidesPerView,
   '--space-between': `${props.spaceBetween}px`,
 }));
+
 const slideElements = computed(() => {
   return Array.from(wrapperRef.value?.children || []) as HTMLElement[];
 });
+
 const navigationState = computed(() => ({
   prev: state.value.isBeginning && !props.loop && !props.rewind,
   next: state.value.isEnd && !props.loop && !props.rewind,
 }));
+
 const originalSlides = computed(() => {
   const defaultNodes = slots?.default?.() as VNode[];
   if (!defaultNodes || defaultNodes.length === 0) throw new Error('Swiper component must have at least one SwiperSlide child');
@@ -126,6 +138,7 @@ const originalSlides = computed(() => {
   getSlidesFromSlot(defaultNodes, slides);
   return slides;
 });
+
 const renderToSlides = computed(() => {
   const from = 0;
   const to = originalSlides.value.length;
@@ -136,16 +149,20 @@ const renderToSlides = computed(() => {
   }
   return data;
 });
+
 // watchers
+
 // lifecycles
 onMounted(async () => {
   init();
   await loadEffect();
   autoPlay('start');
 });
+
 onUnmounted(() => {
   autoPlay('stop');
 });
+
 // methods
 function init() {
   if (!wrapperRef.value) return;
@@ -153,15 +170,18 @@ function init() {
   state.value.containerWidth = wrapperRef.value.offsetWidth;
   updateSlideClass();
 }
+
 function onSwipe(event: SwipeState) {
   if (!props.allowTouchMove) return;
   if (effect?.onSwipe) effect.onSwipe(event);
   autoPlay('stop');
 }
+
 function slideTo(index: number) {
   if (!effect?.slideTo) return;
   effect?.slideTo({ index });
 }
+
 function slidePrev() {
   const prevIndex = state.value.activeIndex - props.slidesPerGroup;
   if (props.rewind) {
@@ -172,6 +192,7 @@ function slidePrev() {
     slideTo(Math.max(prevIndex, 0));
   }
 }
+
 function slideNext() {
   const nextIndex = state.value.activeIndex + props.slidesPerGroup;
   if (props.rewind) {
@@ -182,6 +203,7 @@ function slideNext() {
     slideTo(Math.min(nextIndex, state.value.lastSlideIndex));
   }
 }
+
 function autoPlay(status: 'start' | 'stop') {
   if (props.autoplay && status === 'start') {
     interval = setInterval(() => {
@@ -191,10 +213,12 @@ function autoPlay(status: 'start' | 'stop') {
     clearInterval(interval);
   }
 }
+
 function setWrapperStyle(style: Partial<CSSStyleDeclaration>) {
   if (!wrapperRef.value) return;
   Object.assign(wrapperRef.value.style, style);
 }
+
 function updateSlideClass(activeIndex = state.value.activeIndex) {
   if (!slideElements.value.length) return;
   slideElements.value.forEach((el, index) => {
@@ -208,6 +232,7 @@ function updateSlideClass(activeIndex = state.value.activeIndex) {
     }
   });
 }
+
 async function loadEffect() {
   const effectArgs: EffectOptions = { props, state, originalSlides, renderToSlides, slideElements, setWrapperStyle, updateSlideClass, slidePrev, slideNext };
   if (effects[props.effect]) {
@@ -219,6 +244,7 @@ async function loadEffect() {
   }
   if (effect?.init) effect.init();
 }
+
 function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   nodes.forEach((vnode, index) => {
     if (typeof vnode.type === 'symbol' && vnode.children) {
@@ -236,6 +262,7 @@ function getSlidesFromSlot(nodes: VNode[], slides: VNode[] = []): VNode[] {
   });
   return slides;
 }
+
 defineExpose({ slidePrev, slideNext, slideTo, state });
 </script>
 

@@ -57,6 +57,7 @@
 // imports
 import { computed } from 'vue';
 import type { TextareaProps } from './types';
+
 // interfaces & types
 
 // constants
@@ -70,8 +71,12 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   resize: 'both',
   id: '0',
 });
-const model = defineModel<string>();
 // defineEmits
+
+// defineSlots
+
+// defineModel
+const model = defineModel<string>();
 
 // states (refs and reactives)
 
@@ -79,6 +84,7 @@ const model = defineModel<string>();
 const textareaStyle = computed(() => ({
   resize: props.resize,
 }));
+
 // watchers
 
 // lifecycles

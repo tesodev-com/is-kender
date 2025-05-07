@@ -8,9 +8,15 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { onMounted, onServerPrefetch, ref, useTemplateRef, watch } from 'vue';
 import type { SvgProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
 if (import.meta.env.SSR) {
   onServerPrefetch(async () => {
     await loadSvg();
@@ -20,14 +26,30 @@ if (import.meta.env.SSR) {
     await loadSvg();
   });
 }
+
+// props
 const props = withDefaults(defineProps<SvgProps>(), {
   size: '1em',
   preserveColor: false,
 });
+
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
 const spanRef = useTemplateRef('icon');
 const svgEl = ref<string | null>(null);
+
+// computed
+
+// watchers
 watch([() => props.src, () => props.name], loadSvg);
 watch([() => props.size, () => props.preserveColor], updateSvg);
+
+// lifecycles
+
+// methods
 async function loadSvg() {
   try {
     if (props.src) {
@@ -40,6 +62,7 @@ async function loadSvg() {
     svgEl.value = null;
   }
 }
+
 function updateSvg() {
   if (spanRef.value) {
     const svg = spanRef.value?.querySelector('svg')?.outerHTML;
@@ -47,6 +70,7 @@ function updateSvg() {
     svgEl.value = parseSvg(svg);
   }
 }
+
 function parseSvg(svgData: string) {
   svgData = svgData.replace(/\bwidth\s*=\s*["'][^"']*["']/g, '');
   svgData = svgData.replace(/\bheight\s*=\s*["'][^"']*["']/g, '');

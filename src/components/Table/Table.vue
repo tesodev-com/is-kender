@@ -345,6 +345,7 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { checkIcon, copyIcon, deleteIcon, editIcon, expandLessIcon, expandMoreIcon, importExportIcon, searchIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Input from 'library-components/Input';
@@ -354,6 +355,13 @@ import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import type { Row, TableEmits, TableProps, TableSlots } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<TableProps>(), {
   pagination: false,
   currentPage: 1,
@@ -371,10 +379,13 @@ const props = withDefaults(defineProps<TableProps>(), {
   loading: false,
 });
 
+// defineEmits
 const emit = defineEmits<TableEmits>();
 
+// defineSlots
 const slots = defineSlots<TableSlots>();
 
+// states (refs and reactives)
 const scrollContainer = useTemplateRef('scrollContainerRef');
 const selectedItems = ref(new Set<Row>());
 const searchQuery = ref('');
@@ -385,6 +396,7 @@ const itemsPerPage = ref(props.itemsPerPage);
 const virtualStartIndex = ref(0);
 const visibleRowCount = ref(0);
 
+// computed
 const containerHeight = computed(() => {
   return scrollContainer.value?.clientHeight || 0;
 });
@@ -462,6 +474,7 @@ const virtualPadding = computed(() => {
   return { top: `${topPadding}px`, bottom: `${bottomPadding}px` };
 });
 
+// watchers
 watch(
   () => searchQuery.value,
   () => {
@@ -479,6 +492,7 @@ watch(filteredRows, () => {
   }
 });
 
+// lifecycles
 onMounted(() => {
   if (props.virtualScroll && scrollContainer.value) {
     visibleRowCount.value = Math.ceil(containerHeight.value / props.rowHeight) + props.virtualScrollBuffer;
@@ -486,6 +500,7 @@ onMounted(() => {
   }
 });
 
+// methods
 function selectAll() {
   const currentRows = props.virtualScroll && props.selectOnlyVisibleRows ? visibleRows : paginatedRows;
 

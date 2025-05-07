@@ -227,12 +227,20 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { arrowBackIcon, arrowForwardIcon } from '@/assets/icons';
 import Button from 'library-components/Button';
 import Svg from 'library-components/Svg';
 import { computed } from 'vue';
-import type { PaginationProps } from './types';
+import { type PaginationProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<PaginationProps>(), {
   variant: 'default',
   align: 'center',
@@ -243,10 +251,18 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   isMobile: false,
 });
 
+// defineEmits
+
+// defineSlots
+
+// defineModel
 const currentPage = defineModel<number>('currentPage', {
   default: 1,
 });
 
+// states (refs and reactives)
+
+// computed
 const totalPages = computed(() => {
   return Math.ceil(props.totalItems / props.itemsPerPage);
 });
@@ -291,6 +307,11 @@ const isNextDisabled = computed(() => {
   return currentPage.value === totalPages.value || props.totalItems === 0;
 });
 
+// watchers
+
+// lifecycles
+
+// methods
 function prevPage() {
   if (currentPage.value > 1) {
     currentPage.value--;

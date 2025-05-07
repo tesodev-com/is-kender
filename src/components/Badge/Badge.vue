@@ -9,9 +9,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { BadgeProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<BadgeProps>(), {
   color: 'gray',
   size: 'sm',
@@ -21,6 +29,13 @@ const props = withDefaults(defineProps<BadgeProps>(), {
   onlyIcon: false,
 });
 
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const badgeClasses = computed(() => {
   return [
     'badge',
@@ -37,6 +52,12 @@ const badgeClasses = computed(() => {
 const dottedClasses = computed(() => {
   return [`badge-dot-${props.color}`];
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Badge.style.scss"></style>

@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 
 // defineEmits
 
+// defineSlots
 // states (refs and reactives)
 
 // computed
@@ -54,6 +55,7 @@ const buttonClasses = computed(() => {
     { 'button-fluid': props.fluid, 'button-icon-only': props.iconOnly, [`button-${props.rounded}-rounded`]: props.rounded },
   ];
 });
+
 // watchers
 
 // lifecycles
