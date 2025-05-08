@@ -5,19 +5,21 @@ import type { DefineComponent } from '@/@types/core';
  */
 export interface TabProps {
   /**
-   * Name of the tab.
+   * Unique value for the tab
+   * @default ''
    */
-  name?: string;
-
+  value: string;
   /**
-   * Index position of the tab.
-   */
-  index?: number;
-
-  /**
-   * Whether the tab is disabled.
+   * Whether the tab is disabled
+   * @default false
    */
   disabled?: boolean;
+
+  /**
+   * Custom class for the tab
+   * @default ''
+   */
+  customClass?: string;
 }
 
 declare module 'vue' {

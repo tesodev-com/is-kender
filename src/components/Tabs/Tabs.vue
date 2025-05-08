@@ -1,119 +1,60 @@
 <template>
-  <div class="tabs">
-    <div class="tabs__title">
-      {{ title }}
-    </div>
-    <div class="tabs__button-container">
-      <template v-if="slots.tabList">
-        <component
-          :is="tab?.component"
-          v-for="tab in tabList"
-          :key="tab.tabIndex"
-          :index="tab.tabIndex"
-          :disabled="tab.disabled"
-        />
-      </template>
-      <template v-else>
-        <Tab
-          v-for="panel in tabPanels"
-          :key="panel.tabName"
-          :index="panel.tabIndex"
-          :disabled="panel.disabled"
-        >
-          {{ panel.tabName }}
-        </Tab>
-      </template>
-    </div>
-    <div class="tabs__content">
-      <div v-if="!tabPanels?.[activeTab]">
-        {{ emptyPanelText }}
-      </div>
-      <component
-        :is="tabPanels?.[activeTab]?.component"
-        v-else
-        :index="tabPanels?.[activeTab]?.tabIndex"
-      />
-    </div>
+  <div
+    class="tabs"
+    :class="[tabsComputedClasses, props.customClass]"
+    role="tabs"
+  >
+    <slot></slot>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import Tab from 'library-components/Tab';
-import { computed, provide, ref, type VNode } from 'vue';
+import { computed, provide, watch } from 'vue';
 import type { TabsContext, TabsProps } from './types';
 
-// interfaces & types
-
-// constants
-const emptyPanelText = 'Please add panel content';
-const activeTab = ref<number>(0);
-const slots = defineSlots<{
-  default?: () => any;
-  tabList?: () => any;
-}>();
-
-// composable
-
 // props
-defineProps<TabsProps>();
-
-// defineEmits
-
-// defineSlots
+const props = withDefaults(defineProps<TabsProps>(), {
+  defaultValue: undefined,
+  onValueChange: undefined,
+  orientation: 'horizontal',
+  tabsDirection: 'after',
+  theme: 'line',
+  themeColor: 'primary',
+  customClass: '',
+});
 
 // states (refs and reactives)
+const selectedTab = defineModel<string | undefined>('modelValue', { default: undefined });
 
 // computed
-const tabPanels = computed(() => {
-  const nodes = getObjectAndSymbolNodes(slots.default?.());
-  return filterChildNodesName('TabPanel', nodes);
-});
-
-const tabList = computed(() => {
-  const nodes = getObjectAndSymbolNodes(slots.tabList?.());
-  return filterChildNodesName('Tab', nodes);
-});
+const tabsComputedClasses = computed(() => ({
+  'tabs--orientation-vertical': props.orientation === 'vertical',
+  [`tabs--direction-${props.tabsDirection}`]: true,
+}));
 
 // watchers
-
-// lifecycles
+watch(
+  () => props.defaultValue,
+  newValue => {
+    if (newValue !== undefined) {
+      selectedTab.value = newValue;
+    }
+  },
+  { immediate: true }
+);
 
 // methods
-function setActiveTab(index: number) {
-  activeTab.value = index;
-}
-
-function getObjectAndSymbolNodes(slotNodeList: VNode[]): VNode[] {
-  return slotNodeList?.flatMap((vnode: VNode) => {
-    if (typeof vnode.type === 'object') {
-      return vnode;
-    }
-    if (typeof vnode.type === 'symbol') {
-      return vnode.children as VNode[];
-    }
-    return [];
-  });
-}
-
-function filterChildNodesName<T = { tabIndex: number; tabName: string; component: VNode; disabled: boolean }>(subElement: string, nodeList: VNode[]): T[] {
-  return nodeList?.flatMap((vnode: VNode, index: number) => {
-    const props = vnode.props;
-    if (typeof vnode.type === 'object' && 'name' in vnode.type && vnode.type.name === subElement) {
-      return {
-        tabIndex: props?.index ?? index,
-        tabName: props?.name,
-        component: vnode,
-        disabled: props?.disabled,
-      } as T;
-    }
-    return [];
-  });
-}
+const setSelectedTab = (value: string | undefined) => {
+  selectedTab.value = value;
+  props.onValueChange?.(value);
+};
 
 provide<TabsContext>('tabsContext', {
-  activeTab,
-  setActiveTab,
+  selectedTab,
+  setSelectedTab,
+  orientation: props.orientation,
+  tabsDirection: props.tabsDirection,
 });
 </script>
 

@@ -1,58 +1,82 @@
 <template>
   <button
-    class="tab__button"
-    :class="tabClasses"
-    @click="handleActive"
+    class="tabs__tab"
+    :class="[computedClasses, props.customClass]"
+    role="tab"
+    :aria-selected="!props.disabled && selectedTab === props.value"
+    :aria-controls="props.value"
+    :tabindex="!props.disabled && selectedTab === props.value ? 0 : -1"
+    :disabled="props.disabled"
+    :data-value="props.value"
+    @click="handleClick"
   >
-    <slot>
-      {{ name }}
-    </slot>
+    <slot></slot>
   </button>
 </template>
 
 <script setup lang="ts">
 // imports
 import type { TabsContext } from 'library-components/Tabs';
-import { computed, inject } from 'vue';
+import type { TabsListContext } from 'library-components/TabsList';
+import { computed, inject, onBeforeMount, ref } from 'vue';
 import type { TabProps } from './types';
 
 // interfaces & types
-defineOptions({
-  name: 'Tab',
-});
 
 // constants
 
 // composable
 
-// inject
-const tabsContext = inject<TabsContext>('tabsContext')!;
-
 // props
-const props = defineProps<TabProps>();
+const props = withDefaults(defineProps<TabProps>(), {
+  customClass: '',
+});
 
 // defineEmits
 
 // defineSlots
 
 // states (refs and reactives)
+const { selectedTab, setSelectedTab, tabsDirection } = inject<TabsContext>('tabsContext', {
+  selectedTab: ref<string | undefined>(undefined),
+  setSelectedTab: () => {},
+});
+
+const tabsListContext = inject<TabsListContext>('tabsListContext');
 
 // computed
-const isActive = computed(() => tabsContext?.activeTab?.value === props.index);
+const tabsContextComputedValues = computed(() => ({
+  tabsDirection: tabsDirection ?? 'after',
+  theme: tabsListContext?.theme ?? 'line',
+  themeColor: tabsListContext?.themeColor ?? 'primary',
+}));
 
-const tabClasses = computed(() => {
-  return { 'tab__button--active': isActive.value, 'tab__button--disabled': props.disabled };
-});
+const computedClasses = computed(() => ({
+  'tabs__tab--active': !props.disabled && selectedTab.value === props.value,
+  'tabs__tab--disabled': props.disabled,
+  'tabs__tab--fluid': tabsListContext?.fluid.value,
+  [`tabs__tab-indicator--position-${tabsContextComputedValues.value.tabsDirection}`]: tabsListContext?.indicatorMode.value === 'static',
+  'tabs__tab-indicator--mode-static': tabsListContext?.indicatorMode.value === 'static',
+  [`tabs__tab--size-${tabsListContext?.tabsSize.value}`]: true,
+  [`tabs__tab--color-${tabsContextComputedValues.value.theme.includes('segmented') ? 'gray' : tabsContextComputedValues.value.themeColor}`]: true,
+  [`tabs__tab-indicator--theme-${tabsContextComputedValues.value.theme}`]: true,
+}));
 
 // watchers
 
 // lifecycles
+onBeforeMount(() => {
+  if (selectedTab.value === props.value && props.disabled) {
+    setSelectedTab?.(undefined);
+  }
+});
 
 // methods
-function handleActive() {
-  if (props.index === undefined || props.disabled) return;
-  tabsContext?.setActiveTab(props.index);
-}
+const handleClick = () => {
+  if (!props.disabled) {
+    setSelectedTab?.(props.value);
+  }
+};
 </script>
 
 <style lang="scss" scoped src="./Tab.style.scss"></style>
