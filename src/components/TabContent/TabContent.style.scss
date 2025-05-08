@@ -1,0 +1,22 @@
+.tabs {
+  &__content {
+    padding: $spacing-lg;
+    flex: auto;
+    min-width: 0;
+    min-height: 0;
+
+    &--active {
+      animation: fade-in 0.2s ease;
+    }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

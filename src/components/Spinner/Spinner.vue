@@ -51,6 +51,7 @@ const iconSize = computed(() => (props.fluid ? '100%' : props.size));
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
