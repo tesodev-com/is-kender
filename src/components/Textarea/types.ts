@@ -1,32 +1,79 @@
 export interface TextareaProps {
-  // Unique ID
+  /**
+   * Unique identifier for the textarea element
+   */
   id?: string;
-  // Error state
+
+  /**
+   * Whether the textarea is in error state
+   */
   error?: boolean;
-  // Error text
+
+  /**
+   * Error message to display when in error state
+   */
   errorMessage?: string;
-  // Helper text
+
+  /**
+   * Helper text to provide additional context
+   */
   hintMessage?: string;
-  // Required field
+
+  /**
+   * Whether the field is required
+   */
   required?: boolean;
-  // Resize behavior
+
+  /**
+   * Resize behavior of the textarea
+   * @default 'vertical'
+   */
   resize?: 'none' | 'both' | 'horizontal' | 'vertical';
-  // Default visible rows
+
+  /**
+   * Number of visible text lines (rows)
+   * @default 3
+   */
   rows?: number;
-  // Default visible columns
+
+  /**
+   * Number of visible text columns
+   * @default 20
+   */
   cols?: number;
-  // Disabled state
+
+  /**
+   * Whether the textarea is disabled
+   */
   disabled?: boolean;
-  // Placeholder text
+
+  /**
+   * Placeholder text when empty
+   */
   placeholder?: string;
-  // Input label
+
+  /**
+   * Label text for the textarea
+   */
   label?: string;
-  // Max allowed characters
+
+  /**
+   * Maximum allowed character count
+   */
   maxLength?: number;
-  // v-model binding
+
+  /**
+   * v-model binding for the textarea value
+   */
   modelValue?: string;
-  // Auto-grow height
+
+  /**
+   * Whether the textarea should automatically grow in height with content
+   */
   autoResize?: boolean;
-  // Hide resize handle
+
+  /**
+   * Whether to hide the resize handle
+   */
   hideResize?: boolean;
 }

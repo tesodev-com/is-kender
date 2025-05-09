@@ -71,12 +71,14 @@ import type { TextareaProps } from './types';
 
 // interfaces & types
 
-// constants
+// Constants
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const lineHeight = 24;
+const characterWidth = 8;
+const paddingOffset = 16;
 // composable
 
-// props
+// Props with defaults
 const props = withDefaults(defineProps<TextareaProps>(), {
   rows: 4,
   cols: 50,
@@ -85,11 +87,12 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   autoResize: false,
   hideResize: false,
 });
-// defineEmits
+
+// Emits
 const emit = defineEmits(['update:modelValue']);
 // states (refs and reactives)
 
-// computed
+// Computed properties
 const modelValue = computed({
   get: () => props.modelValue || '',
   set: value => emit('update:modelValue', value),
@@ -100,12 +103,12 @@ const computedRows = computed(() => {
   return props.autoResize ? 1 : props.rows;
 });
 
-const contentWidth = computed(() => `${props.cols * 8}px`);
+const contentWidth = computed(() => `${props.cols * characterWidth}px`);
 
 const textareaStyle = computed(() => ({
   resize: props.hideResize || props.autoResize ? 'none' : props.resize,
   width: props.hideResize ? contentWidth.value : '100%',
-  height: props.hideResize ? `${props.rows * lineHeight + 16}px` : 'auto',
+  height: props.hideResize ? `${props.rows * lineHeight + paddingOffset}px` : 'auto',
 }));
 
 const modelValueLength = computed(() => modelValue.value.length);
