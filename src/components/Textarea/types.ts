@@ -5,69 +5,82 @@ import type { DefineComponent } from '@/@types/core';
  */
 export interface TextareaProps {
   /**
-   * Unique identifier for the textarea.
+   * Unique identifier for the textarea element
    */
   id?: string;
 
   /**
-   * Whether the textarea is in an error state.
+   * Whether the textarea is in error state
    */
   error?: boolean;
 
   /**
-   * Error message displayed below the textarea.
+   * Error message to display when in error state
    */
   errorMessage?: string;
 
   /**
-   * Hint message displayed below the textarea.
+   * Helper text to provide additional context
    */
   hintMessage?: string;
 
   /**
-   * Whether the textarea is required.
+   * Whether the field is required
    */
   required?: boolean;
 
   /**
-   * Controls the resize behavior of the textarea.
+   * Resize behavior of the textarea
+   * @default 'vertical'
    */
   resize?: 'none' | 'both' | 'horizontal' | 'vertical';
 
   /**
-   * Number of visible text lines.
+   * Number of visible text lines (rows)
+   * @default 3
    */
   rows?: number;
 
   /**
-   * Number of visible text columns.
+   * Number of visible text columns
+   * @default 20
    */
   cols?: number;
 
   /**
-   * Whether the textarea is disabled.
+   * Whether the textarea is disabled
    */
   disabled?: boolean;
 
   /**
-   * Placeholder text displayed inside the textarea.
+   * Placeholder text when empty
    */
   placeholder?: string;
 
   /**
-   * Label text for the textarea.
+   * Label text for the textarea
    */
   label?: string;
 
   /**
-   * Maximum number of characters allowed.
+   * Maximum allowed character count
    */
   maxLength?: number;
 
   /**
-   * Current value of the textarea.
+   * v-model binding for the textarea value
    */
   modelValue?: string;
+
+  /**
+   * Whether the textarea should automatically grow in height with content
+   */
+  autoResize?: boolean;
+
+  /**
+   * Whether to hide the resize handle
+   */
+  hideResize?: boolean;
 }
 
 declare module 'vue' {
