@@ -1,23 +1,202 @@
-.tab__button {
-  @include text-lg;
+@use "sass:map" as mixinMap;
 
-  min-width: 10rem;
-  background-color: transparent;
-  border: none;
-  padding: $spacing-xl $spacing-2xl;
+$sizes: (
+  sm: (
+    padding: $spacing-md $spacing-lg,
+    font-size: $font-size-text-sm,
+    line-height: $line-height-text-sm,
+  ),
+  md: (
+    padding: $spacing-ml $spacing-xl,
+    font-size: $font-size-text-md,
+    line-height: $line-height-text-md,
+  ),
+);
 
-  &:hover:not(.tab__button--disabled) {
-    color: $primary-500;
+@mixin button-size($size, $sizeMap) {
+  @each $property, $value in mixinMap.get($sizeMap, $size) {
+    #{$property}: $value;
+  }
+}
+
+.tabs {
+  &__tab {
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: $rounded-sm;
+    font-weight: $font-weight-semibold;
+    position: relative;
+    transition: all 0.2s ease;
+    color: $gray-500;
+    isolation: isolate;
+
+    &--fluid {
+      flex: 1;
+      justify-content: center;
+
+      .tabs__list--orientation-vertical & {
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    &:not(&-indicator--theme-line) {
+      &:focus-visible {
+        box-shadow: get-ring($primary-600);
+      }
+    }
+
+    &:hover:not(&--disabled) {
+      &.tabs__tab--color {
+        &-primary {
+          color: $primary-700;
+        }
+
+        &-gray {
+          color: $gray-700;
+        }
+      }
+    }
+
+    &-indicator {
+      &--theme {
+        &-line {
+          &.tabs__tab-indicator--position-before {
+            &::before {
+              content: "";
+              position: absolute;
+              left: 0;
+              top: calc(var(--indicator-thickness, 2px) * -1);
+              width: 100%;
+              height: var(--indicator-thickness, 2px);
+              background-color: transparent;
+              transition: background-color 0.2s ease;
+            }
+          }
+
+          &.tabs__tab-indicator--position-after {
+            &::after {
+              content: "";
+              position: absolute;
+              right: 0;
+              bottom: calc(var(--indicator-thickness, 2px) * -1);
+              width: 100%;
+              height: var(--indicator-thickness, 2px);
+              background-color: transparent;
+              transition: background-color 0.2s ease;
+            }
+          }
+        }
+
+        &-button,
+        &-segmented,
+        &-segmented-minimal {
+          &.tabs__tab-indicator--position-after,
+          &.tabs__tab-indicator--position-before {
+            &::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              width: 100%;
+              height: 100%;
+              background-color: transparent;
+              transition: background-color 0.2s ease;
+              border-radius: $rounded-sm;
+              z-index: -1;
+              opacity: 0.1;
+            }
+          }
+        }
+      }
+    }
+
+    &--active {
+      &.tabs__tab--color {
+        &-primary {
+          color: $primary-600;
+
+          &::before,
+          &::after {
+            background-color: var(--indicator-color, $primary-600);
+          }
+        }
+
+        &-gray {
+          color: $gray-700;
+
+          &::before,
+          &::after {
+            background-color: var(--indicator-color, $gray-700);
+          }
+
+          &.tabs__tab-indicator--theme {
+            &-segmented {
+              &::before,
+              &::after {
+                background-color: $white;
+                opacity: 1;
+                box-shadow: $shadow-sm;
+              }
+            }
+
+            &-segmented-minimal {
+              &::before,
+              &::after {
+                background-color: $white;
+                opacity: 1;
+                box-shadow: $shadow-xs;
+                outline: 1px solid $gray-300;
+                border-radius: $rounded-sm;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &--size {
+      @each $size, $value in $sizes {
+        &-#{$size} {
+          @include button-size($size, $sizes);
+        }
+      }
+    }
   }
 
-  &--active {
-    color: $primary-600;
-    box-shadow: inset 0 -2px $primary-600;
-    transition: all ease-in-out 0.3s;
-  }
+  &__list {
+    &--orientation-vertical {
+      .tabs__tab {
+        &-indicator {
+          &--theme {
+            &-line {
+              &.tabs__tab-indicator--position-before {
+                &::before {
+                  width: var(--indicator-thickness, 2px);
+                  height: 100%;
+                  left: calc(var(--indicator-thickness, 2px) * -1);
+                  top: 0;
+                }
+              }
 
-  &--disabled {
-    cursor: not-allowed;
-    color: $gray-200;
+              &.tabs__tab-indicator--position-after {
+                &::after {
+                  width: var(--indicator-thickness, 2px);
+                  height: 100%;
+                  right: calc(var(--indicator-thickness, 2px) * -1);
+                  bottom: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

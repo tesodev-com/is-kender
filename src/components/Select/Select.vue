@@ -180,12 +180,20 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { checkIcon, keyboardArrowDownIcon } from '@/assets/icons';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
 import Svg from 'library-components/Svg';
 import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
 import type { SelectOption, SelectProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<SelectProps>(), {
   isMultiple: false,
   optionsPosition: 'bottom',
@@ -199,11 +207,17 @@ const props = withDefaults(defineProps<SelectProps>(), {
   searchPlaceholder: 'Search...',
 });
 
-const selectId = useId();
+// defineEmits
 
+// defineSlots
+
+// defineModel
 const model = defineModel<string | null>();
 const modelMultiple = defineModel<string[]>('multiple', { default: () => [] });
 const searchModel = defineModel<string>('search', { default: '' });
+
+// states (refs and reactives)
+const selectId = useId();
 const selectContainer = useTemplateRef('selectContainerRef');
 const selectTrigger = useTemplateRef('selectTriggerRef');
 const dropdown = useTemplateRef('dropdownRef');
@@ -217,6 +231,7 @@ const focusedIndex = ref<number>(-1);
 const startIndex = ref(0);
 const visibleCount = ref(0);
 
+// computed
 const selectedValue = computed(() => {
   if (props.isMultiple) {
     const selected = props.options.filter(opt => modelMultiple.value.includes(opt.value));
@@ -251,6 +266,7 @@ const visibleOptions = computed(() => {
   return searchFilterList.value.slice(startIndex.value, endIndex);
 });
 
+// watchers
 watch(
   () => isOpen.value,
   newIsOpen => {
@@ -270,6 +286,7 @@ watch(
   }
 );
 
+// lifecycles
 onMounted(() => {
   window.addEventListener('click', handleOutsideClick);
   window.addEventListener('resize', handleResize);
@@ -281,6 +298,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
+// methods
 function selectOption(option: SelectOption) {
   if (option.disabled) return;
 

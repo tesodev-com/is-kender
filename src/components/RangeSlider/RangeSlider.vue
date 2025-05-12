@@ -170,8 +170,10 @@ const props = withDefaults(defineProps<Omit<RangeSliderProps, 'modelValue'>>(), 
   thumbShape: 'circle',
 });
 
-// emits
+// defineEmits
 const emit = defineEmits<RangeSliderEmits>();
+
+// defineSlots
 
 // states (refs and reactives)
 const rangeValues = ref<[number, number]>([props.min, props.max]);

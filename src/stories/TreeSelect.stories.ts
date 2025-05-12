@@ -5,8 +5,9 @@ import TreeSelect, { type TreeSelectProps } from 'library-components/TreeSelect'
 import { ref } from 'vue';
 
 const meta: Meta<typeof TreeSelect> = {
-  component: TreeSelect,
   title: 'Form/TreeSelect',
+  component: TreeSelect,
+  tags: ['autodocs'],
   argTypes: {
     treeOptions: {
       control: 'object',

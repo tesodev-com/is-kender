@@ -9,9 +9,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { LinkProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<LinkProps>(), {
   useRouter: false,
   target: '_self',
@@ -21,6 +29,13 @@ const props = withDefaults(defineProps<LinkProps>(), {
   disabled: false,
 });
 
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const linkClasses = computed(() => {
   return [
     'link',
@@ -42,6 +57,12 @@ const linkAttributes = computed(() => {
     ...(props.target && props.target !== '_self' ? { target: props.target } : {}),
   };
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Link.style.scss"></style>

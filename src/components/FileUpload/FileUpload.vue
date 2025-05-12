@@ -63,6 +63,7 @@ import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue';
 import { File, Upload, type FileErrorMessage } from './SubComponents';
 import type { CustomFile, FileUploadEvents, FileUploadProps } from './types';
 import { UploadQueue, type QueueStatus } from './utils';
+
 // interfaces & types
 
 // constants
@@ -79,8 +80,12 @@ const props = withDefaults(defineProps<FileUploadProps>(), {
   template: 'row',
   description: 'En az 1 dosya yükleyin',
 });
+
 // defineEmits
 const emit = defineEmits<FileUploadEvents>();
+
+// defineSlots
+
 // states (refs and reactives)
 const upload = useTemplateRef('uploadRef');
 const files = ref<CustomFile[]>([]);
@@ -92,6 +97,7 @@ const uploadQueueStatus = ref<QueueStatus>({
   failed: 0,
 });
 const uploadQueue = new UploadQueue({ maxConcurrentUploads: props.maxConcurrentUploads, emit: () => emit('onUpload', files.value), onProgress: status => (uploadQueueStatus.value = status) });
+
 // computed
 const actionButtons = computed(() => {
   const commonButtonProps = {
@@ -154,12 +160,14 @@ const actionButtons = computed(() => {
 
   return actions;
 });
+
 // watchers
 
 // lifecycles
 onBeforeUnmount(() => {
   uploadQueue.abortAll();
 });
+
 // methods
 function handleFileUpload(uploadedFiles: CustomFile[]) {
   const tmpFiles = [...files.value, ...uploadedFiles];
@@ -169,14 +177,17 @@ function handleFileUpload(uploadedFiles: CustomFile[]) {
     uploadQueue.addToQueue(file);
   });
 }
+
 function handleFileDelete(file: CustomFile) {
   files.value = files.value.filter(f => f.id !== file.id);
 }
+
 function handleUploadClick() {
   if (upload.value) {
     upload.value.onClick();
   }
 }
+
 function handleClear() {
   files.value = [];
   errorList.value = [];
@@ -188,10 +199,12 @@ function handleClear() {
   };
   uploadQueue.abortAll();
 }
+
 function handleError(errors: FileErrorMessage[]) {
   if (!props.showErrorMessages) return;
   errorList.value = errors;
 }
+
 function handleActionClick(actionId: string) {
   if (actionId === 'upload') {
     handleUploadClick();

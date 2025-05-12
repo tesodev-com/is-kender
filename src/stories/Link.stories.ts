@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import Link, { type LinkProps } from 'library-components/Link';
 
 const meta: Meta<typeof Link> = {
-  component: Link,
   title: 'Navigation/Link',
+  component: Link,
+  tags: ['autodocs'],
   argTypes: {
     to: {
       control: 'text',

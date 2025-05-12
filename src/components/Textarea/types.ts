@@ -1,3 +1,8 @@
+import type { DefineComponent } from '@/@types/core';
+
+/**
+ * Props for the Textarea component.
+ */
 export interface TextareaProps {
   /**
    * Unique identifier for the textarea element
@@ -76,4 +81,10 @@ export interface TextareaProps {
    * Whether to hide the resize handle
    */
   hideResize?: boolean;
+}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    LibTextarea: DefineComponent<TextareaProps>;
+  }
 }

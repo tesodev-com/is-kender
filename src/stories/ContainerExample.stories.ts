@@ -4,9 +4,10 @@ import Container from 'library-components/Container';
 import Row from 'library-components/Row';
 
 const meta: Meta<typeof Container> = {
+  title: 'Layout/ContainerExample',
   component: Container,
   subcomponents: { Row, Col },
-  title: 'Layout/ContainerExample',
+  tags: ['autodocs'],
   argTypes: {
     fluid: {
       control: {

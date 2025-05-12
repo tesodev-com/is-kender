@@ -5,6 +5,7 @@ import { ref } from 'vue';
 const meta: Meta<typeof DatePicker> = {
   title: 'Form/DatePicker',
   component: DatePicker,
+  tags: ['autodocs'],
   argTypes: {
     selectionItems: {
       control: 'multi-select',

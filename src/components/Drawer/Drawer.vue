@@ -40,11 +40,19 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { closeIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, watch } from 'vue';
 import type { DrawerProps, ToggleValue } from './types';
-const isOpen = ref(false);
+
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<DrawerProps>(), {
   position: 'left',
   size: '50%',
@@ -53,10 +61,16 @@ const props = withDefaults(defineProps<DrawerProps>(), {
   hasCloseButton: true,
 });
 
+// defineEmits
 const emit = defineEmits<{
   (event: 'toggle', value: ToggleValue): void;
 }>();
 
+// defineSlots
+// states (refs and reactives)
+const isOpen = ref(false);
+
+// computed
 const computeTransition = computed(() => {
   const transition = {
     left: 'slide-left',
@@ -74,9 +88,8 @@ const drawerStyle = computed(() => {
     '--drawer-size': props.size,
   };
 });
-onMounted(() => {
-  isOpen.value = true;
-});
+
+// watchers
 watch(
   () => isOpen.value,
   newValue => {
@@ -92,9 +105,15 @@ watch(
   { immediate: true }
 );
 
+// lifecycles
+onMounted(() => {
+  isOpen.value = true;
+});
+
+// methods
 function closeDrawer() {
   isOpen.value = false;
 }
 </script>
 
-<style lang="scss" scoped src="./Drawer.style.scss" />
+<style lang="scss" scoped src="./Drawer.style.scss"></style>

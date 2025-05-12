@@ -4,6 +4,7 @@ import FileUpload, { type CustomFile } from 'library-components/FileUpload';
 const meta: Meta<typeof FileUpload> = {
   title: 'Form/FileUpload',
   component: FileUpload,
+  tags: ['autodocs'],
   argTypes: {
     disabled: {
       control: 'boolean',

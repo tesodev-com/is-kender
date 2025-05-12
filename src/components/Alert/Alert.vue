@@ -43,21 +43,41 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { closeIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref } from 'vue';
 import type { AlertEmits, AlertProps, AlertSlots } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<AlertProps>(), {
   color: 'primary',
   variant: 'solid',
 });
+
+// defineEmits
 defineEmits<AlertEmits>();
+
+// defineSlots
 defineSlots<AlertSlots>();
+
+// states (refs and reactives)
 const visible = ref(true);
+
+// computed
 const alertClasses = computed(() => {
   return ['alert-wrapper', `alert-${props.variant}`, `alert-${props.color}`, { 'alert-fluid': props.fluid }];
 });
+
+// watchers
+
+// lifecycles
 onMounted(() => {
   if (props.life) {
     setTimeout(() => {
@@ -65,6 +85,8 @@ onMounted(() => {
     }, props.life);
   }
 });
+
+// methods
 function onClose() {
   visible.value = false;
 }

@@ -44,7 +44,7 @@ export default [
         },
       ],
       'no-multi-spaces': 'error',
-      'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0 }],
+      'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
       'object-curly-newline': ['error', { multiline: true, consistent: true }],
       'object-curly-spacing': ['error', 'always'],
       semi: ['error', 'always'],

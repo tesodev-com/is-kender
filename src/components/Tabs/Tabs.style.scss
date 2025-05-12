@@ -1,29 +1,26 @@
 .tabs {
-  .tabs__title {
-    @include text-2xl;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
-    padding: $spacing-xl $spacing-3xl $spacing-xl 0;
+  &--orientation-vertical {
+    height: 100%;
+    flex-direction: row;
   }
 
-  .tabs__button-container {
-    display: flex;
-    align-items: center;
-    overflow-x: auto;
-    position: relative;
+  &--direction-before {
+    flex-direction: column-reverse;
 
-    .tabs__underline {
-      position: absolute;
-      height: 2px;
-      background-color: $primary-600;
-      bottom: 0;
-      left: 0;
-      transition: all 0.3s ease;
+    &.tabs--orientation-vertical {
+      flex-direction: row-reverse;
     }
   }
 
-  .tabs__content {
-    padding: $spacing-xl $spacing-3xl $spacing-xl 0;
-    width: 100%;
-    min-height: 1rem;
+  &--direction-after {
+    flex-direction: column;
+
+    &.tabs--orientation-vertical {
+      flex-direction: row;
+    }
   }
 }

@@ -1,18 +1,76 @@
-import { Meta } from "@storybook/blocks";
+import { Meta, Canvas, Controls } from "@storybook/blocks";
 import * as ToastStories from "./Toast.stories";
 
-<Meta title="Feedback/Toast" />
+# Toast Component
+
+<Meta of={ToastStories} />
+
+## Preview
+
+<Canvas of={ToastStories.Default} />
+
+## Properties
+
+<Controls />
 
 ## Message Props
 
-The ToastMessageProps interface defines the properties required for displaying toast messages via the event bus.
+The `ToastMessageProps` interface defines the properties required for displaying toast messages via the event bus.
 
 ```typescript
 interface ToastMessageProps {
+  /**
+   * Visual style of the toast component
+   * @default "solid"
+   */
   variant?: "solid" | "outline";
+
+  /**
+   * Color scheme of the toast
+   * @default "primary"
+   */
   color?: "primary" | "secondary" | "success" | "info" | "warning" | "danger" | "dark";
+
+  /**
+   * Title text displayed at the top of the toast
+   */
   title?: string;
+
+  /**
+   * Main message content of the toast
+   */
   message?: string;
+
+  /**
+   * Duration in milliseconds before the toast automatically dismisses
+   */
   life?: number;
 }
 ```
+
+## Example Usage
+
+```typescript
+import { useToast } from "@tsd/component-library";
+
+// Get the toast helper functions
+const { add } = useToast();
+
+// Display a toast message
+add({
+  title: "Hello, World!",
+  message: "This is a toast message",
+  color: "primary",
+  life: 3000,
+});
+```
+
+## When to Use
+
+- For providing non-disruptive feedback after operations
+- To notify users about system events
+- When displaying temporary information that doesn't require user interaction
+
+## Accessibility
+
+Toast notifications automatically disappear after a set duration, so they should not contain critical information that requires user action.

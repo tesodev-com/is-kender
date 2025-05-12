@@ -1,38 +1,66 @@
-export interface AccordionItemProps {
-  title: string;
-  content?: string;
-  slotKey?: string;
-  isOpen?: boolean;
-  disabled?: boolean;
-}
+import type { DefineComponent } from '@/@types/core';
 
 export interface AccordionProps {
-  items?: AccordionItemProps[];
-  allowMultiple?: boolean;
+  /**
+   * Position of the accordion icon
+   * @default 'right'
+   */
   accordionIconPosition?: 'left' | 'right';
-  separator?: boolean;
+  /**
+   * Custom class for the header of the accordion
+   * @default ''
+   */
   headerClass?: string;
+  /**
+   * Custom class for the content of the accordion
+   * @default ''
+   */
   contentClass?: string;
-  isOpen?: boolean;
-}
-
-export interface AccordionEmits {
-  (event: 'openedAccordion', item: AccordionItemProps, index: number): void;
-  (event: 'closedAccordion', item: AccordionItemProps, index: number): void;
-}
-
-export interface AccordionItemComponentProps {
-  accordionIconPosition?: 'left' | 'right';
-  separator?: boolean;
-  headerClass?: string;
-  contentClass?: string;
+  /**
+   * Header text content
+   * @default ''
+   */
+  header?: string;
+  /**
+   * Content text or HTML content
+   * @default ''
+   */
+  content?: string;
+  /**
+   * If true, the accordion cannot be toggled
+   * @default false
+   */
   disabled?: boolean;
-  modelValue?: boolean;
+  /**
+   * Custom icon for the open state
+   * @default ''
+   */
+  openIcon?: string;
+  /**
+   * Custom icon for the close state
+   * @default ''
+   */
+  closeIcon?: string;
+  /**
+   * If true, hides the toggle icons
+   * @default false
+   */
   hideIcons?: boolean;
 }
 
-export interface AccordionItemEmits {
-  (e: 'update:modelValue', value: boolean): void;
-  (e: 'opened'): void;
-  (e: 'closed'): void;
+export interface AccordionEmits {
+  /**
+   * Emitted when the accordion is opened
+   */
+  (event: 'open'): void;
+  /**
+   * Emitted when the accordion is closed
+   */
+  (event: 'close'): void;
+}
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    LibAccordion: DefineComponent<AccordionProps, object, AccordionEmits>;
+  }
 }

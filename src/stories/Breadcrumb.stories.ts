@@ -4,6 +4,7 @@ import Breadcrumb, { type BreadcrumbItemProps } from 'library-components/Breadcr
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Navigation/Breadcrumb',
   component: Breadcrumb,
+  tags: ['autodocs'],
   args: {
     items: [
       { text: 'Home', to: '/' },

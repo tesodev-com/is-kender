@@ -111,6 +111,7 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { keyboardArrowDownIcon } from '@/assets/icons';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
 import Svg from 'library-components/Svg';
@@ -118,6 +119,13 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplate
 import TreeNode from './TreeNode.vue';
 import type { TreeSelectNode, TreeSelectProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<TreeSelectProps>(), {
   isMultiple: false,
   selectAllChild: false,
@@ -126,10 +134,17 @@ const props = withDefaults(defineProps<TreeSelectProps>(), {
   isSearch: false,
 });
 
-const selectId = useId();
+// defineEmits
+
+// defineSlots
+
+// defineModel
 const model = defineModel<string | null>();
 const modelMultiple = defineModel<string[]>('multiple', { default: () => [] });
 const searchModel = defineModel<string>('search', { default: '' });
+
+// states (refs and reactives)
+const selectId = useId();
 const selectContainer = useTemplateRef('selectContainerRef');
 const selectTrigger = useTemplateRef('selectTriggerRef');
 const dropdown = useTemplateRef('dropdownRef');
@@ -137,6 +152,7 @@ const isOpen = ref<boolean>(false);
 const dropdownPosition = ref<PositionStyle>({ top: '0px', left: '0px', width: '0px' });
 const expandedNodes = ref<Set<string>>(new Set());
 
+// computed
 const filteredTreeOptions = computed(() => {
   const selectedValues = props.isMultiple ? modelMultiple.value : model.value ? [model.value] : [];
 
@@ -183,6 +199,9 @@ const computePlaceholder = computed(() => {
   return selectedValue.value || props.placeholder || '';
 });
 
+// watchers
+
+// lifecycles
 onMounted(() => {
   window.addEventListener('click', handleOutsideClick);
   window.addEventListener('resize', handleResize);
@@ -193,6 +212,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 
+// methods
 function selectNode(node: TreeSelectNode) {
   if (node.disabled) return;
 

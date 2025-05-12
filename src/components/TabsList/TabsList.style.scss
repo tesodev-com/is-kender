@@ -1,0 +1,194 @@
+@use "sass:map" as mixinMap;
+
+$themes: (
+  line: (
+    border-width: var(--indicator-thickness, 2px),
+    border-style: var(--border-sides, none none solid none),
+    border-color: $gray-200,
+  ),
+  segmented: (
+    border: 1px solid $gray-200,
+    background-color: $gray-50,
+    padding: $spacing-xs,
+    border-radius: 0.625rem,
+  ),
+  segmented-minimal: (
+    border: 1px solid $gray-200,
+    background-color: $gray-50,
+    padding: $spacing-none,
+    border-radius: $rounded-sm,
+    gap: $spacing-xxs,
+  ),
+);
+$indicator-colors: (
+  "primary": (
+    background-color: var(--indicator-color, $primary-600),
+  ),
+  "gray": (
+    background-color: var(--indicator-color, $gray-700),
+  ),
+);
+$indicator-themes: (
+  "line": (
+    width: var(--indicator-width, 0),
+    height: var(--indicator-thickness, 2px),
+  ),
+  "button": (
+    z-index: -1,
+    width: var(--indicator-width, 0),
+    height: var(--indicator-height, 0),
+    opacity: 0.1,
+    border-radius: 0.375rem,
+  ),
+  "segmented": (
+    z-index: -1,
+    width: var(--indicator-width, 0),
+    height: var(--indicator-height, 0),
+    background-color: $white,
+    opacity: 1,
+    box-shadow: $shadow-sm,
+    border-radius: 0.375rem,
+  ),
+  "segmented-minimal": (
+    z-index: -1,
+    width: var(--indicator-width, 0),
+    height: var(--indicator-height, 0),
+    background-color: $white,
+    opacity: 1,
+    box-shadow: $shadow-xs,
+    outline: 1px solid $gray-300,
+    border-radius: $rounded-sm,
+  ),
+);
+
+@mixin tabs-theme($theme) {
+  $themeMap: mixinMap.get($themes, $theme);
+
+  @each $property, $value in $themeMap {
+    #{$property}: $value;
+  }
+}
+
+@mixin indicator-color($color) {
+  $colorMap: mixinMap.get($indicator-colors, $color);
+
+  @each $property, $value in $colorMap {
+    #{$property}: $value;
+  }
+}
+
+@mixin indicator-theme($theme) {
+  $themeMap: mixinMap.get($indicator-themes, $theme);
+
+  @each $property, $value in $themeMap {
+    #{$property}: $value;
+  }
+}
+
+.tabs {
+  &__list {
+    display: flex;
+    flex-direction: row;
+    gap: $spacing-xs;
+    position: relative;
+    isolation: isolate;
+
+    &--theme {
+      @each $theme, $value in $themes {
+        &-#{$theme} {
+          @include tabs-theme($theme);
+        }
+      }
+    }
+
+    &--fluid {
+      &:not(.tabs__list--orientation-vertical) {
+        width: 100%;
+      }
+    }
+
+    &-indicator {
+      position: absolute;
+      left: 0;
+      transform: translateX(var(--indicator-x-offset, 0));
+      transition:
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      pointer-events: none;
+
+      &--color {
+        @each $color, $value in $indicator-colors {
+          &-#{$color} {
+            @include indicator-color($color);
+          }
+        }
+      }
+
+      &--theme {
+        @each $theme, $value in $indicator-themes {
+          &-#{$theme} {
+            @include indicator-theme($theme);
+
+            @if $theme == "line" {
+              &.tabs__list-indicator--position-before {
+                top: calc(var(--indicator-thickness, 2) * -1);
+              }
+
+              &.tabs__list-indicator--position-after {
+                bottom: calc(var(--indicator-thickness, 2) * -1);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--orientation {
+      &-vertical {
+        flex-direction: column;
+
+        &.tabs__list--fluid {
+          height: 100%;
+
+          > .tabs__tab {
+            flex: 1 1 0;
+            width: auto;
+          }
+        }
+
+        .tabs__list-indicator {
+          top: 0;
+          left: 0;
+          transform: translateX(var(--indicator-x-offset, 0))
+            translateY(var(--indicator-y-offset, 0));
+
+          &--theme {
+            &-line {
+              width: var(--indicator-thickness, 2px);
+              height: var(--indicator-height);
+
+              &.tabs__list-indicator--position-before {
+                left: calc(var(--indicator-thickness, 2px) * -1);
+              }
+
+              &.tabs__list-indicator--position-after {
+                left: unset;
+                bottom: unset;
+                right: calc(var(--indicator-thickness, 2px) * -1);
+              }
+            }
+
+            &-button,
+            &-segmented {
+              width: var(--indicator-width, 0);
+              height: var(--indicator-height, 0);
+            }
+          }
+        }
+      }
+    }
+  }
+}

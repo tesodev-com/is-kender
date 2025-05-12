@@ -26,9 +26,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { ProgressBarProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<ProgressBarProps>(), {
   showPercentage: false,
   percentageLocation: 'right',
@@ -39,6 +47,13 @@ const props = withDefaults(defineProps<ProgressBarProps>(), {
   value: 0,
 });
 
+// defineEmits
+
+// defineSlots
+
+// states (refs and reactives)
+
+// computed
 const progressBarContainerClasses = computed(() => {
   return [
     'progress-bar-container',
@@ -54,6 +69,12 @@ const calculateProgressBarWidth = computed(() => {
     width: width + '%',
   };
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./ProgressBar.style.scss"></style>

@@ -113,6 +113,7 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { closeIcon } from '@/assets/icons';
 import { EventBus } from '@/utils';
 import Svg from 'library-components/Svg';
@@ -120,6 +121,13 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import SidebarItem from './SidebarItem.vue';
 import type { SidebarEmits, SidebarLink, SidebarProps, SidebarSlots } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<SidebarProps>(), {
   title: 'Sidebar',
   closeOnOutsideClick: true,
@@ -129,12 +137,16 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   isMobile: false,
 });
 
+// defineEmits
 const emit = defineEmits<SidebarEmits>();
 
+// defineSlots
 defineSlots<SidebarSlots>();
 
+// states (refs and reactives)
 const isSidebarOpen = ref(false);
 
+// computed
 const sidebarClasses = computed(() => {
   return ['sidebar', { 'sidebar-mobile': props.isMobile, [`sidebar-${props.position}`]: props.isMobile }];
 });
@@ -147,17 +159,22 @@ const computeShowBackdrop = computed(() => {
   return props.isMobile && isSidebarOpen.value;
 });
 
+// watchers
+
+// lifecycles
 onMounted(() => {
   EventBus.on('sidebar:open', openSidebar);
   EventBus.on('sidebar:close', closeSidebar);
   document.addEventListener('keydown', handleEscapeKey);
 });
+
 onBeforeUnmount(() => {
   EventBus.off('sidebar:open', openSidebar);
   EventBus.off('sidebar:close', closeSidebar);
   document.removeEventListener('keydown', handleEscapeKey);
 });
 
+// methods
 function openSidebar(cb?: () => void) {
   isSidebarOpen.value = true;
   cb?.();

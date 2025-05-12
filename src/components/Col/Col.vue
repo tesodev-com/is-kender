@@ -8,9 +8,17 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { computed } from 'vue';
 import type { ColProps } from './types';
 
+// interfaces & types
+
+// constants
+
+// composable
+
+// props
 const props = withDefaults(defineProps<ColProps>(), {
   cols: '',
   sm: '',
@@ -20,6 +28,12 @@ const props = withDefaults(defineProps<ColProps>(), {
   xxl: '',
 });
 
+// defineEmits
+
+// defineSlots
+// states (refs and reactives)
+
+// computed
 const columnClasses = computed(() => {
   const classes: Record<string, boolean> = {};
 
@@ -29,6 +43,12 @@ const columnClasses = computed(() => {
   });
   return classes;
 });
+
+// watchers
+
+// lifecycles
+
+// methods
 </script>
 
 <style lang="scss" scoped src="./Col.style.scss"></style>
