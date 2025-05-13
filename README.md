@@ -1,28 +1,19 @@
 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-  <img src="is-kender.png" alt="Component Library" style={{ maxWidth: "100%", height: "50rem" }} />
+  <img src="./public/is-kender.png" alt="Component Library" style={{ maxWidth: "100%", height: "50rem" }} />
 </div>
 
-<div
-  style={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "0.5rem",
-    marginBottom: "2rem",
-  }}
->
+<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin:2rem 0;">
   <a href="https://www.npmjs.com/package/@zkdev2/is-kender" target="_blank" rel="noopener noreferrer">
-    ![NPM Version](https://img.shields.io/npm/v/%40zkdev2%2Fis-kender)
+    <img alt="NPM Version" src="https://img.shields.io/npm/v/%40zkdev2%2Fis-kender">
   </a>
   <a href="https://github.com/tesodev-com/is-kender" target="_blank" rel="noopener noreferrer">
-    ![GitHub last commit](https://img.shields.io/github/last-commit/tesodev-com/is-kender)
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tesodev-com/is-kender">
   </a>
   <a href="${{ steps.build-publish.outputs.page_url }}" target="_blank" rel="noopener noreferrer">
-    ![Storybook](https://img.shields.io/badge/Storybook-Live-blue)
+    <img alt="Storybook" src="https://img.shields.io/badge/Storybook-Live-blue">
   </a>
   <a href="https://github.com/semantic-release/semantic-release" target="_blank" rel="noopener noreferrer">
-    [![semantic-release:
-    angular](https://img.shields.io/badge/semantic--release-vue-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+    <img alt="semantic-release" src="https://img.shields.io/badge/semantic--release-vue-e10079?logo=semantic-release">
   </a>
 </div>
 
