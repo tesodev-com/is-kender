@@ -1,9 +1,10 @@
 name: Build and Publish Storybook to GitHub Pages
 
 on:
-  push:
-    branches:
-      - "master"
+  workflow_run:
+    workflows: ["Build and Publish NPM Package"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -17,16 +18,29 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - id: build-publish
-        uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Storybook
+        run: yarn build-storybook
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          install_command: yarn install
-          build_command: yarn build-storybook
           path: storybook-static
-          checkout: false
+
+      - name: Build and Publish Storybook
+        uses: actions/deploy-pages@v4
