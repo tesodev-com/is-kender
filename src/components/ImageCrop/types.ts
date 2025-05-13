@@ -109,6 +109,10 @@ export interface ImageCropperEvents {
    * @param croppedImage The cropped image as a base64 string or URL.
    */
   (e: 'crop', croppedImage: string): void;
+  /**
+   * Triggered when the cancel button is clicked.
+   */
+  (e: 'cancel'): void;
 }
 
 declare module 'vue' {

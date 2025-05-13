@@ -7,7 +7,7 @@
 .image-cropper {
   $root: &;
 
-  width: 520px;
+  min-width: 36rem;
   flex-direction: column;
   gap: $spacing-xl;
 

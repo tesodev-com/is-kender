@@ -5,6 +5,7 @@ export { default as checkIconRoundedOutline } from '@material-design-icons/svg/o
 export { default as circleIcon } from '@material-design-icons/svg/outlined/circle.svg?raw';
 export { default as cloudUploadOutlineIcon } from '@material-design-icons/svg/outlined/cloud_upload.svg?raw';
 export { default as copyIcon } from '@material-design-icons/svg/outlined/content_copy.svg?raw';
+export { default as cropIcon } from '@material-design-icons/svg/outlined/crop.svg?raw';
 export { default as deleteForeverOutlineIcon } from '@material-design-icons/svg/outlined/delete_forever.svg?raw';
 export { default as diveFolderUploadOutlineIcon } from '@material-design-icons/svg/outlined/drive_folder_upload.svg?raw';
 export { default as flipIcon } from '@material-design-icons/svg/outlined/flip.svg?raw';

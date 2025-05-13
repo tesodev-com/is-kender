@@ -108,9 +108,7 @@
   }
 
   &--drag-active {
-    border-style: dashed;
-    border-width: 2px;
-    border-color: $primary-600;
+    background-color: $primary-100;
   }
 
   &--disabled {

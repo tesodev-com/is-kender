@@ -69,7 +69,6 @@ describe('File', () => {
     size: 1024,
     type: 'image/jpeg',
     raw: new File(['test'], 'test.jpg', { type: 'image/jpeg' }),
-    isImage: true,
     preview: 'test-preview',
     uploadedDate: Date.now(),
     status: {
@@ -123,7 +122,6 @@ describe('File', () => {
   it('shows file icon for non-image files', async () => {
     const nonImageFile = {
       ...mockFile,
-      isImage: false,
       preview: null,
       type: 'application/pdf',
     };

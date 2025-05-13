@@ -41,14 +41,25 @@
       class="file-upload__list"
       :class="[`file-upload__list--${template}`]"
     >
-      <File
+      <FilePreview
         v-for="file in files"
         :key="file.id"
         :file="file"
         :template="template"
         :preview="preview"
         @on-delete="handleFileDelete"
+        @on-edit="handleFileEdit"
       />
+    </div>
+    <div
+      v-if="editingFile"
+      class="file-upload__edit"
+    >
+      <ImageCrop
+        :image="editingFile.raw"
+        @crop="handleCrop"
+        @cancel="editingFile = null"
+      ></ImageCrop>
     </div>
   </div>
 </template>
@@ -58,9 +69,10 @@
 import { closeIcon, cloudUploadOutlineIcon, diveFolderUploadOutlineIcon } from '@/assets/icons';
 import Alert from 'library-components/Alert';
 import Button, { type ButtonProps } from 'library-components/Button';
+import ImageCrop from 'library-components/ImageCrop';
 import Svg, { type SvgProps } from 'library-components/Svg';
 import { computed, onBeforeUnmount, ref, useTemplateRef } from 'vue';
-import { File, Upload, type FileErrorMessage } from './SubComponents';
+import { File as FilePreview, Upload, type FileErrorMessage } from './SubComponents';
 import type { CustomFile, FileUploadEvents, FileUploadProps } from './types';
 import { UploadQueue, type QueueStatus } from './utils';
 
@@ -97,7 +109,7 @@ const uploadQueueStatus = ref<QueueStatus>({
   failed: 0,
 });
 const uploadQueue = new UploadQueue({ maxConcurrentUploads: props.maxConcurrentUploads, emit: () => emit('onUpload', files.value), onProgress: status => (uploadQueueStatus.value = status) });
-
+const editingFile = ref<CustomFile | null>(null);
 // computed
 const actionButtons = computed(() => {
   const commonButtonProps = {
@@ -177,17 +189,19 @@ function handleFileUpload(uploadedFiles: CustomFile[]) {
     uploadQueue.addToQueue(file);
   });
 }
-
 function handleFileDelete(file: CustomFile) {
+  uploadQueue.removeFromQueue(file.id);
   files.value = files.value.filter(f => f.id !== file.id);
+  uploadQueueStatus.value = uploadQueue.getQueueStatus();
 }
-
+function handleFileEdit(file: CustomFile) {
+  editingFile.value = file;
+}
 function handleUploadClick() {
   if (upload.value) {
     upload.value.onClick();
   }
 }
-
 function handleClear() {
   files.value = [];
   errorList.value = [];
@@ -199,12 +213,10 @@ function handleClear() {
   };
   uploadQueue.abortAll();
 }
-
 function handleError(errors: FileErrorMessage[]) {
   if (!props.showErrorMessages) return;
   errorList.value = errors;
 }
-
 function handleActionClick(actionId: string) {
   if (actionId === 'upload') {
     handleUploadClick();
@@ -212,6 +224,22 @@ function handleActionClick(actionId: string) {
     props.uploader?.(files.value.map(f => f.raw));
   } else if (actionId === 'clear') {
     handleClear();
+  }
+}
+function handleCrop(croppedImage: string) {
+  const file = files.value.find((file: CustomFile) => file.id === editingFile.value?.id);
+  if (file && file.raw) {
+    fetch(croppedImage)
+      .then(res => res.blob())
+      .then(blob => {
+        const newFile = new File([blob], file.raw.name, { type: file.raw.type });
+        file.raw = newFile;
+        file.preview = URL.createObjectURL(newFile);
+        editingFile.value = null;
+      })
+      .then(() => {
+        emit('onUpload', files.value);
+      });
   }
 }
 </script>

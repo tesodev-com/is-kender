@@ -10,6 +10,8 @@
     display: flex;
     gap: $spacing-md;
     flex-wrap: wrap;
+    max-height: 50rem;
+    overflow-y: auto;
 
     &-row {
       flex-direction: row;
@@ -31,5 +33,23 @@
     padding: 1rem;
     border: 1px solid $gray-200;
     border-radius: 1rem;
+  }
+
+  .file-upload__edit {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb($primary-100, 50%);
+    z-index: 9999;
+  }
+
+  &:has(.file-upload__edit) {
+    min-height: 25rem;
   }
 }

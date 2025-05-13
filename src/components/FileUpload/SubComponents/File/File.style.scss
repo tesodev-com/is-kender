@@ -72,12 +72,21 @@
     padding-right: 0;
   }
 
-  &__delete {
-    color: $gray-400;
-    cursor: pointer;
+  &__actions {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md;
+    color: $gray-400;
+
+    #{$root}__action:hover {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      color: $gray-600;
+    }
   }
 
   &--uploading {

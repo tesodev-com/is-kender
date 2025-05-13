@@ -44,7 +44,6 @@ describe('FileUpload', () => {
       ...mockFile,
       id: '1',
       raw: mockFile,
-      isImage: true,
       preview: 'test-preview',
       uploadedDate: Date.now(),
       status: {
@@ -67,7 +66,6 @@ describe('FileUpload', () => {
       ...mockFile,
       id: '1',
       raw: mockFile,
-      isImage: true,
       preview: 'test-preview',
       uploadedDate: Date.now(),
       status: {
@@ -88,7 +86,6 @@ describe('FileUpload', () => {
       ...mockFile,
       id: '1',
       raw: mockFile,
-      isImage: true,
       preview: 'test-preview',
       uploadedDate: Date.now(),
       status: {
