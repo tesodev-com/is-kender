@@ -1,8 +1,10 @@
 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-  <img src="./public/is-kender.png" alt="Component Library" style={{ maxWidth: "100%", height: "50rem" }} />
+  <img src="./public/is-kender.png" alt="Component Library" style={{ width: "100%", height: "40rem" }} />
 </div>
 
-<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin:2rem 0;">
+<h1 align="center">Iskender Component Library</h1>
+
+<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;">
   <a href="https://www.npmjs.com/package/@zkdev2/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="NPM Version" src="https://img.shields.io/npm/v/%40zkdev2%2Fis-kender">
   </a>
@@ -17,18 +19,7 @@
   </a>
 </div>
 
-# **Welcome! 👋**
-
 This component library is designed for building modern web applications, featuring reusable UI components. Our library is crafted to help developers create user interfaces quickly and consistently.
-
-## **Features**
-
-- 🎨 Modern and elegant design
-- 🚀 Easy integration
-- 📚 Comprehensive documentation
-- 🧪 Tested and reliable
-- 🎯 Vue.js plugin support
-- ⚡ Nuxt.js support
 
 ## **Getting Started**
 
