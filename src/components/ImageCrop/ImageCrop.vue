@@ -331,6 +331,9 @@ async function applyImage() {
     console.error('Error creating cropped image:', error);
   }
 }
+function handleCancel() {
+  emit('cancel');
+}
 function handleActionClick(action: (typeof actionList)[number]['id']) {
   switch (action) {
     case 'rotateLeft':
@@ -366,6 +369,9 @@ function handleActionClick(action: (typeof actionList)[number]['id']) {
       break;
     case 'apply':
       applyImage();
+      break;
+    case 'cancel':
+      handleCancel();
       break;
     default:
       break;

@@ -39,19 +39,27 @@
         showPercentage
         class="file-item__progress"
       />
-      <Svg
-        class="file-item__delete"
-        size="1.5rem"
-        :src="deleteForeverOutlineIcon"
-        @click="handleDelete"
-      ></Svg>
+      <div class="file-item__actions">
+        <Svg
+          class="file-item__action"
+          size="1.5rem"
+          :src="cropIcon"
+          @click="handleEdit"
+        ></Svg>
+        <Svg
+          class="file-item__action"
+          size="1.5rem"
+          :src="deleteForeverOutlineIcon"
+          @click="handleDelete"
+        ></Svg>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { cancelIconRoundedOutline, checkIconRoundedOutline, cloudUploadOutlineIcon, deleteForeverOutlineIcon } from '@/assets/icons';
+import { cancelIconRoundedOutline, checkIconRoundedOutline, cloudUploadOutlineIcon, cropIcon, deleteForeverOutlineIcon } from '@/assets/icons';
 import Divider from 'library-components/Divider';
 import ProgressBar from 'library-components/ProgressBar';
 import Svg from 'library-components/Svg';
@@ -139,6 +147,9 @@ onUnmounted(() => {
 // methods
 function handleDelete() {
   emit('onDelete', props.file);
+}
+function handleEdit() {
+  emit('onEdit', props.file);
 }
 </script>
 

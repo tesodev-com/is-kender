@@ -24,7 +24,7 @@ class FileReaderManager {
         this.activeReaders.delete(file.id);
         file.status = {
           percent: 100,
-          loadedSize: file.size,
+          loadedSize: file.raw.size,
           loadingState: 'completed',
         };
         resolve(reader.result as string);

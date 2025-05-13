@@ -196,13 +196,9 @@ function getFiles(event: Event | DragEvent) {
       if (isValid) {
         return {
           id: Math.random().toString(36).substring(2, 9),
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          raw: file,
-          isImage: file.type.startsWith('image/'),
           preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
           uploadedDate: new Date().getTime(),
+          raw: file,
         };
       }
     })

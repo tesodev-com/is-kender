@@ -33,6 +33,9 @@ class UploadQueue {
   removeFromQueue(fileId: string): void {
     this.queue = this.queue.filter(file => file.id !== fileId);
     this.activeUploads.delete(fileId);
+    this.completedUploads.delete(fileId);
+    this.failedUploads.delete(fileId);
+    this.emit();
   }
 
   private async processQueue(): Promise<void> {

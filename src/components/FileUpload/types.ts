@@ -30,11 +30,6 @@ export interface CustomFile extends File {
   id: string;
 
   /**
-   * Whether the file is an image.
-   */
-  isImage: boolean;
-
-  /**
    * A preview URL or null if not available.
    */
   preview: string | null;

@@ -49,6 +49,7 @@ type Story = StoryObj<typeof FileUpload>;
 export const Default: Story = {
   args: {
     multiple: true,
+    showUploadedFiles: true,
   },
   render: args => ({
     components: { FileUpload },

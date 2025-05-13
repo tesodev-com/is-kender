@@ -29,4 +29,9 @@ export interface FileEmits {
    * @param file The deleted file.
    */
   (event: 'onDelete', file: CustomFile): void;
+  /**
+   * Triggered when a file is edited.
+   * @param file The edited file.
+   */
+  (event: 'onEdit', file: CustomFile): void;
 }
