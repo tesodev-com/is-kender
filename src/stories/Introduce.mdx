@@ -1,0 +1,110 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Documentation/Introduction" />
+
+<div style={{ textAlign: "center", marginBottom: "2rem" }}>
+  <img
+    src="is-kender.png"
+    alt="Component Library"
+    style={{ maxWidth: "100%", height: "50rem" }}
+  />
+</div>
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    marginBottom: "2rem",
+  }}
+>
+  <a
+    href="https://github.com/tesodev-com/is-kender"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    ![GitHub package.json
+    version](https://img.shields.io/github/package-json/v/tesodev-com/is-kender)
+  </a>
+  <a
+    href="https://github.com/tesodev-com/is-kender"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    ![GitHub last
+    commit](https://img.shields.io/github/last-commit/tesodev-com/is-kender)
+  </a>
+</div>
+
+# **Welcome! 👋**
+
+This component library is designed for building modern web applications, featuring reusable and customizable UI components. Our library is crafted to help developers create user interfaces quickly and consistently.
+
+## **Features**
+
+- 🎨 Modern and elegant design
+- 📱 Responsive and mobile-friendly
+- 🚀 Easy integration
+- 🛠️ Customizable components
+- 📚 Comprehensive documentation
+- 🧪 Tested and reliable
+- 🎯 Vue.js plugin support
+- ⚡ Nuxt.js support
+
+## **Getting Started**
+
+To add our library to your project:
+
+```bash
+npm install @tsd/component-library
+# or
+yarn add @tsd/component-library
+```
+
+### Vue Plugin Usage
+
+You can use our library as a Vue plugin. Here's how to set it up:
+
+```js
+// main.js
+import { createApp } from "vue";
+import App from "./App.vue";
+import IsKender from "@tsd/component-library";
+
+const app = createApp(App);
+
+// Use the plugin
+app.use(IsKender);
+app.mount("#app");
+```
+
+Then you can use components in your Nuxt pages and components:
+
+```html
+<lib-button>Click me</lib-button>
+```
+
+### Nuxt Plugin Usage
+
+For Nuxt.js applications, you can use our library as a Nuxt plugin. Create a new file in your plugins directory:
+
+```ts
+// plugins/is-kender.ts
+import { defineNuxtPlugin } from "#app";
+import IsKender from "@tsd/component-library";
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.use(IsKender);
+});
+```
+
+Then you can use components in your Nuxt pages and components:
+
+```html
+<lib-button>Click me</lib-button>
+```
+
+## **Contributing**
+
+If you'd like to contribute to this project, please don't hesitate to submit a pull request. All contributions are welcome!
