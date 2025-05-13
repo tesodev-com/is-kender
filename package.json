@@ -1,7 +1,17 @@
 {
-  "name": "@tsd/component-library",
+  "name": "@tesodev/is-kender",
   "private": false,
-  "version": "0.0.36",
+  "version": "0.0.0",
+  "description": "Tesodev/IsKender Component Library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tesodev-com/is-kender.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest",
+    "access": "public"
+  },
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",
@@ -246,10 +256,8 @@
     "build-storybook": "storybook build",
     "build-dictionary": "style-dictionary build --config ./style-dictionary/config.json",
     "prepare": "husky",
-    "create:component": "vite-node scripts/create-component.ts"
-  },
-  "publishConfig": {
-    "@tsd:registry": "https://gitlab.tesodev.com/api/v4/projects/16/packages/npm/"
+    "create:component": "vite-node scripts/create-component.ts",
+    "semantic-release": "semantic-release"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
@@ -262,6 +270,12 @@
     "@chromatic-com/storybook": "^3.2.6",
     "@eslint/js": "^9.26.0",
     "@material-design-icons/svg": "^0.14.15",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.2",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
     "@storybook/addon-actions": "^8.6.12",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
@@ -295,6 +309,7 @@
     "postcss-html": "^1.8.0",
     "prettier": "^3.5.3",
     "sass": "^1.87.0",
+    "semantic-release": "^24.2.3",
     "storybook": "^8.6.12",
     "style-dictionary": "^4.4.0",
     "stylelint": "^16.19.1",
