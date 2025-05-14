@@ -1,4 +1,7 @@
 <img 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
   src="https://raw.githubusercontent.com/tesodev-com/is-kender/master/public/is-kender.png" 
   alt="Iskender Component Library" 
   style="width: 100%; height: 40rem; object-fit: contain;" 
@@ -83,3 +86,25 @@ If you'd like to contribute to this project, please don't hesitate to submit a p
 ## **License**
 
 MIT License - See [LICENSE](LICENSE) file for more information.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/tanzeratay"><img src="https://avatars.githubusercontent.com/u/17411664?v=4?s=100" width="100px;" alt="tanzeratay"/><br /><sub><b>tanzeratay</b></sub></a><br /><a href="https://github.com/tesodev-com/is-kender/commits?author=tanzeratay" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
