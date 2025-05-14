@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest a new feature to improve the project
+title: "[FEATURE]: <Issue title>"
+labels: [enhancement]
+body:
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: Description
+      placeholder: Describe the feature you'd like.
+  - type: textarea
+    id: solution
+    validations:
+      required: true
+    attributes:
+      label: Solution
+      placeholder: Describe the solution you'd like.
+  - type: textarea
+    id: alternative
+    attributes:
+      label: Alternative
+      placeholder: Describe the alternative solution you've considered.
+  - type: checkboxes
+    id: unique-feature
+    attributes:
+      label: Is this a unique feature?
+      description: |
+        If this is a duplicate feature, please close the issue and let us know.
+        If this is a unique feature, please let us know.
+      options:
+        - label: "Yes"
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context about the problem here.
