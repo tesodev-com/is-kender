@@ -13,11 +13,11 @@
   <a href="https://github.com/tesodev-com/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tesodev-com/is-kender">
   </a>
-  <a href="${{ steps.build-publish.outputs.page_url }}" target="_blank" rel="noopener noreferrer">
+  <a href="https://tesodev-com.github.io/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="Storybook" src="https://img.shields.io/badge/Storybook-Live-blue">
   </a>
   <a href="https://github.com/semantic-release/semantic-release" target="_blank" rel="noopener noreferrer">
-    <img alt="semantic-release" src="https://img.shields.io/badge/semantic--release-vue-e10079?logo=semantic-release">
+    <img alt="semantic-release" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release">
   </a>
 </div>
 
