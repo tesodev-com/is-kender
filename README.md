@@ -80,6 +80,17 @@ Then you can use components in your Nuxt pages and components:
 
 If you'd like to contribute to this project, please don't hesitate to submit a pull request. All contributions are welcome! For more information check our [Contribution Guideline document](CONTRIBUTING.md).
 
+## **Contributors**
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## **License**
 
 MIT License - See [LICENSE](LICENSE) file for more information.
