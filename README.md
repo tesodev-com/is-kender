@@ -13,15 +13,21 @@
   <a href="https://github.com/tesodev-com/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tesodev-com/is-kender">
   </a>
-  <a href="${{ steps.build-publish.outputs.page_url }}" target="_blank" rel="noopener noreferrer">
+  <a href="https://tesodev-com.github.io/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="Storybook" src="https://img.shields.io/badge/Storybook-Live-blue">
   </a>
   <a href="https://github.com/semantic-release/semantic-release" target="_blank" rel="noopener noreferrer">
-    <img alt="semantic-release" src="https://img.shields.io/badge/semantic--release-vue-e10079?logo=semantic-release">
+    <img alt="semantic-release" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release">
   </a>
 </div>
 
 This component library is designed for building modern web applications, featuring reusable UI components. Our library is crafted to help developers create user interfaces quickly and consistently.
+
+<p align="center">
+  <a href="https://tesodev-com.github.io/is-kender" target="_blank" rel="noopener noreferrer">
+    <img alt="Storybook" src="https://raw.githubusercontent.com/storybookjs/brand/refs/heads/main/logo/logo-storybook-inverse.svg" width="200px">
+  </a>
+</p>
 
 ## **Getting Started**
 
@@ -78,7 +84,13 @@ Then you can use components in your Nuxt pages and components:
 
 ## **Contributing**
 
-If you'd like to contribute to this project, please don't hesitate to submit a pull request. All contributions are welcome! For more information check our [Contribution Guideline document](CONTRIBUTING.md).
+If you'd like to contribute to this project, please don't hesitate to submit a pull request. All contributions are welcome! For more information check our [Contribution Guideline document](https://github.com/tesodev-com/is-kender/blob/master/CONTRIBUTING.md).
+
+## **Contributors**
+
+<a href="https://github.com/tesodev-com/is-kender/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tesodev-com/is-kender" />
+</a>
 
 ## **License**
 
