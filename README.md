@@ -82,14 +82,9 @@ If you'd like to contribute to this project, please don't hesitate to submit a p
 
 ## **Contributors**
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+<a href="https://github.com/tesodev-com/is-kender/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tesodev-com/is-kender" />
+</a>
 
 ## **License**
 
