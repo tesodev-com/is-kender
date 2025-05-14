@@ -59,6 +59,7 @@ vi.mock('@/assets/icons', () => ({
   checkIconRoundedOutline: 'check-icon',
   cloudUploadOutlineIcon: 'upload-icon',
   deleteForeverOutlineIcon: 'delete-icon',
+  cropIcon: 'crop-icon',
 }));
 
 describe('File', () => {
@@ -131,7 +132,7 @@ describe('File', () => {
   });
 
   it('emits onDelete event when delete button is clicked', async () => {
-    await wrapper.find('.file-item__delete').trigger('click');
+    await wrapper.find('.file-item__action[src="delete-icon"]').trigger('click');
     expect(wrapper.emitted('onDelete')).toBeTruthy();
     expect(wrapper.emitted('onDelete')![0][0]).toEqual(mockFile);
   });

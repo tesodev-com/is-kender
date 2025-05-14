@@ -39,6 +39,6 @@ describe('Textarea.vue', () => {
         modelValue: 'test',
       },
     });
-    expect(wrapper.find('.character-count').text()).toBe('4/100');
+    expect(wrapper.find('.char-counter').text()).toBe('4/100');
   });
 });
