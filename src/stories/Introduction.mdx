@@ -1,4 +1,5 @@
 import { Meta, Markdown } from "@storybook/blocks";
 import README from "../../README.md?raw";
 
-<Markdown>{README}</Markdown>
+<Markdown>{README.slice(0, README.search("<!-- Storybook-Btn:Start -->"))}</Markdown>
+<Markdown>{README.slice(README.search("<!-- Storybook-Btn:End -->"))}</Markdown>
