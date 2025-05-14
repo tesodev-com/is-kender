@@ -21,6 +21,21 @@
   </a>
 </div>
 
+[//]: #Storybook-Button-Start
+
+<div style="display:flex;align-items:center;justify-content:center;margin:1rem 0;">
+  <a href="https://tesodev-com.github.io/is-kender" target="_blank" rel="noopener noreferrer" style="background-color:#FF4785;color:white;padding:0.5rem 1rem;border-radius:4px;text-decoration:none;font-weight:bold;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;box-shadow:0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.backgroundColor='#FF6B9B';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';" onmouseout="this.style.backgroundColor='#FF4785';this.style.transform='translateY(0)';this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
+      <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    View Storybook
+  </a>
+</div>
+
+[//]: #Storybook-Button-End
+
 This component library is designed for building modern web applications, featuring reusable UI components. Our library is crafted to help developers create user interfaces quickly and consistently.
 
 ## **Getting Started**
