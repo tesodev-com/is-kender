@@ -7,8 +7,8 @@
 <h1 align="center">Iskender Component Library</h1>
 
 <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;">
-  <a href="https://www.npmjs.com/package/@zkdev2/is-kender" target="_blank" rel="noopener noreferrer">
-    <img alt="NPM Version" src="https://img.shields.io/npm/v/%40zkdev2%2Fis-kender">
+  <a href="https://www.npmjs.com/package/@tesodev/is-kender" target="_blank" rel="noopener noreferrer">
+    <img alt="NPM Version" src="https://img.shields.io/npm/v/%40tesodev%2Fis-kender">
   </a>
   <a href="https://github.com/tesodev-com/is-kender" target="_blank" rel="noopener noreferrer">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tesodev-com/is-kender">
