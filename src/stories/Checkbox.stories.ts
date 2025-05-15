@@ -22,6 +22,16 @@ export const Default: Story = {
     size: 'md',
     value: 'checkbox',
   },
+  render: args => ({
+    components: { Checkbox },
+    setup() {
+      const selectedList = ref([]);
+      return { selectedList, args };
+    },
+    template: `
+      <Checkbox v-model="selectedList" v-bind="args" />
+    `,
+  }),
 };
 export const Disabled: Story = {
   args: {
@@ -30,6 +40,16 @@ export const Disabled: Story = {
     value: 'checkbox',
     disabled: true,
   },
+  render: args => ({
+    components: { Checkbox },
+    setup() {
+      const selectedList = ref([]);
+      return { selectedList, args };
+    },
+    template: `
+      <Checkbox v-model="selectedList" v-bind="args" />
+    `,
+  }),
 };
 export const DisabledChecked: Story = {
   args: {
@@ -38,6 +58,16 @@ export const DisabledChecked: Story = {
     value: 'checkbox',
     disabled: true,
   },
+  render: args => ({
+    components: { Checkbox },
+    setup() {
+      const selectedList = ref(['checkbox']);
+      return { selectedList, args };
+    },
+    template: `
+      <Checkbox v-model="selectedList" v-bind="args" />
+    `,
+  }),
 };
 
 export const MultipleCheckboxes: Story = {
@@ -49,8 +79,8 @@ export const MultipleCheckboxes: Story = {
     },
     template: `
     <div style="display:flex;align-items:center" >
-      <Checkbox v-model="selectedList" value="checkbox1"  label="Checkbox 1" />
-      <Checkbox v-model="selectedList" value="checkbox2"  label="Checkbox 2" />
+      <Checkbox v-model="selectedList" value="checkbox1" label="Checkbox 1" />
+      <Checkbox v-model="selectedList" value="checkbox2" label="Checkbox 2" />
       <Checkbox v-model="selectedList" value="checkbox3" label="Checkbox 3" disabled/>
     </div>
     `,
