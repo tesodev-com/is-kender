@@ -1,46 +1,50 @@
 import FormValidator from '@/utils/formValidation/FormValidator';
 import type { ValidationRule } from '@/utils/formValidation/types';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
-export function useFormValidation() {
+export function useFormValidator() {
   const validator = new FormValidator();
-  const errors = reactive<Record<string, string[]>>({});
-  const isValid = ref(true);
 
-  const addRule = <T>(fieldName: string, rule: ValidationRule<T> | ValidationRule<T>[]) => {
-    validator.addRule(fieldName, rule);
-    return { addRule };
+  const isValid = ref(true);
+  const errors = ref<Record<string, string[]>>({});
+
+  const addRule = <T>(field: string, rule: ValidationRule<T> | ValidationRule<T>[]) => {
+    validator.addRule(field, rule);
   };
 
-  const validateField = <T>(fieldName: string, value: T) => {
-    const fieldErrors = validator.validateField(fieldName, value);
-    if (fieldErrors.length) {
-      errors[fieldName] = fieldErrors;
-    } else {
-      delete errors[fieldName];
-    }
-    isValid.value = Object.keys(errors).length === 0;
+  const validateField = <T>(field: string, value: T) => {
+    const fieldErrors = validator.validateField(field, value);
+    errors.value[field] = fieldErrors;
+    updateValidity();
     return fieldErrors;
   };
 
-  const validateForm = (formValues: Record<string, any>) => {
-    const validationErrors = validator.validateForm(formValues);
-    Object.assign(errors, validationErrors);
-    isValid.value = Object.keys(validationErrors).length === 0;
-    return validationErrors;
+  const validateForm = (formData: Record<string, any>) => {
+    const allErrors = validator.validateForm(formData);
+    errors.value = allErrors;
+    updateValidity();
+    return allErrors;
   };
 
-  const clearErrors = () => {
-    Object.keys(errors).forEach(key => delete errors[key]);
-    isValid.value = true;
+  const getFieldErrors = (field: string) => {
+    return validator.getErrorMessages(field);
+  };
+
+  const getAllErrors = () => {
+    return validator.getAllErrorMessages();
+  };
+
+  const updateValidity = () => {
+    isValid.value = validator.isValid();
   };
 
   return {
-    errors,
     isValid,
+    errors,
     addRule,
     validateField,
     validateForm,
-    clearErrors,
+    getFieldErrors,
+    getAllErrors,
   };
 }

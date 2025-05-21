@@ -2,11 +2,12 @@ import fs from 'node:fs';
 import { getFolders, readPackageJson } from './utils';
 
 const packageJson = readPackageJson();
-const excludeFolders: string[] = [];
+const excludeFolders: string[] = ['calculatePosition', 'eventBus', 'localStorage', 'position'];
 
 function setPackageExport() {
   const componentFolders = getFolders('src/components') as string[];
   const composableFolders = getFolders('src/composables') as string[];
+  const utilsFolders = getFolders('src/utils') as string[];
   const exports = packageJson.exports || {};
   componentFolders.forEach(folder => {
     if (excludeFolders.includes(folder)) return;
@@ -20,6 +21,13 @@ function setPackageExport() {
     exports[`./${folder}`] = {
       types: `./dist/composables/${folder}/index.d.ts`,
       import: `./dist/composables/${folder}/index.js`,
+    };
+  });
+  utilsFolders.forEach(folder => {
+    if (excludeFolders.includes(folder)) return;
+    exports[`./${folder}`] = {
+      types: `./dist/utils/${folder}/index.d.ts`,
+      import: `./dist/utils/${folder}/index.js`,
     };
   });
   packageJson.exports = exports;
