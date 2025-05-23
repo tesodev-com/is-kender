@@ -13,19 +13,21 @@
           v-if="hasHeader"
           class="drawer-header"
         >
-          <h3>{{ title }}</h3>
-          <button
-            v-if="hasCloseButton"
-            @click="onClose"
-          >
-            <Svg
-              :src="closeIcon"
-              size="20"
-            ></Svg>
-          </button>
+          <slot name="header">
+            <h3>{{ title }}</h3>
+            <button
+              v-if="hasCloseButton"
+              @click="onClose"
+            >
+              <Svg
+                :src="closeIcon"
+                size="20"
+              ></Svg>
+            </button>
+          </slot>
         </div>
         <div class="drawer-content">
-          <slot />
+          <slot name="body" />
         </div>
       </div>
     </transition>
@@ -44,7 +46,7 @@
 import { closeIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, watch } from 'vue';
-import type { DrawerEmits, DrawerProps } from './types';
+import type { DrawerEmits, DrawerProps, DrawerSlots } from './types';
 
 // interfaces & types
 
@@ -65,6 +67,7 @@ const props = withDefaults(defineProps<DrawerProps>(), {
 const emit = defineEmits<DrawerEmits>();
 
 // defineSlots
+defineSlots<DrawerSlots>();
 
 // states (refs and reactives)
 const isOpen = ref(false);

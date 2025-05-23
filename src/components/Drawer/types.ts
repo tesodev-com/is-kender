@@ -1,5 +1,4 @@
 import type { DefineComponent } from '@/@types/core';
-import type { VNode } from 'vue';
 
 /**
  * Props for the Drawer component.
@@ -32,7 +31,15 @@ export interface DrawerProps {
 }
 
 export interface DrawerSlots {
-  default: () => VNode;
+  /**
+   * Slot for the header content of the drawer.
+   */
+  header(): any;
+
+  /**
+   * Slot for the body content of the drawer.
+   */
+  body(): any;
 }
 
 export interface DrawerEmits {
