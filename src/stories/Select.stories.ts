@@ -173,7 +173,7 @@ export const DefaultMultiple: Story = {
     template: `
          <div style="height:500px">
            <Select v-model:multiple="selected" v-bind="args">
-             <template #long-opt="{ label }">
+             <template #option-long-opt="{ label }">
                🎉 {{ label }} slot key
              </template>
            </Select>

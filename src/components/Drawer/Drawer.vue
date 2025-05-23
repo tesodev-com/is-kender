@@ -2,7 +2,7 @@
   <Teleport to="body">
     <transition
       :name="computeTransition"
-      @after-leave="emit('toggle', false)"
+      @after-leave="emit('close')"
     >
       <div
         v-if="isOpen"
@@ -16,7 +16,7 @@
           <h3>{{ title }}</h3>
           <button
             v-if="hasCloseButton"
-            @click="closeDrawer"
+            @click="onClose"
           >
             <Svg
               :src="closeIcon"
@@ -33,7 +33,7 @@
       <div
         v-if="isOpen"
         class="overlay"
-        @click.stop="closeDrawer"
+        @click.stop="onClose"
       />
     </transition>
   </Teleport>
@@ -44,7 +44,7 @@
 import { closeIcon } from '@/assets/icons';
 import Svg from 'library-components/Svg';
 import { computed, onMounted, ref, watch } from 'vue';
-import type { DrawerProps, ToggleValue } from './types';
+import type { DrawerEmits, DrawerProps } from './types';
 
 // interfaces & types
 
@@ -62,11 +62,10 @@ const props = withDefaults(defineProps<DrawerProps>(), {
 });
 
 // defineEmits
-const emit = defineEmits<{
-  (event: 'toggle', value: ToggleValue): void;
-}>();
+const emit = defineEmits<DrawerEmits>();
 
 // defineSlots
+
 // states (refs and reactives)
 const isOpen = ref(false);
 
@@ -111,9 +110,12 @@ onMounted(() => {
 });
 
 // methods
-function closeDrawer() {
+function onClose() {
   isOpen.value = false;
 }
+defineExpose({
+  onClose,
+});
 </script>
 
 <style lang="scss" scoped src="./Drawer.style.scss"></style>

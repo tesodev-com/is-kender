@@ -2,7 +2,7 @@ import FormValidator from '@/utils/formValidation/FormValidator';
 import type { ValidationRule } from '@/utils/formValidation/types';
 import { ref } from 'vue';
 
-export function useFormValidator() {
+export function useFormValidation() {
   const validator = new FormValidator();
 
   const isValid = ref(true);

@@ -8,7 +8,6 @@ const meta: Meta<typeof Dialog> = {
   component: Dialog,
   tags: ['autodocs'],
   argTypes: {
-    modelValue: { control: 'boolean' },
     title: { control: 'text' },
     message: { control: 'text' },
     persistent: { control: 'boolean' },
@@ -22,6 +21,13 @@ export default meta;
 type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
+  args: {
+    title: 'Default Dialog',
+    message: 'This is a simple dialog message.',
+    persistent: false,
+    width: '400px',
+    actions: [],
+  },
   render: args => ({
     components: { Dialog },
     setup() {
@@ -39,23 +45,22 @@ export const Default: Story = {
           {{ isOpen ? 'Close' : 'Open' }} Dialog
         </button>
         <Dialog
+          v-if="isOpen"
           v-bind="args"
-          v-model="isOpen"
+          @close="toggleDialog"
         />
       </div>
     `,
   }),
-  args: {
-    modelValue: false,
-    title: 'Default Dialog',
-    message: 'This is a simple dialog message.',
-    persistent: false,
-    width: '400px',
-    actions: [],
-  },
 };
 
 export const WithActions: Story = {
+  args: {
+    title: 'Confirm Delete',
+    message: 'Are you sure you want to delete this item?',
+    persistent: false,
+    width: '400px',
+  },
   render: args => ({
     components: { Dialog },
     setup() {
@@ -92,57 +97,24 @@ export const WithActions: Story = {
           {{ isOpen ? 'Close' : 'Open' }} Dialog
         </button>
         <Dialog
+          v-if="isOpen"
           v-bind="args"
-          v-model="isOpen"
           :actions="actions"
+          @close="toggleDialog"
         />
       </div>
     `,
   }),
-  args: {
-    modelValue: false,
-    title: 'Confirm Delete',
-    message: 'Are you sure you want to delete this item?',
-    persistent: false,
-    width: '400px',
-  },
 };
 
 export const Persistent: Story = {
-  render: args => ({
-    components: { Dialog },
-    setup() {
-      const isOpen = ref(false);
-
-      const toggleDialog = () => {
-        isOpen.value = !isOpen.value;
-      };
-
-      return { args, isOpen, toggleDialog };
-    },
-    template: `
-      <div>
-        <button @click="toggleDialog">
-          {{ isOpen ? 'Close' : 'Open' }} Dialog
-        </button>
-        <Dialog
-          v-bind="args"
-          v-model="isOpen"
-        />
-      </div>
-    `,
-  }),
   args: {
-    modelValue: false,
     title: 'Persistent Dialog',
     message: 'You must interact with the dialog to close it.',
     persistent: true,
     width: '400px',
     actions: [],
   },
-};
-
-export const CustomWidth: Story = {
   render: args => ({
     components: { Dialog },
     setup() {
@@ -160,18 +132,45 @@ export const CustomWidth: Story = {
           {{ isOpen ? 'Close' : 'Open' }} Dialog
         </button>
         <Dialog
+          v-if="isOpen"
           v-bind="args"
-          v-model="isOpen"
+          @close="toggleDialog"
         />
       </div>
     `,
   }),
+};
+
+export const CustomWidth: Story = {
   args: {
-    modelValue: false,
     title: 'Wide Dialog',
     message: 'This dialog is wider than default.',
     persistent: false,
     width: '800px',
     actions: [],
   },
+  render: args => ({
+    components: { Dialog },
+    setup() {
+      const isOpen = ref(false);
+
+      const toggleDialog = () => {
+        isOpen.value = !isOpen.value;
+      };
+
+      return { args, isOpen, toggleDialog };
+    },
+    template: `
+      <div>
+        <button @click="toggleDialog">
+          {{ isOpen ? 'Close' : 'Open' }} Dialog
+        </button>
+        <Dialog
+          v-if="isOpen"
+          v-bind="args"
+          @close="toggleDialog"
+        />
+      </div>
+    `,
+  }),
 };

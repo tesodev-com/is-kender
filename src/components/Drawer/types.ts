@@ -1,4 +1,5 @@
 import type { DefineComponent } from '@/@types/core';
+import type { VNode } from 'vue';
 
 /**
  * Props for the Drawer component.
@@ -12,7 +13,7 @@ export interface DrawerProps {
   /**
    * The size of the drawer.
    */
-  size?: '25%' | '50%' | '100%';
+  size?: string;
 
   /**
    * The title displayed in the drawer header.
@@ -30,6 +31,17 @@ export interface DrawerProps {
   hasCloseButton?: boolean;
 }
 
+export interface DrawerSlots {
+  default: () => VNode;
+}
+
+export interface DrawerEmits {
+  /**
+   * Event emitted when the drawer is closed.
+   */
+  (e: 'close'): void;
+}
+
 /**
  * Type representing a toggle state.
  */
@@ -37,6 +49,6 @@ export type ToggleValue = boolean;
 
 declare module 'vue' {
   export interface GlobalComponents {
-    LibDrawer: DefineComponent<DrawerProps>;
+    LibDrawer: DefineComponent<DrawerProps, DrawerSlots, DrawerEmits>;
   }
 }
