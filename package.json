@@ -19,9 +19,7 @@
   "files": [
     "dist"
   ],
-  "sideEffets": [
-    "**/*.css"
-  ],
+  "sideEffects": false,
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -239,6 +237,10 @@
     "./useToast": {
       "types": "./dist/composables/useToast/index.d.ts",
       "import": "./dist/composables/useToast/index.js"
+    },
+    "./formValidation": {
+      "types": "./dist/utils/formValidation/index.d.ts",
+      "import": "./dist/utils/formValidation/index.js"
     }
   },
   "scripts": {

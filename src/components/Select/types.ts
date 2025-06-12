@@ -1,18 +1,20 @@
 import type { DefineComponent } from '@/@types/core';
+import type { VNode } from 'vue';
 
 /**
  * Represents an option in the Select component.
  */
 export interface SelectOption {
+  [key: string]: any;
   /**
    * The display label for the option.
    */
-  label: string;
+  label?: string;
 
   /**
    * The value associated with the option.
    */
-  value: string;
+  value?: string;
 
   /**
    * Optional key to map a custom slot for the option.
@@ -113,10 +115,48 @@ export interface SelectProps {
    * Hint text displayed below the select input.
    */
   hint?: string;
+
+  /**
+   * Custom item value property name
+   */
+  useValue?: string;
+
+  /**
+   * Custom item label property name
+   */
+  useLabel?: string;
+}
+
+/**
+ * Slots available for the Select component.
+ */
+export interface SelectSlots {
+  /**
+   * Custom slot for a specific option.
+   */
+  option?(props: SelectOption): any;
+
+  /**
+   * Custom slot for a specific option.
+   */
+  [key: `option-${string}`]: (props: SelectOption) => any;
+
+  /**
+   * Slot for the label above the select input.
+   */
+  hint?: () => VNode[] | undefined;
+}
+
+export interface SelectEmits {
+  /**
+   * Emitted when the selected a value.
+   * @param value - The new selected value.
+   */
+  (e: 'select', value: SelectOption): void;
 }
 
 declare module 'vue' {
   export interface GlobalComponents {
-    LibSelect: DefineComponent<SelectProps>;
+    LibSelect: DefineComponent<SelectProps, SelectSlots, SelectEmits>;
   }
 }
