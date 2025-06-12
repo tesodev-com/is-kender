@@ -1,3 +1,21 @@
+# [1.1.0](https://github.com/tesodev-com/is-kender/compare/v1.0.0...v1.1.0) (2025-06-12)
+
+
+### Bug Fixes
+
+* **checkbox-stories:** refactor render functions for Default, Disabled, and DisabledChecked stories ([#9](https://github.com/tesodev-com/is-kender/issues/9)) ([7f0fa6e](https://github.com/tesodev-com/is-kender/commit/7f0fa6e268a4e0aa34bbd448a13e114e9db3e67d))
+* **docs:** update NPM package link in README ([#4](https://github.com/tesodev-com/is-kender/issues/4)) ([741ff9a](https://github.com/tesodev-com/is-kender/commit/741ff9afb9751aad33d54c03cf316a06c8958d84))
+* **publish-npm:** ensure credentials are not persisted during checkout ([#14](https://github.com/tesodev-com/is-kender/issues/14)) ([a34d398](https://github.com/tesodev-com/is-kender/commit/a34d398c91853665b9e3fa77d7150f7cff40fb35))
+
+
+### Features
+
+* **accordion:** add slots for header and content in Accordion component ([#12](https://github.com/tesodev-com/is-kender/issues/12)) ([6b367aa](https://github.com/tesodev-com/is-kender/commit/6b367aaa52e5876311ac0a78a3e3cef90c73b4e2))
+* **contributer:** added contibuters on readme ([#6](https://github.com/tesodev-com/is-kender/issues/6)) ([da07f4e](https://github.com/tesodev-com/is-kender/commit/da07f4ea54e4b83013b9654532f25366fe00827b)), closes [#8](https://github.com/tesodev-com/is-kender/issues/8)
+* **form-validation:** enhance validation logic and error handling ([#11](https://github.com/tesodev-com/is-kender/issues/11)) ([2a91138](https://github.com/tesodev-com/is-kender/commit/2a91138a55b79e19ecfa1557423f79ab93ecf436))
+* **issue-template:** created bug issue template ([c632cb2](https://github.com/tesodev-com/is-kender/commit/c632cb216ed02508195d8a4b0ac2d5f2827f7b1d))
+* **publish-npm:** update token generation and usage for GitHub actions ([#13](https://github.com/tesodev-com/is-kender/issues/13)) ([896b924](https://github.com/tesodev-com/is-kender/commit/896b92446283ba49416da0a57ddb02730301d46e))
+
 # 1.0.0 (2025-05-14)
 
 
