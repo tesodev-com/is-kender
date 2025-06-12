@@ -98,14 +98,14 @@ $variants: (
 
 .toast-wrapper {
   width: max-content;
-  border: var(--toast-border-width, 1px);
-  border-style: var(--toast-border-style, solid);
-  border-radius: var(--toast-border-radius, $rounded-sm);
-  padding: var(--toast-padding, $spacing-lg $spacing-lg);
+  border: 1px;
+  border-style: solid;
+  border-radius: $rounded-sm;
+  padding: $spacing-lg $spacing-lg;
 
   .toast {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: $spacing-md;
 
     .toast-content {
@@ -137,10 +137,7 @@ $variants: (
       @each $color, $colorValue in $variantColors {
         &.toast-#{$color} {
           @each $property, $propertyValue in $colorValue {
-            #{$property}: var(
-              --toast-#{$variant}-#{$color}-#{$property},
-              $propertyValue
-            );
+            #{$property}: $propertyValue;
           }
         }
       }

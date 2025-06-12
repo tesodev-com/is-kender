@@ -86,22 +86,28 @@
             >
               <li
                 v-for="(option, index) in visibleOptions"
-                :key="option.value"
+                :key="option[useValue]"
                 class="select-dropdown-item"
                 :style="getItemStyle(index)"
                 :class="getItemClasses(option, index + startIndex)"
                 role="option"
-                :aria-selected="isSelected(option.value)"
+                :aria-selected="isSelected(option[useValue])"
                 :aria-disabled="option.disabled"
                 @click="selectOption(option)"
                 @mouseover="handleMouseover(index + startIndex)"
               >
                 <div
-                  v-if="option.slotKey"
+                  v-if="slots['option'] || slots[`option-${option.slotKey}`]"
                   class="select-dropdown-item-label"
                 >
                   <slot
-                    :name="option.slotKey"
+                    v-if="slots['option']"
+                    name="option"
+                    v-bind="option"
+                  />
+                  <slot
+                    v-else
+                    :name="`option-${option.slotKey}`"
                     v-bind="option"
                   />
                 </div>
@@ -109,10 +115,10 @@
                   v-else
                   class="select-dropdown-item-label"
                 >
-                  {{ option.label }}
+                  {{ option[useLabel] }}
                 </p>
                 <Svg
-                  v-if="isSelected(option.value)"
+                  v-if="isSelected(option[useValue])"
                   :src="checkIcon"
                   size="20"
                   class="select-dropdown-item-icon"
@@ -129,21 +135,27 @@
           >
             <li
               v-for="(option, index) in searchFilterList"
-              :key="option.value"
+              :key="option[useValue]"
               class="select-dropdown-item"
               :class="getItemClasses(option, index)"
               role="option"
-              :aria-selected="isSelected(option.value)"
+              :aria-selected="isSelected(option[useValue])"
               :aria-disabled="option.disabled"
               @click="selectOption(option)"
               @mouseover="handleMouseover(index)"
             >
               <div
-                v-if="option.slotKey"
+                v-if="slots['option'] || slots[`option-${option.slotKey}`]"
                 class="select-dropdown-item-label"
               >
                 <slot
-                  :name="option.slotKey"
+                  v-if="slots['option']"
+                  name="option"
+                  v-bind="option"
+                />
+                <slot
+                  v-else
+                  :name="`option-${option.slotKey}`"
                   v-bind="option"
                 />
               </div>
@@ -151,10 +163,10 @@
                 v-else
                 class="select-dropdown-item-label"
               >
-                {{ option.label }}
+                {{ option[useLabel] }}
               </p>
               <Svg
-                v-if="isSelected(option.value)"
+                v-if="isSelected(option[useValue])"
                 :src="checkIcon"
                 size="20"
                 class="select-dropdown-item-icon"
@@ -185,7 +197,7 @@ import { checkIcon, keyboardArrowDownIcon } from '@/assets/icons';
 import { calculateElementPosition, type PositionStyle } from '@/utils/calculatePosition';
 import Svg from 'library-components/Svg';
 import { computed, type CSSProperties, nextTick, onBeforeUnmount, onMounted, ref, useId, useTemplateRef, watch } from 'vue';
-import type { SelectOption, SelectProps } from './types';
+import type { SelectEmits, SelectOption, SelectProps, SelectSlots } from './types';
 
 // interfaces & types
 
@@ -205,11 +217,14 @@ const props = withDefaults(defineProps<SelectProps>(), {
   requiredIndicator: '*',
   noOptionsText: 'No options available',
   searchPlaceholder: 'Search...',
+  useValue: 'value',
+  useLabel: 'label',
 });
 
 // defineEmits
-
+const emit = defineEmits<SelectEmits>();
 // defineSlots
+const slots = defineSlots<SelectSlots>();
 
 // defineModel
 const model = defineModel<string | null>();
@@ -234,11 +249,11 @@ const visibleCount = ref(0);
 // computed
 const selectedValue = computed(() => {
   if (props.isMultiple) {
-    const selected = props.options.filter(opt => modelMultiple.value.includes(opt.value));
-    return selected.length > 0 ? selected.map(opt => opt.label).join(', ') : '';
+    const selected = props.options.filter(opt => modelMultiple.value.includes(opt[props.useValue]));
+    return selected.length > 0 ? selected.map(opt => opt[props.useLabel]).join(', ') : '';
   } else {
-    const selected = props.options.find(opt => opt.value === model.value);
-    return selected ? selected.label : '';
+    const selected = props.options.find(opt => opt[props.useValue] === model.value);
+    return selected ? selected[props.useLabel] : '';
   }
 });
 
@@ -250,7 +265,7 @@ const computePlaceholder = computed(() => {
 
 const searchFilterList = computed(() => {
   if (props.isSearch && searchModel.value) {
-    return props.options.filter(option => option.label.toLowerCase().includes(searchModel.value.toLowerCase()));
+    return props.options.filter(option => option[props.useLabel].toLowerCase().includes(searchModel.value.toLowerCase()));
   }
   return props.options;
 });
@@ -302,23 +317,24 @@ onBeforeUnmount(() => {
 function selectOption(option: SelectOption) {
   if (option.disabled) return;
 
-  const optionIndex = searchFilterList.value.findIndex(opt => opt.value === option.value);
+  const optionIndex = searchFilterList.value.findIndex(opt => opt.value === option[props.useValue]);
 
   if (props.isMultiple) {
     const values = modelMultiple.value;
-    const index = values.indexOf(option.value);
+    const index = values.indexOf(option[props.useValue]);
     if (index === -1) {
-      modelMultiple.value = [...values, option.value];
+      modelMultiple.value = [...values, option[props.useValue]];
       focusedIndex.value = optionIndex;
     } else {
-      modelMultiple.value = values.filter(val => val !== option.value);
+      modelMultiple.value = values.filter(val => val !== option[props.useValue]);
       focusedIndex.value = optionIndex;
     }
   } else {
-    model.value = option.value;
+    model.value = option[props.useValue];
     focusedIndex.value = optionIndex;
     isOpen.value = false;
   }
+  emit('select', option);
 }
 
 function isSelected(value: string) {
@@ -370,7 +386,9 @@ function scrollToSelectedItem() {
   nextTick(() => {
     if (!dropdown.value) return;
 
-    const selectedIndex = props.isMultiple ? searchFilterList.value.findIndex(opt => modelMultiple.value.includes(opt.value)) : searchFilterList.value.findIndex(opt => opt.value === model.value);
+    const selectedIndex = props.isMultiple
+      ? searchFilterList.value.findIndex(opt => modelMultiple.value.includes(opt[props.useValue]))
+      : searchFilterList.value.findIndex(opt => opt.value === model.value);
 
     if (selectedIndex !== -1) {
       if (props.virtualScroll) {
@@ -533,7 +551,7 @@ function scrollToFocusedItem() {
 
 function getItemClasses(option: SelectOption, index: number): Record<string, boolean> {
   return {
-    'select-dropdown-item-selected': isSelected(option.value),
+    'select-dropdown-item-selected': isSelected(option[props.useValue]),
     'select-dropdown-item-disabled': !!option.disabled,
     'select-dropdown-item-focused': focusedIndex.value === index && !option.disabled,
   };
