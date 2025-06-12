@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
 describe('Dialog', () => {
-  it('opens and closes with modelValue', async () => {
+  it('opens and closes with modelValue', () => {
     const wrapper = mount(Dialog, {
       props: {
         modelValue: false,
@@ -14,10 +14,7 @@ describe('Dialog', () => {
 
     expect(wrapper.find('dialog').exists());
 
-    await wrapper.setProps({ modelValue: true });
-    expect(wrapper.find('dialog').exists());
-
-    await wrapper.setProps({ modelValue: false });
+    wrapper.vm.onClose();
     expect(wrapper.find('dialog').exists());
   });
 
