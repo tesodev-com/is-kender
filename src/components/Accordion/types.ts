@@ -59,8 +59,28 @@ export interface AccordionEmits {
   (event: 'close'): void;
 }
 
+export interface AccordionSlots {
+  /**
+   * Slot for the header content
+   * @param props - Props passed to the slot
+   * @param props.isOpen - Indicates if the accordion is open
+   * @param props.toggle - Function to toggle the accordion
+   * @param props.accordionIconPosition - Position of the accordion icon
+   */
+  header(props: { isOpen: boolean; toggle: () => void; accordionIconPosition: AccordionProps['accordionIconPosition'] }): any;
+
+  /**
+   * Slot for the content of the accordion
+   * @param props - Props passed to the slot
+   * @param props.isOpen - Indicates if the accordion is open
+   * @param props.toggle - Function to toggle the accordion
+   * @param props.accordionIconPosition - Position of the accordion icon
+   */
+  content(props: { isOpen: boolean; toggle: () => void; accordionIconPosition: AccordionProps['accordionIconPosition'] }): any;
+}
+
 declare module 'vue' {
   export interface GlobalComponents {
-    LibAccordion: DefineComponent<AccordionProps, object, AccordionEmits>;
+    LibAccordion: DefineComponent<AccordionProps, AccordionSlots, AccordionEmits>;
   }
 }
