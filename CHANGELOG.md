@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/tesodev-com/is-kender/compare/v1.1.0...v1.2.0) (2025-07-10)
+
+
+### Bug Fixes
+
+* **ci:** updated workflows ([#18](https://github.com/tesodev-com/is-kender/issues/18)) ([982518d](https://github.com/tesodev-com/is-kender/commit/982518deae8353dd33743c8513a235052f799531))
+* **version:** revert package version ([#17](https://github.com/tesodev-com/is-kender/issues/17)) ([78ae478](https://github.com/tesodev-com/is-kender/commit/78ae478e727a49663ad9f20eb1b5d14d3619bccc))
+
+
+### Features
+
+* **publish-npm:** update token generation step and improve bot user ID retrieval ([#15](https://github.com/tesodev-com/is-kender/issues/15)) ([2816c74](https://github.com/tesodev-com/is-kender/commit/2816c74992dc8848b56a71f185bece082f9a30fd))
+
 # [1.1.0](https://github.com/tesodev-com/is-kender/compare/v1.0.0...v1.1.0) (2025-06-12)
 
 
