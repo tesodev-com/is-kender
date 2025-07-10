@@ -1,7 +1,7 @@
 {
   "name": "@tesodev/is-kender",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Tesodev/IsKender Component Library",
   "repository": {
     "type": "git",
@@ -241,6 +241,18 @@
     "./formValidation": {
       "types": "./dist/utils/formValidation/index.d.ts",
       "import": "./dist/utils/formValidation/index.js"
+    },
+    "./useStacking": {
+      "types": "./dist/composables/useStacking/index.d.ts",
+      "import": "./dist/composables/useStacking/index.js"
+    },
+    "./zIndexManager": {
+      "types": "./dist/utils/zIndexManager/index.d.ts",
+      "import": "./dist/utils/zIndexManager/index.js"
+    },
+    "./useDrawerManager": {
+      "types": "./dist/composables/useDrawerManager/index.d.ts",
+      "import": "./dist/composables/useDrawerManager/index.js"
     }
   },
   "scripts": {
