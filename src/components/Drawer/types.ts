@@ -28,6 +28,37 @@ export interface DrawerProps {
    * Whether the drawer has a close button.
    */
   hasCloseButton?: boolean;
+
+  /**
+   * Function to be called before closing the drawer.
+   * If it returns a promise, the drawer will wait for it to resolve.
+   * If it returns false or a promise that resolves to false, the drawer will not close.
+   */
+  beforeClose?: () => boolean | Promise<boolean>;
+
+  /**
+   * Whether the drawer should close when the overlay is clicked.
+   * @default true
+   */
+  closeOnOverlayClick?: boolean;
+
+  /**
+   * Whether the drawer should close when the Escape key is pressed.
+   * @default true
+   */
+  closeOnEscape?: boolean;
+
+  /**
+   * Whether to show the overlay.
+   * @default true
+   */
+  hasOverlay?: boolean;
+
+  /**
+   * Disables body scrolling when the drawer is open.
+   * @default true
+   */
+  disableBodyScroll?: boolean;
 }
 
 export interface DrawerSlots {

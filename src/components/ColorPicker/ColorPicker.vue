@@ -25,7 +25,7 @@
         ref="pickerPopupRef"
         class="color-picker-popup"
         :class="{ draggable: props.isDraggable, 'is-dragging': isDragging }"
-        :style="props.isDraggable ? draggableStyle : positionStyles"
+        :style="[props.isDraggable ? draggableStyle : positionStyles, { zIndex: zIndex }]"
         @mouseleave="handleMouseLeave"
       >
         <div
@@ -286,7 +286,7 @@
 // imports
 import { colorizeIcon } from '@/assets/icons';
 import { Button, Svg, Text } from '@/components/';
-import { useClickOutside, useDraggable } from '@/composables';
+import { useClickOutside, useDraggable, useStacking } from '@/composables';
 import { calculatePosition } from '@/utils/position';
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useTemplateRef, watch } from 'vue';
 import { colorUtils } from './colorUtils';
@@ -368,6 +368,8 @@ useClickOutside([popupRef, buttonRef], () => {
     stopAllSelections();
   }
 });
+const { zIndex } = useStacking();
+
 const colorFormats = computed(() => props.colorFormats);
 const suggestedColors = computed(() => props.suggestedColors);
 

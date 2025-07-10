@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 }
 
 .drawer {
@@ -17,7 +16,6 @@
   box-shadow: $shadow-sm;
   display: flex;
   flex-direction: column;
-  z-index: 9999;
 
   &-left {
     top: 0;
@@ -56,16 +54,32 @@
     padding: $spacing-xl;
     border-bottom: 1px solid $gray-300;
 
-    button {
+    .drawer-title {
+      @include text-lg(600);
+
+      margin: 0;
+    }
+
+    .drawer-close-button {
       background-color: $bg-transparent;
       border-radius: 50%;
       border: none;
       padding: $spacing-ml;
       cursor: pointer;
       font-weight: normal;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
       &:focus {
         outline: 2px solid $primary-500;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
       }
     }
   }

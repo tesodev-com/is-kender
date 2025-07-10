@@ -11,7 +11,7 @@
       <div
         v-if="isOpen"
         class="dialog-container"
-        :style="{ width }"
+        :style="dialogStyle"
         role="dialog"
         :aria-modal="true"
         :aria-labelledby="labelledId"
@@ -68,6 +68,7 @@
       <div
         v-if="isOpen"
         class="overlay"
+        :style="overlayStyle"
         @click="onBackdropClick"
       ></div>
     </transition>
@@ -76,6 +77,7 @@
 
 <script setup lang="ts">
 // imports
+import { useStacking } from 'library-composables/useStacking';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { DialogAction, DialogEmits, DialogProps } from './types';
 
@@ -87,6 +89,7 @@ const hasHeaderSlot = !!instance?.slots.header;
 const hasFooterSlot = !!instance?.slots.footer;
 
 // composable
+const { zIndex } = useStacking();
 
 // props
 const props = defineProps<DialogProps>();
@@ -104,15 +107,26 @@ const labelledId = computed(() => (props.title ? 'dialog-title' : ''));
 const describedId = computed(() => (props.message ? 'dialog-desc' : ''));
 const width = computed(() => props.width || '500px');
 
+const dialogStyle = computed(() => ({
+  width: width.value,
+  zIndex: zIndex.value,
+}));
+
+const overlayStyle = computed(() => ({
+  zIndex: zIndex.value - 1,
+}));
+
 // watchers
 watch(isOpen, updateBodyOverflow);
 
 // lifecycles
 onMounted(() => {
   isOpen.value = true;
+  document.addEventListener('keydown', handleKeyDown);
 });
 onBeforeUnmount(() => {
   updateBodyOverflow(false);
+  document.removeEventListener('keydown', handleKeyDown);
   onClose();
 });
 
@@ -123,6 +137,12 @@ function onClose() {
 
 function onBackdropClick() {
   if (!props.persistent) {
+    onClose();
+  }
+}
+
+function handleKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && !props.persistent) {
     onClose();
   }
 }
